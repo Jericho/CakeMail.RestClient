@@ -1,5 +1,6 @@
 version: 1.0.{build}
+platform: x64
 before_build:
-- nuget restore
+- nuget restore src\CakeMailRestAPI.sln
 build:
   verbosity: minimal
