@@ -20,6 +20,9 @@ x86/
 [Bb]in/
 [Oo]bj/
 
+# Roslyn cache directories
+*.ide/
+
 # Visual Studo 2015 cache/options directory
 .vs/
 
@@ -139,8 +142,8 @@ publish/
 **/packages/*
 # except build/, which is used as an MSBuild target.
 !**/packages/build/
-# except config file (generally it gets regenerated when needed, therefore it could be ignored)
-!**/packages/repositories.config
+# If using the old MSBuild-Integrated Package Restore, uncomment this:
+#!**/packages/repositories.config
 
 # Windows Azure Build Output
 csx/
@@ -192,10 +195,44 @@ FakesAssemblies/
 *.plg
 
 # Visual Studio 6 workspace options file
-*.opt#LightSwitch generated files
+*.opt
+
+#LightSwitch generated files
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+
+# WinMerge
+*.bak
+
+# =========================
+# Operating System Files
+# =========================
+
+# OSX
+# =========================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+# =========================
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
@@ -206,8 +243,11 @@ Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
-# Mac desktop service store files
-.DS_Store
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
 
-# WinMerge
-*.bak
+# Windows shortcuts
+*.lnk
