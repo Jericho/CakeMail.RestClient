@@ -1,4 +1,4 @@
-# CakeMailRestApi
+# CakeMailRestAPI
 
 ## About
 
@@ -26,7 +26,7 @@ var apiKey = "... your api key ...";
 var userName = "youremail@whatever.com";
 var password = "yourpassword";
 
-var client = new CakeMailClient(apiKey);
+var client = new Client(apiKey);
 
 var loginInfo = client.Login(userName, password);
 var user = client.GetUser(loginInfo.UserKey, loginInfo.UserId, loginInfo.ClientId);
