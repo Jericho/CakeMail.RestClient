@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/fd008gl72j4wyi84?svg=true)](https://ci.appveyor.com/project/Jericho/cakemailrestapi)
+
 # CakeMailRestAPI
 
 ## About
