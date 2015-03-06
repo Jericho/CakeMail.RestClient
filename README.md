@@ -1,10 +1,10 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/fd008gl72j4wyi84?svg=true)](https://ci.appveyor.com/project/Jericho/cakemailrestapi)
 
-# CakeMailRestAPI
+# CakeMail.RestClient
 
 ## About
 
-CakeMailRestAPI is a C# client for the CakeMail service through its RESTful API.
+CakeMail.RestClient is a C# client for the CakeMail service through its RESTful API.
 
 ## Features
 

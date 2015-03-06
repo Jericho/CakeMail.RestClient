@@ -1,7 +1,8 @@
-﻿using CakeMailRestAPI.Models;
+﻿using CakeMail.RestClient.Models;
+using System;
 using System.Collections.Generic;
 
-namespace CakeMailRestAPI
+namespace CakeMail.RestClient
 {
 	public interface IClient
 	{
@@ -37,9 +38,11 @@ namespace CakeMailRestAPI
 
 		#region Methods related to RELAYS
 
-		bool SendRelay(string userKey, string email, string senderEmail, string senderName, string html, string text, string subject, string encoding, bool trackOpens, bool trackClicksInHtml, bool trackClicksInText, string trackingId, int? clientId = null);
+		bool SendRelay(string userKey, string email, string senderEmail, string senderName, string html, string text, string subject, string encoding, bool trackOpens, bool trackClicksInHtml, bool trackClicksInText, int trackingId, int? clientId = null);
 
-		//IEnumerable<RelayLog> GetRelayLogs(IDictionary<string, string> connectionSettings, int clientId, string logType, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0);
+		IEnumerable<RelayLog> GetRelaySentLogs(string userKey, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
+
+		IEnumerable<RelayOpenLog> GetRelayOpenLogs(string userKey, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
 
 		#endregion
 
@@ -60,7 +63,11 @@ namespace CakeMailRestAPI
 		/// <param name="password">Password of the user.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>The ID of the newly created user</returns>
-		int CreateUser(string userKey, string email, string firstName, string lastName, string title, string officePhone, string mobilePhone, string language, string timezoneId, string password, int? clientId = null);
+		int CreateUser(string userKey, string email, string firstName, string lastName, string title, string officePhone, string mobilePhone, string language, string password, int timezoneId = 542, int? clientId = null);
+
+		bool DeactivateUser(string userKey, int userId, int? clientId = null);
+
+		bool DeleteUser(string userKey, int userId, int? clientId = null);
 
 		/// <summary>
 		/// Get the information of a user.
@@ -109,7 +116,7 @@ namespace CakeMailRestAPI
 		/// <param name="password">Password of the user.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>The <see cref="User"/></returns>
-		void UpdateUser(string userKey, int userId, string status, string email, string firstName, string lastName, string title, string officePhone, string mobilePhone, string language, string timezoneId, string password, int? clientId = null);
+		bool UpdateUser(string userKey, int userId, string status, string email, string firstName, string lastName, string title, string officePhone, string mobilePhone, string language, string timezoneId, string password, int? clientId = null);
 
 		/// <summary>
 		/// Check the login of a user.

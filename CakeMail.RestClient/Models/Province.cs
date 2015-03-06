@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace CakeMailRestAPI.Models
+namespace CakeMail.RestClient.Models
 {
-	public class Country
+	public class Province
 	{
 		#region Properties
 

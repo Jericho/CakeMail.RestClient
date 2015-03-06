@@ -1,16 +1,17 @@
-﻿using CakeMailRestAPI.Exceptions;
-using CakeMailRestAPI.Models;
-using CakeMailRestAPI.Utilities;
+﻿using CakeMail.RestClient.Exceptions;
+using CakeMail.RestClient.Models;
+using CakeMail.RestClient.Utilities;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
-using RestSharp.Deserializers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace CakeMailRestAPI
+namespace CakeMail.RestClient
 {
 	/// <summary>
 	/// Core class for using the CakeMail Api
@@ -64,13 +65,6 @@ namespace CakeMailRestAPI
 
 		#region Methods related to CAMPAIGNS
 
-		/// <summary>
-		/// Create a campaign.
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="name">The name of the campaign.</param>
-		/// <param name="clientId">ID of the client.</param>
-		/// <returns>The <see cref="Campaign"/></returns>
 		public int CreateCampaign(string userKey, string name, int? clientId = null)
 		{
 			string path = "/Campaign/Create/";
@@ -85,13 +79,6 @@ namespace CakeMailRestAPI
 			return Execute<int>(path, parameters);
 		}
 
-		/// <summary>
-		/// Get the information about a campaign.
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="campaignId">ID of the campaign.</param>
-		/// <param name="clientId">ID of the client.</param>
-		/// <returns>The <see cref="User"/></returns>
 		public Campaign GetCampaign(string userKey, int campaignId, int? clientId = null)
 		{
 			var path = "/Campaign/GetInfo/";
@@ -106,17 +93,6 @@ namespace CakeMailRestAPI
 			return Execute<Campaign>(path, parameters);
 		}
 
-		/// <summary>
-		/// Get the list of campaigns.
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="status">Filter using the campaign status. Possible values: 'ongoing', 'closed'.</param>
-		/// <param name="name">Filter using the campaign name.</param>
-		/// <param name="sortBy">Sort resulting campaigns. Possible values: 'created_on', 'name'.</param>
-		/// <param name="limit">Limit the number of resulting campaigns.</param>
-		/// <param name="offset">Offset the beginning of resulting campaigns.</param>
-		/// <param name="clientId">ID of the client.</param>
-		/// <returns>An enumeration of <see cref="User">campaigns</see>.</returns>
 		public IEnumerable<Campaign> GetCampaigns(string userKey, string status, string name = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			var path = "/Campaign/GetList/";
@@ -124,39 +100,47 @@ namespace CakeMailRestAPI
 			var parameters = new List<KeyValuePair<string, object>>()
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("status", status),
 				new KeyValuePair<string, object>("count", "false")
 			};
+			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
 			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
 			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return Execute<ArrayOfCampaigns>(path, parameters).Campaigns;
+			var items = ExecuteArray<Campaign>(path, parameters, "campaigns");
+			return (items ?? Enumerable.Empty<Campaign>());
+		}
+
+		public long GetCampaignsCount(string userKey, string status, string name = null, int? clientId = null)
+		{
+			var path = "/Campaign/GetList/";
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
+			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCount(path, parameters);
 		}
 
 		#endregion
 
 		#region Methods related to COUNTRIES
 
-		/// <summary>
-		/// Get the list of countries.
-		/// </summary>
-		/// <returns>An enumeration of <see cref="Country">countries</see>.</returns>
 		public IEnumerable<Country> GetCountries()
 		{
 			var path = "/Country/GetList/";
 
 			var parameters = new List<KeyValuePair<string, object>>();
 
-			return Execute<ArrayOfCountries>(path, parameters).Countries;
+			var items = ExecuteArray<Country>(path, parameters, "countries");
+			return (items ?? Enumerable.Empty<Country>());
 		}
 
-		/// <summary>
-		/// Get the list of provinces for a given country.
-		/// </summary>
-		/// <param name="countryId">ID if the country.</param>
-		/// <returns>An enumeration of <see cref="Province">provinces</see>.</returns>
 		public IEnumerable<Province> GetProvinces(string countryId)
 		{
 			var path = "/Country/GetProvinces/";
@@ -164,14 +148,15 @@ namespace CakeMailRestAPI
 			var parameters = new List<KeyValuePair<string, object>>();
 			parameters.Add(new KeyValuePair<string, object>("country_id", countryId));
 
-			return Execute<ArrayOfProvinces>(path, parameters).Provinces;
+			var items = ExecuteArray<Province>(path, parameters, "provinces");
+			return (items ?? Enumerable.Empty<Province>());
 		}
 
 		#endregion
 
 		#region Methods related to RELAYS
 
-		public bool SendRelay(string userKey, string email, string senderEmail, string senderName, string html, string text, string subject, string encoding, bool trackOpens, bool trackClicksInHtml, bool trackClicksInText, string trackingId, int? clientId = null)
+		public bool SendRelay(string userKey, string email, string senderEmail, string senderName, string html, string text, string subject, string encoding, bool trackOpens, bool trackClicksInHtml, bool trackClicksInText, int trackingId, int? clientId = null)
 		{
 			string path = "/Relay/Send/";
 
@@ -195,65 +180,85 @@ namespace CakeMailRestAPI
 			return Execute<bool>(path, parameters);
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="clientId"></param>
-		/// <param name="logType"></param>
-		/// <param name="trackingId">Per my discussion with Vincent on 8/20/2013, omiting the tracking id will return all relay logs for a given customer</param>
-		/// <param name="start"></param>
-		/// <param name="end"></param>
-		/// <param name="limit"></param>
-		/// <param name="offset"></param>
-		/// <returns></returns>
-		/// <remarks>If start time and end time parameters are null then only current 24 hour period is retrieved</remarks>
-		//public IEnumerable<RelayLog> GetRelayLogs(IDictionary<string, string> connectionSettings, int clientId, string logType, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0)
-		//{
-		//	string path = "/Relay/GetLogs/";
+		public IEnumerable<RelayLog> GetRelaySentLogs(string userKey, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			string path = "/Relay/GetLogs/";
 
-		//	var parameters = new List<KeyValuePair<string, object>>()
-		//	{
-		//		new KeyValuePair<string, object>("user_key", userKey),
-		//		new KeyValuePair<string, object>("email", email),
-		//		new KeyValuePair<string, object>("password", password),
-		//		new KeyValuePair<string, object>("password_confirmation", password)
-		//	};
-		//	if (firstName != null) parameters.Add(new KeyValuePair<string, object>("first_name", firstName));
-		//	if (lastName != null) parameters.Add(new KeyValuePair<string, object>("last_name", lastName));
-		//	if (title != null) parameters.Add(new KeyValuePair<string, object>("title", title));
-		//	if (officePhone != null) parameters.Add(new KeyValuePair<string, object>("office_phone", officePhone));
-		//	if (mobilePhone != null) parameters.Add(new KeyValuePair<string, object>("mobile_phone", mobilePhone));
-		//	if (language != null) parameters.Add(new KeyValuePair<string, object>("language", language));
-		//	if (timezoneId != null) parameters.Add(new KeyValuePair<string, object>("timezoneId", timezoneId));
-		//	if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("log_type", "sent")
+			};
+			if (trackingId.HasValue) parameters.Add(new KeyValuePair<string, object>("tracking_id", trackingId.Value));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value));
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-		//	Task<IRestResponse> post = this.PostAsync(path, parameters);
-		//	return
-		//		post.ContinueWith(
-		//			p => { return JSON.Parse<bool>(p.Result.Content); },
-		//			TaskContinuationOptions.ExecuteSynchronously).Result;
-		//}
+			var items = ExecuteArray<RelayLog>(path, parameters, "sent_logs");
+			return (items ?? Enumerable.Empty<RelayLog>());
+		}
+
+		public IEnumerable<RelayOpenLog> GetRelayOpenLogs(string userKey, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			string path = "/Relay/GetLogs/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("log_type", "open")
+			};
+			if (trackingId.HasValue) parameters.Add(new KeyValuePair<string, object>("tracking_id", trackingId.Value));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value));
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			var items = ExecuteArray<RelayOpenLog>(path, parameters, "open_logs");
+			return (items ?? Enumerable.Empty<RelayOpenLog>());
+		}
+
+		public IEnumerable<RelayClickLog> GetRelayClickLogs(string userKey, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			string path = "/Relay/GetLogs/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("log_type", "clickthru")
+			};
+			if (trackingId.HasValue) parameters.Add(new KeyValuePair<string, object>("tracking_id", trackingId.Value));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value));
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			var items = ExecuteArray<RelayClickLog>(path, parameters, "click_logs");
+			return (items ?? Enumerable.Empty<RelayClickLog>());
+		}
+
+		#endregion
+
+		#region Methods related to TIMEZONES
+
+		public IEnumerable<Timezone> GetTimezones()
+		{
+			var path = "/Client/GetTimezones/";
+
+			var parameters = new List<KeyValuePair<string, object>>();
+
+			var items = ExecuteArray<Timezone>(path, parameters, "timezones");
+			return (items ?? Enumerable.Empty<Timezone>());
+		}
 
 		#endregion
 
 		#region Methods related to USERS
 
-		/// <summary>
-		/// Create a user.
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="email">Email address of the user.</param>
-		/// <param name="firstName">First name of the user.</param>
-		/// <param name="lastName">Last name of the user.</param>
-		/// <param name="title">Title of the user.</param>
-		/// <param name="officePhone">Office phone number of the user.</param>
-		/// <param name="mobilePhone">Mobile phone number of the user.</param>
-		/// <param name="language">Language of the user. For example: 'en_US' for English (US).</param>
-		/// <param name="timezoneId">ID of the timezone of the user.</param>
-		/// <param name="password">Password of the user.</param>
-		/// <param name="clientId">ID of the client.</param>
-		/// <returns>The ID of the newly created user</returns>
-		public int CreateUser(string userKey, string email, string firstName, string lastName, string title, string officePhone, string mobilePhone, string language, string timezoneId, string password, int? clientId = null)
+		public int CreateUser(string userKey, string email, string firstName, string lastName, string title, string officePhone, string mobilePhone, string language, string password, int timezoneId = 542, int? clientId = null)
 		{
 			string path = "/User/Create/";
 
@@ -270,19 +275,24 @@ namespace CakeMailRestAPI
 			if (officePhone != null) parameters.Add(new KeyValuePair<string, object>("office_phone", officePhone));
 			if (mobilePhone != null) parameters.Add(new KeyValuePair<string, object>("mobile_phone", mobilePhone));
 			if (language != null) parameters.Add(new KeyValuePair<string, object>("language", language));
-			if (timezoneId != null) parameters.Add(new KeyValuePair<string, object>("timezoneId", timezoneId));
+			if (timezoneId > 0) parameters.Add(new KeyValuePair<string, object>("timezone_id", timezoneId));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return Execute<int>(path, parameters);
+			// When a new user is created, the json payload only contains the 'id'
+			var user = Execute<User>(path, parameters);
+			return user.Id;
 		}
 
-		/// <summary>
-		/// Get the information of a user.
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="userId">ID of the user.</param>
-		/// <param name="clientId">ID of the client.</param>
-		/// <returns>The <see cref="User"/></returns>
+		public bool DeactivateUser(string userKey, int userId, int? clientId = null)
+		{
+			return UpdateUser(userKey, userId, "suspended", null, null, null, null, null, null, null, null, null, clientId);
+		}
+
+		public bool DeleteUser(string userKey, int userId, int? clientId = null)
+		{
+			return UpdateUser(userKey, userId, "deleted", null, null, null, null, null, null, null, null, null, clientId);
+		}
+
 		public User GetUser(string userKey, int userId, int? clientId = null)
 		{
 			var path = "/User/GetInfo/";
@@ -297,15 +307,6 @@ namespace CakeMailRestAPI
 			return Execute<User>(path, parameters);
 		}
 
-		/// <summary>
-		/// Get the list of users.
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="status">Filter using the user status. Possible values: 'active', 'suspended'</param>
-		/// <param name="limit">Limit the number of resulting users.</param>
-		/// <param name="offset">Offset the beginning of resulting users.</param>
-		/// <param name="clientId">ID of the client.</param>
-		/// <returns>An enumeration of <see cref="User">Users</see>.</returns>
 		public IEnumerable<User> GetUsers(string userKey, string status, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			var path = "/User/GetList/";
@@ -320,16 +321,10 @@ namespace CakeMailRestAPI
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return Execute<ArrayOfUsers>(path, parameters).Users;
+			var items = ExecuteArray<User>(path, parameters, "users");
+			return (items ?? Enumerable.Empty<User>());
 		}
 
-		/// <summary>
-		/// Get the list of users.
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="status">Filter using the user status. Possible values: 'active', 'suspended'</param>
-		/// <param name="clientId">ID of the client.</param>
-		/// <returns>The count of users.</returns>
 		public long GetUsersCount(string userKey, string status, int? clientId = null)
 		{
 			var path = "/User/GetList/";
@@ -342,26 +337,10 @@ namespace CakeMailRestAPI
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return Execute<CountOfRecords>(path, parameters).Count;
+			return ExecuteCount(path, parameters);
 		}
 
-		/// <summary>
-		/// Update a user.
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="userId">ID of the user.</param>
-		/// <param name="status">Status of the user. Possible values: 'active', 'suspended'.</param>
-		/// <param name="email">Email address of the user.</param>
-		/// <param name="firstName">First name of the user.</param>
-		/// <param name="lastName">Last name of the user.</param>
-		/// <param name="title">Title of the user.</param>
-		/// <param name="officePhone">Office phone number of the user.</param>
-		/// <param name="mobilePhone">Mobile phone number of the user.</param>
-		/// <param name="language">Language of the user. For example: 'en_US' for English (US).</param>
-		/// <param name="timezoneId">ID of the timezone of the user.</param>
-		/// <param name="password">Password of the user.</param>
-		/// <param name="clientId">ID of the client.</param>
-		public void UpdateUser(string userKey, int userId, string status, string email, string firstName, string lastName, string title, string officePhone, string mobilePhone, string language, string timezoneId, string password, int? clientId = null)
+		public bool UpdateUser(string userKey, int userId, string status, string email, string firstName, string lastName, string title, string officePhone, string mobilePhone, string language, string timezoneId, string password, int? clientId = null)
 		{
 			string path = "/User/SetInfo/";
 
@@ -386,16 +365,9 @@ namespace CakeMailRestAPI
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			Execute<bool>(path, parameters);
+			return Execute<bool>(path, parameters);
 		}
 
-		/// <summary>
-		/// Check the login of a user.
-		/// </summary>
-		/// <param name="userName">Email address of the user.</param>
-		/// <param name="password">Password of the user.</param>
-		/// <param name="clientId">ID of the client to check for the login.</param>
-		/// <returns>The <see cref="LoginInfo"/></returns>
 		public LoginInfo Login(string userName, string password, int? clientId = null)
 		{
 			var path = "/User/Login/";
@@ -436,17 +408,45 @@ namespace CakeMailRestAPI
 
 		private static IRestClient CreateClient(string host, int timeout)
 		{
-			var restClient = new RestClient("https://" + host);
-			restClient.AddHandler("application/vnd.maxmind.com-insights+json", new JsonDeserializer());
-			restClient.AddHandler("application/vnd.maxmind.com-country+json", new JsonDeserializer());
-			restClient.AddHandler("application/vnd.maxmind.com-city+json", new JsonDeserializer());
+			var restClient = new RestSharp.RestClient("https://" + host);
 			restClient.Timeout = timeout;
-			restClient.UserAgent = String.Format("CakeMail .NET Client {0}", _version);
+			restClient.UserAgent = String.Format("CakeMail .NET REST Client {0}", _version);
 
 			return restClient;
 		}
 
 		private T Execute<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters) where T : new()
+		{
+			var response = ExecuteRequest(urlPath, parameters);
+			var data = ParseCakeMailResponse(response);
+
+			var dataObject = data.ToObject<T>();
+			return dataObject;
+		}
+
+		private T[] ExecuteArray<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string arrayPropertyName) where T : new()
+		{
+			var response = ExecuteRequest(urlPath, parameters);
+			var data = ParseCakeMailResponse(response);
+
+			var serializer = new JsonSerializer();
+			serializer.Converters.Add(new CakeMailArrayConverter(arrayPropertyName));
+			var dataObject = data.ToObject<T[]>(serializer);
+			return dataObject;
+		}
+
+		private long ExecuteCount(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters)
+		{
+			var response = ExecuteRequest(urlPath, parameters);
+			var data = ParseCakeMailResponse(response);
+
+			var serializer = new JsonSerializer();
+			serializer.Converters.Add(new CakeMailCountOfRecordsConverter());
+			var dataObject = data.ToObject<long>(serializer);
+			return dataObject;
+		}
+
+		private IRestResponse ExecuteRequest(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters)
 		{
 			var request = new RestRequest(urlPath, Method.POST) { RequestFormat = DataFormat.Json };
 
@@ -461,7 +461,6 @@ namespace CakeMailRestAPI
 			}
 
 			var response = _client.Execute(request);
-
 			if (response.ResponseStatus == ResponseStatus.Error)
 			{
 				throw new HttpException(string.Format("Error received while making request: {0}", response.ErrorMessage), response.StatusCode, response.ResponseUri, response.ErrorException);
@@ -470,13 +469,14 @@ namespace CakeMailRestAPI
 			var statusCode = (int)response.StatusCode;
 			if (statusCode == 200)
 			{
-				if (response.ContentLength <= 0)
+				if (string.IsNullOrEmpty(response.Content))
 					throw new HttpException(string.Format("Received a 200 response for {0} but there was no message body.", response.ResponseUri), response.StatusCode, response.ResponseUri);
 
 				if (response.ContentType == null || !response.ContentType.Contains("json"))
 					throw new CakeMailException(string.Format("Received a 200 response for {0} but it does not appear to be JSON:\n", response.ContentType));
 
-				return ProcessResponse<T>(response);
+				// Request was successful
+				return response;
 			}
 			else if (statusCode >= 400 && statusCode < 500)
 			{
@@ -496,17 +496,17 @@ namespace CakeMailRestAPI
 			throw new HttpException(errorMessage, response.StatusCode, response.ResponseUri);
 		}
 
-		private T ProcessResponse<T>(IRestResponse response) where T : new()
+		private JToken ParseCakeMailResponse(IRestResponse response)
 		{
 			try
 			{
-				/* Typical responses from the CakeMail API look like this:
+				/* A typical response from the CakeMail API looks like this:
 				 *	{
 				 *		"status" : "success",
 				 *		"data" : { ... data for the API call ... }
 				 *	}
 				 *	
-				 *  in case of an error, it will look like this:
+				 * In case of an error, the response looks like this:
 				 *	{
 				 *		"status" : "failed",
 				 *		"data" : "An error has occured"
@@ -514,12 +514,16 @@ namespace CakeMailRestAPI
 				 */
 				var cakeResponse = JObject.Parse(response.Content);
 				var status = cakeResponse["status"].ToString();
-				var data = cakeResponse["data"].ToString();
+				var data = cakeResponse["data"];
+				var postData = cakeResponse["post"];
 
-				if (status != "success") throw new CakeMailException(data);
+				if (status != "success")
+				{
+					if (postData != null) throw new CakeMailPostException(data.ToString(), postData.ToString());
+					else throw new CakeMailException(data.ToString());
+				}
 
-				var dataObject = JSON.Parse<T>(data);
-				return dataObject;
+				return data;
 			}
 			catch (SerializationException ex)
 			{

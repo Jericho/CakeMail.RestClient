@@ -3,7 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakeMailRestAPI", "CakeMailRestAPI\CakeMailRestAPI.csproj", "{86C4AFC4-0C39-42C5-86A3-68462EA966DF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{16A48337-42CC-443A-B850-775D196B31E0}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F7E19221-12B8-4C6E-B87A-167A1E95EBA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakeMail.RestClient", "CakeMail.RestClient\CakeMail.RestClient.csproj", "{86C4AFC4-0C39-42C5-86A3-68462EA966DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +27,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{86C4AFC4-0C39-42C5-86A3-68462EA966DF} = {F7E19221-12B8-4C6E-B87A-167A1E95EBA1}
 	EndGlobalSection
 EndGlobal

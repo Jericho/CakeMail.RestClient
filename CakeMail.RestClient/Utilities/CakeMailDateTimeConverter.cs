@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CakeMailRestAPI.Utilities
+namespace CakeMail.RestClient.Utilities
 {
 	[CLSCompliant(false)]
 	public class CakeMailDateTimeConverter : DateTimeConverterBase

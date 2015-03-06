@@ -7,8 +7,8 @@
     <ProjectGuid>{86C4AFC4-0C39-42C5-86A3-68462EA966DF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CakeMailRestAPI</RootNamespace>
-    <AssemblyName>CakeMailRestAPI</AssemblyName>
+    <RootNamespace>CakeMail.RestClient</RootNamespace>
+    <AssemblyName>CakeMail.RestClient</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,10 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp">
-      <HintPath>..\packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
+      <HintPath>..\..\packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,27 +48,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="Exceptions\CakeMailPostException.cs" />
     <Compile Include="Exceptions\CakeMailException.cs" />
     <Compile Include="IClient.cs" />
-    <Compile Include="Models\ArrayOfCampaigns.cs" />
-    <Compile Include="Models\ArrayOfCountries.cs" />
-    <Compile Include="Models\ArrayOfProvinces.cs" />
-    <Compile Include="Models\ArrayOfUsers.cs" />
     <Compile Include="Models\Campaign.cs" />
-    <Compile Include="Models\CountOfRecords.cs" />
+    <Compile Include="Models\RelayLog.cs" />
+    <Compile Include="Models\RelayClickLog.cs" />
+    <Compile Include="Models\RelayOpenLog.cs" />
+    <Compile Include="Models\Timezone.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\LoginInfo.cs" />
     <Compile Include="Models\Province.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\CakeMailCountOfRecordsConverter.cs" />
+    <Compile Include="Utilities\CakeMailArrayConverter.cs" />
     <Compile Include="Utilities\CakeMailDateTimeConverter.cs" />
     <Compile Include="Exceptions\HttpException.cs" />
-    <Compile Include="Utilities\JSON.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

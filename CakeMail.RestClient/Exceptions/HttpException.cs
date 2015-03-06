@@ -2,7 +2,7 @@
 using System.IO;
 using System.Net;
 
-namespace CakeMailRestAPI.Exceptions
+namespace CakeMail.RestClient.Exceptions
 {
 	/// <summary>
 	/// This class represents an HTTP transport error. This is not an error returned

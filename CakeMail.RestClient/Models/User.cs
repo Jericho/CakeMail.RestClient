@@ -1,9 +1,13 @@
-﻿using CakeMailRestAPI.Utilities;
+﻿using CakeMail.RestClient.Utilities;
 using Newtonsoft.Json;
 using System;
 
-namespace CakeMailRestAPI.Models
+namespace CakeMail.RestClient.Models
 {
+	/// <summary>
+	/// A use who is authorized to log in the UI.
+	/// </summary>
+	/// <remarks>The Id and UserId properties are interchangable. They alway contain the same value</remarks>
 	public class User
 	{
 		#region Properties

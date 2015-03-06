@@ -1,8 +1,8 @@
-﻿using CakeMailRestAPI.Utilities;
+﻿using CakeMail.RestClient.Utilities;
 using Newtonsoft.Json;
 using System;
 
-namespace CakeMailRestAPI.Models
+namespace CakeMail.RestClient.Models
 {
 	public class LoginInfo
 	{

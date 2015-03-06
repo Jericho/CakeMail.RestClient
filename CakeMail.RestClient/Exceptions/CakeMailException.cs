@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CakeMailRestAPI.Exceptions
+namespace CakeMail.RestClient.Exceptions
 {
 	/// <summary>
 	/// This class represents a generic CakeMail error. All other exceptions thrown by
