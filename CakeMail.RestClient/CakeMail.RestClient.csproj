@@ -52,6 +52,7 @@
     <Compile Include="Exceptions\CakeMailException.cs" />
     <Compile Include="IClient.cs" />
     <Compile Include="Models\Campaign.cs" />
+    <Compile Include="Models\RelayBounceLog.cs" />
     <Compile Include="Models\RelayLog.cs" />
     <Compile Include="Models\RelayClickLog.cs" />
     <Compile Include="Models\RelayOpenLog.cs" />

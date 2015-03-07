@@ -44,6 +44,10 @@ namespace CakeMail.RestClient
 
 		IEnumerable<RelayOpenLog> GetRelayOpenLogs(string userKey, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
 
+		IEnumerable<RelayClickLog> GetRelayClickLogs(string userKey, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
+
+		IEnumerable<RelayBounceLog> GetRelayBounceLogs(string userKey, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
+
 		#endregion
 
 		#region Methods related to USERS

@@ -1,14 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Utilities
 {
-	[CLSCompliant(false)]
 	public class CakeMailDateTimeConverter : DateTimeConverterBase
 	{
 		private const string EMPTY_DATE = "0000-00-00 00:00:00";

@@ -174,7 +174,7 @@ namespace CakeMail.RestClient
 			parameters.Add(new KeyValuePair<string, object>("track_opening", trackOpens ? "true" : "false"));
 			parameters.Add(new KeyValuePair<string, object>("track_clicks_in_html", trackClicksInHtml ? "true" : "false"));
 			parameters.Add(new KeyValuePair<string, object>("track_clicks_in_text", trackClicksInText ? "true" : "false"));
-			if (trackingId != null) parameters.Add(new KeyValuePair<string, object>("tracking_id", trackingId));
+			parameters.Add(new KeyValuePair<string, object>("tracking_id", trackingId));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return Execute<bool>(path, parameters);
@@ -182,52 +182,32 @@ namespace CakeMail.RestClient
 
 		public IEnumerable<RelayLog> GetRelaySentLogs(string userKey, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
-			string path = "/Relay/GetLogs/";
-
-			var parameters = new List<KeyValuePair<string, object>>()
-			{
-				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("log_type", "sent")
-			};
-			if (trackingId.HasValue) parameters.Add(new KeyValuePair<string, object>("tracking_id", trackingId.Value));
-			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value));
-			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value));
-			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
-			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-			var items = ExecuteArray<RelayLog>(path, parameters, "sent_logs");
-			return (items ?? Enumerable.Empty<RelayLog>());
+			return GetRelayLogs<RelayLog>(userKey, "sent", "sent_logs", trackingId, start, end, limit, offset, clientId);
 		}
 
 		public IEnumerable<RelayOpenLog> GetRelayOpenLogs(string userKey, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
-			string path = "/Relay/GetLogs/";
-
-			var parameters = new List<KeyValuePair<string, object>>()
-			{
-				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("log_type", "open")
-			};
-			if (trackingId.HasValue) parameters.Add(new KeyValuePair<string, object>("tracking_id", trackingId.Value));
-			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value));
-			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value));
-			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
-			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-			var items = ExecuteArray<RelayOpenLog>(path, parameters, "open_logs");
-			return (items ?? Enumerable.Empty<RelayOpenLog>());
+			return GetRelayLogs<RelayOpenLog>(userKey, "open", "open_logs", trackingId, start, end, limit, offset, clientId);
 		}
 
 		public IEnumerable<RelayClickLog> GetRelayClickLogs(string userKey, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			return GetRelayLogs<RelayClickLog>(userKey, "clickthru", "click_logs", trackingId, start, end, limit, offset, clientId);
+		}
+
+		public IEnumerable<RelayBounceLog> GetRelayBounceLogs(string userKey, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			return GetRelayLogs<RelayBounceLog>(userKey, "bounce", "bounce_logs", trackingId, start, end, limit, offset, clientId);
+		}
+
+		private IEnumerable<T> GetRelayLogs<T>(string userKey, string logType, string arrayPropertyName, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null) where T : RelayLog, new()
 		{
 			string path = "/Relay/GetLogs/";
 
 			var parameters = new List<KeyValuePair<string, object>>()
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("log_type", "clickthru")
+				new KeyValuePair<string, object>("log_type", logType)
 			};
 			if (trackingId.HasValue) parameters.Add(new KeyValuePair<string, object>("tracking_id", trackingId.Value));
 			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value));
@@ -236,8 +216,8 @@ namespace CakeMail.RestClient
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			var items = ExecuteArray<RelayClickLog>(path, parameters, "click_logs");
-			return (items ?? Enumerable.Empty<RelayClickLog>());
+			var items = ExecuteArray<T>(path, parameters, arrayPropertyName);
+			return (items ?? Enumerable.Empty<T>());
 		}
 
 		#endregion
