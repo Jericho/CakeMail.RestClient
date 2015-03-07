@@ -3,7 +3,20 @@ using System;
 
 namespace CakeMail.RestClient.Utilities
 {
-	class CakeMailArrayConverter : JsonConverter
+	/// <summary>
+	/// The Json for an array returned by CakeMail looks like this:
+	///	{
+	///		name_of_array_property: [ { ... item 1 ...} { ... item 2... } ]
+	///	}
+	/// The goal of this JsonConverter is to ignore the "array property" and to return an array of items.
+	///
+	/// Also, an empty array looks like this:
+	///	{
+	///		[]
+	///	}
+	/// This JsonConverter returns an empty array in this scenario
+	/// </summary>
+	public class CakeMailArrayConverter : JsonConverter
 	{
 		private string _arrayPropertyName;
 
@@ -22,18 +35,6 @@ namespace CakeMail.RestClient.Utilities
 
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{
-			// The Json for an array returned by CakeMail looks like this:
-			//	{
-			//		name_of_array_property: [ { ... item 1 ...} { ... item 2... } ]
-			//	}
-			// The goal of this JsonConverter is to ignore the "array property" and to return an array of items.
-			//
-			// Also, an empty array looks like this:
-			//	{
-			//		[]
-			//	}
-			// This JsonConverter return an empty array in this scenario
-
 			// The token type will be 'StartObject' when the items returned by CakeMail are in a "array property". 
 			// In the case of an empty array, the token type will be 'StartArray' since CakeMail omits the "array property".
 			if (reader.TokenType == JsonToken.StartObject)

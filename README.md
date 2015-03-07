@@ -1,6 +1,6 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/fd008gl72j4wyi84?svg=true)](https://ci.appveyor.com/project/Jericho/cakemailrestapi)
-
 # CakeMail.RestClient
+
+[![Build status](https://ci.appveyor.com/api/projects/status/m8lsx7snrc5jdrdi?svg=true)](https://ci.appveyor.com/project/Jericho/cakemail-restclient)
 
 ## About
 
