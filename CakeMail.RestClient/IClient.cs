@@ -17,6 +17,16 @@ namespace CakeMail.RestClient
 		/// <returns>The ID of the newly created campaign</returns>
 		int CreateCampaign(string userKey, string name, int? clientId = null);
 
+		bool DeleteCampaign(string userKey, int campaignId, int? clientId = null);
+
+		Campaign GetCampaign(string userKey, int campaignId, int? clientId = null);
+
+		IEnumerable<Campaign> GetCampaigns(string userKey, string status, string name = null, int limit = 0, int offset = 0, int? clientId = null);
+
+		long GetCampaignsCount(string userKey, string status, string name = null, int? clientId = null);
+
+		bool UpdateCampaign(string userKey, int campaignId, string name, int? clientId = null);
+
 		#endregion
 
 		#region Methods related to COUNTRIES

@@ -79,6 +79,20 @@ namespace CakeMail.RestClient
 			return Execute<int>(path, parameters);
 		}
 
+		public bool DeleteCampaign(string userKey, int campaignId, int? clientId = null)
+		{
+			string path = "/Campaign/Delete/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("campaign_id", campaignId),
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return Execute<bool>(path, parameters);
+		}
+
 		public Campaign GetCampaign(string userKey, int campaignId, int? clientId = null)
 		{
 			var path = "/Campaign/GetInfo/";
@@ -125,6 +139,21 @@ namespace CakeMail.RestClient
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteCount(path, parameters);
+		}
+
+		public bool UpdateCampaign(string userKey, int campaignId, string name, int? clientId = null)
+		{
+			string path = "/Campaign/SetInfo/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("campaign_id", campaignId)
+			};
+			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return Execute<bool>(path, parameters);
 		}
 
 		#endregion
