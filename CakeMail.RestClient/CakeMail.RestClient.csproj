@@ -60,6 +60,7 @@
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\LoginInfo.cs" />
     <Compile Include="Models\Province.cs" />
+    <Compile Include="Models\ActivationInfo.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\CakeMailCountOfRecordsConverter.cs" />

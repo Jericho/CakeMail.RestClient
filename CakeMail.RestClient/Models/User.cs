@@ -5,7 +5,7 @@ using System;
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	/// A use who is authorized to log in the UI.
+	/// A user who is authorized to log in the UI.
 	/// </summary>
 	/// <remarks>The Id and UserId properties are interchangable. They alway contain the same value</remarks>
 	public class User
