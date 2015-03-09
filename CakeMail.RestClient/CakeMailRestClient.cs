@@ -212,7 +212,7 @@ namespace CakeMail.RestClient
 			if (primaryContactOfficePhone != null) parameters.Add(new KeyValuePair<string, object>("contact_office_phone", primaryContactOfficePhone));
 			if (primaryContactMobilePhone != null) parameters.Add(new KeyValuePair<string, object>("contact_mobile_phone", primaryContactMobilePhone));
 
-			return ExecuteStringRequest(path, parameters);
+			return ExecuteObjectRequest<string>(path, parameters);
 		}
 
 		public ActivationInfo ActivateClient(string confirmation)
@@ -314,6 +314,43 @@ namespace CakeMail.RestClient
 			if (monthLimit != null) parameters.Add(new KeyValuePair<string, object>("month_limit", monthLimit));
 			if (defaultMailingLimit != null) parameters.Add(new KeyValuePair<string, object>("default_mailing_limit", defaultMailingLimit));
 			if (defaultMonthLimit != null) parameters.Add(new KeyValuePair<string, object>("default_monthLimit", defaultMonthLimit));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		#endregion
+
+		#region Methods related to PERMISSIONS
+
+		public IEnumerable<string> GetUserPermissions(string userKey, int userId, int? clientId = null)
+		{
+			var path = "/Permission/GetPermissions/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("user_id", userId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			var items = ExecuteArrayRequest<string>(path, parameters, "permissions");
+			return (items ?? Enumerable.Empty<string>());
+		}
+
+		public bool SetUserPermissions(string userKey, int userId, IEnumerable<string> permissions, int? clientId = null)
+		{
+			var path = "/Permission/SetPermissions/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("user_id", userId)
+			};
+			foreach (var permission in permissions)
+			{
+				parameters.Add(new KeyValuePair<string, object>("permission", permission));
+			}
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteObjectRequest<bool>(path, parameters);
 		}
@@ -577,16 +614,7 @@ namespace CakeMail.RestClient
 			}
 		}
 
-		private string ExecuteStringRequest(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters)
-		{
-			var response = ExecuteRequest(urlPath, parameters);
-			var data = ParseCakeMailResponse(response);
-
-			var dataObject = data.ToString();
-			return dataObject;
-		}
-
-		private T ExecuteObjectRequest<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters) where T : new()
+		private T ExecuteObjectRequest<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters)
 		{
 			var response = ExecuteRequest(urlPath, parameters);
 			var data = ParseCakeMailResponse(response);
@@ -595,7 +623,7 @@ namespace CakeMail.RestClient
 			return dataObject;
 		}
 
-		private T[] ExecuteArrayRequest<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string arrayPropertyName) where T : new()
+		private T[] ExecuteArrayRequest<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string arrayPropertyName)
 		{
 			var response = ExecuteRequest(urlPath, parameters);
 			var data = ParseCakeMailResponse(response);
