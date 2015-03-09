@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CakeMail.RestClient
 {
-	public interface IClient
+	public interface ICakeMailRestClient
 	{
 		#region Methods related to CAMPAIGNS
 

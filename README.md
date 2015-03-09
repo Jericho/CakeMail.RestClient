@@ -28,8 +28,8 @@ var apiKey = "... your api key ...";
 var userName = "youremail@whatever.com";
 var password = "yourpassword";
 
-var client = new Client(apiKey);
+var restClient = new CakeMailRestClient(apiKey);
 
-var loginInfo = client.Login(userName, password);
-var user = client.GetUser(loginInfo.UserKey, loginInfo.UserId, loginInfo.ClientId);
+var loginInfo = restClient.Login(userName, password);
+var user = restClient.GetUser(loginInfo.UserKey, loginInfo.UserId, loginInfo.ClientId);
 ```

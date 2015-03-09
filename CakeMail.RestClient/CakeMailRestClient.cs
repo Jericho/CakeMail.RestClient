@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -16,11 +17,11 @@ namespace CakeMail.RestClient
 	/// <summary>
 	/// Core class for using the CakeMail Api
 	/// </summary>
-	public class Client : IClient
+	public class CakeMailRestClient : ICakeMailRestClient
 	{
 		#region Fields
 
-		private static readonly string _version = Client.GetVersion();
+		private static readonly string _version = GetVersion();
 		private readonly IRestClient _client;
 
 		#endregion
@@ -49,16 +50,20 @@ namespace CakeMail.RestClient
 		#region Constructors and Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Client"/> class.
+		/// Initializes a new instance of the <see cref="ApiClient"/> class.
 		/// </summary>
 		/// <param name="apiKey">The API Key received from CakeMail</param>
 		/// <param name="host">The host where the API is hosted. The default is api.wbsrvc.com</param>
 		/// <param name="timeout">Timeout in milliseconds for connection to web service. The default is 3000.</param>
-		public Client(string apiKey, string host = "api.wbsrvc.com", int timeout = 3000)
+		public CakeMailRestClient(string apiKey, string host = "api.wbsrvc.com", int timeout = 5000)
 		{
 			this.ApiKey = apiKey;
 
-			_client = Client.CreateClient(host, timeout);
+			_client = new RestSharp.RestClient("https://" + host)
+			{
+				Timeout = timeout,
+				UserAgent = string.Format("CakeMail .NET REST Client {0}", _version)
+			};
 		}
 
 		#endregion
@@ -107,7 +112,7 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<Campaign>(path, parameters);
 		}
 
-		public IEnumerable<Campaign> GetCampaigns(string userKey, string status, string name = null, int limit = 0, int offset = 0, int? clientId = null)
+		public IEnumerable<Campaign> GetCampaigns(string userKey, string status = null, string name = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			var path = "/Campaign/GetList/";
 
@@ -126,7 +131,7 @@ namespace CakeMail.RestClient
 			return (items ?? Enumerable.Empty<Campaign>());
 		}
 
-		public long GetCampaignsCount(string userKey, string status, string name = null, int? clientId = null)
+		public long GetCampaignsCount(string userKey, string status = null, string name = null, int? clientId = null)
 		{
 			var path = "/Campaign/GetList/";
 			var parameters = new List<KeyValuePair<string, object>>()
@@ -222,6 +227,97 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<ActivationInfo>(path, parameters);
 		}
 
+		public Client GetClient(string userKey, int clientId, DateTime? startDate = null, DateTime? endDate = null)
+		{
+			var path = "/Client/GetInfo/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("client_id", clientId)
+			};
+			if (startDate.HasValue) parameters.Add(new KeyValuePair<string, object>("start_date", startDate.Value));
+			if (endDate.HasValue) parameters.Add(new KeyValuePair<string, object>("end_date", endDate.Value));
+
+			return ExecuteObjectRequest<Client>(path, parameters);
+		}
+
+		public IEnumerable<Client> GetClients(string userKey, string status = null, string name = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			var path = "/Client/GetList/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
+			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
+			if (sortBy != null) parameters.Add(new KeyValuePair<string, object>("sort_by", sortBy));
+			if (sortDirection != null) parameters.Add(new KeyValuePair<string, object>("direction", sortDirection));
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			var items = ExecuteArrayRequest<Client>(path, parameters, "clients");
+			return (items ?? Enumerable.Empty<Client>());
+		}
+
+		public long GetClientsCount(string userKey, string status = null, string name = null, int? clientId = null)
+		{
+			var path = "/Client/GetList/";
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
+			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
+		}
+
+		public bool UpdateClient(string userKey, int clientId, string name = null, string status = null, int? parentId = null, string address1 = null, string address2 = null, string city = null, string provinceId = null, string postalCode = null, string countryId = null, string website = null, string phone = null, string fax = null, string authDomain = null, string bounceDomain = null, string dkimDomain = null, string doptinIp = null, string forwardDomain = null, string forwardIp = null, string ipPool = null, string mdDomain = null, bool? isReseller = null, string currency = null, string planType = null, string mailingLimit = null, string monthLimit = null, string defaultMailingLimit = null, string defaultMonthLimit = null)
+		{
+			string path = "/Client/SetInfo/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("client_id", clientId)
+			};
+			if (name != null) parameters.Add(new KeyValuePair<string, object>("company_name", name));
+			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
+			if (parentId.HasValue != null) parameters.Add(new KeyValuePair<string, object>("parent_id", parentId.Value));
+			if (address1 != null) parameters.Add(new KeyValuePair<string, object>("address1", address1));
+			if (address2 != null) parameters.Add(new KeyValuePair<string, object>("address2", address2));
+			if (city != null) parameters.Add(new KeyValuePair<string, object>("city", city));
+			if (provinceId != null) parameters.Add(new KeyValuePair<string, object>("province_id", provinceId));
+			if (postalCode != null) parameters.Add(new KeyValuePair<string, object>("postal_code", postalCode));
+			if (countryId != null) parameters.Add(new KeyValuePair<string, object>("country_id", countryId));
+			if (website != null) parameters.Add(new KeyValuePair<string, object>("website", website));
+			if (phone != null) parameters.Add(new KeyValuePair<string, object>("phone", phone));
+			if (fax != null) parameters.Add(new KeyValuePair<string, object>("fax", fax));
+			if (authDomain != null) parameters.Add(new KeyValuePair<string, object>("auth_domain", authDomain));
+			if (bounceDomain != null) parameters.Add(new KeyValuePair<string, object>("bounce_domain", bounceDomain));
+			if (dkimDomain != null) parameters.Add(new KeyValuePair<string, object>("dkim_domain", dkimDomain));
+			if (doptinIp != null) parameters.Add(new KeyValuePair<string, object>("doptin_ip", doptinIp));
+			if (forwardDomain != null) parameters.Add(new KeyValuePair<string, object>("forward_domain", forwardDomain));
+			if (forwardIp != null) parameters.Add(new KeyValuePair<string, object>("forward_ip", forwardIp));
+			if (ipPool != null) parameters.Add(new KeyValuePair<string, object>("ip_pool", ipPool));
+			if (mdDomain != null) parameters.Add(new KeyValuePair<string, object>("md_domain", mdDomain));
+			if (isReseller.HasValue) parameters.Add(new KeyValuePair<string, object>("reseller", isReseller.Value));
+			if (currency != null) parameters.Add(new KeyValuePair<string, object>("currency", currency));
+			if (planType != null) parameters.Add(new KeyValuePair<string, object>("plan_type", planType));
+			if (mailingLimit != null) parameters.Add(new KeyValuePair<string, object>("mailing_limit", mailingLimit));
+			if (monthLimit != null) parameters.Add(new KeyValuePair<string, object>("month_limit", monthLimit));
+			if (defaultMailingLimit != null) parameters.Add(new KeyValuePair<string, object>("default_mailing_limit", defaultMailingLimit));
+			if (defaultMonthLimit != null) parameters.Add(new KeyValuePair<string, object>("default_monthLimit", defaultMonthLimit));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
 		#endregion
 
 		#region Methods related to COUNTRIES
@@ -275,27 +371,27 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<bool>(path, parameters);
 		}
 
-		public IEnumerable<RelayLog> GetRelaySentLogs(string userKey, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
+		public IEnumerable<RelayLog> GetRelaySentLogs(string userKey, int? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			return GetRelayLogs<RelayLog>(userKey, "sent", "sent_logs", trackingId, start, end, limit, offset, clientId);
 		}
 
-		public IEnumerable<RelayOpenLog> GetRelayOpenLogs(string userKey, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
+		public IEnumerable<RelayOpenLog> GetRelayOpenLogs(string userKey, int? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			return GetRelayLogs<RelayOpenLog>(userKey, "open", "open_logs", trackingId, start, end, limit, offset, clientId);
 		}
 
-		public IEnumerable<RelayClickLog> GetRelayClickLogs(string userKey, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
+		public IEnumerable<RelayClickLog> GetRelayClickLogs(string userKey, int? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			return GetRelayLogs<RelayClickLog>(userKey, "clickthru", "click_logs", trackingId, start, end, limit, offset, clientId);
 		}
 
-		public IEnumerable<RelayBounceLog> GetRelayBounceLogs(string userKey, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
+		public IEnumerable<RelayBounceLog> GetRelayBounceLogs(string userKey, int? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			return GetRelayLogs<RelayBounceLog>(userKey, "bounce", "bounce_logs", trackingId, start, end, limit, offset, clientId);
 		}
 
-		private IEnumerable<T> GetRelayLogs<T>(string userKey, string logType, string arrayPropertyName, int? trackingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null) where T : RelayLog, new()
+		private IEnumerable<T> GetRelayLogs<T>(string userKey, string logType, string arrayPropertyName, int? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null) where T : RelayLog, new()
 		{
 			string path = "/Relay/GetLogs/";
 
@@ -382,16 +478,16 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<User>(path, parameters);
 		}
 
-		public IEnumerable<User> GetUsers(string userKey, string status, int limit = 0, int offset = 0, int? clientId = null)
+		public IEnumerable<User> GetUsers(string userKey, string status = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			var path = "/User/GetList/";
 
 			var parameters = new List<KeyValuePair<string, object>>()
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("status", status),
 				new KeyValuePair<string, object>("count", "false")
 			};
+			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
 			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
@@ -400,16 +496,16 @@ namespace CakeMail.RestClient
 			return (items ?? Enumerable.Empty<User>());
 		}
 
-		public long GetUsersCount(string userKey, string status, int? clientId = null)
+		public long GetUsersCount(string userKey, string status = null, int? clientId = null)
 		{
 			var path = "/User/GetList/";
 
 			var parameters = new List<KeyValuePair<string, object>>()
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("status", status),
 				new KeyValuePair<string, object>("count", "true")
 			};
+			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteCountRequest(path, parameters);
@@ -470,7 +566,7 @@ namespace CakeMail.RestClient
 				//var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
 				// Here's an alternative suggected by Phil Haack: http://haacked.com/archive/2010/11/04/assembly-location-and-medium-trust.aspx
-				var assemblyVersion = new AssemblyName(typeof(Client).Assembly.FullName).Version;
+				var assemblyVersion = new AssemblyName(typeof(CakeMailRestClient).Assembly.FullName).Version;
 				var version = string.Format("{0}.{1}.{2}.{3}", assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.Build, assemblyVersion.Revision);
 
 				return version;
@@ -479,15 +575,6 @@ namespace CakeMail.RestClient
 			{
 				return "0.0.0.0";
 			}
-		}
-
-		private static IRestClient CreateClient(string host, int timeout)
-		{
-			var restClient = new RestSharp.RestClient("https://" + host);
-			restClient.Timeout = timeout;
-			restClient.UserAgent = String.Format("CakeMail .NET REST Client {0}", _version);
-
-			return restClient;
 		}
 
 		private string ExecuteStringRequest(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters)
@@ -558,6 +645,16 @@ namespace CakeMail.RestClient
 
 				if (response.ContentType == null || !response.ContentType.Contains("json"))
 					throw new CakeMailException(string.Format("Received a 200 response for {0} but it does not appear to be JSON:\n", response.ContentType));
+
+				#region DEBUGGING
+#if DEBUG
+				var debugRequestMsg = string.Format("Request sent to CakeMail: {0}{1}", _client.BaseUrl, urlPath);
+				var debugHeadersMsg = string.Format("Request headers: {0}", string.Join("&", request.Parameters.Where(p => p.Type == ParameterType.HttpHeader).Select(p => string.Concat(p.Name, "=", p.Value))));
+				var debugParametersMsg = string.Format("Request parameters: {0}", string.Join("&", request.Parameters.Where(p => p.Type != ParameterType.HttpHeader).Select(p => string.Concat(p.Name, "=", p.Value))));
+				var debugResponseMsg = string.Format("Response received from CakeMail: {0}", response.Content);
+				Debug.WriteLine("============================\r\n{0}\r\n{1}\r\n{2}\r\n{3}\r\n============================", debugRequestMsg, debugHeadersMsg, debugParametersMsg, debugResponseMsg);
+#endif
+				#endregion
 
 				// Request was successful
 				return response;
