@@ -292,7 +292,7 @@ namespace CakeMail.RestClient
 			};
 			if (name != null) parameters.Add(new KeyValuePair<string, object>("company_name", name));
 			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
-			if (parentId.HasValue != null) parameters.Add(new KeyValuePair<string, object>("parent_id", parentId.Value));
+			if (parentId.HasValue) parameters.Add(new KeyValuePair<string, object>("parent_id", parentId.Value));
 			if (address1 != null) parameters.Add(new KeyValuePair<string, object>("address1", address1));
 			if (address2 != null) parameters.Add(new KeyValuePair<string, object>("address2", address2));
 			if (city != null) parameters.Add(new KeyValuePair<string, object>("city", city));
@@ -426,7 +426,7 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId)
 			};
-			//if (subListId.HasValue) parameters.Add(new KeyValuePair<string, object>("sublist_id", subListId.Value));
+			if (subListId.HasValue) parameters.Add(new KeyValuePair<string, object>("sublist_id", subListId.Value));
 			parameters.Add(new KeyValuePair<string, object>("no_details", includeDetails ? "false" : "true"));	// CakeMail expects 'false' if you want to include details
 			parameters.Add(new KeyValuePair<string, object>("with_engagement", calculateEngagement ? "true" : "false"));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
