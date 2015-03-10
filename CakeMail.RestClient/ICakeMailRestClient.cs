@@ -21,7 +21,7 @@ namespace CakeMail.RestClient
 
 		Campaign GetCampaign(string userKey, int campaignId, int? clientId = null);
 
-		IEnumerable<Campaign> GetCampaigns(string userKey, string status, string name = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<Campaign> GetCampaigns(string userKey, string status, string name = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null);
 
 		long GetCampaignsCount(string userKey, string status, string name = null, int? clientId = null);
 

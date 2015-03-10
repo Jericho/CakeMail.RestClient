@@ -7,6 +7,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -112,7 +113,7 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<Campaign>(path, parameters);
 		}
 
-		public IEnumerable<Campaign> GetCampaigns(string userKey, string status = null, string name = null, int limit = 0, int offset = 0, int? clientId = null)
+		public IEnumerable<Campaign> GetCampaigns(string userKey, string status = null, string name = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			var path = "/Campaign/GetList/";
 
@@ -123,6 +124,8 @@ namespace CakeMail.RestClient
 			};
 			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
 			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
+			if (sortBy != null) parameters.Add(new KeyValuePair<string, object>("sort_by", sortBy));
+			if (sortDirection != null) parameters.Add(new KeyValuePair<string, object>("direction", sortDirection));
 			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
@@ -378,6 +381,232 @@ namespace CakeMail.RestClient
 
 			var items = ExecuteArrayRequest<Province>(path, parameters, "provinces");
 			return (items ?? Enumerable.Empty<Province>());
+		}
+
+		#endregion
+
+		#region Methods related to LISTS
+
+		public int CreateList(string userKey, string name, string defaultSenderName, string defaultSenderEmailAddress, int? clientId = null)
+		{
+			string path = "/List/Create/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("name", name)
+			};
+			if (defaultSenderName != null) parameters.Add(new KeyValuePair<string, object>("sender_name", defaultSenderName));
+			if (defaultSenderEmailAddress != null) parameters.Add(new KeyValuePair<string, object>("sender_email", defaultSenderEmailAddress));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<int>(path, parameters);
+		}
+
+		public bool DeleteList(string userKey, int listId, int? clientId = null)
+		{
+			string path = "/List/Delete/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public List GetList(string userKey, int listId, int? subListId = null, bool includeDetails = true, bool calculateEngagement = false, int? clientId = null)
+		{
+			var path = "/List/GetInfo/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId)
+			};
+			//if (subListId.HasValue) parameters.Add(new KeyValuePair<string, object>("sublist_id", subListId.Value));
+			parameters.Add(new KeyValuePair<string, object>("no_details", includeDetails ? "false" : "true"));	// CakeMail expects 'false' if you want to include details
+			parameters.Add(new KeyValuePair<string, object>("with_engagement", calculateEngagement ? "true" : "false"));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<List>(path, parameters);
+		}
+
+		public IEnumerable<List> GetLists(string userKey, string name = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			var path = "/List/GetList/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
+			if (sortBy != null) parameters.Add(new KeyValuePair<string, object>("sort_by", sortBy));
+			if (sortDirection != null) parameters.Add(new KeyValuePair<string, object>("direction", sortDirection));
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			var items = ExecuteArrayRequest<List>(path, parameters, "lists");
+			return (items ?? Enumerable.Empty<List>());
+		}
+
+		public long GetListsCount(string userKey, string name = null, int? clientId = null)
+		{
+			var path = "/List/GetList/";
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
+		}
+
+		public bool UpdateList(string userKey, int listId, int? subListId = null, string name = null, string language = null, string policy = null, string status = null, string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, string query = null, int? clientId = null)
+		{
+			string path = "/List/SetInfo/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId)
+			};
+			if (subListId.HasValue) parameters.Add(new KeyValuePair<string, object>("sublist_id", subListId));
+			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
+			if (language != null) parameters.Add(new KeyValuePair<string, object>("language", language));
+			if (policy != null) parameters.Add(new KeyValuePair<string, object>("policy", policy));
+			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
+			if (senderName != null) parameters.Add(new KeyValuePair<string, object>("sender_name", senderName));
+			if (senderEmail != null) parameters.Add(new KeyValuePair<string, object>("sender_email", senderEmail));
+			if (goto_oi != null) parameters.Add(new KeyValuePair<string, object>("goto_oi", goto_oi));
+			if (goto_di != null) parameters.Add(new KeyValuePair<string, object>("goto_di", goto_di));
+			if (goto_oo != null) parameters.Add(new KeyValuePair<string, object>("goto_oo", goto_oo));
+			if (webhook != null) parameters.Add(new KeyValuePair<string, object>("webhook", webhook));
+			if (query != null) parameters.Add(new KeyValuePair<string, object>("query", query));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public bool AddListField(string userKey, int listId, string fieldName, string fieldType, int? clientId = null)
+		{
+			string path = "/List/EditStructure/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("action", "add"),
+				new KeyValuePair<string, object>("field", fieldName),
+				new KeyValuePair<string, object>("type", fieldType)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public bool DeleteListField(string userKey, int listId, string fieldName, int? clientId = null)
+		{
+			string path = "/List/EditStructure/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("action", "delete"),
+				new KeyValuePair<string, object>("field", fieldName)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public IEnumerable<ListField> GetListFields(string userKey, int listId, int? clientId = null)
+		{
+			var path = "/List/GetFields/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			var fieldsStructure = ExecuteObjectRequest<ExpandoObject>(path, parameters);
+			if (fieldsStructure == null) return Enumerable.Empty<ListField>();
+
+			var fields = fieldsStructure.Select(x => new ListField() { Name = x.Key, Type = x.Value.ToString() });
+			return fields;
+		}
+
+		public int CreateSublist(string userKey, int listId, string name, string query = null, int? clientId = null)
+		{
+			string path = "/List/CreateSublist/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("sublist_name", name),
+				new KeyValuePair<string, object>("query", query)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<int>(path, parameters);
+		}
+
+		public bool DeleteSublist(string userKey, int sublistId, int? clientId = null)
+		{
+			string path = "/List/DeleteSublist/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("sublist_id", sublistId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public IEnumerable<List> GetSublists(string userKey, int listId, int limit = 0, int offset = 0, bool includeDetails = true, int? clientId = null)
+		{
+			var path = "/List/GetList/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			parameters.Add(new KeyValuePair<string, object>("no_details", includeDetails ? "false" : "true"));	// CakeMail expects 'false' if you want to include details
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			var items = ExecuteArrayRequest<List>(path, parameters, "lists");
+			return (items ?? Enumerable.Empty<List>());
+		}
+
+		public long GetSublistsCount(string userKey, int listId, int? clientId = null)
+		{
+			var path = "/List/GetList/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
 		}
 
 		#endregion
