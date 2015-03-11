@@ -16,7 +16,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakeMail.RestClient", "Cake
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9D4FE070-9A1E-4746-BD77-5D81D7FF21FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakeMail.RestClient.UnitTests", "CakeMail.RestClient\CakeMail.RestClient.UnitTests\CakeMail.RestClient.UnitTests.csproj", "{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakeMail.RestClient.UnitTests", "CakeMail.RestClient.UnitTests\CakeMail.RestClient.UnitTests.csproj", "{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
