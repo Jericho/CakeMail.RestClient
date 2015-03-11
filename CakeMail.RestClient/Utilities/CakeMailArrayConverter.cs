@@ -46,12 +46,8 @@ namespace CakeMail.RestClient.Utilities
 				if (reader.TokenType != JsonToken.PropertyName) throw new JsonSerializationException(string.Format("Expected a property containing an array of items. Instead found a {0}", reader.TokenType));
 				if (!reader.Value.Equals(_arrayPropertyName)) throw new JsonSerializationException(string.Format("Expected a property called {0}. Instead found {1}", _arrayPropertyName, reader.Value));
 
-				// Read the next token, presumably the numerical value
+				// Read the next token, presumably the array of items
 				reader.Read();
-
-				// Parse the numerical value
-				var itemSerializer = new JsonSerializer();
-				return itemSerializer.Deserialize(reader, objectType);
 			}
 
 			// Make sure the property contains an array of items
