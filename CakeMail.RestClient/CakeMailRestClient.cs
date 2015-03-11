@@ -1,7 +1,5 @@
 ﻿using CakeMail.RestClient.Exceptions;
 using CakeMail.RestClient.Models;
-using CakeMail.RestClient.Utilities;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
@@ -49,6 +47,12 @@ namespace CakeMail.RestClient
 		#endregion
 
 		#region Constructors and Destructors
+
+		public CakeMailRestClient(string apiKey, IRestClient restClient)
+		{
+			this.ApiKey = apiKey;
+			_client = restClient;
+		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ApiClient"/> class.
@@ -130,8 +134,7 @@ namespace CakeMail.RestClient
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			var items = ExecuteArrayRequest<Campaign>(path, parameters, "campaigns");
-			return (items ?? Enumerable.Empty<Campaign>());
+			return ExecuteArrayRequest<Campaign>(path, parameters, "campaigns");
 		}
 
 		public long GetCampaignsCount(string userKey, string status = null, string name = null, int? clientId = null)
@@ -255,15 +258,14 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("count", "false")
 			};
 			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
-			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
+			if (name != null) parameters.Add(new KeyValuePair<string, object>("company_name", name));
 			if (sortBy != null) parameters.Add(new KeyValuePair<string, object>("sort_by", sortBy));
 			if (sortDirection != null) parameters.Add(new KeyValuePair<string, object>("direction", sortDirection));
 			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			var items = ExecuteArrayRequest<Client>(path, parameters, "clients");
-			return (items ?? Enumerable.Empty<Client>());
+			return ExecuteArrayRequest<Client>(path, parameters, "clients");
 		}
 
 		public long GetClientsCount(string userKey, string status = null, string name = null, int? clientId = null)
@@ -336,8 +338,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			var items = ExecuteArrayRequest<string>(path, parameters, "permissions");
-			return (items ?? Enumerable.Empty<string>());
+			return ExecuteArrayRequest<string>(path, parameters, "permissions");
 		}
 
 		public bool SetUserPermissions(string userKey, int userId, IEnumerable<string> permissions, int? clientId = null)
@@ -368,8 +369,7 @@ namespace CakeMail.RestClient
 
 			var parameters = new List<KeyValuePair<string, object>>();
 
-			var items = ExecuteArrayRequest<Country>(path, parameters, "countries");
-			return (items ?? Enumerable.Empty<Country>());
+			return ExecuteArrayRequest<Country>(path, parameters, "countries");
 		}
 
 		public IEnumerable<Province> GetProvinces(string countryId)
@@ -379,8 +379,7 @@ namespace CakeMail.RestClient
 			var parameters = new List<KeyValuePair<string, object>>();
 			parameters.Add(new KeyValuePair<string, object>("country_id", countryId));
 
-			var items = ExecuteArrayRequest<Province>(path, parameters, "provinces");
-			return (items ?? Enumerable.Empty<Province>());
+			return ExecuteArrayRequest<Province>(path, parameters, "provinces");
 		}
 
 		#endregion
@@ -450,8 +449,7 @@ namespace CakeMail.RestClient
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			var items = ExecuteArrayRequest<List>(path, parameters, "lists");
-			return (items ?? Enumerable.Empty<List>());
+			return ExecuteArrayRequest<List>(path, parameters, "lists");
 		}
 
 		public long GetListsCount(string userKey, string name = null, int? clientId = null)
@@ -494,6 +492,15 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<bool>(path, parameters);
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="userKey"></param>
+		/// <param name="listId"></param>
+		/// <param name="fieldName"></param>
+		/// <param name="fieldType">Possible values: 'text', 'integer', 'datetime' or 'mediumtext'</param>
+		/// <param name="clientId"></param>
+		/// <returns></returns>
 		public bool AddListField(string userKey, int listId, string fieldName, string fieldType, int? clientId = null)
 		{
 			string path = "/List/EditStructure/";
@@ -590,8 +597,7 @@ namespace CakeMail.RestClient
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			var items = ExecuteArrayRequest<List>(path, parameters, "lists");
-			return (items ?? Enumerable.Empty<List>());
+			return ExecuteArrayRequest<List>(path, parameters, "lists");
 		}
 
 		public long GetSublistsCount(string userKey, int listId, int? clientId = null)
@@ -607,6 +613,152 @@ namespace CakeMail.RestClient
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteCountRequest(path, parameters);
+		}
+
+		public bool AddTestEmail(string userKey, int listId, string email, int? clientId = null)
+		{
+			string path = "/List/AddTestEmail/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("email", email)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public bool DeleteTestEmail(string userKey, int listId, string email, int? clientId = null)
+		{
+			string path = "/List/DeleteTestEmail/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("email", email)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public IEnumerable<string> GetTestEmails(string userKey, int listId, int? clientId = null)
+		{
+			var path = "/List/GetTestEmails/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<string>(path, parameters, "testemails");
+		}
+
+		public int Subscribe(string userKey, int listId, string email, bool autoResponders = true, bool triggers = true, IEnumerable<KeyValuePair<string, string>> data = null, int? clientId = null)
+		{
+			string path = "/List/SubscribeEmail/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("autoresponders", autoResponders ? "true" : "false"),
+				new KeyValuePair<string, object>("triggers", triggers ? "true" : "false"),
+				new KeyValuePair<string, object>("email", email)
+			};
+			if (data != null)
+			{
+				/// TODO: Additional data for the member. Type: array of fields and values - i.e. array('firstname' => 'John')
+			}
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<int>(path, parameters);
+		}
+
+		public bool Import(string userKey, int listId, string email, bool autoResponders = true, bool triggers = true, IEnumerable<IEnumerable<KeyValuePair<string, string>>> data = null, int? clientId = null)
+		{
+			string path = "/List/Import/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("import_to", "active"),
+				new KeyValuePair<string, object>("autoresponders", autoResponders ? "true" : "false"),
+				new KeyValuePair<string, object>("triggers", triggers ? "true" : "false")
+			};
+			if (data != null)
+			{
+				/// TODO: Members. Type: array of array of field and values - i.e. array(array('email' => 'test@test.com'))
+			}
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public bool Unsubscribe(string userKey, int listId, string email, int? clientId = null)
+		{
+			string path = "/List/UnsubscribeEmail/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("email", email)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public bool Unsubscribe(string userKey, int listId, int listMemberId, int? clientId = null)
+		{
+			string path = "/List/UnsubscribeEmail/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("record_id", listMemberId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public bool DeleteListMember(string userKey, int listId, int listMemberId, int? clientId = null)
+		{
+			string path = "/List/DeleteRecord/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("record_id", listMemberId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public IEnumerable<string> GetListMember(string userKey, int listId, int listMemberId, int? clientId = null)
+		{
+			var path = "/List/GetRecord/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("record_id", listMemberId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<string>(path, parameters, "testemails");
 		}
 
 		#endregion
@@ -673,8 +825,7 @@ namespace CakeMail.RestClient
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			var items = ExecuteArrayRequest<T>(path, parameters, arrayPropertyName);
-			return (items ?? Enumerable.Empty<T>());
+			return ExecuteArrayRequest<T>(path, parameters, arrayPropertyName);
 		}
 
 		#endregion
@@ -687,8 +838,7 @@ namespace CakeMail.RestClient
 
 			var parameters = new List<KeyValuePair<string, object>>();
 
-			var items = ExecuteArrayRequest<Timezone>(path, parameters, "timezones");
-			return (items ?? Enumerable.Empty<Timezone>());
+			return ExecuteArrayRequest<Timezone>(path, parameters, "timezones");
 		}
 
 		#endregion
@@ -758,8 +908,7 @@ namespace CakeMail.RestClient
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			var items = ExecuteArrayRequest<User>(path, parameters, "users");
-			return (items ?? Enumerable.Empty<User>());
+			return ExecuteArrayRequest<User>(path, parameters, "users");
 		}
 
 		public long GetUsersCount(string userKey, string status = null, int? clientId = null)
@@ -852,15 +1001,27 @@ namespace CakeMail.RestClient
 			return dataObject;
 		}
 
-		private T[] ExecuteArrayRequest<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string arrayPropertyName)
+		private IEnumerable<T> ExecuteArrayRequest<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string arrayPropertyName)
 		{
 			var response = ExecuteRequest(urlPath, parameters);
 			var data = ParseCakeMailResponse(response);
 
-			var serializer = new JsonSerializer();
-			serializer.Converters.Add(new CakeMailArrayConverter(arrayPropertyName));
-			var dataObject = data.ToObject<T[]>(serializer);
-			return dataObject;
+			if (data is JArray)
+			{
+				return (data as JArray).ToObject<T[]>();
+			}
+			else if (data is JObject)
+			{
+				var property = (data as JObject).Properties().SingleOrDefault(p => p.Name.Equals(arrayPropertyName));
+				if (property == null) return Enumerable.Empty<T>();
+				else if (property.Value is JArray) return (property.Value as JArray).ToObject<T[]>();
+				else if (property.Value is JObject) return new T[] { (property.Value as JObject).ToObject<T>() };
+				else throw new CakeMailException(string.Format("Json contains CakeMail array {0} but the data is not valid", arrayPropertyName));
+			}
+			else
+			{
+				throw new CakeMailException(string.Format("Json does not contain CakeMail array {0}", arrayPropertyName));
+			}
 		}
 
 		private long ExecuteCountRequest(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters)
@@ -868,10 +1029,17 @@ namespace CakeMail.RestClient
 			var response = ExecuteRequest(urlPath, parameters);
 			var data = ParseCakeMailResponse(response);
 
-			var serializer = new JsonSerializer();
-			serializer.Converters.Add(new CakeMailCountOfRecordsConverter());
-			var dataObject = data.ToObject<long>(serializer);
-			return dataObject;
+			if (data is JObject)
+			{
+				var property = (data as JObject).Properties().SingleOrDefault(p => p.Name.Equals("count"));
+				if (property == null) throw new CakeMailException("Json does not contain 'count' property");
+				else if (property.Value is JValue) return (property.Value as JValue).ToObject<long>();
+				else throw new CakeMailException("Json contains 'count' propertyt but the data is not valid");
+			}
+			else
+			{
+				throw new CakeMailException("Json does not contain 'count' property");
+			}
 		}
 
 		private IRestResponse ExecuteRequest(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters)

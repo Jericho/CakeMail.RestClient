@@ -14,6 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F7E19221-12B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakeMail.RestClient", "CakeMail.RestClient\CakeMail.RestClient.csproj", "{86C4AFC4-0C39-42C5-86A3-68462EA966DF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9D4FE070-9A1E-4746-BD77-5D81D7FF21FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakeMail.RestClient.UnitTests", "CakeMail.RestClient\CakeMail.RestClient.UnitTests\CakeMail.RestClient.UnitTests.csproj", "{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,11 +28,16 @@ Global
 		{86C4AFC4-0C39-42C5-86A3-68462EA966DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86C4AFC4-0C39-42C5-86A3-68462EA966DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86C4AFC4-0C39-42C5-86A3-68462EA966DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{86C4AFC4-0C39-42C5-86A3-68462EA966DF} = {F7E19221-12B8-4C6E-B87A-167A1E95EBA1}
+		{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF} = {9D4FE070-9A1E-4746-BD77-5D81D7FF21FF}
 	EndGlobalSection
 EndGlobal
