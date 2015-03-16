@@ -1,14 +1,56 @@
-version: 1.0.{build}
-configuration: Release
-platform: Any CPU
+# Notes:
+#   - Minimal appveyor.yml file is an empty file. All sections are optional.
+#   - Indent each level of configuration with 2 spaces. Do not use tabs!
+#   - All section names are case-sensitive.
+#   - Section names should be unique on each level.
+
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+# version format
+version: 1.0.{build}-{branch}
+
+# Do not build on tags (GitHub only)
+skip_tags: true
+
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+ 
+# Operating system (build VM template)
+os: Windows Server 2012
+
+# enable patching of AssemblyInfo.* files
 assembly_info:
   patch: true
-  file: '**\AssemblyInfo.*'
-  assembly_version: '{version}'
-  assembly_file_version: '{version}'
-  assembly_informational_version: '{version}'
+  file: '**\\AssemblyInfo.*'
+  assembly_version: "1.0.{build}"
+  assembly_file_version: "1.0.{build}"
+  assembly_informational_version: "1.0.{build}-alpha01"
+
+# Automatically register private account and/or project AppVeyor NuGet feeds.
+nuget:
+  account_feed: true
+  project_feed: true
+  disable_publish_on_pr: true     # disable publishing of .nupkg artifacts to
+                                  # account/project feeds for pull request builds
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+ 
+# build platform, i.e. x86, x64, Any CPU.
+platform: Any CPU
+  
+# build Configuration, i.e. Debug, Release, etc.
+configuration: Release
+
+build:
+  parallel: true                  # enable MSBuild parallel builds
+  publish_nuget: true             # package projects with .nuspec files and push to artifacts
+  verbosity: minimal              # MSBuild verbosity level (quiet|minimal|normal|detailed)
+
+# scripts to run before build
 before_build:
 - nuget restore
-build:
-  publish_nuget: true
-  verbosity: minimal
