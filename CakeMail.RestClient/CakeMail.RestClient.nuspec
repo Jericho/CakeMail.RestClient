@@ -14,9 +14,9 @@
     <releaseNotes>Initial release</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>CakeMail API REST</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="6.0.8" />
+      <dependency id="RestSharp" version="105.0.1" />
+    </dependencies>
   </metadata>
-  <dependencies>
-    <dependency id="Newtonsoft.Json" version="6.0.8" />
-    <dependency id="RestSharp" version="105.0.1" />
-  </dependencies>
 </package>
