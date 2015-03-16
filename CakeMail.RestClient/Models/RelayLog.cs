@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using CakeMail.RestClient.Utilities;
+using Newtonsoft.Json;
+using System;
 
 namespace CakeMail.RestClient.Models
 {
@@ -16,7 +18,8 @@ namespace CakeMail.RestClient.Models
 		public string RelayLogId { get; set; }
 
 		[JsonProperty("time")]
-		public string Date { get; set; }
+		[JsonConverter(typeof(CakeMailDateTimeConverter))]
+		public DateTime Date { get; set; }
 
 		[JsonProperty("tracking_id")]
 		public string TrackingId { get; set; }

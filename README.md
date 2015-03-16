@@ -15,7 +15,7 @@ You can contact me on Twitter [@NorthernNomad](https://twitter.com/northernnomad
 
 ## Nuget
 
-CakeMailRestAPI will eventually be available as a Nuget package.
+CakeMailRestAPI is available as a [Nuget package](https://www.nuget.org/packages/CakeMail.RestClient/).
 
 ## Release Notes
 

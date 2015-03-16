@@ -21,14 +21,6 @@ skip_tags: true
 # Operating system (build VM template)
 os: Windows Server 2012
 
-# enable patching of AssemblyInfo.* files
-assembly_info:
-  patch: true
-  file: '**\AssemblyInfo.*'
-  assembly_version: "1.0.{build}"
-  assembly_file_version: "1.0.{build}"
-  assembly_informational_version: "1.0.{build}-alpha01"
-
 # Automatically register private account and/or project AppVeyor NuGet feeds.
 nuget:
   account_feed: true

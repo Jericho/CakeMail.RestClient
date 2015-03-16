@@ -6,15 +6,12 @@ namespace CakeMail.RestClient.Utilities
 {
 	public class CakeMailDateTimeConverter : DateTimeConverterBase
 	{
-		private const string EMPTY_DATE = "0000-00-00 00:00:00";
-
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
 			if (value is DateTime)
 			{
 				var val = (DateTime)value;
-				if (val == DateTime.MinValue) writer.WriteValue(EMPTY_DATE);
-				else writer.WriteValue(val.ToString("yyyy-MM-dd HH:mm:ss"));
+				writer.WriteValue(val.ToCakeMailString());
 			}
 			else
 			{
@@ -28,7 +25,7 @@ namespace CakeMail.RestClient.Utilities
 				throw new Exception("Wrong Token Type");
 
 			var dateAsString = (string)reader.Value;
-			var date = (dateAsString == EMPTY_DATE ? DateTime.MinValue : DateTime.Parse(dateAsString));
+			var date = (dateAsString == Constants.EMPTY_CAKEMAIL_DATE ? DateTime.MinValue : DateTime.Parse(dateAsString));
 			return date;
 		}
 	}
