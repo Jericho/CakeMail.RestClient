@@ -837,7 +837,19 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<bool>(path, parameters);
 		}
 
-		public IEnumerable<ListLog> GetListLogs(string userKey, int listId, string logType, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="userKey"></param>
+		/// <param name="listId"></param>
+		/// <param name="logType">Possible values: "subscribe", "opened", "clickthru"</param>
+		/// <param name="start"></param>
+		/// <param name="end"></param>
+		/// <param name="limit"></param>
+		/// <param name="offset"></param>
+		/// <param name="clientId"></param>
+		/// <returns></returns>
+		public IEnumerable<ListLog> GetListLogs(string userKey, int listId, string logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			string path = "/List/GetLog/";
 
@@ -845,10 +857,10 @@ namespace CakeMail.RestClient
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
-				new KeyValuePair<string, object>("action", logType),
-				new KeyValuePair<string, object>("totals", "false"),
-				new KeyValuePair<string, object>("uniques", "false")
+				new KeyValuePair<string, object>("totals", totals ? "true" : "false"),
+				new KeyValuePair<string, object>("uniques", uniques ? "true" : "false")
 			};
+			if (logType != null) parameters.Add(new KeyValuePair<string, object>("action", logType));
 			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
 			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
 			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));

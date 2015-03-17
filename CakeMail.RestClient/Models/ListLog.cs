@@ -16,7 +16,7 @@ namespace CakeMail.RestClient.Models
 		public int LogId { get; set; }
 
 		[JsonProperty("record_id")]
-		public int RecordId { get; set; }
+		public int ListMemberId { get; set; }
 
 		[JsonProperty("email")]
 		public string Email { get; set; }
