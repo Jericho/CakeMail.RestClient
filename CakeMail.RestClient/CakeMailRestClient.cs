@@ -1340,6 +1340,198 @@ namespace CakeMail.RestClient
 
 		#endregion
 
+		#region Methods related to SUPPRESSION LISTS
+
+		public IEnumerable<SuppressEmailResult> AddEmailAddressesToSuppressionList(string userKey, IEnumerable<string> emailAddresses, int? clientId = null)
+		{
+			string path = "/SuppressionList/ImportEmails/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey)
+			};
+			if (emailAddresses != null)
+			{
+				var recordCount = 0;
+				foreach (var emailAddress in emailAddresses)
+				{
+					parameters.Add(new KeyValuePair<string, object>(string.Format("email[{0}]", recordCount), emailAddress));
+					recordCount++;
+				}
+			}
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<SuppressEmailResult>(path, parameters, null);
+		}
+
+		public IEnumerable<SuppressDomainResult> AddDomainsToSuppressionList(string userKey, IEnumerable<string> domains, int? clientId = null)
+		{
+			string path = "/SuppressionList/ImportDomains/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey)
+			};
+			if (domains != null)
+			{
+				var recordCount = 0;
+				foreach (var domain in domains)
+				{
+					parameters.Add(new KeyValuePair<string, object>(string.Format("domain[{0}]", recordCount), domain));
+					recordCount++;
+				}
+			}
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<SuppressDomainResult>(path, parameters, null);
+		}
+
+		public IEnumerable<SuppressLocalPartResult> AddLocalPartsToSuppressionList(string userKey, IEnumerable<string> localParts, int? clientId = null)
+		{
+			string path = "/SuppressionList/ImportLocalparts/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey)
+			};
+			if (localParts != null)
+			{
+				var recordCount = 0;
+				foreach (var localPart in localParts)
+				{
+					parameters.Add(new KeyValuePair<string, object>(string.Format("localpart[{0}]", recordCount), localPart));
+					recordCount++;
+				}
+			}
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<SuppressLocalPartResult>(path, parameters, null);
+		}
+
+		public IEnumerable<SuppressEmailResult> RemoveEmailAddressesFromSuppressionList(string userKey, IEnumerable<string> emailAddresses, int? clientId = null)
+		{
+			string path = "/SuppressionList/DeleteEmails/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey)
+			};
+			if (emailAddresses != null)
+			{
+				var recordCount = 0;
+				foreach (var emailAddress in emailAddresses)
+				{
+					parameters.Add(new KeyValuePair<string, object>(string.Format("email[{0}]", recordCount), emailAddress));
+					recordCount++;
+				}
+			}
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<SuppressEmailResult>(path, parameters, null);
+		}
+
+		public IEnumerable<SuppressDomainResult> RemoveDomainsFromSuppressionList(string userKey, IEnumerable<string> domains, int? clientId = null)
+		{
+			string path = "/SuppressionList/DeleteDomains/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey)
+			};
+			if (domains != null)
+			{
+				var recordCount = 0;
+				foreach (var domain in domains)
+				{
+					parameters.Add(new KeyValuePair<string, object>(string.Format("domain[{0}]", recordCount), domain));
+					recordCount++;
+				}
+			}
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<SuppressDomainResult>(path, parameters, null);
+		}
+
+		public IEnumerable<SuppressLocalPartResult> RemoveLocalPartsFromSuppressionList(string userKey, IEnumerable<string> localParts, int? clientId = null)
+		{
+			string path = "/SuppressionList/DeleteLocalparts/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey)
+			};
+			if (localParts != null)
+			{
+				var recordCount = 0;
+				foreach (var localPart in localParts)
+				{
+					parameters.Add(new KeyValuePair<string, object>(string.Format("localpart[{0}]", recordCount), localPart));
+					recordCount++;
+				}
+			}
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<SuppressLocalPartResult>(path, parameters, null);
+		}
+
+		public IEnumerable<SuppressedEmail> GetSuppressedEmailAddresses(string userKey, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			var path = "/SuppressionList/ExportEmails/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<SuppressedEmail>(path, parameters, "emails");
+		}
+
+		public IEnumerable<string> GetSuppressedDomains(string userKey, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			var path = "/SuppressionList/ExportDomains/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			var result = ExecuteArrayRequest<ExpandoObject>(path, parameters, "domains");
+			if (result == null) return Enumerable.Empty<string>();
+
+			var domains = (from r in result select r.Single(p => p.Key == "domain").Value.ToString()).ToArray();
+			return domains;
+		}
+
+		public IEnumerable<string> GetSuppressedLocalParts(string userKey, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			var path = "/SuppressionList/ExportLocalparts/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			var result = ExecuteArrayRequest<ExpandoObject>(path, parameters, "localparts");
+			if (result == null) return Enumerable.Empty<string>();
+
+			var localParts = (from r in result select r.Single(p => p.Key == "localpart").Value.ToString()).ToArray();
+			return localParts;
+		}
+
+		#endregion
+
 		#region Methods related to TIMEZONES
 
 		public IEnumerable<Timezone> GetTimezones()
@@ -1500,6 +1692,12 @@ namespace CakeMail.RestClient
 			{
 				return "0.0.0.0";
 			}
+		}
+
+		private void ExecuteRequest(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, JsonSerializer jsonSerializer = null)
+		{
+			var response = ExecuteRequest(urlPath, parameters);
+			ParseCakeMailResponse(response);
 		}
 
 		private T ExecuteObjectRequest<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, JsonSerializer jsonSerializer = null)
