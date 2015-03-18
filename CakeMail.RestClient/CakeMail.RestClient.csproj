@@ -52,12 +52,14 @@
     <Compile Include="Exceptions\CakeMailException.cs" />
     <Compile Include="ICakeMailRestClient.cs" />
     <Compile Include="Models\ImportResult.cs" />
+    <Compile Include="Models\MailingLink.cs" />
+    <Compile Include="Models\Mailing.cs" />
     <Compile Include="Models\ListField.cs" />
     <Compile Include="Models\List.cs" />
     <Compile Include="Models\Campaign.cs" />
     <Compile Include="Models\ListMember.cs" />
     <Compile Include="Models\RelayBounceLog.cs" />
-    <Compile Include="Models\ListLog.cs" />
+    <Compile Include="Models\LogItem.cs" />
     <Compile Include="Models\RelayLog.cs" />
     <Compile Include="Models\RelayClickLog.cs" />
     <Compile Include="Models\RelayOpenLog.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="Models\Province.cs" />
     <Compile Include="Models\ActivationInfo.cs" />
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\RawEmailMessage.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Constants.cs" />

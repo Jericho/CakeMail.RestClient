@@ -842,14 +842,14 @@ namespace CakeMail.RestClient
 		/// </summary>
 		/// <param name="userKey"></param>
 		/// <param name="listId"></param>
-		/// <param name="logType">Possible values: "subscribe", "opened", "clickthru"</param>
+		/// <param name="logType">Possible values: "in_queue", "opened", "clickthru", "forward", "unsubscribe", "view", "spam", "skipped"</param>
 		/// <param name="start"></param>
 		/// <param name="end"></param>
 		/// <param name="limit"></param>
 		/// <param name="offset"></param>
 		/// <param name="clientId"></param>
 		/// <returns></returns>
-		public IEnumerable<ListLog> GetListLogs(string userKey, int listId, string logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
+		public IEnumerable<LogItem> GetListLogs(string userKey, int listId, string logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			string path = "/List/GetLog/";
 
@@ -858,7 +858,8 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
 				new KeyValuePair<string, object>("totals", totals ? "true" : "false"),
-				new KeyValuePair<string, object>("uniques", uniques ? "true" : "false")
+				new KeyValuePair<string, object>("uniques", uniques ? "true" : "false"),
+				new KeyValuePair<string, object>("count", "false")
 			};
 			if (logType != null) parameters.Add(new KeyValuePair<string, object>("action", logType));
 			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
@@ -867,7 +868,407 @@ namespace CakeMail.RestClient
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteArrayRequest<ListLog>(path, parameters, "logs");
+			return ExecuteArrayRequest<LogItem>(path, parameters, "logs");
+		}
+
+		public long GetListLogsCount(string userKey, int listId, string logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? clientId = null)
+		{
+			string path = "/List/GetLog/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("totals", totals ? "true" : "false"),
+				new KeyValuePair<string, object>("uniques", uniques ? "true" : "false"),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (logType != null) parameters.Add(new KeyValuePair<string, object>("action", logType));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
+		}
+
+		#endregion
+
+		#region Methods related to MAILINGS
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="userKey"></param>
+		/// <param name="name"></param>
+		/// <param name="campaignId"></param>
+		/// <param name="type">Type of the mailing. Possible value 'standard', 'recurring', 'absplit'</param>
+		/// <param name="recurringId"></param>
+		/// <param name="encoding">Encoding to be used for the mailing. Possible value 'utf-8', 'iso-8859-x'</param>
+		/// <param name="transferEncoding">Transfer encoding to be used for the mailing. Possible value 'quoted-printable', 'base64'</param>
+		/// <param name="clientId"></param>
+		/// <returns></returns>
+		public int CreateMailing(string userKey, string name, int? campaignId = null, string type = "standard", int? recurringId = null, string encoding = null, string transferEncoding = null, int? clientId = null)
+		{
+			string path = "/Mailing/Create/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("name", name)
+			};
+			if (campaignId.HasValue) parameters.Add(new KeyValuePair<string, object>("campaign_id", campaignId.Value));
+			if (type != null) parameters.Add(new KeyValuePair<string, object>("type", type));
+			if (recurringId.HasValue) parameters.Add(new KeyValuePair<string, object>("recurring_id", recurringId.Value));
+			if (encoding != null) parameters.Add(new KeyValuePair<string, object>("encoding", encoding));
+			if (transferEncoding != null) parameters.Add(new KeyValuePair<string, object>("transfer_encoding", transferEncoding));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<int>(path, parameters);
+		}
+
+		public bool DeleteMailing(string userKey, int mailingId, int? clientId = null)
+		{
+			string path = "/Mailing/Delete/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId),
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public Mailing GetMailing(string userKey, int mailingId, int? clientId = null)
+		{
+			var path = "/Mailing/GetInfo/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<Mailing>(path, parameters);
+		}
+
+		public IEnumerable<Mailing> GetMailings(string userKey, string status = null, string type = null, string name = null, int? listId = null, int? campaignId = null, int? recurringId = null, DateTime? start = null, DateTime? end = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			var path = "/Mailing/GetList/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
+			if (type != null) parameters.Add(new KeyValuePair<string, object>("type", type));
+			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
+			if (listId.HasValue) parameters.Add(new KeyValuePair<string, object>("list_id", listId.Value));
+			if (campaignId.HasValue) parameters.Add(new KeyValuePair<string, object>("campaign_id", campaignId.Value));
+			if (recurringId.HasValue) parameters.Add(new KeyValuePair<string, object>("recurring_id", recurringId.Value));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_date", ((DateTime)start.Value).ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_date", ((DateTime)end.Value).ToCakeMailString()));
+			if (sortBy != null) parameters.Add(new KeyValuePair<string, object>("sort_by", sortBy));
+			if (sortDirection != null) parameters.Add(new KeyValuePair<string, object>("direction", sortDirection));
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<Mailing>(path, parameters, "mailings");
+		}
+
+		public long GetMailingsCount(string userKey, string status = null, string type = null, string name = null, int? listId = null, int? campaignId = null, int? recurringId = null, DateTime? start = null, DateTime? end = null, int? clientId = null)
+		{
+			var path = "/Mailing/GetList/";
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
+			if (type != null) parameters.Add(new KeyValuePair<string, object>("type", type));
+			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
+			if (listId.HasValue) parameters.Add(new KeyValuePair<string, object>("list_id", listId.Value));
+			if (campaignId.HasValue) parameters.Add(new KeyValuePair<string, object>("campaign_id", campaignId.Value));
+			if (recurringId.HasValue) parameters.Add(new KeyValuePair<string, object>("recurring_id", recurringId.Value));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_date", ((DateTime)start.Value).ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_date", ((DateTime)end.Value).ToCakeMailString()));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
+		}
+
+		public bool UpdateMailing(string userKey, int mailingId, int? campaignId = null, int? listId = null, int? sublistId = null, string name = null, string type = null, string encoding = null, string transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClickInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, DateTime? endingOn = null, int? maxRecurrences = null, string recurringConditions = null, int? clientId = null)
+		{
+			var path = "/Mailing/SetInfo/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId)
+			};
+			if (campaignId.HasValue) parameters.Add(new KeyValuePair<string, object>("campaign_id", campaignId.Value));
+			if (listId.HasValue) parameters.Add(new KeyValuePair<string, object>("list_id", listId.Value));
+			if (sublistId.HasValue) parameters.Add(new KeyValuePair<string, object>("sublist_id", sublistId.Value));
+			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
+			if (type != null) parameters.Add(new KeyValuePair<string, object>("type", type));
+			if (encoding != null) parameters.Add(new KeyValuePair<string, object>("encoding", encoding));
+			if (transferEncoding != null) parameters.Add(new KeyValuePair<string, object>("transfer_encoding", transferEncoding));
+			if (subject != null) parameters.Add(new KeyValuePair<string, object>("subject", subject));
+			if (senderEmail != null) parameters.Add(new KeyValuePair<string, object>("sender_email", senderEmail));
+			if (senderName != null) parameters.Add(new KeyValuePair<string, object>("sender_name", senderName));
+			if (replyTo != null) parameters.Add(new KeyValuePair<string, object>("reply_to", replyTo));
+			if (htmlContent != null) parameters.Add(new KeyValuePair<string, object>("html_message", htmlContent));
+			if (textContent != null) parameters.Add(new KeyValuePair<string, object>("text_message", textContent));
+			if (trackOpens.HasValue) parameters.Add(new KeyValuePair<string, object>("opening_stats", trackOpens.Value ? "true" : "false"));
+			if (trackClickInHtml.HasValue) parameters.Add(new KeyValuePair<string, object>("clickthru_html", trackClickInHtml.Value ? "true" : "false"));
+			if (trackClicksInText.HasValue) parameters.Add(new KeyValuePair<string, object>("clickthru_text", trackClicksInText.Value ? "true" : "false"));
+			if (trackingParameters != null) parameters.Add(new KeyValuePair<string, object>("tracking_params", trackingParameters));
+			if (endingOn.HasValue) parameters.Add(new KeyValuePair<string, object>("ending_on", ((DateTime)endingOn.Value).ToCakeMailString()));
+			if (maxRecurrences.HasValue) parameters.Add(new KeyValuePair<string, object>("max_recurrences", maxRecurrences.Value));
+			if (recurringConditions != null) parameters.Add(new KeyValuePair<string, object>("recurring_conditions", recurringConditions));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public bool SendTestEmail(string userKey, int mailingId, string recipientEmail, bool separated = false, int? clientId = null)
+		{
+			var path = "/Mailing/SendTestEmail/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId),
+				new KeyValuePair<string, object>("test_email", recipientEmail),
+				new KeyValuePair<string, object>("test_type", separated ? "separated" : "merged")
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public RawEmailMessage GetMailingRawEmailMessage(string userKey, int mailingId, int? clientId = null)
+		{
+			var path = "/Mailing/GetEmailMessage/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<RawEmailMessage>(path, parameters);
+		}
+
+		public string GetMailingRawHtml(string userKey, int mailingId, int? clientId = null)
+		{
+			var path = "/Mailing/GetHtmlMessage/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<string>(path, parameters);
+		}
+
+		public string GetMailingRawText(string userKey, int mailingId, int? clientId = null)
+		{
+			var path = "/Mailing/GetTextMessage/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<string>(path, parameters);
+		}
+
+		public bool ScheduleMailing(string userKey, int mailingId, DateTime? date = null, int? clientId = null)
+		{
+			var path = "/Mailing/Schedule/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId)
+			};
+			if (date.HasValue) parameters.Add(new KeyValuePair<string, object>("date", ((DateTime)date.Value).ToCakeMailString()));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public bool UnscheduleMailing(string userKey, int mailingId, int? clientId = null)
+		{
+			var path = "/Mailing/Unschedule/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public bool SuspendMailing(string userKey, int mailingId, int? clientId = null)
+		{
+			var path = "/Mailing/Suspend/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public bool ResumeMailing(string userKey, int mailingId, int? clientId = null)
+		{
+			var path = "/Mailing/Resume/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="userKey"></param>
+		/// <param name="listId"></param>
+		/// <param name="logType">Possible values: "in_queue", "opened", "clickthru", "forward", "unsubscribe", "view", "spam", "skipped"</param>
+		/// <param name="start"></param>
+		/// <param name="end"></param>
+		/// <param name="limit"></param>
+		/// <param name="offset"></param>
+		/// <param name="clientId"></param>
+		/// <returns></returns>
+		public IEnumerable<LogItem> GetMailingLogs(string userKey, int mailingId, string logType = null, int? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			string path = "/Mailing/GetLog/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId),
+				new KeyValuePair<string, object>("totals", totals ? "true" : "false"),
+				new KeyValuePair<string, object>("uniques", uniques ? "true" : "false"),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			if (logType != null) parameters.Add(new KeyValuePair<string, object>("action", logType));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (listMemberId.HasValue) parameters.Add(new KeyValuePair<string, object>("record_id", listMemberId.Value));
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<LogItem>(path, parameters, "logs");
+		}
+
+		public long GetMailingLogsCount(string userKey, int mailingId, string logType = null, int? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? clientId = null)
+		{
+			string path = "/Mailing/GetLog/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId),
+				new KeyValuePair<string, object>("totals", totals ? "true" : "false"),
+				new KeyValuePair<string, object>("uniques", uniques ? "true" : "false"),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (logType != null) parameters.Add(new KeyValuePair<string, object>("action", logType));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (listMemberId.HasValue) parameters.Add(new KeyValuePair<string, object>("record_id", listMemberId.Value));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
+		}
+
+		public IEnumerable<MailingLink> GetMailingLinks(string userKey, int mailingId, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			string path = "/Mailing/GetLinks/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<MailingLink>(path, parameters, "links");
+		}
+
+		public long GetMailingLinksCount(string userKey, int mailingId, int? clientId = null)
+		{
+			string path = "/Mailing/GetLinks/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
+		}
+
+		public MailingLink GetMailingLink(string userKey, int linkId, int? clientId = null)
+		{
+			string path = "/Mailing/GetLinkInfo/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("link_id", linkId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<MailingLink>(path, parameters);
+		}
+
+		public IEnumerable<LogItem> GetMailingLinksLogs(string userKey, int mailingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			string path = "/Mailing/GetLog/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<LogItem>(path, parameters, "logs");
 		}
 
 		#endregion
@@ -1182,7 +1583,7 @@ namespace CakeMail.RestClient
 
 				#region DEBUGGING
 #if DEBUG
-				var debugRequestMsg = string.Format("Request sent to CakeMail: {0}{1}", _client.BaseUrl, urlPath);
+				var debugRequestMsg = string.Format("Request sent to CakeMail: {0}/{1}", _client.BaseUrl.ToString().TrimEnd('/'), urlPath.TrimStart('/'));
 				var debugHeadersMsg = string.Format("Request headers: {0}", string.Join("&", request.Parameters.Where(p => p.Type == ParameterType.HttpHeader).Select(p => string.Concat(p.Name, "=", p.Value))));
 				var debugParametersMsg = string.Format("Request parameters: {0}", string.Join("&", request.Parameters.Where(p => p.Type != ParameterType.HttpHeader).Select(p => string.Concat(p.Name, "=", p.Value))));
 				var debugResponseMsg = string.Format("Response received from CakeMail: {0}", response.Content);
@@ -1206,9 +1607,17 @@ namespace CakeMail.RestClient
 			{
 				throw new HttpException(string.Format("Received a server ({0}) error for {1}", (int)response.StatusCode, response.ResponseUri), response.StatusCode, response.ResponseUri);
 			}
-
-			var errorMessage = string.Format("Received an unexpected response for {0} (status code: {1})", response.ResponseUri, (int)response.StatusCode);
-			throw new HttpException(errorMessage, response.StatusCode, response.ResponseUri);
+			else if (!string.IsNullOrEmpty(response.ErrorMessage))
+			{
+				var errorMessage = string.Format("Received an error message from {0} (status code: {1}) (error message: {2})", request.Resource, (int)response.StatusCode, response.ErrorMessage);
+				throw new HttpException(errorMessage, response.StatusCode, response.ResponseUri);
+			}
+			else
+			{
+				var errorMessage = string.Format("Received an unexpected response for {0} (status code: {1})", request.Resource, (int)response.StatusCode);
+				if (!string.IsNullOrEmpty(response.ErrorMessage)) errorMessage += string.Format(" (Error Message: {0})", response.ErrorMessage);
+				throw new HttpException(errorMessage, response.StatusCode, response.ResponseUri);
+			}
 		}
 
 		private JToken ParseCakeMailResponse(IRestResponse response)

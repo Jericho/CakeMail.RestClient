@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CakeMail.RestClient.Models
 {
-	public class ListLog
+	public class LogItem
 	{
 		#region Properties
 
@@ -42,6 +42,9 @@ namespace CakeMail.RestClient.Models
 
 		[JsonProperty("extra")]
 		public string Extra { get; set; }
+
+		[JsonProperty("show_email_link")]
+		public string ShowEmailLink { get; set; }
 
 		[JsonExtensionData]
 		public IDictionary<string, object> CustomFields { get; set; }
