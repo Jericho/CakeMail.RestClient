@@ -80,7 +80,7 @@ namespace CakeMail.RestClient.Models
 		[JsonProperty("text_message")]
 		public string TextContent { get; set; }
 
-		[JsonProperty("racking_params")]
+		[JsonProperty("tracking_params")]
 		public string TrackingParameters { get; set; }
 
 		[JsonProperty("type")]

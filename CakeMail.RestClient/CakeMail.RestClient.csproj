@@ -52,11 +52,12 @@
     <Compile Include="Exceptions\CakeMailException.cs" />
     <Compile Include="ICakeMailRestClient.cs" />
     <Compile Include="Models\ImportResult.cs" />
+    <Compile Include="Models\Trigger.cs" />
     <Compile Include="Models\SuppressDomainResult.cs" />
     <Compile Include="Models\SuppressedEmail.cs" />
     <Compile Include="Models\SuppressLocalPartResult.cs" />
     <Compile Include="Models\SuppressEmailResult.cs" />
-    <Compile Include="Models\MailingLink.cs" />
+    <Compile Include="Models\Link.cs" />
     <Compile Include="Models\Mailing.cs" />
     <Compile Include="Models\ListField.cs" />
     <Compile Include="Models\List.cs" />

@@ -21,8 +21,8 @@ namespace CakeMail.RestClient.Utilities
 
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{
-			if (reader.TokenType != JsonToken.String)
-				throw new Exception("Wrong Token Type");
+			if (reader.TokenType == JsonToken.Null) return (DateTime?)null;
+			if (reader.TokenType != JsonToken.String) throw new Exception("Wrong Token Type");
 
 			var dateAsString = (string)reader.Value;
 			var date = (dateAsString == Constants.EMPTY_CAKEMAIL_DATE ? DateTime.MinValue : DateTime.Parse(dateAsString));

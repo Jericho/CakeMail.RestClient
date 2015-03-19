@@ -2,7 +2,7 @@
 
 namespace CakeMail.RestClient.Models
 {
-	public class MailingLink
+	public class Link
 	{
 		#region Properties
 

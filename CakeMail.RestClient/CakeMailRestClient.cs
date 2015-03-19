@@ -1001,7 +1001,7 @@ namespace CakeMail.RestClient
 			return ExecuteCountRequest(path, parameters);
 		}
 
-		public bool UpdateMailing(string userKey, int mailingId, int? campaignId = null, int? listId = null, int? sublistId = null, string name = null, string type = null, string encoding = null, string transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClickInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, DateTime? endingOn = null, int? maxRecurrences = null, string recurringConditions = null, int? clientId = null)
+		public bool UpdateMailing(string userKey, int mailingId, int? campaignId = null, int? listId = null, int? sublistId = null, string name = null, string type = null, string encoding = null, string transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClicksInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, DateTime? endingOn = null, int? maxRecurrences = null, string recurringConditions = null, int? clientId = null)
 		{
 			var path = "/Mailing/SetInfo/";
 
@@ -1024,7 +1024,7 @@ namespace CakeMail.RestClient
 			if (htmlContent != null) parameters.Add(new KeyValuePair<string, object>("html_message", htmlContent));
 			if (textContent != null) parameters.Add(new KeyValuePair<string, object>("text_message", textContent));
 			if (trackOpens.HasValue) parameters.Add(new KeyValuePair<string, object>("opening_stats", trackOpens.Value ? "true" : "false"));
-			if (trackClickInHtml.HasValue) parameters.Add(new KeyValuePair<string, object>("clickthru_html", trackClickInHtml.Value ? "true" : "false"));
+			if (trackClicksInHtml.HasValue) parameters.Add(new KeyValuePair<string, object>("clickthru_html", trackClicksInHtml.Value ? "true" : "false"));
 			if (trackClicksInText.HasValue) parameters.Add(new KeyValuePair<string, object>("clickthru_text", trackClicksInText.Value ? "true" : "false"));
 			if (trackingParameters != null) parameters.Add(new KeyValuePair<string, object>("tracking_params", trackingParameters));
 			if (endingOn.HasValue) parameters.Add(new KeyValuePair<string, object>("ending_on", ((DateTime)endingOn.Value).ToCakeMailString()));
@@ -1035,7 +1035,7 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<bool>(path, parameters);
 		}
 
-		public bool SendTestEmail(string userKey, int mailingId, string recipientEmail, bool separated = false, int? clientId = null)
+		public bool SendMailingTestEmail(string userKey, int mailingId, string recipientEmail, bool separated = false, int? clientId = null)
 		{
 			var path = "/Mailing/SendTestEmail/";
 
@@ -1206,7 +1206,7 @@ namespace CakeMail.RestClient
 			return ExecuteCountRequest(path, parameters);
 		}
 
-		public IEnumerable<MailingLink> GetMailingLinks(string userKey, int mailingId, int limit = 0, int offset = 0, int? clientId = null)
+		public IEnumerable<Link> GetMailingLinks(string userKey, int mailingId, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			string path = "/Mailing/GetLinks/";
 
@@ -1220,7 +1220,7 @@ namespace CakeMail.RestClient
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteArrayRequest<MailingLink>(path, parameters, "links");
+			return ExecuteArrayRequest<Link>(path, parameters, "links");
 		}
 
 		public long GetMailingLinksCount(string userKey, int mailingId, int? clientId = null)
@@ -1238,7 +1238,7 @@ namespace CakeMail.RestClient
 			return ExecuteCountRequest(path, parameters);
 		}
 
-		public MailingLink GetMailingLink(string userKey, int linkId, int? clientId = null)
+		public Link GetMailingLink(string userKey, int linkId, int? clientId = null)
 		{
 			string path = "/Mailing/GetLinkInfo/";
 
@@ -1249,7 +1249,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<MailingLink>(path, parameters);
+			return ExecuteObjectRequest<Link>(path, parameters);
 		}
 
 		public IEnumerable<LogItem> GetMailingLinksLogs(string userKey, int mailingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
@@ -1541,6 +1541,307 @@ namespace CakeMail.RestClient
 			var parameters = new List<KeyValuePair<string, object>>();
 
 			return ExecuteArrayRequest<Timezone>(path, parameters, "timezones");
+		}
+
+		#endregion
+
+		#region Methods related to TRIGGERS
+
+		public int CreateTrigger(string userKey, string name, int listId, string encoding = null, string transferEncoding = null, int? campaignId = null, int? clientId = null)
+		{
+			string path = "/Trigger/Create/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("name", name),
+				new KeyValuePair<string, object>("list_id", listId)
+			};
+			if (encoding != null) parameters.Add(new KeyValuePair<string, object>("encoding", encoding));
+			if (transferEncoding != null) parameters.Add(new KeyValuePair<string, object>("transfer_encoding", transferEncoding));
+			if (campaignId.HasValue) parameters.Add(new KeyValuePair<string, object>("campaign_id", campaignId.Value));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<int>(path, parameters);
+		}
+
+		//public bool DeleteTrigger(string userKey, int triggerId, int? clientId = null)
+		//{
+		//	string path = "/Trigger/Delete/";
+
+		//	var parameters = new List<KeyValuePair<string, object>>()
+		//	{
+		//		new KeyValuePair<string, object>("user_key", userKey),
+		//		new KeyValuePair<string, object>("trigger_id", triggerId),
+		//	};
+		//	if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+		//	return ExecuteObjectRequest<bool>(path, parameters);
+		//}
+
+		public Trigger GetTrigger(string userKey, int triggerId, int? clientId = null)
+		{
+			var path = "/Trigger/GetInfo/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("trigger_id", triggerId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<Trigger>(path, parameters);
+		}
+
+		public bool UpdateTrigger(string userKey, int triggerId, int? campaignId = null, string name = null, string action = null, string encoding = null, string transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClicksInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, int? delay = null, string status = null, string dateField = null, int? clientId = null)
+		{
+			var path = "/Trigger/SetInfo/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("trigger_id", triggerId)
+			};
+			if (campaignId.HasValue) parameters.Add(new KeyValuePair<string, object>("campaign_id", campaignId.Value));
+			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
+			if (action != null) parameters.Add(new KeyValuePair<string, object>("action", action));
+			if (encoding != null) parameters.Add(new KeyValuePair<string, object>("encoding", encoding));
+			if (transferEncoding != null) parameters.Add(new KeyValuePair<string, object>("transfer_encoding", transferEncoding));
+			if (subject != null) parameters.Add(new KeyValuePair<string, object>("subject", subject));
+			if (senderEmail != null) parameters.Add(new KeyValuePair<string, object>("sender_email", senderEmail));
+			if (senderName != null) parameters.Add(new KeyValuePair<string, object>("sender_name", senderName));
+			if (replyTo != null) parameters.Add(new KeyValuePair<string, object>("reply_to", replyTo));
+			if (htmlContent != null) parameters.Add(new KeyValuePair<string, object>("html_message", htmlContent));
+			if (textContent != null) parameters.Add(new KeyValuePair<string, object>("text_message", textContent));
+			if (trackOpens.HasValue) parameters.Add(new KeyValuePair<string, object>("opening_stats", trackOpens.Value ? "true" : "false"));
+			if (trackClicksInHtml.HasValue) parameters.Add(new KeyValuePair<string, object>("clickthru_html", trackClicksInHtml.Value ? "true" : "false"));
+			if (trackClicksInText.HasValue) parameters.Add(new KeyValuePair<string, object>("clickthru_text", trackClicksInText.Value ? "true" : "false"));
+			if (trackingParameters != null) parameters.Add(new KeyValuePair<string, object>("tracking_params", trackingParameters));
+			if (delay != null) parameters.Add(new KeyValuePair<string, object>("delay", delay));
+			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
+			if (dateField != null) parameters.Add(new KeyValuePair<string, object>("date_field", dateField));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public IEnumerable<Trigger> GetTriggers(string userKey, string status = null, string action = null, int? listId = null, int? campaignId = null, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			var path = "/Trigger/GetList/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
+			if (action != null) parameters.Add(new KeyValuePair<string, object>("action", action));
+			if (listId.HasValue) parameters.Add(new KeyValuePair<string, object>("list_id", listId.Value));
+			if (campaignId.HasValue) parameters.Add(new KeyValuePair<string, object>("campaign_id", campaignId.Value));
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<Trigger>(path, parameters, "triggers");
+		}
+
+		public long GetTriggersCount(string userKey, string status = null, string action = null, int? listId = null, int? campaignId = null, int? clientId = null)
+		{
+			var path = "/Trigger/GetList/";
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
+			if (action != null) parameters.Add(new KeyValuePair<string, object>("action", action));
+			if (listId.HasValue) parameters.Add(new KeyValuePair<string, object>("list_id", listId.Value));
+			if (campaignId.HasValue) parameters.Add(new KeyValuePair<string, object>("campaign_id", campaignId.Value));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
+		}
+
+		public bool SendTriggerTestEmail(string userKey, int triggerId, string recipientEmail, bool separated = false, int? clientId = null)
+		{
+			var path = "/Trigger/SendTestEmail/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("trigger_id", triggerId),
+				new KeyValuePair<string, object>("test_email", recipientEmail),
+				new KeyValuePair<string, object>("test_type", separated ? "separated" : "merged")
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public RawEmailMessage GetTriggerRawEmailMessage(string userKey, int triggerId, int? clientId = null)
+		{
+			var path = "/Trigger/GetEmailMessage/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("trigger_id", triggerId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<RawEmailMessage>(path, parameters);
+		}
+
+		public string GetTriggerRawHtml(string userKey, int triggerId, int? clientId = null)
+		{
+			var path = "/Trigger/GetHtmlMessage/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("trigger_id", triggerId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<string>(path, parameters);
+		}
+
+		public string GetTriggerRawText(string userKey, int triggerId, int? clientId = null)
+		{
+			var path = "/Trigger/GetTextMessage/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("trigger_id", triggerId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<string>(path, parameters);
+		}
+
+		public bool UnleashTrigger(string userKey, int triggerId, int listMemberId, int? clientId = null)
+		{
+			var path = "/Trigger/Unleash/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("trigger_id", triggerId),
+				new KeyValuePair<string, object>("record_id", listMemberId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public IEnumerable<LogItem> GetTriggerLogs(string userKey, int triggerId, string logType = null, int? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			string path = "/Trigger/GetLog/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("trigger_id", triggerId),
+				new KeyValuePair<string, object>("totals", totals ? "true" : "false"),
+				new KeyValuePair<string, object>("uniques", uniques ? "true" : "false"),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			if (logType != null) parameters.Add(new KeyValuePair<string, object>("action", logType));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (listMemberId.HasValue) parameters.Add(new KeyValuePair<string, object>("record_id", listMemberId.Value));
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<LogItem>(path, parameters, "logs");
+		}
+
+		public long GetTriggerLogsCount(string userKey, int triggerId, string logType = null, int? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? clientId = null)
+		{
+			string path = "/Trigger/GetLog/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("trigger_id", triggerId),
+				new KeyValuePair<string, object>("totals", totals ? "true" : "false"),
+				new KeyValuePair<string, object>("uniques", uniques ? "true" : "false"),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (logType != null) parameters.Add(new KeyValuePair<string, object>("action", logType));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (listMemberId.HasValue) parameters.Add(new KeyValuePair<string, object>("record_id", listMemberId.Value));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
+		}
+
+		public IEnumerable<Link> GetTriggerLinks(string userKey, int triggerId, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			string path = "/Trigger/GetLinks/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("trigger_id", triggerId),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<Link>(path, parameters, "links");
+		}
+
+		public long GetTriggerLinksCount(string userKey, int triggerId, int? clientId = null)
+		{
+			string path = "/Trigger/GetLinks/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("trigger_id", triggerId),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
+		}
+
+		public Link GeTriggerLink(string userKey, int linkId, int? clientId = null)
+		{
+			string path = "/Trigger/GetLinkInfo/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("link_id", linkId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<Link>(path, parameters);
+		}
+
+		public IEnumerable<LogItem> GetTriggerLinksLogs(string userKey, int triggerId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			string path = "/Trigger/GetLog/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("trigger_id", triggerId),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<LogItem>(path, parameters, "logs");
 		}
 
 		#endregion
