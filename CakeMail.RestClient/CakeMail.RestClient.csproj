@@ -51,6 +51,7 @@
     <Compile Include="Exceptions\CakeMailPostException.cs" />
     <Compile Include="Exceptions\CakeMailException.cs" />
     <Compile Include="ICakeMailRestClient.cs" />
+    <Compile Include="Models\TemplateCategory.cs" />
     <Compile Include="Models\ImportResult.cs" />
     <Compile Include="Models\Trigger.cs" />
     <Compile Include="Models\SuppressDomainResult.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Models\RawEmailMessage.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\CakeMailIntegerBooleanConverter.cs" />
     <Compile Include="Utilities\Constants.cs" />
     <Compile Include="Utilities\ExtensionMethods.cs" />
     <Compile Include="Utilities\CakeMailDateTimeConverter.cs" />

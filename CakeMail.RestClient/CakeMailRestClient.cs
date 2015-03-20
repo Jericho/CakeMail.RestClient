@@ -1846,6 +1846,256 @@ namespace CakeMail.RestClient
 
 		#endregion
 
+		#region Methods related to TEMPLATES
+
+		public int CreateTemplateCategory(string userKey, IDictionary<string, string> labels, bool isVisibleByDefault = true, bool templatesCanBeCopied = true, int? clientId = null)
+		{
+			string path = "/TemplateV2/CreateCategory/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("default", isVisibleByDefault ? "1" : "0"),
+				new KeyValuePair<string, object>("templates_copyable", templatesCanBeCopied ? "1" : "0"),
+			};
+			if (labels != null)
+			{
+				foreach (var label in labels)
+				{
+					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}]", label.Key), label.Value));
+				}
+			}
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<int>(path, parameters);
+		}
+
+		public bool DeleteTemplateCategory(string userKey, int categoryId, int? clientId = null)
+		{
+			string path = "/TemplateV2/DeleteCategory/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("category_id", categoryId),
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public TemplateCategory GetTemplateCategory(string userKey, int categoryId, int? clientId = null)
+		{
+			var path = "/TemplateV2/GetCategory/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("category_id", categoryId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<TemplateCategory>(path, parameters);
+		}
+
+		public IEnumerable<TemplateCategory> GetTemplateCategories(string userKey, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			var path = "/TemplateV2/GetCategories/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<TemplateCategory>(path, parameters, "categories");
+		}
+
+		public long GetTemplateCategoriesCount(string userKey, int? clientId = null)
+		{
+			var path = "/TemplateV2/GetCategories/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
+		}
+
+		public bool UpdateTemplateCategory(string userKey, int categoryId, IDictionary<string, string> labels, bool isVisibleByDefault = true, bool templatesCanBeCopied = true, int? clientId = null)
+		{
+			string path = "/TemplateV2/SetCategory/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("category_id", categoryId),
+				new KeyValuePair<string, object>("default", isVisibleByDefault ? "1" : "0"),
+				new KeyValuePair<string, object>("templates_copyable", templatesCanBeCopied ? "1" : "0"),
+			};
+			if (labels != null)
+			{
+				foreach (var label in labels)
+				{
+					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}]", label.Key), label.Value));
+				}
+			}
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public IEnumerable<string> GetTemplateCategoryVisibility(string userKey, int categoryId, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			var path = "/TemplateV2/GetCategoryVisibility/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("category_id", categoryId),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<string>(path, parameters, "categories");
+		}
+
+		public long SetTemplateCategoryVisibility(string userKey, int categoryId, IDictionary<int, bool> clientVisibility, int? clientId = null)
+		{
+			var path = "/TemplateV2/SetCategoryVisibility/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("category_id", categoryId),
+			};
+			if (clientVisibility != null)
+			{
+				foreach (var visibility in clientVisibility)
+				{
+					parameters.Add(new KeyValuePair<string, object>(string.Format("client[{0}][visible]", visibility.Key), visibility.Value ? "true" : "false"));
+				}
+			}
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
+		}
+
+		public int CreateTemplate(string userKey, IDictionary<string, string> labels, string content = null, int? categoryId = null, int? clientId = null)
+		{
+			string path = "/TemplateV2/CreateTemplate/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey)
+			};
+			if (labels != null)
+			{
+				foreach (var label in labels)
+				{
+					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}]", label.Key), label.Value));
+				}
+			}
+			if (content != null) parameters.Add(new KeyValuePair<string, object>("content", content));
+			if (categoryId.HasValue) parameters.Add(new KeyValuePair<string, object>("category_id", categoryId.Value));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<int>(path, parameters);
+		}
+
+		public bool DeleteTemplate(string userKey, int templateId, int? clientId = null)
+		{
+			string path = "/TemplateV2/DeleteTemplate/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("template_id", templateId),
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		public TemplateCategory GetTemplate(string userKey, int templateId, int? clientId = null)
+		{
+			var path = "/TemplateV2/GetTemplate/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("template_id", templateId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<TemplateCategory>(path, parameters);
+		}
+
+		public IEnumerable<TemplateCategory> GetTemplates(string userKey, int? categoryId = null, int limit = 0, int offset = 0, int? clientId = null)
+		{
+			var path = "/TemplateV2/GetTemplates/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "false")
+			};
+			if (categoryId.HasValue) parameters.Add(new KeyValuePair<string, object>("category_id", categoryId.Value));
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<TemplateCategory>(path, parameters, "templates");
+		}
+
+		public long GetTemplatesCount(string userKey, int? categoryId = null, int? clientId = null)
+		{
+			var path = "/TemplateV2/GetTemplates/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (categoryId.HasValue) parameters.Add(new KeyValuePair<string, object>("category_id", categoryId.Value));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
+		}
+
+		public bool UpdateTemplate(string userKey, int templateId, IDictionary<string, string> labels, string content = null, int? categoryId = null, int? clientId = null)
+		{
+			string path = "/TemplateV2/SetTemplate/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("template_id", templateId)
+			};
+			if (labels != null)
+			{
+				foreach (var label in labels)
+				{
+					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}]", label.Key), label.Value));
+				}
+			}
+			if (content != null) parameters.Add(new KeyValuePair<string, object>("content", content));
+			if (categoryId.HasValue) parameters.Add(new KeyValuePair<string, object>("category_id", categoryId.Value));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		#endregion
+
 		#region Methods related to USERS
 
 		public int CreateUser(string userKey, string email, string firstName, string lastName, string title, string officePhone, string mobilePhone, string language, string password, int timezoneId = 542, int? clientId = null)
@@ -2066,19 +2316,31 @@ namespace CakeMail.RestClient
 			}
 
 			var response = _client.Execute(request);
+			var responseUri = response.ResponseUri ?? new Uri(string.Format("{0}/{1}", _client.BaseUrl.ToString().TrimEnd('/'), request.Resource.TrimStart('/')));
+
 			if (response.ResponseStatus == ResponseStatus.Error)
 			{
-				throw new HttpException(string.Format("Error received while making request: {0}", response.ErrorMessage), response.StatusCode, response.ResponseUri, response.ErrorException);
+				var errorMessage = string.Format("Error received while making request: {0}", response.ErrorMessage);
+				throw new HttpException(errorMessage, response.StatusCode, responseUri);
+			}
+			else if (response.ResponseStatus == ResponseStatus.TimedOut)
+			{
+				throw new HttpException("Request timed out", response.StatusCode, responseUri, response.ErrorException);
 			}
 
 			var statusCode = (int)response.StatusCode;
 			if (statusCode == 200)
 			{
 				if (string.IsNullOrEmpty(response.Content))
-					throw new HttpException(string.Format("Received a 200 response for {0} but there was no message body.", response.ResponseUri), response.StatusCode, response.ResponseUri);
-
-				if (response.ContentType == null || !response.ContentType.Contains("json"))
-					throw new CakeMailException(string.Format("Received a 200 response for {0} but it does not appear to be JSON:\n", response.ContentType));
+				{
+					var missingBodyMessage = string.Format("Received a 200 response from {0} but there was no message body.", request.Resource);
+					throw new HttpException(missingBodyMessage, response.StatusCode, responseUri);
+				}
+				else if (response.ContentType == null || !response.ContentType.Contains("json"))
+				{
+					var unsupportedContentTypeMessage = string.Format("Received a 200 response from {0} but the content type is not JSON: {1}", request.Resource, response.ContentType ?? "NULL");
+					throw new HttpException(unsupportedContentTypeMessage, response.StatusCode, responseUri);
+				}
 
 				#region DEBUGGING
 #if DEBUG
@@ -2097,25 +2359,27 @@ namespace CakeMail.RestClient
 			{
 				if (string.IsNullOrEmpty(response.Content))
 				{
-					throw new HttpException(string.Format("Received a {0} error for {1} with no body", response.StatusCode, response.ResponseUri), response.StatusCode, response.ResponseUri);
+					var missingBodyMessage = string.Format("Received a {0} error from {1} with no body", response.StatusCode, request.Resource);
+					throw new HttpException(missingBodyMessage, response.StatusCode, responseUri);
 				}
 
-				throw new HttpException(string.Format("Received a {0} error for {1} with the following content: {2}", response.StatusCode, response.ResponseUri, response.Content), response.StatusCode, response.ResponseUri);
+				var errorMessage = string.Format("Received a {0} error from {1} with the following content: {2}", response.StatusCode, request.Resource, response.Content);
+				throw new HttpException(errorMessage, response.StatusCode, responseUri);
 			}
 			else if (statusCode >= 500 && statusCode < 600)
 			{
-				throw new HttpException(string.Format("Received a server ({0}) error for {1}", (int)response.StatusCode, response.ResponseUri), response.StatusCode, response.ResponseUri);
+				var errorMessage = string.Format("Received a server ({0}) error from {1}", (int)response.StatusCode, request.Resource);
+				throw new HttpException(errorMessage, response.StatusCode, responseUri);
 			}
 			else if (!string.IsNullOrEmpty(response.ErrorMessage))
 			{
 				var errorMessage = string.Format("Received an error message from {0} (status code: {1}) (error message: {2})", request.Resource, (int)response.StatusCode, response.ErrorMessage);
-				throw new HttpException(errorMessage, response.StatusCode, response.ResponseUri);
+				throw new HttpException(errorMessage, response.StatusCode, responseUri);
 			}
 			else
 			{
-				var errorMessage = string.Format("Received an unexpected response for {0} (status code: {1})", request.Resource, (int)response.StatusCode);
-				if (!string.IsNullOrEmpty(response.ErrorMessage)) errorMessage += string.Format(" (Error Message: {0})", response.ErrorMessage);
-				throw new HttpException(errorMessage, response.StatusCode, response.ResponseUri);
+				var errorMessage = string.Format("Received an unexpected response from {0} (status code: {1})", request.Resource, (int)response.StatusCode);
+				throw new HttpException(errorMessage, response.StatusCode, responseUri);
 			}
 		}
 

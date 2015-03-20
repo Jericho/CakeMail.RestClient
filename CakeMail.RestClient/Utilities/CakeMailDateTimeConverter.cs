@@ -26,7 +26,13 @@ namespace CakeMail.RestClient.Utilities
 
 			var dateAsString = (string)reader.Value;
 			var date = (dateAsString == Constants.EMPTY_CAKEMAIL_DATE ? DateTime.MinValue : DateTime.Parse(dateAsString));
+
 			return date;
+		}
+
+		public override bool CanConvert(Type objectType)
+		{
+			return (objectType == typeof(DateTime) || objectType == typeof(DateTime?));
 		}
 	}
 }
