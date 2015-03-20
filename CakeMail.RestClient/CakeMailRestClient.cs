@@ -2339,7 +2339,7 @@ namespace CakeMail.RestClient
 				else if (response.ContentType == null || !response.ContentType.Contains("json"))
 				{
 					var unsupportedContentTypeMessage = string.Format("Received a 200 response from {0} but the content type is not JSON: {1}", request.Resource, response.ContentType ?? "NULL");
-					throw new HttpException(unsupportedContentTypeMessage, response.StatusCode, responseUri);
+					throw new CakeMailException(unsupportedContentTypeMessage);
 				}
 
 				#region DEBUGGING

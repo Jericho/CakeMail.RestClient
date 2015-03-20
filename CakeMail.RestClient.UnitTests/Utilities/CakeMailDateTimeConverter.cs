@@ -1,7 +1,6 @@
 ﻿using CakeMail.RestClient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using RestSharp;
 using System;
 using System.IO;
 
@@ -11,7 +10,7 @@ namespace CakeMail.RestCLient.UnitTests.Utilities
 	public class CakeMailDateTimeConverterTests
 	{
 		[TestMethod]
-		public void Successfully_parses_json()
+		public void CakeMailDateTimeConverter_Successfully_parses_json()
 		{
 			// Arrange
 			var json = "\"2015-03-11 15:21:00\"";
@@ -33,7 +32,7 @@ namespace CakeMail.RestCLient.UnitTests.Utilities
 		}
 
 		[TestMethod]
-		public void Successfully_parses_empty_date()
+		public void CakeMailDateTimeConverter_Successfully_parses_empty_date()
 		{
 			// Arrange
 			var json = "\"0000-00-00 00:00:00\"";
@@ -51,7 +50,7 @@ namespace CakeMail.RestCLient.UnitTests.Utilities
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
-		public void Throws_exception_when_content_is_not_a_string()
+		public void CakeMailDateTimeConverter_Throws_exception_when_content_is_not_a_string()
 		{
 			// Arrange
 			var json = "1234";

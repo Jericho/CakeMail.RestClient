@@ -61,8 +61,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Timezones.cs" />
     <Compile Include="CakeMailRestClientTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\ExtensionMethods.cs" />
+    <Compile Include="Utilities\CakeMailIntegerBooleanConverter.cs" />
     <Compile Include="Utilities\CakeMailDateTimeConverter.cs" />
   </ItemGroup>
   <ItemGroup>

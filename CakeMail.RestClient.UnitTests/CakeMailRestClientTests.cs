@@ -37,6 +37,27 @@ namespace CakeMail.RestCLient.UnitTests
 
 		[TestMethod]
 		[ExpectedException(typeof(HttpException))]
+		public void RestClient_Throws_exception_when_responsestatus_is_timeout()
+		{
+			// Arrange
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
+			))).Returns(new RestResponse()
+			{
+				ResponseStatus = RestSharp.ResponseStatus.TimedOut
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetCountries();
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(HttpException))]
 		public void RestClient_Throws_exception_when_request_is_successful_but_response_content_is_empty()
 		{
 			// Arrange
@@ -164,6 +185,29 @@ namespace CakeMail.RestCLient.UnitTests
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Completed,
 				StatusCode = (HttpStatusCode)600
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetCountries();
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(CakeMailException))]
+		public void RestClient_Throws_exception_when_cakemail_api_returns_failure()
+		{
+			// Arrange
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"failure\",\"data\":\"An error has occured\"}"
 			});
 
 			// Act
