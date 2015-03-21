@@ -6,8 +6,8 @@
     <ProjectGuid>{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CakeMail.RestCLient.UnitTests</RootNamespace>
-    <AssemblyName>CakeMail.RestCLient.UnitTests</AssemblyName>
+    <RootNamespace>CakeMail.RestClient.UnitTests</RootNamespace>
+    <AssemblyName>CakeMail.RestClient.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

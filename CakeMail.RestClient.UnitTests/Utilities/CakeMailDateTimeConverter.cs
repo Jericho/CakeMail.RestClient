@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 
-namespace CakeMail.RestCLient.UnitTests.Utilities
+namespace CakeMail.RestClient.UnitTests.Utilities
 {
 	[TestClass]
 	public class CakeMailDateTimeConverterTests

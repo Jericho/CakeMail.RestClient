@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Net;
 
-namespace CakeMail.RestCLient.UnitTests
+namespace CakeMail.RestClient.UnitTests
 {
 	[TestClass]
 	public class CakeMailRestClientTests
