@@ -77,6 +77,13 @@ namespace CakeMail.RestClient
 
 		#region Methods related to CAMPAIGNS
 
+		/// <summary>
+		/// Method to create a new campaign
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="name">Name of the campaign.</param>
+		/// <param name="clientId">Client ID of the client in which the campaign is created.</param>
+		/// <returns>ID of the new campaign</returns>
 		public int CreateCampaign(string userKey, string name, int? clientId = null)
 		{
 			string path = "/Campaign/Create/";
@@ -91,6 +98,13 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<int>(path, parameters);
 		}
 
+		/// <summary>
+		/// Method to delete a campaign.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="campaignId">ID of the campaign to delete.</param>
+		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
+		/// <returns></returns>
 		public bool DeleteCampaign(string userKey, int campaignId, int? clientId = null)
 		{
 			string path = "/Campaign/Delete/";

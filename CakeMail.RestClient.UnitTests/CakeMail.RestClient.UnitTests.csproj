@@ -61,6 +61,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Campaigns.cs" />
     <Compile Include="Timezones.cs" />
     <Compile Include="CakeMailRestClientTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

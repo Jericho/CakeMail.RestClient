@@ -1,5 +1,4 @@
-﻿using CakeMail.RestClient;
-using CakeMail.RestClient.Exceptions;
+﻿using CakeMail.RestClient.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RestSharp;
@@ -13,6 +12,8 @@ namespace CakeMail.RestClient.UnitTests
 	public class CakeMailRestClientTests
 	{
 		private const string API_KEY = "...dummy API key...";
+		private const string USER_KEY = "...dummy USER key...";
+		private const int CLIENT_ID = 999;
 
 		[TestMethod]
 		[ExpectedException(typeof(HttpException))]
@@ -213,6 +214,31 @@ namespace CakeMail.RestClient.UnitTests
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
 			var result = apiClient.GetCountries();
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(CakeMailPostException))]
+		public void RestClient_Throws_exception_when_cakemail_api_returns_failure_with_post_details()
+		{
+			// Arrange
+			var campaignId = 123;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"failed\",\"data\":\"There is no campaign with the id {0} and client id {1}!\",\"post\":{{\"user_key\":\"{2}\",\"campaign_id\":\"{0}\",\"client_id\":\"{1}\"}}}}", campaignId, CLIENT_ID, USER_KEY)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.DeleteCampaign(USER_KEY, campaignId, CLIENT_ID);
 		}
 	}
 }
