@@ -119,6 +119,13 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<bool>(path, parameters);
 		}
 
+		/// <summary>
+		/// Method to get information about a campaign.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="campaignId">ID of the campaign.</param>
+		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
+		/// <returns>The campaign</returns>
 		public Campaign GetCampaign(string userKey, int campaignId, int? clientId = null)
 		{
 			var path = "/Campaign/GetInfo/";

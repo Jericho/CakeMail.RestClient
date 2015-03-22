@@ -23,9 +23,16 @@ namespace CakeMail.RestClient
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="campaignId">ID of the campaign to delete.</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
-		/// <returns></returns>
+		/// <returns>True if the campaign is deleted</returns>
 		bool DeleteCampaign(string userKey, int campaignId, int? clientId = null);
 
+		/// <summary>
+		/// Method to get information about a campaign.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="campaignId">ID of the campaign.</param>
+		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
+		/// <returns>The campaign</returns>
 		Campaign GetCampaign(string userKey, int campaignId, int? clientId = null);
 
 		IEnumerable<Campaign> GetCampaigns(string userKey, string status = null, string name = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null);
