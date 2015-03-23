@@ -6,7 +6,7 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>https://raw.githubusercontent.com/Jericho/CakeMail.RestClient/master/LICENSE</licenseUrl>
+    <licenseUrl>http://jericho.mit-license.org</licenseUrl>
     <projectUrl>https://github.com/Jericho/CakeMail.RestClient</projectUrl>
     <iconUrl>https://github.com/identicons/jericho.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
