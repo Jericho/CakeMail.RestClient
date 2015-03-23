@@ -9,7 +9,7 @@ namespace CakeMail.RestClient
 		#region Methods related to CAMPAIGNS
 
 		/// <summary>
-		/// Method to create a new campaign
+		/// Create a new campaign
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="name">Name of the campaign.</param>
@@ -18,16 +18,16 @@ namespace CakeMail.RestClient
 		int CreateCampaign(string userKey, string name, int? clientId = null);
 
 		/// <summary>
-		/// Method to delete a campaign.
+		/// Delete a campaign.
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="campaignId">ID of the campaign to delete.</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
-		/// <returns>True if the campaign is deleted</returns>
+		/// <returns></returns>
 		bool DeleteCampaign(string userKey, int campaignId, int? clientId = null);
 
 		/// <summary>
-		/// Method to get information about a campaign.
+		/// Retrieve a campaign.
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="campaignId">ID of the campaign.</param>
@@ -35,10 +35,38 @@ namespace CakeMail.RestClient
 		/// <returns>The campaign</returns>
 		Campaign GetCampaign(string userKey, int campaignId, int? clientId = null);
 
+		/// <summary>
+		/// Get a list of campaigns matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="status">Filter using the campaign status. Possible value 'ongoing', 'closed'</param>
+		/// <param name="name">Filter using the campaign name.</param>
+		/// <param name="sortBy">Sort resulting campaigns. Possible value 'created_on', 'name'</param>
+		/// <param name="sortDirection">Direction of the sorting. Possible value 'asc', 'desc'</param>
+		/// <param name="limit">Limit the number of resulting campaigns.</param>
+		/// <param name="offset">Offset the beginning of resulting campaigns.</param>
+		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
+		/// <returns>Enumeration of campaigns mathcing the filtering criteria</returns>
 		IEnumerable<Campaign> GetCampaigns(string userKey, string status = null, string name = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null);
 
+		/// <summary>
+		/// Get a count of campaigns matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="status">Filter using the campaign status. Possible value 'ongoing', 'closed'</param>
+		/// <param name="name">Filter using the campaign name.</param>
+		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
+		/// <returns>The count of campaign matching the filtering criteria</returns>
 		long GetCampaignsCount(string userKey, string status = null, string name = null, int? clientId = null);
 
+		/// <summary>
+		/// Update a campaign
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="campaignId">ID of the campaign.</param>
+		/// <param name="name">The name of the campaign</param>
+		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
+		/// <returns>True if the recor was updated.</returns>
 		bool UpdateCampaign(string userKey, int campaignId, string name, int? clientId = null);
 
 		#endregion
