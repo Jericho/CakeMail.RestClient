@@ -16,6 +16,22 @@ namespace CakeMail.RestClient.UnitTests
 		private const int CLIENT_ID = 999;
 
 		[TestMethod]
+		public void RestClient_constructor()
+		{
+			// Arrange
+			var host = "my.dymmyurl.com";
+			var timeout =9999;
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, host, timeout);
+
+			// Assert
+			Assert.AreEqual(API_KEY, apiClient.ApiKey);
+			Assert.AreEqual(timeout, apiClient.Timeout);
+			Assert.AreEqual(new Uri("https://" + host), apiClient.BaseUrl);
+		}
+
+		[TestMethod]
 		[ExpectedException(typeof(HttpException))]
 		public void RestClient_Throws_exception_when_responsestatus_is_error()
 		{

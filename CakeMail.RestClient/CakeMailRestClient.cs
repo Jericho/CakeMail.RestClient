@@ -46,6 +46,16 @@ namespace CakeMail.RestClient
 			set { _client.UserAgent = value; }
 		}
 
+		public int Timeout
+		{
+			get { return _client.Timeout; }
+		}
+
+		public Uri BaseUrl
+		{
+			get { return _client.BaseUrl; }
+		}
+
 		#endregion
 
 		#region Constructors and Destructors
