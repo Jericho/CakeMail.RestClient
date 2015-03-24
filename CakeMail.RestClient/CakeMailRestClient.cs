@@ -241,23 +241,8 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("parent_id", parentId),
 				new KeyValuePair<string, object>("company_name", name)
 			};
-			if (!string.IsNullOrEmpty(adminEmail))
-			{
-				parameters.Add(new KeyValuePair<string, object>("admin_email", adminEmail));
-				parameters.Add(new KeyValuePair<string, object>("admin_first_name", adminFirstName));
-				parameters.Add(new KeyValuePair<string, object>("admin_last_name", adminLastName));
-				parameters.Add(new KeyValuePair<string, object>("admin_password", adminPassword));
-				parameters.Add(new KeyValuePair<string, object>("admin_password_confirmation", adminPassword));
-			}
-			if (!primaryContactSameAsAdmin && !string.IsNullOrEmpty(primaryContactEmail))
-			{
-				parameters.Add(new KeyValuePair<string, object>("contact_email", primaryContactEmail));
-				parameters.Add(new KeyValuePair<string, object>("contact_first_name", primaryContactFirstName));
-				parameters.Add(new KeyValuePair<string, object>("contact_last_name", primaryContactLastName));
-				parameters.Add(new KeyValuePair<string, object>("contact_password", primaryContactPassword));
-				parameters.Add(new KeyValuePair<string, object>("contact_password_confirmation", primaryContactPassword));
-			}
-			parameters.Add(new KeyValuePair<string, object>("contact_same_as_admin", primaryContactSameAsAdmin ? "1" : "0"));
+
+			// Address and phone
 			if (address1 != null) parameters.Add(new KeyValuePair<string, object>("address1", address1));
 			if (address2 != null) parameters.Add(new KeyValuePair<string, object>("address2", address2));
 			if (city != null) parameters.Add(new KeyValuePair<string, object>("city", city));
@@ -267,17 +252,40 @@ namespace CakeMail.RestClient
 			if (website != null) parameters.Add(new KeyValuePair<string, object>("website", website));
 			if (phone != null) parameters.Add(new KeyValuePair<string, object>("phone", phone));
 			if (fax != null) parameters.Add(new KeyValuePair<string, object>("fax", fax));
-			if (primaryContactSameAsAdmin) parameters.Add(new KeyValuePair<string, object>("contact_same_as_admin", "1"));
+
+			// Admin
+			if (adminEmail != null) parameters.Add(new KeyValuePair<string, object>("admin_email", adminEmail));
+			if (adminFirstName != null) parameters.Add(new KeyValuePair<string, object>("admin_first_name", adminFirstName));
+			if (adminLastName != null) parameters.Add(new KeyValuePair<string, object>("admin_last_name", adminLastName));
+			if (adminPassword != null)
+			{
+				parameters.Add(new KeyValuePair<string, object>("admin_password", adminPassword));
+				parameters.Add(new KeyValuePair<string, object>("admin_password_confirmation", adminPassword));
+			}
 			if (adminTitle != null) parameters.Add(new KeyValuePair<string, object>("admin_title", adminTitle));
 			if (adminOfficePhone != null) parameters.Add(new KeyValuePair<string, object>("admin_office_phone", adminOfficePhone));
 			if (adminMobilePhone != null) parameters.Add(new KeyValuePair<string, object>("admin_mobile_phone", adminMobilePhone));
 			if (adminLanguage != null) parameters.Add(new KeyValuePair<string, object>("admin_language", adminLanguage));
 			if (adminTimezoneId.HasValue) parameters.Add(new KeyValuePair<string, object>("admin_timezone_id", adminTimezoneId.Value));
-			if (primaryContactTitle != null) parameters.Add(new KeyValuePair<string, object>("contact_title", primaryContactTitle));
-			if (primaryContactLanguage != null) parameters.Add(new KeyValuePair<string, object>("contact_language", primaryContactLanguage));
-			if (primaryContactTimezoneId.HasValue) parameters.Add(new KeyValuePair<string, object>("contact_timezone_id", primaryContactTimezoneId.Value));
-			if (primaryContactOfficePhone != null) parameters.Add(new KeyValuePair<string, object>("contact_office_phone", primaryContactOfficePhone));
-			if (primaryContactMobilePhone != null) parameters.Add(new KeyValuePair<string, object>("contact_mobile_phone", primaryContactMobilePhone));
+
+			// Contact
+			parameters.Add(new KeyValuePair<string, object>("contact_same_as_admin", primaryContactSameAsAdmin ? "1" : "0"));
+			if (!primaryContactSameAsAdmin)
+			{
+				if (primaryContactEmail != null) parameters.Add(new KeyValuePair<string, object>("contact_email", primaryContactEmail));
+				if (primaryContactFirstName != null) parameters.Add(new KeyValuePair<string, object>("contact_first_name", primaryContactFirstName));
+				if (primaryContactLastName != null) parameters.Add(new KeyValuePair<string, object>("contact_last_name", primaryContactLastName));
+				if (primaryContactPassword != null)
+				{
+					parameters.Add(new KeyValuePair<string, object>("contact_password", primaryContactPassword));
+					parameters.Add(new KeyValuePair<string, object>("contact_password_confirmation", primaryContactPassword));
+				}
+				if (primaryContactTitle != null) parameters.Add(new KeyValuePair<string, object>("contact_title", primaryContactTitle));
+				if (primaryContactLanguage != null) parameters.Add(new KeyValuePair<string, object>("contact_language", primaryContactLanguage));
+				if (primaryContactTimezoneId.HasValue) parameters.Add(new KeyValuePair<string, object>("contact_timezone_id", primaryContactTimezoneId.Value));
+				if (primaryContactOfficePhone != null) parameters.Add(new KeyValuePair<string, object>("contact_office_phone", primaryContactOfficePhone));
+				if (primaryContactMobilePhone != null) parameters.Add(new KeyValuePair<string, object>("contact_mobile_phone", primaryContactMobilePhone));
+			}
 
 			return ExecuteObjectRequest<string>(path, parameters);
 		}
