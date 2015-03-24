@@ -50,6 +50,23 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 		}
 
 		[TestMethod]
+		public void CakeMailDateTimeConverter_ReadJson_Successfully_parses_null_date()
+		{
+			// Arrange
+			var json = "null";
+
+			var converter = new CakeMailDateTimeConverter();
+			var reader = new JsonTextReader(new StringReader(json));
+			reader.Read();
+
+			// Act
+			var result = (DateTime?)converter.ReadJson(reader, typeof(DateTime), null, null);
+
+			// Assert
+			Assert.IsNull(result);
+		}
+
+		[TestMethod]
 		[ExpectedException(typeof(Exception))]
 		public void CakeMailDateTimeConverter_ReadJson_Throws_exception_when_content_is_not_a_string()
 		{
