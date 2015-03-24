@@ -8,7 +8,7 @@ using System.Net;
 namespace CakeMail.RestClient.UnitTests
 {
 	[TestClass]
-	public class CamapignsTests
+	public class CampaignsTests
 	{
 		private const string API_KEY = "...dummy API key...";
 		private const string USER_KEY = "...dummy USER key...";
