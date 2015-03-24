@@ -62,6 +62,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Campaigns.cs" />
+    <Compile Include="Exceptions\CakeMailException.cs" />
+    <Compile Include="Exceptions\HttpException.cs" />
+    <Compile Include="Exceptions\CakeMailPostException.cs" />
     <Compile Include="Timezones.cs" />
     <Compile Include="CakeMailRestClientTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
