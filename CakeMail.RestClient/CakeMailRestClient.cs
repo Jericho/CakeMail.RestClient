@@ -365,12 +365,13 @@ namespace CakeMail.RestClient
 		}
 
 		/// <summary>
-		/// Retrieve a pending client
+		/// Retrieve a pending client.
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="confirmationCode">Confirmation code to get the information of a pending client.</param>
-		/// <returns>The <see cref="Client">client</see></returns>
-		public Client GetClient(string userKey, string confirmationCode = null)
+		/// <returns>The <see cref="UnConfirmedClient">client</see></returns>
+		/// <remarks>Pending clients must be activated before they can start using the CakeMail service.</remarks>
+		public UnConfirmedClient GetClient(string userKey, string confirmationCode)
 		{
 			var path = "/Client/GetInfo/";
 
@@ -380,7 +381,7 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("confirmation", confirmationCode)
 			};
 
-			return ExecuteObjectRequest<Client>(path, parameters);
+			return ExecuteObjectRequest<UnConfirmedClient>(path, parameters);
 		}
 
 		/// <summary>

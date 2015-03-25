@@ -132,7 +132,8 @@ namespace CakeMail.RestClient
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="confirmationCode">Confirmation code to get the information of a pending client.</param>
 		/// <returns>The <see cref="Client">client</see></returns>
-		Client GetClient(string userKey, string confirmationCode = null);
+		/// <remarks>Pending clients must be activated before they can start using the CakeMail service.</remarks>
+		UnConfirmedClient GetClient(string userKey, string confirmationCode);
 
 		/// <summary>
 		/// Get a list of clients matching the filtering criteria

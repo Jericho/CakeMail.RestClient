@@ -51,6 +51,7 @@
     <Compile Include="Exceptions\CakeMailPostException.cs" />
     <Compile Include="Exceptions\CakeMailException.cs" />
     <Compile Include="ICakeMailRestClient.cs" />
+    <Compile Include="Models\UnConfirmedClient.cs" />
     <Compile Include="Models\TemplateCategory.cs" />
     <Compile Include="Models\ImportResult.cs" />
     <Compile Include="Models\Trigger.cs" />
