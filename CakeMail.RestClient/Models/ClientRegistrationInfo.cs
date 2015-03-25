@@ -2,7 +2,7 @@
 
 namespace CakeMail.RestClient.Models
 {
-	public class ActivationInfo
+	public class ClientRegistrationInfo
 	{
 		#region Properties
 

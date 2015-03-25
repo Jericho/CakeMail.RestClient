@@ -51,6 +51,7 @@
     <Compile Include="Exceptions\CakeMailPostException.cs" />
     <Compile Include="Exceptions\CakeMailException.cs" />
     <Compile Include="ICakeMailRestClient.cs" />
+    <Compile Include="Models\ClientRegistrationInfo.cs" />
     <Compile Include="Models\UnConfirmedClient.cs" />
     <Compile Include="Models\TemplateCategory.cs" />
     <Compile Include="Models\ImportResult.cs" />
@@ -74,7 +75,6 @@
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\LoginInfo.cs" />
     <Compile Include="Models\Province.cs" />
-    <Compile Include="Models\ActivationInfo.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\RawEmailMessage.cs" />
     <Compile Include="Models\User.cs" />

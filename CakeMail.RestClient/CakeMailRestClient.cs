@@ -327,18 +327,18 @@ namespace CakeMail.RestClient
 		/// <summary>
 		/// Activate a pending client
 		/// </summary>
-		/// <param name="confirmation">Confirmation code returned by the Create method.</param>
-		/// <returns><see cref="ActivationInfo">Information</see> about the activated client</returns>
-		public ActivationInfo ActivateClient(string confirmation)
+		/// <param name="confirmationCode">Confirmation code returned by the Create method.</param>
+		/// <returns><see cref="ClientRegistrationInfo">Information</see> about the activated client</returns>
+		public ClientRegistrationInfo ConfirmClient(string confirmationCode)
 		{
 			string path = "/Client/Activate/";
 
 			var parameters = new List<KeyValuePair<string, object>>()
 			{
-				new KeyValuePair<string, object>("confirmation", confirmation)
+				new KeyValuePair<string, object>("confirmation", confirmationCode)
 			};
 
-			return ExecuteObjectRequest<ActivationInfo>(path, parameters);
+			return ExecuteObjectRequest<ClientRegistrationInfo>(path, parameters);
 		}
 
 		/// <summary>
@@ -433,7 +433,7 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("count", "true")
 			};
 			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
-			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
+			if (name != null) parameters.Add(new KeyValuePair<string, object>("company_name", name));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteCountRequest(path, parameters);
@@ -504,7 +504,7 @@ namespace CakeMail.RestClient
 			if (forwardIp != null) parameters.Add(new KeyValuePair<string, object>("forward_ip", forwardIp));
 			if (ipPool != null) parameters.Add(new KeyValuePair<string, object>("ip_pool", ipPool));
 			if (mdDomain != null) parameters.Add(new KeyValuePair<string, object>("md_domain", mdDomain));
-			if (isReseller.HasValue) parameters.Add(new KeyValuePair<string, object>("reseller", isReseller.Value));
+			if (isReseller.HasValue) parameters.Add(new KeyValuePair<string, object>("reseller", isReseller.Value ? "1" : "0"));
 			if (currency != null) parameters.Add(new KeyValuePair<string, object>("currency", currency));
 			if (planType != null) parameters.Add(new KeyValuePair<string, object>("plan_type", planType));
 			if (mailingLimit.HasValue) parameters.Add(new KeyValuePair<string, object>("mailing_limit", mailingLimit.Value));
@@ -515,6 +515,42 @@ namespace CakeMail.RestClient
 			if (defaultContactLimit.HasValue) parameters.Add(new KeyValuePair<string, object>("default_contact_limit", defaultContactLimit.Value));
 
 			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		/// <summary>
+		/// Activate a client which has been previously suspended
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>True if the client was activated</returns>
+		/// <remarks>This method is simply a shortcut for: UpdateClient(userKey, clientId, status: "active")</remarks>
+		public bool ActivateClient(string userKey, int clientId)
+		{
+			return UpdateClient(userKey, clientId, status: "active");
+		}
+
+		/// <summary>
+		/// Suspend a client
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>True if the client was suspended</returns>
+		/// <remarks>This method is simply a shortcut for: UpdateClient(userKey, clientId, status: "suspended_by_reseller")</remarks>
+		public bool SuspendClient(string userKey, int clientId)
+		{
+			return UpdateClient(userKey, clientId, status: "suspended_by_reseller");
+		}
+
+		/// <summary>
+		/// Delete a client
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>True if the client was deleted</returns>
+		/// <remarks>This method is simply a shortcut for: UpdateClient(userKey, clientId, status: "deleted")</remarks>
+		public bool DeleteClient(string userKey, int clientId)
+		{
+			return UpdateClient(userKey, clientId, status: "deleted");
 		}
 
 		#endregion

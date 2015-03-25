@@ -112,9 +112,9 @@ namespace CakeMail.RestClient
 		/// <summary>
 		/// Activate a pending client
 		/// </summary>
-		/// <param name="confirmation">Confirmation code returned by the Create method.</param>
-		/// <returns><see cref="ActivationInfo">Information</see> about the activated client</returns>
-		ActivationInfo ActivateClient(string confirmation);
+		/// <param name="confirmationCode">Confirmation code returned by the Create method.</param>
+		/// <returns><see cref="ClientRegistrationInfo">Information</see> about the activated client</returns>
+		ClientRegistrationInfo ConfirmClient(string confirmationCode);
 
 		/// <summary>
 		/// Retrieve a client
@@ -196,6 +196,33 @@ namespace CakeMail.RestClient
 		/// <param name="defaultContactLimit"></param>
 		/// <returns>True if the record was updated.</returns>
 		bool UpdateClient(string userKey, int clientId, string name = null, string status = null, int? parentId = null, string address1 = null, string address2 = null, string city = null, string provinceId = null, string postalCode = null, string countryId = null, string website = null, string phone = null, string fax = null, string authDomain = null, string bounceDomain = null, string dkimDomain = null, string doptinIp = null, string forwardDomain = null, string forwardIp = null, string ipPool = null, string mdDomain = null, bool? isReseller = null, string currency = null, string planType = null, int? mailingLimit = null, int? monthLimit = null, int? contactLimit = null, int? defaultMailingLimit = null, int? defaultMonthLimit = null, int? defaultContactLimit = null);
+
+		/// <summary>
+		/// Activate a client which has been previously suspended
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>True if the client was activated</returns>
+		/// <remarks>This method is simply a shortcut for: UpdateClient(userKey, clientId, status: "active")</remarks>
+		bool ActivateClient(string userKey, int clientId);
+
+		/// <summary>
+		/// Suspend a client
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>True if the client was suspended</returns>
+		/// <remarks>This method is simply a shortcut for: UpdateClient(userKey, clientId, status: "suspended_by_reseller")</remarks>
+		bool SuspendClient(string userKey, int clientId);
+
+		/// <summary>
+		/// Delete a client
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>True if the client was deleted</returns>
+		/// <remarks>This method is simply a shortcut for: UpdateClient(userKey, clientId, status: "deleted")</remarks>
+		bool DeleteClient(string userKey, int clientId);
 
 		#endregion
 
