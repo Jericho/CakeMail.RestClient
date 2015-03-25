@@ -438,6 +438,42 @@ namespace CakeMail.RestClient
 			return ExecuteCountRequest(path, parameters);
 		}
 
+		/// <summary>
+		/// Update a client
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <param name="name">Name of the client</param>
+		/// <param name="status">Status of the client. Possible values: 'trial', 'active', 'suspended_by_reseller', 'deleted'</param>
+		/// <param name="parentId"></param>
+		/// <param name="name">Name of the client</param>
+		/// <param name="address1">Address of the client</param>
+		/// <param name="address2">Address of the client</param>
+		/// <param name="city">City of the client</param>
+		/// <param name="provinceId">ID of the province of the client</param>
+		/// <param name="postalCode">Postal Code of the client</param>
+		/// <param name="countryId">ID or the country of the client</param>
+		/// <param name="website">Website URL of the client</param>
+		/// <param name="phone">Phone number of the client</param>
+		/// <param name="fax">Fax number of the client</param>
+		/// <param name="authDomain"></param>
+		/// <param name="bounceDomain"></param>
+		/// <param name="dkimDomain"></param>
+		/// <param name="doptinIp"></param>
+		/// <param name="forwardDomain"></param>
+		/// <param name="forwardIp"></param>
+		/// <param name="ipPool"></param>
+		/// <param name="mdDomain"></param>
+		/// <param name="isReseller">Is the client a reseller?</param>
+		/// <param name="currency"></param>
+		/// <param name="planType"></param>
+		/// <param name="mailingLimit">Per campaign limit of the client.</param>
+		/// <param name="monthLimit">Monthly emails sent limit of the client.</param>
+		/// <param name="contactLimit">Number of contacts limit of the client.</param>
+		/// <param name="defaultMailingLimit"></param>
+		/// <param name="defaultMonthLimit"></param>
+		/// <param name="defaultContactLimit"></param>
+		/// <returns>True if the record was updated.</returns>
 		public bool UpdateClient(string userKey, int clientId, string name = null, string status = null, int? parentId = null, string address1 = null, string address2 = null, string city = null, string provinceId = null, string postalCode = null, string countryId = null, string website = null, string phone = null, string fax = null, string authDomain = null, string bounceDomain = null, string dkimDomain = null, string doptinIp = null, string forwardDomain = null, string forwardIp = null, string ipPool = null, string mdDomain = null, bool? isReseller = null, string currency = null, string planType = null, int? mailingLimit = null, int? monthLimit = null, int? contactLimit = null, int? defaultMailingLimit = null, int? defaultMonthLimit = null, int? defaultContactLimit = null)
 		{
 			string path = "/Client/SetInfo/";
