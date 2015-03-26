@@ -649,10 +649,10 @@ namespace CakeMail.RestClient
 			var parameters = new List<KeyValuePair<string, object>>()
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("name", name)
+				new KeyValuePair<string, object>("name", name),
+				new KeyValuePair<string, object>("sender_name", defaultSenderName),
+				new KeyValuePair<string, object>("sender_email", defaultSenderEmailAddress)
 			};
-			if (defaultSenderName != null) parameters.Add(new KeyValuePair<string, object>("sender_name", defaultSenderName));
-			if (defaultSenderEmailAddress != null) parameters.Add(new KeyValuePair<string, object>("sender_email", defaultSenderEmailAddress));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteObjectRequest<int>(path, parameters);
