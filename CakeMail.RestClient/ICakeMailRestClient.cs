@@ -228,8 +228,23 @@ namespace CakeMail.RestClient
 
 		#region Methods related to PERMISSIONS
 
+		/// <summary>
+		/// Retrieve the list of permissions for a given user
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="userId">ID of the user.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>An enumeration of permissions</returns>
 		IEnumerable<string> GetUserPermissions(string userKey, int userId, int? clientId = null);
 
+		/// <summary>
+		/// Set the permissions granted to a given user
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="userId">ID of the user.</param>
+		/// <param name="permissions">Enumeration of permissions</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>True if the operation succeeded</returns>
 		bool SetUserPermissions(string userKey, int userId, IEnumerable<string> permissions, int? clientId = null);
 
 		#endregion

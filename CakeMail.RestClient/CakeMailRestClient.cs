@@ -557,6 +557,13 @@ namespace CakeMail.RestClient
 
 		#region Methods related to PERMISSIONS
 
+		/// <summary>
+		/// Retrieve the list of permissions for a given user
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="userId">ID of the user.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>An enumeration of permissions</returns>
 		public IEnumerable<string> GetUserPermissions(string userKey, int userId, int? clientId = null)
 		{
 			var path = "/Permission/GetPermissions/";
@@ -571,6 +578,14 @@ namespace CakeMail.RestClient
 			return ExecuteArrayRequest<string>(path, parameters, "permissions");
 		}
 
+		/// <summary>
+		/// Set the permissions granted to a given user
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="userId">ID of the user.</param>
+		/// <param name="permissions">Enumeration of permissions</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>True if the operation succeeded</returns>
 		public bool SetUserPermissions(string userKey, int userId, IEnumerable<string> permissions, int? clientId = null)
 		{
 			var path = "/Permission/SetPermissions/";
@@ -580,9 +595,11 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("user_id", userId)
 			};
+			var recordCount = 0;
 			foreach (var permission in permissions)
 			{
-				parameters.Add(new KeyValuePair<string, object>("permission", permission));
+				parameters.Add(new KeyValuePair<string, object>(string.Format("permission[{0}]", recordCount), permission));
+				recordCount++;
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
