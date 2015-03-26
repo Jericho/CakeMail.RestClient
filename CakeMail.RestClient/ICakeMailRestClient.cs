@@ -251,8 +251,17 @@ namespace CakeMail.RestClient
 
 		#region Methods related to COUNTRIES
 
+		/// <summary>
+		/// Get the list of countries
+		/// </summary>
+		/// <returns>An enumeration of <see cref="Country">countries</see></returns>
 		IEnumerable<Country> GetCountries();
 
+		/// <summary>
+		/// Get the list of state/provinces for a given country
+		/// </summary>
+		/// <param name="countryId">ID of the country.</param>
+		/// <returns>An enumeration of <see cref="Province">privinces</see></returns>
 		IEnumerable<Province> GetProvinces(string countryId);
 
 		#endregion
