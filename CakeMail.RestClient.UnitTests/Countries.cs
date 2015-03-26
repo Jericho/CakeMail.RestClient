@@ -28,7 +28,7 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":{\"countries\":[{\"id\":\"f1\",\"en_name\":\"Ficticious Country 1\",\"fr_name\":\"Pays fictif 1\"},{\"id\":\"f2\",\"en_name\":\"Ficticious Country 2\",\"fr_name\":\"Pays fictif 2\"}]}}"
+				Content = "{\"status\":\"success\",\"data\":{\"countries\":[{\"id\":\"f1\",\"en_name\":\"Fictitious Country 1\",\"fr_name\":\"Pays fictif 1\"},{\"id\":\"f2\",\"en_name\":\"Fictitious Country 2\",\"fr_name\":\"Pays fictif 2\"}]}}"
 			});
 
 			// Act
@@ -38,8 +38,8 @@ namespace CakeMail.RestClient.UnitTests
 			// Assert
 			Assert.IsNotNull(result);
 			Assert.AreEqual(2, result.Count());
-			Assert.IsTrue(result.Any(tz => tz.Id == "f1" && tz.EnglishName.Equals("Ficticious Country 1")));
-			Assert.IsTrue(result.Any(tz => tz.Id == "f2" && tz.EnglishName.Equals("Ficticious Country 2")));
+			Assert.IsTrue(result.Any(tz => tz.Id == "f1" && tz.EnglishName.Equals("Fictitious Country 1")));
+			Assert.IsTrue(result.Any(tz => tz.Id == "f2" && tz.EnglishName.Equals("Fictitious Country 2")));
 		}
 
 		[TestMethod]
@@ -59,7 +59,7 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":{\"provinces\":[{\"id\":\"p1\",\"en_name\":\"Ficticious Province 1\",\"fr_name\":\"Province fictive 1\"},{\"id\":\"p2\",\"en_name\":\"Ficticious Province 2\",\"fr_name\":\"Province fictive 2\"}]}}"
+				Content = "{\"status\":\"success\",\"data\":{\"provinces\":[{\"id\":\"p1\",\"en_name\":\"Fictitious Province 1\",\"fr_name\":\"Province fictive 1\"},{\"id\":\"p2\",\"en_name\":\"Fictitious Province 2\",\"fr_name\":\"Province fictive 2\"}]}}"
 			});
 
 			// Act
@@ -69,8 +69,8 @@ namespace CakeMail.RestClient.UnitTests
 			// Assert
 			Assert.IsNotNull(result);
 			Assert.AreEqual(2, result.Count());
-			Assert.IsTrue(result.Any(tz => tz.Id == "p1" && tz.EnglishName.Equals("Ficticious Province 1")));
-			Assert.IsTrue(result.Any(tz => tz.Id == "p2" && tz.EnglishName.Equals("Ficticious Province 2")));
+			Assert.IsTrue(result.Any(tz => tz.Id == "p1" && tz.EnglishName.Equals("Fictitious Province 1")));
+			Assert.IsTrue(result.Any(tz => tz.Id == "p2" && tz.EnglishName.Equals("Fictitious Province 2")));
 		}
 	}
 }

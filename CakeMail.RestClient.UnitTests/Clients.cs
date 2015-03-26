@@ -19,17 +19,17 @@ namespace CakeMail.RestClient.UnitTests
 		public void CreateClient_with_all_parameters()
 		{
 			// Arrange
-			string name = "Ficticious Inc";
+			string name = "Fictitious Inc";
 			string address1 = "123 1st Avenue";
 			string address2 = "Suite 1000";
 			string city = "Mock City";
 			string provinceId = "FL";
 			string postalCode = "12345";
 			string countryId = "us";
-			string website = "www.ficticiouscompany.com";
+			string website = "www.fictitiouscompany.com";
 			string phone = "111-111-1111";
 			string fax = "222-222-2222";
-			string adminEmail = "bobsmith@ficticiouscompany.com";
+			string adminEmail = "bobsmith@fictitiouscompany.com";
 			string adminFirstName = "Bob";
 			string adminLastName = "Smith";
 			string adminTitle = "Administrator";
@@ -38,7 +38,7 @@ namespace CakeMail.RestClient.UnitTests
 			string adminLanguage = "en";
 			int? adminTimezoneId = 542;
 			string adminPassword = "MySecretPassword";
-			string primaryContactEmail = "janedoe@ficticiouscompany.com";
+			string primaryContactEmail = "janedoe@fictitiouscompany.com";
 			string primaryContactFirstName = "Jane";
 			string primaryContactLastName = "Doe";
 			string primaryContactTitle = "CEO";
@@ -113,7 +113,7 @@ namespace CakeMail.RestClient.UnitTests
 		public void CreateClient_with_minimal_parameters()
 		{
 			// Arrange
-			string name = "Ficticious Inc";
+			string name = "Fictitious Inc";
 			string address1 = null;
 			string address2 = null;
 			string city = null;
@@ -172,17 +172,17 @@ namespace CakeMail.RestClient.UnitTests
 		public void CreateClient_admin_same_as_contact()
 		{
 			// Arrange
-			string name = "Ficticious Inc";
+			string name = "Fictitious Inc";
 			string address1 = "123 1st Avenue";
 			string address2 = "Suite 1000";
 			string city = "Mock City";
 			string provinceId = "FL";
 			string postalCode = "12345";
 			string countryId = "us";
-			string website = "www.ficticiouscompany.com";
+			string website = "www.fictitiouscompany.com";
 			string phone = "111-111-1111";
 			string fax = "222-222-2222";
-			string adminEmail = "bobsmith@ficticiouscompany.com";
+			string adminEmail = "bobsmith@fictitiouscompany.com";
 			string adminFirstName = "Bob";
 			string adminLastName = "Smith";
 			string adminTitle = "Administrator";
@@ -191,7 +191,7 @@ namespace CakeMail.RestClient.UnitTests
 			string adminLanguage = "en";
 			int? adminTimezoneId = 542;
 			string adminPassword = "MySecretPassword";
-			string primaryContactEmail = "janedoe@ficticiouscompany.com";
+			string primaryContactEmail = "janedoe@fictitiouscompany.com";
 			string primaryContactFirstName = "Jane";
 			string primaryContactLastName = "Doe";
 			string primaryContactTitle = "CEO";
@@ -299,7 +299,7 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"city\":\"Mock City\",\"company_name\":\"Ficticious Inc\",\"confirmation\":\"{0}\",\"address1\":\"123 1st Avenue\",\"address2\":\"Suite 1000\",\"country_id\":\"us\",\"currency\":\"USD\",\"fax\":\"222-222-2222\",\"parent_id\":\"1\",\"phone\":\"111-111-1111\",\"postal_code\":\"12345\",\"province_id\":\"FL\",\"status\":\"pending\",\"contact_same_as_admin\":\"1\",\"admin_email\":\"bobsmith@ficticiouscompany.com\",\"admin_password\":\"7cad97840d5b8e175870b1245a5fe9d8\",\"admin_first_name\":\"Bob\",\"admin_last_name\":\"Smith\",\"admin_language\":\"en_US\",\"admin_mobile_phone\":\"444-444-4444\",\"admin_office_phone\":\"333-333-3333\",\"admin_timezone_id\":\"542\",\"admin_title\":\"Administrator\",\"contact_email\":null,\"contact_password\":null,\"contact_first_name\":null,\"contact_last_name\":null,\"contact_language\":\"en_US\",\"contact_mobile_phone\":null,\"contact_office_phone\":null,\"contact_timezone_id\":\"152\",\"contact_title\":null,\"time\":\"2015-03-25 17:07:03\",\"last_confirmation\":\"2015-03-25 17:07:03\",\"expire\":\"2015-04-24 17:07:03\",\"website\":\"www.ficticiouscompany.com\",\"industry_id\":\"0\"}}}}", confirmationCode)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"city\":\"Mock City\",\"company_name\":\"Fictitious Inc\",\"confirmation\":\"{0}\",\"address1\":\"123 1st Avenue\",\"address2\":\"Suite 1000\",\"country_id\":\"us\",\"currency\":\"USD\",\"fax\":\"222-222-2222\",\"parent_id\":\"1\",\"phone\":\"111-111-1111\",\"postal_code\":\"12345\",\"province_id\":\"FL\",\"status\":\"pending\",\"contact_same_as_admin\":\"1\",\"admin_email\":\"bobsmith@fictitiouscompany.com\",\"admin_password\":\"7cad97840d5b8e175870b1245a5fe9d8\",\"admin_first_name\":\"Bob\",\"admin_last_name\":\"Smith\",\"admin_language\":\"en_US\",\"admin_mobile_phone\":\"444-444-4444\",\"admin_office_phone\":\"333-333-3333\",\"admin_timezone_id\":\"542\",\"admin_title\":\"Administrator\",\"contact_email\":null,\"contact_password\":null,\"contact_first_name\":null,\"contact_last_name\":null,\"contact_language\":\"en_US\",\"contact_mobile_phone\":null,\"contact_office_phone\":null,\"contact_timezone_id\":\"152\",\"contact_title\":null,\"time\":\"2015-03-25 17:07:03\",\"last_confirmation\":\"2015-03-25 17:07:03\",\"expire\":\"2015-04-24 17:07:03\",\"website\":\"www.fictitiouscompany.com\",\"industry_id\":\"0\"}}}}", confirmationCode)
 			});
 
 			// Act
@@ -332,7 +332,7 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"lineage\":\"1-{0}\",\"address1\":\"123 1st Avenue\",\"address2\":\"Suite 1000\",\"config_id\":\"55\",\"auth_domain\":\"md02.com\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"parent_bounce_domain\":\"bounce.ficticiouscompany.com\",\"city\":\"Mock City\",\"company_name\":\"Ficticious Inc\",\"contact_id\":\"0\",\"country\":\"United States\",\"country_id\":\"us\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"dkim_domain\":\"md02.com\",\"doptin_ip\":\"192.168.77.1\",\"fax\":null,\"force_unsub\":\"false\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"parent_forward_domain\":\"http://forward.ficticiouscompany.com/\",\"forward_ip\":\"192.168.77.2\",\"id\":\"{0}\",\"key\":\"...dummy key...\",\"last_activity\":\"2015-03-25 14:20:54\",\"mailing_limit\":\"900000\",\"manager_id\":\"0\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"parent_md_domain\":\"http://link.ficticiouscompany.com/\",\"month_limit\":\"900000\",\"default_contact_limit\":\"0\",\"contact_limit\":\"0\",\"mta_id\":\"1\",\"parent_id\":\"1\",\"phone\":null,\"plan_min_vol\":null,\"plan_period\":null,\"plan_price\":null,\"plan_start_date\":null,\"plan_type\":null,\"postal_code\":null,\"pricing_plan\":\"courrielleur-demo\",\"province\":\"Florida\",\"province_id\":\"FL\",\"registered_date\":\"2015-03-01 00:00:00\",\"reseller\":\"false\",\"status\":\"active\",\"lineage_status\":\"active\",\"default_trial\":\"false\",\"default_reseller\":\"false\",\"billing_bundle_id\":\"0\",\"billing_package_id\":\"0\",\"billing_discount_percent\":\"0.000\",\"callback\":null,\"trigger_info\":\"false\",\"website\":null,\"industry_id\":null}}}}", CLIENT_ID)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"lineage\":\"1-{0}\",\"address1\":\"123 1st Avenue\",\"address2\":\"Suite 1000\",\"config_id\":\"55\",\"auth_domain\":\"md02.com\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"parent_bounce_domain\":\"bounce.fictitiouscompany.com\",\"city\":\"Mock City\",\"company_name\":\"Fictitious Inc\",\"contact_id\":\"0\",\"country\":\"United States\",\"country_id\":\"us\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"dkim_domain\":\"md02.com\",\"doptin_ip\":\"192.168.77.1\",\"fax\":null,\"force_unsub\":\"false\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"parent_forward_domain\":\"http://forward.fictitiouscompany.com/\",\"forward_ip\":\"192.168.77.2\",\"id\":\"{0}\",\"key\":\"...dummy key...\",\"last_activity\":\"2015-03-25 14:20:54\",\"mailing_limit\":\"900000\",\"manager_id\":\"0\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"parent_md_domain\":\"http://link.fictitiouscompany.com/\",\"month_limit\":\"900000\",\"default_contact_limit\":\"0\",\"contact_limit\":\"0\",\"mta_id\":\"1\",\"parent_id\":\"1\",\"phone\":null,\"plan_min_vol\":null,\"plan_period\":null,\"plan_price\":null,\"plan_start_date\":null,\"plan_type\":null,\"postal_code\":null,\"pricing_plan\":\"courrielleur-demo\",\"province\":\"Florida\",\"province_id\":\"FL\",\"registered_date\":\"2015-03-01 00:00:00\",\"reseller\":\"false\",\"status\":\"active\",\"lineage_status\":\"active\",\"default_trial\":\"false\",\"default_reseller\":\"false\",\"billing_bundle_id\":\"0\",\"billing_package_id\":\"0\",\"billing_discount_percent\":\"0.000\",\"callback\":null,\"trigger_info\":\"false\",\"website\":null,\"industry_id\":null}}}}", CLIENT_ID)
 			});
 
 			// Act
@@ -364,7 +364,7 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"lineage\":\"1-{0}\",\"address1\":\"123 1st Avenue\",\"address2\":\"Suite 1000\",\"config_id\":\"55\",\"auth_domain\":\"md02.com\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"parent_bounce_domain\":\"bounce.ficticiouscompany.com\",\"city\":\"Mock City\",\"company_name\":\"Ficticious Inc\",\"contact_id\":\"0\",\"country\":\"United States\",\"country_id\":\"us\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"dkim_domain\":\"md02.com\",\"doptin_ip\":\"192.168.77.1\",\"fax\":null,\"force_unsub\":\"false\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"parent_forward_domain\":\"http://forward.ficticiouscompany.com/\",\"forward_ip\":\"192.168.77.2\",\"id\":\"{0}\",\"key\":\"...dummy key...\",\"last_activity\":\"2015-03-25 14:20:54\",\"mailing_limit\":\"900000\",\"manager_id\":\"0\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"parent_md_domain\":\"http://link.ficticiouscompany.com/\",\"month_limit\":\"900000\",\"default_contact_limit\":\"0\",\"contact_limit\":\"0\",\"mta_id\":\"1\",\"parent_id\":\"1\",\"phone\":null,\"plan_min_vol\":null,\"plan_period\":null,\"plan_price\":null,\"plan_start_date\":null,\"plan_type\":null,\"postal_code\":null,\"pricing_plan\":\"courrielleur-demo\",\"province\":\"Florida\",\"province_id\":\"FL\",\"registered_date\":\"2015-03-01 00:00:00\",\"reseller\":\"false\",\"status\":\"active\",\"lineage_status\":\"active\",\"default_trial\":\"false\",\"default_reseller\":\"false\",\"billing_bundle_id\":\"0\",\"billing_package_id\":\"0\",\"billing_discount_percent\":\"0.000\",\"callback\":null,\"trigger_info\":\"false\",\"website\":null,\"industry_id\":null}}}}", CLIENT_ID)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"lineage\":\"1-{0}\",\"address1\":\"123 1st Avenue\",\"address2\":\"Suite 1000\",\"config_id\":\"55\",\"auth_domain\":\"md02.com\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"parent_bounce_domain\":\"bounce.fictitiouscompany.com\",\"city\":\"Mock City\",\"company_name\":\"Fictitious Inc\",\"contact_id\":\"0\",\"country\":\"United States\",\"country_id\":\"us\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"dkim_domain\":\"md02.com\",\"doptin_ip\":\"192.168.77.1\",\"fax\":null,\"force_unsub\":\"false\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"parent_forward_domain\":\"http://forward.fictitiouscompany.com/\",\"forward_ip\":\"192.168.77.2\",\"id\":\"{0}\",\"key\":\"...dummy key...\",\"last_activity\":\"2015-03-25 14:20:54\",\"mailing_limit\":\"900000\",\"manager_id\":\"0\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"parent_md_domain\":\"http://link.fictitiouscompany.com/\",\"month_limit\":\"900000\",\"default_contact_limit\":\"0\",\"contact_limit\":\"0\",\"mta_id\":\"1\",\"parent_id\":\"1\",\"phone\":null,\"plan_min_vol\":null,\"plan_period\":null,\"plan_price\":null,\"plan_start_date\":null,\"plan_type\":null,\"postal_code\":null,\"pricing_plan\":\"courrielleur-demo\",\"province\":\"Florida\",\"province_id\":\"FL\",\"registered_date\":\"2015-03-01 00:00:00\",\"reseller\":\"false\",\"status\":\"active\",\"lineage_status\":\"active\",\"default_trial\":\"false\",\"default_reseller\":\"false\",\"billing_bundle_id\":\"0\",\"billing_package_id\":\"0\",\"billing_discount_percent\":\"0.000\",\"callback\":null,\"trigger_info\":\"false\",\"website\":null,\"industry_id\":null}}}}", CLIENT_ID)
 			});
 
 			// Act
@@ -396,7 +396,7 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"lineage\":\"1-{0}\",\"address1\":\"123 1st Avenue\",\"address2\":\"Suite 1000\",\"config_id\":\"55\",\"auth_domain\":\"md02.com\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"parent_bounce_domain\":\"bounce.ficticiouscompany.com\",\"city\":\"Mock City\",\"company_name\":\"Ficticious Inc\",\"contact_id\":\"0\",\"country\":\"United States\",\"country_id\":\"us\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"dkim_domain\":\"md02.com\",\"doptin_ip\":\"192.168.77.1\",\"fax\":null,\"force_unsub\":\"false\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"parent_forward_domain\":\"http://forward.ficticiouscompany.com/\",\"forward_ip\":\"192.168.77.2\",\"id\":\"{0}\",\"key\":\"...dummy key...\",\"last_activity\":\"2015-03-25 14:20:54\",\"mailing_limit\":\"900000\",\"manager_id\":\"0\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"parent_md_domain\":\"http://link.ficticiouscompany.com/\",\"month_limit\":\"900000\",\"default_contact_limit\":\"0\",\"contact_limit\":\"0\",\"mta_id\":\"1\",\"parent_id\":\"1\",\"phone\":null,\"plan_min_vol\":null,\"plan_period\":null,\"plan_price\":null,\"plan_start_date\":null,\"plan_type\":null,\"postal_code\":null,\"pricing_plan\":\"courrielleur-demo\",\"province\":\"Florida\",\"province_id\":\"FL\",\"registered_date\":\"2015-03-01 00:00:00\",\"reseller\":\"false\",\"status\":\"active\",\"lineage_status\":\"active\",\"default_trial\":\"false\",\"default_reseller\":\"false\",\"billing_bundle_id\":\"0\",\"billing_package_id\":\"0\",\"billing_discount_percent\":\"0.000\",\"callback\":null,\"trigger_info\":\"false\",\"website\":null,\"industry_id\":null}}}}", CLIENT_ID)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"lineage\":\"1-{0}\",\"address1\":\"123 1st Avenue\",\"address2\":\"Suite 1000\",\"config_id\":\"55\",\"auth_domain\":\"md02.com\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"parent_bounce_domain\":\"bounce.fictitiouscompany.com\",\"city\":\"Mock City\",\"company_name\":\"Fictitious Inc\",\"contact_id\":\"0\",\"country\":\"United States\",\"country_id\":\"us\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"dkim_domain\":\"md02.com\",\"doptin_ip\":\"192.168.77.1\",\"fax\":null,\"force_unsub\":\"false\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"parent_forward_domain\":\"http://forward.fictitiouscompany.com/\",\"forward_ip\":\"192.168.77.2\",\"id\":\"{0}\",\"key\":\"...dummy key...\",\"last_activity\":\"2015-03-25 14:20:54\",\"mailing_limit\":\"900000\",\"manager_id\":\"0\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"parent_md_domain\":\"http://link.fictitiouscompany.com/\",\"month_limit\":\"900000\",\"default_contact_limit\":\"0\",\"contact_limit\":\"0\",\"mta_id\":\"1\",\"parent_id\":\"1\",\"phone\":null,\"plan_min_vol\":null,\"plan_period\":null,\"plan_price\":null,\"plan_start_date\":null,\"plan_type\":null,\"postal_code\":null,\"pricing_plan\":\"courrielleur-demo\",\"province\":\"Florida\",\"province_id\":\"FL\",\"registered_date\":\"2015-03-01 00:00:00\",\"reseller\":\"false\",\"status\":\"active\",\"lineage_status\":\"active\",\"default_trial\":\"false\",\"default_reseller\":\"false\",\"billing_bundle_id\":\"0\",\"billing_package_id\":\"0\",\"billing_discount_percent\":\"0.000\",\"callback\":null,\"trigger_info\":\"false\",\"website\":null,\"industry_id\":null}}}}", CLIENT_ID)
 			});
 
 			// Act
@@ -414,8 +414,8 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var status = "active";
 
-			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"lineage\":\"1\"}";
-			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"lineage\":\"1\"}";
+			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
+			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -448,8 +448,8 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var name = "Dummy Client";
 
-			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"lineage\":\"1\"}";
-			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"lineage\":\"1\"}";
+			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
+			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -482,8 +482,8 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var sortBy = "company_name";
 
-			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"lineage\":\"1\"}";
-			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"lineage\":\"1\"}";
+			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
+			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -516,8 +516,8 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var sortDirection = "asc";
 
-			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"lineage\":\"1\"}";
-			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"lineage\":\"1\"}";
+			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
+			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -550,8 +550,8 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var limit = 11;
 
-			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"lineage\":\"1\"}";
-			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"lineage\":\"1\"}";
+			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
+			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -584,8 +584,8 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var offset = 33;
 
-			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"lineage\":\"1\"}";
-			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"lineage\":\"1\"}";
+			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
+			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -616,8 +616,8 @@ namespace CakeMail.RestClient.UnitTests
 		public void GetClients_with_clientid()
 		{
 			// Arrange
-			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"lineage\":\"1\"}";
-			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.ficticiouscompany.com/\",\"bounce_domain\":\"bounce.ficticiouscompany.com\",\"forward_domain\":\"http://forward.ficticiouscompany.com/\",\"lineage\":\"1\"}";
+			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
+			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -739,7 +739,7 @@ namespace CakeMail.RestClient.UnitTests
 		public void UpdateClient_name()
 		{
 			// Arrange
-			var name = "Ficticious Inc";
+			var name = "Fictitious Inc";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -1009,7 +1009,7 @@ namespace CakeMail.RestClient.UnitTests
 		public void UpdateClient_website()
 		{
 			// Arrange
-			var website = "www.ficticiouscompany.com";
+			var website = "www.fictitiouscompany.com";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -1130,7 +1130,7 @@ namespace CakeMail.RestClient.UnitTests
 		public void UpdateClient_bouncedomain()
 		{
 			// Arrange
-			var bounceDomain = "bounce.ficticiouscompany.com";
+			var bounceDomain = "bounce.fictitiouscompany.com";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -1220,7 +1220,7 @@ namespace CakeMail.RestClient.UnitTests
 		public void UpdateClient_forwarddomain()
 		{
 			// Arrange
-			var forwardDomain = "http://forward.ficticiouscompany.com/";
+			var forwardDomain = "http://forward.fictitiouscompany.com/";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -1310,7 +1310,7 @@ namespace CakeMail.RestClient.UnitTests
 		public void UpdateClient_mddomain()
 		{
 			// Arrange
-			var mdDomain = "http://link.ficticiouscompany.com/";
+			var mdDomain = "http://link.fictitiouscompany.com/";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
