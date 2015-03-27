@@ -23,7 +23,7 @@ namespace CakeMail.RestClient
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="campaignId">ID of the campaign to delete.</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
-		/// <returns></returns>
+		/// <returns>True if the campaign is deleted</returns>
 		bool DeleteCampaign(string userKey, int campaignId, int? clientId = null);
 
 		/// <summary>
@@ -56,7 +56,7 @@ namespace CakeMail.RestClient
 		/// <param name="status">Filter using the campaign status. Possible value 'ongoing', 'closed'</param>
 		/// <param name="name">Filter using the campaign name.</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
-		/// <returns>The count of campaign matching the filtering criteria</returns>
+		/// <returns>The count of campaigns matching the filtering criteria</returns>
 		long GetCampaignsCount(string userKey, string status = null, string name = null, int? clientId = null);
 
 		/// <summary>
@@ -268,17 +268,104 @@ namespace CakeMail.RestClient
 
 		#region Methods related to LISTS
 
-		int CreateList(string userKey, string name, string defaultSenderName, string defaultSenderEmailAddress, int? clientId = null);
+		/// <summary>
+		/// Create a list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="name">Name of the list.</param>
+		/// <param name="defaultSenderName">Name of the default sender of the list.</param>
+		/// <param name="defaultSenderEmailAddress">Email of the default sender of the list.</param>
+		/// <param name="spamPolicyAccepted">Indicates if the anti-spam policy has been accepted</param>
+		/// <param name="clientId">Client ID of the client in which the list is created.</param>
+		/// <returns>ID of the new list</returns>
+		int CreateList(string userKey, string name, string defaultSenderName, string defaultSenderEmailAddress, bool spamPolicyAccepted = false, int? clientId = null);
 
+		/// <summary>
+		/// Delete a list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>True if the list is deleted</returns>
 		bool DeleteList(string userKey, int listId, int? clientId = null);
 
-		List GetList(string userKey, int listId, int? subListId = null, bool includeDetails = true, bool calculateEngagement = false, int? clientId = null);
+		/// <summary>
+		/// Retrieve a list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list</param>
+		/// <param name="subListId">ID of the segment</param>
+		/// <param name="includeStatistics">True if you want the statistics</param>
+		/// <param name="calculateEngagement">True if you want the engagement information to be calculated</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>The <see cref="List">list</see></returns>
+		List GetList(string userKey, int listId, int? subListId = null, bool includeStatistics = true, bool calculateEngagement = false, int? clientId = null);
 
-		IEnumerable<List> GetLists(string userKey, string name = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null);
+		/// <summary>
+		/// Retrieve the lists matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="status">Filter using the list status. Possible values: 'active', 'archived'</param>
+		/// <param name="name">Filter using the list name.</param>
+		/// <param name="sortBy">Sort resulting lists. Possible values: 'name', 'created_on', 'active_members_count'</param>
+		/// <param name="sortDirection">Direction of the sorting. Possible values: 'asc', 'desc'</param>
+		/// <param name="limit">Limit the number of resulting lists.</param>
+		/// <param name="offset">Offset the beginning of resulting lists.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>Enumeration of <see cref="List">lists</see> matching the filtering criteria</returns>
+		IEnumerable<List> GetLists(string userKey, string status = null, string name = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null);
 
+		/// <summary>
+		/// Get a count of lists matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="status">Filter using the list status. Possible value 'active', 'archived'</param>
+		/// <param name="name">Filter using the list name.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>The count of lists matching the filtering criteria</returns>
 		long GetListsCount(string userKey, string name = null, int? clientId = null);
 
-		bool UpdateList(string userKey, int listId, int? subListId = null, string name = null, string language = null, string policy = null, string status = null, string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, string query = null, int? clientId = null);
+		/// <summary>
+		/// Update a list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list</param>
+		/// <param name="name">Name of the list or name of the segment if sublist_id is provided.</param>
+		/// <param name="language">Language of the list. e.g.: 'en_US' for English (US)</param>
+		/// <param name="spamPolicyAccepted">Indicates if the anti-spam policy has been accepted</param>
+		/// <param name="status">Status of the list. Possible values: 'active', 'archived', 'deleted'</param>
+		/// <param name="senderName">Name of the default sender of the list.</param>
+		/// <param name="senderEmail">Email of the default sender of the list.</param>
+		/// <param name="goto_oi">Redirection URL on subscribing to the list.</param>
+		/// <param name="goto_di">Redirection URL on confirming the subscription to the list.</param>
+		/// <param name="goto_oo">Redirection URL on unsubscribing to the list.</param>
+		/// <param name="webhook">Webhook URL for the list.</param>
+		/// <param name="query">Rules for the segment.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>True if the list was updated</returns>
+		bool UpdateList(string userKey, int listId, string name = null, string language = null, bool spamPolicyAccepted = false, string status = null, string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, int? clientId = null);
+
+		/// <summary>
+		/// Update a segment
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="segmentId">ID of the segment</param>
+		/// <param name="listId">ID of the list</param>
+		/// <param name="name">Name of the segment.</param>
+		/// <param name="language">Language of the segment. e.g.: 'en_US' for English (US)</param>
+		/// <param name="spamPolicyAccepted">Indicates if the anti-spam policy has been accepted</param>
+		/// <param name="status">Status of the segment. Possible values: 'active', 'archived', 'deleted'</param>
+		/// <param name="senderName">Name of the default sender of the segment.</param>
+		/// <param name="senderEmail">Email of the default sender of the segment.</param>
+		/// <param name="goto_oi">Redirection URL on subscribing to the segment.</param>
+		/// <param name="goto_di">Redirection URL on confirming the subscription to the segment.</param>
+		/// <param name="goto_oo">Redirection URL on unsubscribing to the segment.</param>
+		/// <param name="webhook">Webhook URL for the segment.</param>
+		/// <param name="query">Rules for the segment.</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>True if the segment was updated</returns>
+		/// <remarks>A segment is sometimes referred to as a 'sub-list'</remarks>
+		bool UpdateSegment(string userKey, int segmentId, int listId, string name = null, string language = null, bool spamPolicyAccepted = false, string status = null, string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, string query = null, int? clientId = null);
 
 		bool AddListField(string userKey, int listId, string fieldName, string fieldType, int? clientId = null);
 
