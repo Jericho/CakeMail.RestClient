@@ -367,9 +367,26 @@ namespace CakeMail.RestClient
 		/// <remarks>A segment is sometimes referred to as a 'sub-list'</remarks>
 		bool UpdateSegment(string userKey, int segmentId, int listId, string name = null, string language = null, bool spamPolicyAccepted = false, string status = null, string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, string query = null, int? clientId = null);
 
-		bool AddListField(string userKey, int listId, string fieldName, string fieldType, int? clientId = null);
+		/// <summary>
+		/// Add a new field to a list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="name">Name of the field.</param>
+		/// <param name="type">Type of the field. Possible values: 'text', 'integer', 'datetime' or 'mediumtext'</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>True if the field was added to the list</returns>
+		bool AddListField(string userKey, int listId, string name, string type, int? clientId = null);
 
-		bool DeleteListField(string userKey, int listId, string fieldName, int? clientId = null);
+		/// <summary>
+		/// Remove a field from a list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="name">Name of the field.</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>True if the field was removed from the list</returns>
+		bool DeleteListField(string userKey, int listId, string name, int? clientId = null);
 
 		IEnumerable<ListField> GetListFields(string userKey, int listId, int? clientId = null);
 

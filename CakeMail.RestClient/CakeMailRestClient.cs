@@ -859,15 +859,15 @@ namespace CakeMail.RestClient
 		}
 
 		/// <summary>
-		/// 
+		/// Add a new field to a list
 		/// </summary>
-		/// <param name="userKey"></param>
-		/// <param name="listId"></param>
-		/// <param name="fieldName"></param>
-		/// <param name="fieldType">Possible values: 'text', 'integer', 'datetime' or 'mediumtext'</param>
-		/// <param name="clientId"></param>
-		/// <returns></returns>
-		public bool AddListField(string userKey, int listId, string fieldName, string fieldType, int? clientId = null)
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="name">Name of the field.</param>
+		/// <param name="type">Type of the field. Possible values: 'text', 'integer', 'datetime' or 'mediumtext'</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>True if the field was added to the list</returns>
+		public bool AddListField(string userKey, int listId, string name, string type, int? clientId = null)
 		{
 			string path = "/List/EditStructure/";
 
@@ -876,15 +876,23 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
 				new KeyValuePair<string, object>("action", "add"),
-				new KeyValuePair<string, object>("field", fieldName),
-				new KeyValuePair<string, object>("type", fieldType)
+				new KeyValuePair<string, object>("field", name),
+				new KeyValuePair<string, object>("type", type)
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteObjectRequest<bool>(path, parameters);
 		}
 
-		public bool DeleteListField(string userKey, int listId, string fieldName, int? clientId = null)
+		/// <summary>
+		/// Remove a field from a list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="name">Name of the field.</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>True if the field was removed from the list</returns>
+		public bool DeleteListField(string userKey, int listId, string name, int? clientId = null)
 		{
 			string path = "/List/EditStructure/";
 
@@ -893,7 +901,7 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
 				new KeyValuePair<string, object>("action", "delete"),
-				new KeyValuePair<string, object>("field", fieldName)
+				new KeyValuePair<string, object>("field", name)
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
