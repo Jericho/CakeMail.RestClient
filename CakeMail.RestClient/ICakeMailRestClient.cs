@@ -343,7 +343,7 @@ namespace CakeMail.RestClient
 		/// <param name="query">Rules for the segment.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>True if the list was updated</returns>
-		bool UpdateList(string userKey, int listId, string name = null, string language = null, bool spamPolicyAccepted = false, string status = null, string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, int? clientId = null);
+		bool UpdateList(string userKey, int listId, string name = null, string language = null, bool? spamPolicyAccepted = null, string status = null, string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, int? clientId = null);
 
 		/// <summary>
 		/// Update a segment
@@ -365,7 +365,7 @@ namespace CakeMail.RestClient
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>True if the segment was updated</returns>
 		/// <remarks>A segment is sometimes referred to as a 'sub-list'</remarks>
-		bool UpdateSegment(string userKey, int segmentId, int listId, string name = null, string language = null, bool spamPolicyAccepted = false, string status = null, string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, string query = null, int? clientId = null);
+		bool UpdateSegment(string userKey, int segmentId, int listId, string name = null, string query = null, int? clientId = null);
 
 		/// <summary>
 		/// Add a new field to a list
@@ -388,15 +388,38 @@ namespace CakeMail.RestClient
 		/// <returns>True if the field was removed from the list</returns>
 		bool DeleteListField(string userKey, int listId, string name, int? clientId = null);
 
+		/// <summary>
+		/// Retrieve the list of fields of a list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>An enumeration of <see cref="ListField">fields</see></returns>
 		IEnumerable<ListField> GetListFields(string userKey, int listId, int? clientId = null);
 
-		int CreateSublist(string userKey, int listId, string name, string query = null, int? clientId = null);
+		/// <summary>
+		/// Create a list segment
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="name">Name of the segment.</param>
+		/// <param name="query">Rules for the segment.</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>ID of the new segment</returns>
+		int CreateSegment(string userKey, int listId, string name, string query = null, int? clientId = null);
 
-		bool DeleteSublist(string userKey, int sublistId, int? clientId = null);
+		/// <summary>
+		/// Delete a segment
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="segmentId">ID of the segment</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>True if the segment was deleted</returns>
+		bool DeleteSegment(string userKey, int segmentId, int? clientId = null);
 
-		IEnumerable<List> GetSublists(string userKey, int listId, int limit = 0, int offset = 0, bool includeDetails = true, int? clientId = null);
+		IEnumerable<List> GetSegments(string userKey, int listId, int limit = 0, int offset = 0, bool includeDetails = true, int? clientId = null);
 
-		long GetSublistsCount(string userKey, int listId, int? clientId = null);
+		long GetSegmentsCount(string userKey, int listId, int? clientId = null);
 
 		bool AddTestEmail(string userKey, int listId, string email, int? clientId = null);
 

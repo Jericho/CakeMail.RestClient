@@ -788,7 +788,7 @@ namespace CakeMail.RestClient
 		/// <param name="webhook">Webhook URL for the list.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>True if the list was updated</returns>
-		public bool UpdateList(string userKey, int listId, string name = null, string language = null, bool spamPolicyAccepted = false, string status = null, string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, int? clientId = null)
+		public bool UpdateList(string userKey, int listId, string name = null, string language = null, bool? spamPolicyAccepted = null, string status = null, string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, int? clientId = null)
 		{
 			string path = "/List/SetInfo/";
 
@@ -799,7 +799,7 @@ namespace CakeMail.RestClient
 			};
 			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
 			if (language != null) parameters.Add(new KeyValuePair<string, object>("language", language));
-			if (spamPolicyAccepted) parameters.Add(new KeyValuePair<string, object>("policy", "accepted"));
+			if (spamPolicyAccepted.HasValue) parameters.Add(new KeyValuePair<string, object>("policy", spamPolicyAccepted.Value ? "accepted" : "declined"));
 			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
 			if (senderName != null) parameters.Add(new KeyValuePair<string, object>("sender_name", senderName));
 			if (senderEmail != null) parameters.Add(new KeyValuePair<string, object>("sender_email", senderEmail));
@@ -832,7 +832,7 @@ namespace CakeMail.RestClient
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>True if the segment was updated</returns>
 		/// <remarks>A segment is sometimes referred to as a 'sub-list'</remarks>
-		public bool UpdateSegment(string userKey, int segmentId, int listId, string name = null, string language = null, bool spamPolicyAccepted = false, string status = null, string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, string query = null, int? clientId = null)
+		public bool UpdateSegment(string userKey, int segmentId, int listId, string name = null, string query = null, int? clientId = null)
 		{
 			string path = "/List/SetInfo/";
 
@@ -843,15 +843,6 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("list_id", listId)
 			};
 			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
-			if (language != null) parameters.Add(new KeyValuePair<string, object>("language", language));
-			if (spamPolicyAccepted) parameters.Add(new KeyValuePair<string, object>("policy", "accepted"));
-			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
-			if (senderName != null) parameters.Add(new KeyValuePair<string, object>("sender_name", senderName));
-			if (senderEmail != null) parameters.Add(new KeyValuePair<string, object>("sender_email", senderEmail));
-			if (goto_oi != null) parameters.Add(new KeyValuePair<string, object>("goto_oi", goto_oi));
-			if (goto_di != null) parameters.Add(new KeyValuePair<string, object>("goto_di", goto_di));
-			if (goto_oo != null) parameters.Add(new KeyValuePair<string, object>("goto_oo", goto_oo));
-			if (webhook != null) parameters.Add(new KeyValuePair<string, object>("webhook", webhook));
 			if (query != null) parameters.Add(new KeyValuePair<string, object>("query", query));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
@@ -908,6 +899,13 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<bool>(path, parameters);
 		}
 
+		/// <summary>
+		/// Retrieve the list of fields of a list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>An enumeration of <see cref="ListField">fields</see></returns>
 		public IEnumerable<ListField> GetListFields(string userKey, int listId, int? clientId = null)
 		{
 			var path = "/List/GetFields/";
@@ -926,7 +924,16 @@ namespace CakeMail.RestClient
 			return fields;
 		}
 
-		public int CreateSublist(string userKey, int listId, string name, string query = null, int? clientId = null)
+		/// <summary>
+		/// Create a list segment
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="name">Name of the segment.</param>
+		/// <param name="query">Rules for the segment.</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>ID of the new segment</returns>
+		public int CreateSegment(string userKey, int listId, string name, string query = null, int? clientId = null)
 		{
 			string path = "/List/CreateSublist/";
 
@@ -934,29 +941,36 @@ namespace CakeMail.RestClient
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
-				new KeyValuePair<string, object>("sublist_name", name),
-				new KeyValuePair<string, object>("query", query)
+				new KeyValuePair<string, object>("sublist_name", name)
 			};
+			if (query != null) parameters.Add(new KeyValuePair<string, object>("query", query));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteObjectRequest<int>(path, parameters);
 		}
 
-		public bool DeleteSublist(string userKey, int sublistId, int? clientId = null)
+		/// <summary>
+		/// Delete a segment
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="segmentId">ID of the segment</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>True if the segment was deleted</returns>
+		public bool DeleteSegment(string userKey, int segmentId, int? clientId = null)
 		{
 			string path = "/List/DeleteSublist/";
 
 			var parameters = new List<KeyValuePair<string, object>>()
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("sublist_id", sublistId)
+				new KeyValuePair<string, object>("sublist_id", segmentId)
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteObjectRequest<bool>(path, parameters);
 		}
 
-		public IEnumerable<List> GetSublists(string userKey, int listId, int limit = 0, int offset = 0, bool includeDetails = true, int? clientId = null)
+		public IEnumerable<List> GetSegments(string userKey, int listId, int limit = 0, int offset = 0, bool includeDetails = true, int? clientId = null)
 		{
 			var path = "/List/GetList/";
 
@@ -974,7 +988,7 @@ namespace CakeMail.RestClient
 			return ExecuteArrayRequest<List>(path, parameters, "lists");
 		}
 
-		public long GetSublistsCount(string userKey, int listId, int? clientId = null)
+		public long GetSegmentsCount(string userKey, int listId, int? clientId = null)
 		{
 			var path = "/List/GetList/";
 
