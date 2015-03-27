@@ -663,7 +663,7 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("sender_name", defaultSenderName),
 				new KeyValuePair<string, object>("sender_email", defaultSenderEmailAddress)
 			};
-			if (spamPolicyAccepted) parameters.Add(new KeyValuePair<string, object>("policy", "accepted"));
+			if (spamPolicyAccepted) parameters.Add(new KeyValuePair<string, object>("list_policy", "accepted"));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteObjectRequest<int>(path, parameters);
@@ -799,7 +799,7 @@ namespace CakeMail.RestClient
 			};
 			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
 			if (language != null) parameters.Add(new KeyValuePair<string, object>("language", language));
-			if (spamPolicyAccepted.HasValue) parameters.Add(new KeyValuePair<string, object>("policy", spamPolicyAccepted.Value ? "accepted" : "declined"));
+			if (spamPolicyAccepted.HasValue) parameters.Add(new KeyValuePair<string, object>("list_policy", spamPolicyAccepted.Value ? "accepted" : "declined"));
 			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
 			if (senderName != null) parameters.Add(new KeyValuePair<string, object>("sender_name", senderName));
 			if (senderEmail != null) parameters.Add(new KeyValuePair<string, object>("sender_email", senderEmail));
@@ -970,22 +970,45 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<bool>(path, parameters);
 		}
 
-		public IEnumerable<List> GetSegments(string userKey, int listId, int limit = 0, int offset = 0, bool includeDetails = true, int? clientId = null)
+		/// <summary>
+		/// Retrieve the segments matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list</param>
+		/// <param name="status">Filter using the list status. Possible values: 'active', 'archived'</param>
+		/// <param name="name">Filter using the list name.</param>
+		/// <param name="sortBy">Sort resulting lists. Possible values: 'name', 'created_on', 'active_members_count'</param>
+		/// <param name="sortDirection">Direction of the sorting. Possible values: 'asc', 'desc'</param>
+		/// <param name="limit">Limit the number of resulting lists.</param>
+		/// <param name="offset">Offset the beginning of resulting lists.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>Enumeration of <see cref="List">lists</see> matching the filtering criteria</returns>
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="userKey"></param>
+		/// <param name="limit"></param>
+		/// <param name="offset"></param>
+		/// <param name="includeDetails"></param>
+		/// <param name="clientId"></param>
+		/// <returns></returns>
+		public IEnumerable<Segment> GetSegments(string userKey, int listId, int limit = 0, int offset = 0, bool includeDetails = true, int? clientId = null)
 		{
-			var path = "/List/GetList/";
+			var path = "/List/GetSublists/";
 
 			var parameters = new List<KeyValuePair<string, object>>()
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
-				new KeyValuePair<string, object>("count", "false")
+				new KeyValuePair<string, object>("count", "false"),
+				new KeyValuePair<string, object>("no_details", includeDetails ? "false" : "true")	// CakeMail expects 'false' if you want to include details
 			};
-			parameters.Add(new KeyValuePair<string, object>("no_details", includeDetails ? "false" : "true"));	// CakeMail expects 'false' if you want to include details
 			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteArrayRequest<List>(path, parameters, "lists");
+			return ExecuteArrayRequest<Segment>(path, parameters, "sublists");
 		}
 
 		public long GetSegmentsCount(string userKey, int listId, int? clientId = null)

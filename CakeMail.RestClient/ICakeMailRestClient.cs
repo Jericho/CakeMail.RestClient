@@ -417,7 +417,7 @@ namespace CakeMail.RestClient
 		/// <returns>True if the segment was deleted</returns>
 		bool DeleteSegment(string userKey, int segmentId, int? clientId = null);
 
-		IEnumerable<List> GetSegments(string userKey, int listId, int limit = 0, int offset = 0, bool includeDetails = true, int? clientId = null);
+		IEnumerable<Segment> GetSegments(string userKey, int listId, int limit = 0, int offset = 0, bool includeDetails = true, int? clientId = null);
 
 		long GetSegmentsCount(string userKey, int listId, int? clientId = null);
 
