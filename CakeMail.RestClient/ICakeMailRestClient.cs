@@ -417,8 +417,24 @@ namespace CakeMail.RestClient
 		/// <returns>True if the segment was deleted</returns>
 		bool DeleteSegment(string userKey, int segmentId, int? clientId = null);
 
+		/// <summary>
+		/// Retrieve the segments matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list</param>
+		/// <param name="limit">Limit the number of resulting segments.</param>
+		/// <param name="offset">Offset the beginning of resulting segments.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>Enumeration of <see cref="Segment">segments</see> matching the filtering criteria</returns>
 		IEnumerable<Segment> GetSegments(string userKey, int listId, int limit = 0, int offset = 0, bool includeDetails = true, int? clientId = null);
 
+		/// <summary>
+		/// Get a count of segments matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>The count of campaigns matching the filtering criteria</returns>
 		long GetSegmentsCount(string userKey, int listId, int? clientId = null);
 
 		bool AddTestEmail(string userKey, int listId, string email, int? clientId = null);

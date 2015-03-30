@@ -933,6 +933,13 @@ namespace CakeMail.RestClient
 		/// <param name="query">Rules for the segment.</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>ID of the new segment</returns>
+		/// <remarks>
+		/// Here is what I have discovered about the query: 
+		///		1) the entire query must be surrounded by parenthesis: (...your query...)
+		///		2) field names must be surrounded with the 'special' quote: `yourfieldname`. On my US english keyboard, this 'special quote is the key directly above the 'Tab' and to the left of the '1'.
+		///		3) The percent sign is the wilcard
+		///		Here's an example: (`email` LIKE "a%")
+		///	</remarks>
 		public int CreateSegment(string userKey, int listId, string name, string query = null, int? clientId = null)
 		{
 			string path = "/List/CreateSublist/";
@@ -975,24 +982,10 @@ namespace CakeMail.RestClient
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="listId">ID of the list</param>
-		/// <param name="status">Filter using the list status. Possible values: 'active', 'archived'</param>
-		/// <param name="name">Filter using the list name.</param>
-		/// <param name="sortBy">Sort resulting lists. Possible values: 'name', 'created_on', 'active_members_count'</param>
-		/// <param name="sortDirection">Direction of the sorting. Possible values: 'asc', 'desc'</param>
-		/// <param name="limit">Limit the number of resulting lists.</param>
-		/// <param name="offset">Offset the beginning of resulting lists.</param>
+		/// <param name="limit">Limit the number of resulting segments.</param>
+		/// <param name="offset">Offset the beginning of resulting segments.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
-		/// <returns>Enumeration of <see cref="List">lists</see> matching the filtering criteria</returns>
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="userKey"></param>
-		/// <param name="limit"></param>
-		/// <param name="offset"></param>
-		/// <param name="includeDetails"></param>
-		/// <param name="clientId"></param>
-		/// <returns></returns>
+		/// <returns>Enumeration of <see cref="Segment">segments</see> matching the filtering criteria</returns>
 		public IEnumerable<Segment> GetSegments(string userKey, int listId, int limit = 0, int offset = 0, bool includeDetails = true, int? clientId = null)
 		{
 			var path = "/List/GetSublists/";
@@ -1011,6 +1004,13 @@ namespace CakeMail.RestClient
 			return ExecuteArrayRequest<Segment>(path, parameters, "sublists");
 		}
 
+		/// <summary>
+		/// Get a count of segments matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>The count of campaigns matching the filtering criteria</returns>
 		public long GetSegmentsCount(string userKey, int listId, int? clientId = null)
 		{
 			var path = "/List/GetList/";
