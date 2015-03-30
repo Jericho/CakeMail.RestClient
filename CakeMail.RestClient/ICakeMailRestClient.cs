@@ -429,8 +429,24 @@ namespace CakeMail.RestClient
 		/// <returns>An enumeration of <see cref="ImportResult">results</see></returns>
 		IEnumerable<ImportResult> Import(string userKey, int listId, IEnumerable<ListMember> susbscribers, bool autoResponders = true, bool triggers = true, int? clientId = null);
 
+		/// <summary>
+		/// Unsubscribe a member from the list.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="email">Email address of the member.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns></returns>
 		bool Unsubscribe(string userKey, int listId, string email, int? clientId = null);
 
+		/// <summary>
+		/// Unsubscribe a member from the list.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="listMemberId">ID of the member.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns></returns>
 		bool Unsubscribe(string userKey, int listId, int listMemberId, int? clientId = null);
 
 		bool DeleteListMember(string userKey, int listId, int listMemberId, int? clientId = null);
