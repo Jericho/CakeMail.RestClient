@@ -205,6 +205,11 @@ ModelManifest.xml
 # WinMerge
 *.bak
 
+# Code coverage data and reports
+CodeCoverageData/
+CodeCoverageReport/
+
+
 # =========================
 # Operating System Files
 # =========================

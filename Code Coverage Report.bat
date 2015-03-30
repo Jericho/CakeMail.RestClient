@@ -1,8 +1,9 @@
 rmdir /s /q "TestResults"
-rmdir /s /q "results"
-rmdir /s /q "coverage"
-mkdir "results"
-mkdir "coverage"
+rmdir /s /q "CodeCoverageData"
+rmdir /s /q "CodeCoverageReport"
+
+mkdir "CodeCoverageData"
+mkdir "CodeCoverageReport"
 
 
 packages\OpenCover.4.5.3723\OpenCover.Console.exe^
@@ -12,17 +13,14 @@ packages\OpenCover.4.5.3723\OpenCover.Console.exe^
  -filter:"+[CakeMail.RestClient]* -[CakeMail.RestClient]CakeMail.RestClient.Models.* -[CakeMail.RestClient]CakeMail.RestClient.Properties.*"^
  -excludebyattribute:*.ExcludeFromCodeCoverage*^
  -hideskipped:All^
- -output:.\coverage\CakeMail.RestClient_coverage.xml
+ -output:.\CodecoverageData\CakeMail.RestClient_coverage.xml
 
- 
-rmdir /s /q "report"
-mkdir "report"
 
 packages\ReportGenerator.2.1.4.0\ReportGenerator.exe^
- -reports:.\coverage\*.xml^
- -targetdir:.\report^
+ -reports:.\CodeCoverageData\*.xml^
+ -targetdir:.\CodeCoverageReport^
  -reporttypes:Html^
  -filters:-CakeMail.RestClient.UnitTests*
 
 
-start report\index.htm
+start CodeCoverageReport\index.htm
