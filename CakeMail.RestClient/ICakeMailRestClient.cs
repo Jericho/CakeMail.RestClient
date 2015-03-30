@@ -375,15 +375,59 @@ namespace CakeMail.RestClient
 		/// <returns>An enumeration of <see cref="ListField">fields</see></returns>
 		IEnumerable<ListField> GetListFields(string userKey, int listId, int? clientId = null);
 
+		/// <summary>
+		/// Add a test email to the list.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="email">The email address</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>True if the email address was added</returns>
 		bool AddTestEmail(string userKey, int listId, string email, int? clientId = null);
 
+		/// <summary>
+		/// Delete a test email from a list.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="email">The email address</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>True if the email address was deleted</returns>
 		bool DeleteTestEmail(string userKey, int listId, string email, int? clientId = null);
 
+		/// <summary>
+		/// Retrieve the lists of test email addresses for a given list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>Enumeration of <see cref="string">test email addresses</see></returns>
 		IEnumerable<string> GetTestEmails(string userKey, int listId, int? clientId = null);
 
+		/// <summary>
+		/// Add a subscriber to a list.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="email">Email address of the subscriber.</param>
+		/// <param name="autoResponders">Trigger the autoresponders.</param>
+		/// <param name="triggers">Trigger the welcome email.</param>
+		/// <param name="customFields">Additional data for the subscriber.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>ID of the new subscriber</returns>
 		int Subscribe(string userKey, int listId, string email, bool autoResponders = true, bool triggers = true, IEnumerable<KeyValuePair<string, object>> customFields = null, int? clientId = null);
 
-		IEnumerable<ImportResult> Import(string userKey, int listId, bool autoResponders = true, bool triggers = true, IEnumerable<ListMember> listMembers = null, int? clientId = null);
+		/// <summary>
+		/// Add multiple subscribers to a list.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="autoResponders">Trigger the autoresponders.</param>
+		/// <param name="triggers">Trigger the welcome email.</param>
+		/// <param name="listMembers">Subscribers.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>An enumeration of <see cref="ImportResult">results</see></returns>
+		IEnumerable<ImportResult> Import(string userKey, int listId, IEnumerable<ListMember> susbscribers, bool autoResponders = true, bool triggers = true, int? clientId = null);
 
 		bool Unsubscribe(string userKey, int listId, string email, int? clientId = null);
 

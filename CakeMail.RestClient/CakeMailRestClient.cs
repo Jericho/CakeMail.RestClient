@@ -887,6 +887,14 @@ namespace CakeMail.RestClient
 			return fields;
 		}
 
+		/// <summary>
+		/// Add a test email to the list.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="email">The email address</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>True if the email address was added</returns>
 		public bool AddTestEmail(string userKey, int listId, string email, int? clientId = null)
 		{
 			string path = "/List/AddTestEmail/";
@@ -902,6 +910,14 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<bool>(path, parameters);
 		}
 
+		/// <summary>
+		/// Delete a test email from a list.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="email">The email address</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>True if the email address was deleted</returns>
 		public bool DeleteTestEmail(string userKey, int listId, string email, int? clientId = null)
 		{
 			string path = "/List/DeleteTestEmail/";
@@ -917,6 +933,13 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<bool>(path, parameters);
 		}
 
+		/// <summary>
+		/// Retrieve the lists of test email addresses for a given list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>Enumeration of <see cref="string">test email addresses</see></returns>
 		public IEnumerable<string> GetTestEmails(string userKey, int listId, int? clientId = null)
 		{
 			var path = "/List/GetTestEmails/";
@@ -931,6 +954,17 @@ namespace CakeMail.RestClient
 			return ExecuteArrayRequest<string>(path, parameters, "testemails");
 		}
 
+		/// <summary>
+		/// Add a subscriber to a list.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="email">Email address of the subscriber.</param>
+		/// <param name="autoResponders">Trigger the autoresponders.</param>
+		/// <param name="triggers">Trigger the welcome email.</param>
+		/// <param name="customFields">Additional data for the subscriber.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>ID of the new subscriber</returns>
 		public int Subscribe(string userKey, int listId, string email, bool autoResponders = true, bool triggers = true, IEnumerable<KeyValuePair<string, object>> customFields = null, int? clientId = null)
 		{
 			string path = "/List/SubscribeEmail/";
@@ -956,7 +990,17 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<int>(path, parameters);
 		}
 
-		public IEnumerable<ImportResult> Import(string userKey, int listId, bool autoResponders = true, bool triggers = true, IEnumerable<ListMember> listMembers = null, int? clientId = null)
+		/// <summary>
+		/// Add multiple subscribers to a list.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="autoResponders">Trigger the autoresponders.</param>
+		/// <param name="triggers">Trigger the welcome email.</param>
+		/// <param name="listMembers">Subscribers.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>An enumeration of <see cref="ImportResult">results</see></returns>
+		public IEnumerable<ImportResult> Import(string userKey, int listId, IEnumerable<ListMember> listMembers, bool autoResponders = true, bool triggers = true, int? clientId = null)
 		{
 			string path = "/List/Import/";
 
@@ -974,10 +1018,13 @@ namespace CakeMail.RestClient
 				foreach (var listMember in listMembers)
 				{
 					parameters.Add(new KeyValuePair<string, object>(string.Format("record[{0}][email]", recordCount), listMember.Email));
-					foreach (var customField in listMember.CustomFields)
+					if (listMember.CustomFields != null)
 					{
-						if (customField.Value is DateTime) parameters.Add(new KeyValuePair<string, object>(string.Format("record[{0}][{1}]", recordCount, customField.Key), ((DateTime)customField.Value).ToCakeMailString()));
-						else parameters.Add(new KeyValuePair<string, object>(string.Format("record[{0}][{1}]", recordCount, customField.Key), customField.Value));
+						foreach (var customField in listMember.CustomFields)
+						{
+							if (customField.Value is DateTime) parameters.Add(new KeyValuePair<string, object>(string.Format("record[{0}][{1}]", recordCount, customField.Key), ((DateTime)customField.Value).ToCakeMailString()));
+							else parameters.Add(new KeyValuePair<string, object>(string.Format("record[{0}][{1}]", recordCount, customField.Key), customField.Value));
+						}
 					}
 					recordCount++;
 				}
