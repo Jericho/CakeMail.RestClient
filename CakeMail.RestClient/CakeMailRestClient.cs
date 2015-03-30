@@ -813,43 +813,6 @@ namespace CakeMail.RestClient
 		}
 
 		/// <summary>
-		/// Update a segment (AKA sublist)
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="segmentId">ID of the segment</param>
-		/// <param name="listId">ID of the list</param>
-		/// <param name="name">Name of the segment.</param>
-		/// <param name="language">Language of the segment. e.g.: 'en_US' for English (US)</param>
-		/// <param name="spamPolicyAccepted">Indicates if the anti-spam policy has been accepted</param>
-		/// <param name="status">Status of the segment. Possible values: 'active', 'archived', 'deleted'</param>
-		/// <param name="senderName">Name of the default sender of the segment.</param>
-		/// <param name="senderEmail">Email of the default sender of the segment.</param>
-		/// <param name="goto_oi">Redirection URL on subscribing to the segment.</param>
-		/// <param name="goto_di">Redirection URL on confirming the subscription to the segment.</param>
-		/// <param name="goto_oo">Redirection URL on unsubscribing to the segment.</param>
-		/// <param name="webhook">Webhook URL for the segment.</param>
-		/// <param name="query">Rules for the segment.</param>
-		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
-		/// <returns>True if the segment was updated</returns>
-		/// <remarks>A segment is sometimes referred to as a 'sub-list'</remarks>
-		public bool UpdateSegment(string userKey, int segmentId, int listId, string name = null, string query = null, int? clientId = null)
-		{
-			string path = "/List/SetInfo/";
-
-			var parameters = new List<KeyValuePair<string, object>>()
-			{
-				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("sublist_id", segmentId),
-				new KeyValuePair<string, object>("list_id", listId)
-			};
-			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
-			if (query != null) parameters.Add(new KeyValuePair<string, object>("query", query));
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-			return ExecuteObjectRequest<bool>(path, parameters);
-		}
-
-		/// <summary>
 		/// Add a new field to a list
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
@@ -922,108 +885,6 @@ namespace CakeMail.RestClient
 
 			var fields = fieldsStructure.Select(x => new ListField() { Name = x.Key, Type = x.Value.ToString() });
 			return fields;
-		}
-
-		/// <summary>
-		/// Create a list segment
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="listId">ID of the list.</param>
-		/// <param name="name">Name of the segment.</param>
-		/// <param name="query">Rules for the segment.</param>
-		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
-		/// <returns>ID of the new segment</returns>
-		/// <remarks>
-		/// Here is what I have discovered about the query: 
-		///		1) the entire query must be surrounded by parenthesis: (...your query...)
-		///		2) field names must be surrounded with the 'special' quote: `yourfieldname`. On my US english keyboard, this 'special quote is the key directly above the 'Tab' and to the left of the '1'.
-		///		3) The percent sign is the wilcard
-		///		Here's an example: (`email` LIKE "a%")
-		///	</remarks>
-		public int CreateSegment(string userKey, int listId, string name, string query = null, int? clientId = null)
-		{
-			string path = "/List/CreateSublist/";
-
-			var parameters = new List<KeyValuePair<string, object>>()
-			{
-				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("list_id", listId),
-				new KeyValuePair<string, object>("sublist_name", name)
-			};
-			if (query != null) parameters.Add(new KeyValuePair<string, object>("query", query));
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-			return ExecuteObjectRequest<int>(path, parameters);
-		}
-
-		/// <summary>
-		/// Delete a segment
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="segmentId">ID of the segment</param>
-		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
-		/// <returns>True if the segment was deleted</returns>
-		public bool DeleteSegment(string userKey, int segmentId, int? clientId = null)
-		{
-			string path = "/List/DeleteSublist/";
-
-			var parameters = new List<KeyValuePair<string, object>>()
-			{
-				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("sublist_id", segmentId)
-			};
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-			return ExecuteObjectRequest<bool>(path, parameters);
-		}
-
-		/// <summary>
-		/// Retrieve the segments matching the filtering criteria.
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="listId">ID of the list</param>
-		/// <param name="limit">Limit the number of resulting segments.</param>
-		/// <param name="offset">Offset the beginning of resulting segments.</param>
-		/// <param name="clientId">Client ID of the client in which the list is located.</param>
-		/// <returns>Enumeration of <see cref="Segment">segments</see> matching the filtering criteria</returns>
-		public IEnumerable<Segment> GetSegments(string userKey, int listId, int limit = 0, int offset = 0, bool includeDetails = true, int? clientId = null)
-		{
-			var path = "/List/GetSublists/";
-
-			var parameters = new List<KeyValuePair<string, object>>()
-			{
-				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("list_id", listId),
-				new KeyValuePair<string, object>("count", "false"),
-				new KeyValuePair<string, object>("no_details", includeDetails ? "false" : "true")	// CakeMail expects 'false' if you want to include details
-			};
-			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
-			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-			return ExecuteArrayRequest<Segment>(path, parameters, "sublists");
-		}
-
-		/// <summary>
-		/// Get a count of segments matching the filtering criteria.
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="listId">ID of the list</param>
-		/// <param name="clientId">Client ID of the client in which the list is located.</param>
-		/// <returns>The count of campaigns matching the filtering criteria</returns>
-		public long GetSegmentsCount(string userKey, int listId, int? clientId = null)
-		{
-			var path = "/List/GetList/";
-
-			var parameters = new List<KeyValuePair<string, object>>()
-			{
-				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("list_id", listId),
-				new KeyValuePair<string, object>("count", "true")
-			};
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-			return ExecuteCountRequest(path, parameters);
 		}
 
 		public bool AddTestEmail(string userKey, int listId, string email, int? clientId = null)
@@ -1295,6 +1156,149 @@ namespace CakeMail.RestClient
 			if (logType != null) parameters.Add(new KeyValuePair<string, object>("action", logType));
 			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
 			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
+		}
+
+		#endregion
+
+		#region Methods related to SEGMENTS
+
+		/// <summary>
+		/// Create a list segment
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="name">Name of the segment.</param>
+		/// <param name="query">Rules for the segment.</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>ID of the new segment</returns>
+		/// <remarks>
+		/// Here is what I have discovered about the query: 
+		///		1) the entire query must be surrounded by parenthesis: (...your query...)
+		///		2) field names must be surrounded with the 'special' quote: `yourfieldname`. On my US english keyboard, this 'special quote is the key directly above the 'Tab' and to the left of the '1'.
+		///		3) The percent sign is the wilcard
+		///		Here's an example: (`email` LIKE "a%")
+		///	</remarks>
+		public int CreateSegment(string userKey, int listId, string name, string query = null, int? clientId = null)
+		{
+			string path = "/List/CreateSublist/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("sublist_name", name)
+			};
+			if (query != null) parameters.Add(new KeyValuePair<string, object>("query", query));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<int>(path, parameters);
+		}
+
+		/// <summary>
+		/// Update a segment (AKA sublist)
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="segmentId">ID of the segment</param>
+		/// <param name="listId">ID of the list</param>
+		/// <param name="name">Name of the segment.</param>
+		/// <param name="language">Language of the segment. e.g.: 'en_US' for English (US)</param>
+		/// <param name="spamPolicyAccepted">Indicates if the anti-spam policy has been accepted</param>
+		/// <param name="status">Status of the segment. Possible values: 'active', 'archived', 'deleted'</param>
+		/// <param name="senderName">Name of the default sender of the segment.</param>
+		/// <param name="senderEmail">Email of the default sender of the segment.</param>
+		/// <param name="goto_oi">Redirection URL on subscribing to the segment.</param>
+		/// <param name="goto_di">Redirection URL on confirming the subscription to the segment.</param>
+		/// <param name="goto_oo">Redirection URL on unsubscribing to the segment.</param>
+		/// <param name="webhook">Webhook URL for the segment.</param>
+		/// <param name="query">Rules for the segment.</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>True if the segment was updated</returns>
+		/// <remarks>A segment is sometimes referred to as a 'sub-list'</remarks>
+		public bool UpdateSegment(string userKey, int segmentId, int listId, string name = null, string query = null, int? clientId = null)
+		{
+			string path = "/List/SetInfo/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("sublist_id", segmentId),
+				new KeyValuePair<string, object>("list_id", listId)
+			};
+			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
+			if (query != null) parameters.Add(new KeyValuePair<string, object>("query", query));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		/// <summary>
+		/// Delete a segment
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="segmentId">ID of the segment</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>True if the segment was deleted</returns>
+		public bool DeleteSegment(string userKey, int segmentId, int? clientId = null)
+		{
+			string path = "/List/DeleteSublist/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("sublist_id", segmentId)
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		/// <summary>
+		/// Retrieve the segments matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list</param>
+		/// <param name="limit">Limit the number of resulting segments.</param>
+		/// <param name="offset">Offset the beginning of resulting segments.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>Enumeration of <see cref="Segment">segments</see> matching the filtering criteria</returns>
+		public IEnumerable<Segment> GetSegments(string userKey, int listId, int limit = 0, int offset = 0, bool includeDetails = true, int? clientId = null)
+		{
+			var path = "/List/GetSublists/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("count", "false"),
+				new KeyValuePair<string, object>("no_details", includeDetails ? "false" : "true")	// CakeMail expects 'false' if you want to include details
+			};
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteArrayRequest<Segment>(path, parameters, "sublists");
+		}
+
+		/// <summary>
+		/// Get a count of segments matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>The count of campaigns matching the filtering criteria</returns>
+		public long GetSegmentsCount(string userKey, int listId, int? clientId = null)
+		{
+			var path = "/List/GetList/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("count", "true")
+			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteCountRequest(path, parameters);

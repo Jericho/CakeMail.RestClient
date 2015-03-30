@@ -346,28 +346,6 @@ namespace CakeMail.RestClient
 		bool UpdateList(string userKey, int listId, string name = null, string language = null, bool? spamPolicyAccepted = null, string status = null, string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, int? clientId = null);
 
 		/// <summary>
-		/// Update a segment
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="segmentId">ID of the segment</param>
-		/// <param name="listId">ID of the list</param>
-		/// <param name="name">Name of the segment.</param>
-		/// <param name="language">Language of the segment. e.g.: 'en_US' for English (US)</param>
-		/// <param name="spamPolicyAccepted">Indicates if the anti-spam policy has been accepted</param>
-		/// <param name="status">Status of the segment. Possible values: 'active', 'archived', 'deleted'</param>
-		/// <param name="senderName">Name of the default sender of the segment.</param>
-		/// <param name="senderEmail">Email of the default sender of the segment.</param>
-		/// <param name="goto_oi">Redirection URL on subscribing to the segment.</param>
-		/// <param name="goto_di">Redirection URL on confirming the subscription to the segment.</param>
-		/// <param name="goto_oo">Redirection URL on unsubscribing to the segment.</param>
-		/// <param name="webhook">Webhook URL for the segment.</param>
-		/// <param name="query">Rules for the segment.</param>
-		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
-		/// <returns>True if the segment was updated</returns>
-		/// <remarks>A segment is sometimes referred to as a 'sub-list'</remarks>
-		bool UpdateSegment(string userKey, int segmentId, int listId, string name = null, string query = null, int? clientId = null);
-
-		/// <summary>
 		/// Add a new field to a list
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
@@ -397,6 +375,38 @@ namespace CakeMail.RestClient
 		/// <returns>An enumeration of <see cref="ListField">fields</see></returns>
 		IEnumerable<ListField> GetListFields(string userKey, int listId, int? clientId = null);
 
+		bool AddTestEmail(string userKey, int listId, string email, int? clientId = null);
+
+		bool DeleteTestEmail(string userKey, int listId, string email, int? clientId = null);
+
+		IEnumerable<string> GetTestEmails(string userKey, int listId, int? clientId = null);
+
+		int Subscribe(string userKey, int listId, string email, bool autoResponders = true, bool triggers = true, IEnumerable<KeyValuePair<string, object>> customFields = null, int? clientId = null);
+
+		IEnumerable<ImportResult> Import(string userKey, int listId, bool autoResponders = true, bool triggers = true, IEnumerable<ListMember> listMembers = null, int? clientId = null);
+
+		bool Unsubscribe(string userKey, int listId, string email, int? clientId = null);
+
+		bool Unsubscribe(string userKey, int listId, int listMemberId, int? clientId = null);
+
+		bool DeleteListMember(string userKey, int listId, int listMemberId, int? clientId = null);
+
+		ListMember GetListMember(string userKey, int listId, int listMemberId, int? clientId = null);
+
+		IEnumerable<ListMember> GetListMembers(string userKey, int listId, string status = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null);
+
+		long GetListMembersCount(string userKey, int listId, string status = null, int? clientId = null);
+
+		bool UpdateListMember(string userKey, int listId, int listMemberId, IEnumerable<KeyValuePair<string, object>> customFields = null, int? clientId = null);
+
+		IEnumerable<LogItem> GetListLogs(string userKey, int listId, string logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
+
+		long GetListLogsCount(string userKey, int listId, string logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? clientId = null);
+
+		#endregion
+
+		#region Methods related to SEGMENTS
+
 		/// <summary>
 		/// Create a list segment
 		/// </summary>
@@ -406,7 +416,36 @@ namespace CakeMail.RestClient
 		/// <param name="query">Rules for the segment.</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>ID of the new segment</returns>
+		/// <remarks>
+		/// Here is what I have discovered about the query: 
+		///		1) the entire query must be surrounded by parenthesis: (...your query...)
+		///		2) field names must be surrounded with the 'special' quote: `yourfieldname`. On my US english keyboard, this 'special quote is the key directly above the 'Tab' and to the left of the '1'.
+		///		3) The percent sign is the wilcard
+		///		Here's an example: (`email` LIKE "a%")
+		///	</remarks>
 		int CreateSegment(string userKey, int listId, string name, string query = null, int? clientId = null);
+
+		/// <summary>
+		/// Update a segment (AKA sublist)
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="segmentId">ID of the segment</param>
+		/// <param name="listId">ID of the list</param>
+		/// <param name="name">Name of the segment.</param>
+		/// <param name="language">Language of the segment. e.g.: 'en_US' for English (US)</param>
+		/// <param name="spamPolicyAccepted">Indicates if the anti-spam policy has been accepted</param>
+		/// <param name="status">Status of the segment. Possible values: 'active', 'archived', 'deleted'</param>
+		/// <param name="senderName">Name of the default sender of the segment.</param>
+		/// <param name="senderEmail">Email of the default sender of the segment.</param>
+		/// <param name="goto_oi">Redirection URL on subscribing to the segment.</param>
+		/// <param name="goto_di">Redirection URL on confirming the subscription to the segment.</param>
+		/// <param name="goto_oo">Redirection URL on unsubscribing to the segment.</param>
+		/// <param name="webhook">Webhook URL for the segment.</param>
+		/// <param name="query">Rules for the segment.</param>
+		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <returns>True if the segment was updated</returns>
+		/// <remarks>A segment is sometimes referred to as a 'sub-list'</remarks>
+		bool UpdateSegment(string userKey, int segmentId, int listId, string name = null, string query = null, int? clientId = null);
 
 		/// <summary>
 		/// Delete a segment
@@ -436,34 +475,6 @@ namespace CakeMail.RestClient
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>The count of campaigns matching the filtering criteria</returns>
 		long GetSegmentsCount(string userKey, int listId, int? clientId = null);
-
-		bool AddTestEmail(string userKey, int listId, string email, int? clientId = null);
-
-		bool DeleteTestEmail(string userKey, int listId, string email, int? clientId = null);
-
-		IEnumerable<string> GetTestEmails(string userKey, int listId, int? clientId = null);
-
-		int Subscribe(string userKey, int listId, string email, bool autoResponders = true, bool triggers = true, IEnumerable<KeyValuePair<string, object>> customFields = null, int? clientId = null);
-
-		IEnumerable<ImportResult> Import(string userKey, int listId, bool autoResponders = true, bool triggers = true, IEnumerable<ListMember> listMembers = null, int? clientId = null);
-
-		bool Unsubscribe(string userKey, int listId, string email, int? clientId = null);
-
-		bool Unsubscribe(string userKey, int listId, int listMemberId, int? clientId = null);
-
-		bool DeleteListMember(string userKey, int listId, int listMemberId, int? clientId = null);
-
-		ListMember GetListMember(string userKey, int listId, int listMemberId, int? clientId = null);
-
-		IEnumerable<ListMember> GetListMembers(string userKey, int listId, string status = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null);
-
-		long GetListMembersCount(string userKey, int listId, string status = null, int? clientId = null);
-
-		bool UpdateListMember(string userKey, int listId, int listMemberId, IEnumerable<KeyValuePair<string, object>> customFields = null, int? clientId = null);
-
-		IEnumerable<LogItem> GetListLogs(string userKey, int listId, string logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
-
-		long GetListLogsCount(string userKey, int listId, string logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? clientId = null);
 
 		#endregion
 
