@@ -436,7 +436,7 @@ namespace CakeMail.RestClient
 		/// <param name="listId">ID of the list.</param>
 		/// <param name="email">Email address of the member.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
-		/// <returns></returns>
+		/// <returns>True if the member was unsubscribed</returns>
 		bool Unsubscribe(string userKey, int listId, string email, int? clientId = null);
 
 		/// <summary>
@@ -446,21 +446,89 @@ namespace CakeMail.RestClient
 		/// <param name="listId">ID of the list.</param>
 		/// <param name="listMemberId">ID of the member.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
-		/// <returns></returns>
+		/// <returns>True if the member was unsubscribed</returns>
 		bool Unsubscribe(string userKey, int listId, int listMemberId, int? clientId = null);
 
+		/// <summary>
+		/// Delete a member from the list.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="listMemberId">ID of the member.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>True if the member was deleted</returns>
 		bool DeleteListMember(string userKey, int listId, int listMemberId, int? clientId = null);
 
+		/// <summary>
+		/// Retrieve the information about a list member
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="listMemberId">ID of the member.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>The <see cref=" Listmember">list mamber</see></returns>
 		ListMember GetListMember(string userKey, int listId, int listMemberId, int? clientId = null);
 
-		IEnumerable<ListMember> GetListMembers(string userKey, int listId, string status = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null);
+		/// <summary>
+		/// Retrieve the list members matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="status">Filter using the member status. Possible values: 'active', 'unsubscribed', 'deleted', 'inactive_bounced', 'spam'</param>
+		/// <param name="query">Query to retrieve members from a segment.</param>
+		/// <param name="sortBy">Sort resulting members. Possible values: 'id', 'email'</param>
+		/// <param name="sortDirection">Direction of the sorting. Possible values: 'asc', 'desc'</param>
+		/// <param name="limit">Limit the number of resulting members.</param>
+		/// <param name="offset">Offset the beginning of resulting members.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>Enumeration of <see cref="List">lists</see> matching the filtering criteria</returns>
+		IEnumerable<ListMember> GetListMembers(string userKey, int listId, string status = null, string query = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null);
 
+		/// <summary>
+		/// Get a count of list members matching the filtering criteria
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="status">Filter using the member status. Possible values: 'active', 'unsubscribed', 'deleted', 'inactive_bounced', 'spam'</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>The number of list members matching the filtering criteria</returns>
 		long GetListMembersCount(string userKey, int listId, string status = null, int? clientId = null);
 
+		/// <summary>
+		/// Update a list member
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="listMemberId">ID of the list member</param>
+		/// <param name="customFields">Additional data for the member</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>True if the member was updated</returns>
 		bool UpdateListMember(string userKey, int listId, int listMemberId, IEnumerable<KeyValuePair<string, object>> customFields = null, int? clientId = null);
 
+		/// <summary>
+		/// Retrieve the log items for a given list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="logType">Filter using the log action. Possible values: "subscribe", "in_queue", "opened", "clickthru", "forward", "unsubscribe", "view", "spam", "skipped"</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="limit">Limit the number of resulting log items.</param>
+		/// <param name="offset">Offset the beginning of resulting log items.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>An enumeration of <see cref="LogItem">log items</see> matching the filter criteria</returns>
 		IEnumerable<LogItem> GetListLogs(string userKey, int listId, string logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
 
+		/// <summary>
+		/// Get a count of log items matching the filter criteria
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the list.</param>
+		/// <param name="logType">Filter using the log action. Possible values: "subscribe", "in_queue", "opened", "clickthru", "forward", "unsubscribe", "view", "spam", "skipped"</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>The number of log items matching the filtering criteria</returns>
 		long GetListLogsCount(string userKey, int listId, string logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? clientId = null);
 
 		#endregion
