@@ -19,16 +19,53 @@ namespace CakeMail.RestClient.UnitTests
 		public void RestClient_constructor()
 		{
 			// Arrange
-			var host = "my.dymmyurl.com";
-			var timeout =9999;
+			var mockHost = "myhost";
+			var mockProxyHost = "localhost";
+			var mockProxyPort = 8888;
+			var mockTimeout = 777;
 
 			// Act
-			var apiClient = new CakeMailRestClient(API_KEY, host, timeout);
+			var apiClient = new CakeMailRestClient(API_KEY, mockHost, mockTimeout, new WebProxy(mockProxyHost, mockProxyPort));
+			var userAgent = apiClient.UserAgent;
+			var baseUrl = apiClient.BaseUrl;
+			var timeout = apiClient.Timeout;
+			var proxy = apiClient.Proxy;
 
 			// Assert
-			Assert.AreEqual(API_KEY, apiClient.ApiKey);
-			Assert.AreEqual(timeout, apiClient.Timeout);
-			Assert.AreEqual(new Uri("https://" + host), apiClient.BaseUrl);
+			Assert.AreEqual("CakeMail .NET REST Client 1.0.0.0", userAgent);
+			Assert.AreEqual(new Uri(string.Format("https://{0}", mockHost)), baseUrl);
+			Assert.AreEqual(mockTimeout, timeout);
+			Assert.AreEqual(new Uri(string.Format("http://{0}:{1}", mockProxyHost, mockProxyPort)), ((WebProxy)proxy).Address);
+		}
+
+		[TestMethod]
+		public void RestClient_constructor_with_IRestClient()
+		{
+			// Arrange
+			var mockUserAgent = "... this is a mock user agent string ...";
+			var mockProxyHost = "localhost";
+			var mockProxyPort = 8888;
+			var mockBaseUrl = new Uri("http://127.0.0.1");
+			var mockTimeout = 777;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.UserAgent).Returns(mockUserAgent);
+			mockRestClient.Setup(m => m.Proxy).Returns(new WebProxy(mockProxyHost, mockProxyPort));
+			mockRestClient.Setup(m => m.BaseUrl).Returns(mockBaseUrl);
+			mockRestClient.Setup(m => m.Timeout).Returns(mockTimeout);
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var userAgent = apiClient.UserAgent;
+			var baseUrl = apiClient.BaseUrl;
+			var timeout = apiClient.Timeout;
+			var proxy = apiClient.Proxy;
+
+			// Assert
+			Assert.AreEqual(mockUserAgent, userAgent);
+			Assert.AreEqual(mockBaseUrl, baseUrl);
+			Assert.AreEqual(mockTimeout, timeout);
+			Assert.AreEqual(new Uri(string.Format("http://{0}:{1}", mockProxyHost, mockProxyPort)), ((WebProxy)proxy).Address);
 		}
 
 		[TestMethod]

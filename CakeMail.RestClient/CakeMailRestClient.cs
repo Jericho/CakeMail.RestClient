@@ -34,16 +34,11 @@ namespace CakeMail.RestClient
 		public IWebProxy Proxy
 		{
 			get { return _client.Proxy; }
-			set { _client.Proxy = value; }
 		}
 
-		/// <summary>
-		///     UserAgent to use for requests.
-		/// </summary>
 		public string UserAgent
 		{
 			get { return _client.UserAgent; }
-			set { _client.UserAgent = value; }
 		}
 
 		public int Timeout
@@ -72,14 +67,15 @@ namespace CakeMail.RestClient
 		/// <param name="apiKey">The API Key received from CakeMail</param>
 		/// <param name="host">The host where the API is hosted. The default is api.wbsrvc.com</param>
 		/// <param name="timeout">Timeout in milliseconds for connection to web service. The default is 5000.</param>
-		public CakeMailRestClient(string apiKey, string host = "api.wbsrvc.com", int timeout = 5000)
+		public CakeMailRestClient(string apiKey, string host = "api.wbsrvc.com", int timeout = 5000, IWebProxy webProxy = null)
 		{
 			this.ApiKey = apiKey;
 
 			_client = new RestSharp.RestClient("https://" + host)
 			{
 				Timeout = timeout,
-				UserAgent = string.Format("CakeMail .NET REST Client {0}", _version)
+				UserAgent = string.Format("CakeMail .NET REST Client {0}", _version),
+				Proxy = webProxy
 			};
 		}
 
