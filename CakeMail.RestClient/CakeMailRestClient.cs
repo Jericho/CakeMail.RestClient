@@ -1425,17 +1425,17 @@ namespace CakeMail.RestClient
 		#region Methods related to MAILINGS
 
 		/// <summary>
-		/// 
+		/// Create a mailing
 		/// </summary>
-		/// <param name="userKey"></param>
-		/// <param name="name"></param>
-		/// <param name="campaignId"></param>
-		/// <param name="type">Type of the mailing. Possible value 'standard', 'recurring', 'absplit'</param>
-		/// <param name="recurringId"></param>
-		/// <param name="encoding">Encoding to be used for the mailing. Possible value 'utf-8', 'iso-8859-x'</param>
-		/// <param name="transferEncoding">Transfer encoding to be used for the mailing. Possible value 'quoted-printable', 'base64'</param>
-		/// <param name="clientId"></param>
-		/// <returns></returns>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="name">Name of the mailing.</param>
+		/// <param name="campaignId">ID of the campaign you want to associate the mailing with.</param>
+		/// <param name="type">Type of the mailing. Possible values: 'standard', 'recurring', 'absplit'</param>
+		/// <param name="recurringId">ID of the first recurrence in case of a 'recurring' or 'absplit' mailing.</param>
+		/// <param name="encoding">Encoding to be used for the mailing. Possible values: 'utf-8', 'iso-8859-x'</param>
+		/// <param name="transferEncoding">Transfer encoding to be used for the mailing. Possible values: 'quoted-printable', 'base64'</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is created.</param>
+		/// <returns>ID of the new mailing</returns>
 		public int CreateMailing(string userKey, string name, int? campaignId = null, string type = "standard", int? recurringId = null, string encoding = null, string transferEncoding = null, int? clientId = null)
 		{
 			string path = "/Mailing/Create/";
@@ -1455,6 +1455,13 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<int>(path, parameters);
 		}
 
+		/// <summary>
+		/// Delete a mailing
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>True if the mailing is deleted</returns>
 		public bool DeleteMailing(string userKey, int mailingId, int? clientId = null)
 		{
 			string path = "/Mailing/Delete/";
@@ -1469,6 +1476,13 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<bool>(path, parameters);
 		}
 
+		/// <summary>
+		/// Retrieve a mailing
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="listId">ID of the mailing</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>The <see cref="Mailing">mailing</see></returns>
 		public Mailing GetMailing(string userKey, int mailingId, int? clientId = null)
 		{
 			var path = "/Mailing/GetInfo/";
@@ -1483,6 +1497,24 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<Mailing>(path, parameters);
 		}
 
+		/// <summary>
+		/// Retrieve the mailings matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="status">Filter using the mailing status. Possible values: 'incomplete', 'scheduled', 'delivering', 'delivered'</param>
+		/// <param name="type">Filter using the mailing type. Possible values: 'standard', 'recurring', 'absplit'</param>
+		/// <param name="name">Filter using the mailing name.</param>
+		/// <param name="listId">Filter using the ID of the mailing list.</param>
+		/// <param name="campaignId">Filter using the ID of the mailing campaign.</param>
+		/// <param name="recurringId">Filter using the ID of the mailing recurrence.</param>
+		/// <param name="start">Filter using a start date.</param>
+		/// <param name="end">Filter using a end date.</param>
+		/// <param name="sortBy">Sort resulting mailings. Possible values: 'name', 'created_on', 'scheduled_for', 'scheduled_on', 'active_emails'</param>
+		/// <param name="sortDirection">Direction of the sorting. Possible values: 'asc', 'desc'</param>
+		/// <param name="limit">Limit the number of resulting lists.</param>
+		/// <param name="offset">Offset the beginning of resulting lists.</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>Enumeration of <see cref="Mailing">mailings</see> matching the filtering criteria</returns>
 		public IEnumerable<Mailing> GetMailings(string userKey, string status = null, string type = null, string name = null, int? listId = null, int? campaignId = null, int? recurringId = null, DateTime? start = null, DateTime? end = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			var path = "/Mailing/GetList/";

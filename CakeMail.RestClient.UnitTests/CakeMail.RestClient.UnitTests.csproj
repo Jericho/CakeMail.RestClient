@@ -61,6 +61,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Mailings.cs" />
     <Compile Include="Segments.cs" />
     <Compile Include="Lists.cs" />
     <Compile Include="Permissions.cs" />
