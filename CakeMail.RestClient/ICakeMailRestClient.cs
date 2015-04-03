@@ -660,24 +660,124 @@ namespace CakeMail.RestClient
 		/// <returns>Enumeration of <see cref="Mailing">mailings</see> matching the filtering criteria</returns>
 		IEnumerable<Mailing> GetMailings(string userKey, string status = null, string type = null, string name = null, int? listId = null, int? campaignId = null, int? recurringId = null, DateTime? start = null, DateTime? end = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null);
 
+		/// <summary>
+		/// Get a count of mailings matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="status">Filter using the mailing status. Possible values: 'incomplete', 'scheduled', 'delivering', 'delivered'</param>
+		/// <param name="type">Filter using the mailing type. Possible values: 'standard', 'recurring', 'absplit'</param>
+		/// <param name="name">Filter using the mailing name.</param>
+		/// <param name="listId">Filter using the ID of the mailing list.</param>
+		/// <param name="campaignId">Filter using the ID of the mailing campaign.</param>
+		/// <param name="recurringId">Filter using the ID of the mailing recurrence.</param>
+		/// <param name="start">Filter using a start date.</param>
+		/// <param name="end">Filter using a end date.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>The count of mailings matching the filtering criteria</returns>
 		long GetMailingsCount(string userKey, string status = null, string type = null, string name = null, int? listId = null, int? campaignId = null, int? recurringId = null, DateTime? start = null, DateTime? end = null, int? clientId = null);
 
+		/// <summary>
+		/// Update a mailing
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing</param>
+		/// <param name="campaignId">ID of the campaign you want to associate the mailing with</param>
+		/// <param name="listId">ID of the list you want to associate the mailing with.</param>
+		/// <param name="sublistId">ID of the segment you want to associate the mailing with.</param>
+		/// <param name="name">Name of the mailing.</param>
+		/// <param name="type">Type of the mailing. Possible values: 'standard', 'recurring', 'absplit'</param>
+		/// <param name="encoding">Encoding to be used for the mailing. Possible values: 'utf-8', 'iso-8859-x'</param>
+		/// <param name="transferEncoding">Transfer encoding to be used for the mailing. Possible values: 'quoted-printable', 'base64'</param>
+		/// <param name="subject">Subject of the mailing.</param>
+		/// <param name="senderEmail">Email address of the sender of the mailing.</param>
+		/// <param name="senderName">Name of the sender of the mailing.</param>
+		/// <param name="replyTo">Email address of the reply-to of the mailing.</param>
+		/// <param name="htmlContent">HTML content of the mailing.</param>
+		/// <param name="textContent">Text content of the mailing.</param>
+		/// <param name="trackOpens">Indicates if opens in the HTML version are tracked.</param>
+		/// <param name="trackClicksInHtml">Indicates if clicks in the HTML version are tracked.</param>
+		/// <param name="trackClicksInText">Indicates if clicks in the text version are tracked.</param>
+		/// <param name="trackingParameters">Additional tracking parameters for links.</param>
+		/// <param name="endingOn">The date to end a 'recurring' mailing.</param>
+		/// <param name="maxRecurrences">The number of recurrences for a 'recurring' mailing.</param>
+		/// <param name="recurringConditions">The recurring conditions for a 'recurring' mailing.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>True if the mailing was updated</returns>
 		bool UpdateMailing(string userKey, int mailingId, int? campaignId = null, int? listId = null, int? sublistId = null, string name = null, string type = null, string encoding = null, string transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClicksInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, DateTime? endingOn = null, int? maxRecurrences = null, string recurringConditions = null, int? clientId = null);
 
+		/// <summary>
+		/// Send a test of a mailing.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing</param>
+		/// <param name="recipientEmail">Email address where the test will be sent.</param>
+		/// <param name="separated">True if you want the HTML and the text to be sent seperatly, false if you want to combine the HTML and the text in a multi-part email.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>True if the test email was sent</returns>
 		bool SendMailingTestEmail(string userKey, int mailingId, string recipientEmail, bool separated = false, int? clientId = null);
 
+		/// <summary>
+		/// Get the multi-part version of a mailing
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>The <see cref="RawEmailMessage">multi-part message</see></returns>
 		RawEmailMessage GetMailingRawEmailMessage(string userKey, int mailingId, int? clientId = null);
 
+		/// <summary>
+		/// Get the rendered HTML version of a mailing.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>The rendered HTML</returns>
 		string GetMailingRawHtml(string userKey, int mailingId, int? clientId = null);
 
+		/// <summary>
+		/// Get the rendered text version of a mailing.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>The rendered text</returns>
 		string GetMailingRawText(string userKey, int mailingId, int? clientId = null);
 
+		/// <summary>
+		/// Schedule a mailing
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing</param>
+		/// <param name="date">Date when the mailing is scheduled. If not provided, the mailing will be sent right away.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>True if the mailing is scheduled</returns>
 		bool ScheduleMailing(string userKey, int mailingId, DateTime? date = null, int? clientId = null);
 
+		/// <summary>
+		/// Unschedule a mailing
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>True if the mailing is unscheduled</returns>
 		bool UnscheduleMailing(string userKey, int mailingId, int? clientId = null);
 
+		/// <summary>
+		/// Suspend a delivering mailing
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>True if the mailing is suspended</returns>
 		bool SuspendMailing(string userKey, int mailingId, int? clientId = null);
 
+		/// <summary>
+		/// Resume a suspended mailing
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>True if the mailing is resumed</returns>
 		bool ResumeMailing(string userKey, int mailingId, int? clientId = null);
 
 		IEnumerable<LogItem> GetMailingLogs(string userKey, int mailingId, string logType = null, int? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);

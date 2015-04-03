@@ -605,7 +605,6 @@ namespace CakeMail.RestClient.UnitTests
 			var result = apiClient.GetListsCount(USER_KEY, name: name);
 
 			// Assert
-			Assert.IsNotNull(result);
 			Assert.AreEqual(2, result);
 		}
 
@@ -634,7 +633,6 @@ namespace CakeMail.RestClient.UnitTests
 			var result = apiClient.GetListsCount(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
 			Assert.AreEqual(2, result);
 		}
 
