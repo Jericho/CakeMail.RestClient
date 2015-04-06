@@ -780,14 +780,65 @@ namespace CakeMail.RestClient
 		/// <returns>True if the mailing is resumed</returns>
 		bool ResumeMailing(string userKey, int mailingId, int? clientId = null);
 
+		/// <summary>
+		/// Retrieve the log items for a given mailing
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing.</param>
+		/// <param name="logType">Filter using the log action. Possible values: "in_queue", "opened", "clickthru", "forward", "unsubscribe", "view", "spam", "skipped"</param>
+		/// <param name="listMemberId">Filter using the ID of the member.</param>
+		/// <param name="uniques">Return unique log item per member.</param>
+		/// <param name="totals">Return all the log items.</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="limit">Limit the number of resulting log items.</param>
+		/// <param name="offset">Offset the beginning of resulting log items.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>An enumeration of <see cref="LogItem">log items</see> matching the filter criteria</returns>
 		IEnumerable<LogItem> GetMailingLogs(string userKey, int mailingId, string logType = null, int? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
 
+		/// <summary>
+		/// Get a count of log items matching the filter criteria
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing.</param>
+		/// <param name="logType">Filter using the log action. Possible values: "in_queue", "opened", "clickthru", "forward", "unsubscribe", "view", "spam", "skipped"</param>
+		/// <param name="listMemberId">Filter using the ID of the member.</param>
+		/// <param name="uniques">Return unique log item per member.</param>
+		/// <param name="totals">Return all the log items.</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>The number of log items matching the filtering criteria</returns>
 		long GetMailingLogsCount(string userKey, int mailingId, string logType = null, int? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? clientId = null);
 
+		/// <summary>
+		/// Retrieve the links for a given mailing
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing.</param>
+		/// <param name="limit">Limit the number of resulting log items.</param>
+		/// <param name="offset">Offset the beginning of resulting log items.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>An enumeration of <see cref="Link">links</see> matching the filter criteria</returns>
 		IEnumerable<Link> GetMailingLinks(string userKey, int mailingId, int limit = 0, int offset = 0, int? clientId = null);
 
+		/// <summary>
+		/// Get a count of links matching the filter criteria
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>The number of links matching the filtering criteria</returns>
 		long GetMailingLinksCount(string userKey, int mailingId, int? clientId = null);
 
+		/// <summary>
+		/// Retrieve a link
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="linkId">ID of the link.</param>
+		/// <param name="clientId">Client ID of the client in which the link is located.</param>
+		/// <returns>The <see cref="Link">link</see></returns>
 		Link GetMailingLink(string userKey, int linkId, int? clientId = null);
 
 		IEnumerable<LogItem> GetMailingLinksLogs(string userKey, int mailingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);

@@ -1812,17 +1812,20 @@ namespace CakeMail.RestClient
 		}
 
 		/// <summary>
-		/// 
+		/// Retrieve the log items for a given mailing
 		/// </summary>
-		/// <param name="userKey"></param>
-		/// <param name="listId"></param>
-		/// <param name="logType">Possible values: "in_queue", "opened", "clickthru", "forward", "unsubscribe", "view", "spam", "skipped"</param>
-		/// <param name="start"></param>
-		/// <param name="end"></param>
-		/// <param name="limit"></param>
-		/// <param name="offset"></param>
-		/// <param name="clientId"></param>
-		/// <returns></returns>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing.</param>
+		/// <param name="logType">Filter using the log action. Possible values: "in_queue", "opened", "clickthru", "forward", "unsubscribe", "view", "spam", "skipped"</param>
+		/// <param name="listMemberId">Filter using the ID of the member.</param>
+		/// <param name="uniques">Return unique log item per member.</param>
+		/// <param name="totals">Return all the log items.</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="limit">Limit the number of resulting log items.</param>
+		/// <param name="offset">Offset the beginning of resulting log items.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>An enumeration of <see cref="LogItem">log items</see> matching the filter criteria</returns>
 		public IEnumerable<LogItem> GetMailingLogs(string userKey, int mailingId, string logType = null, int? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			string path = "/Mailing/GetLog/";
@@ -1846,6 +1849,19 @@ namespace CakeMail.RestClient
 			return ExecuteArrayRequest<LogItem>(path, parameters, "logs");
 		}
 
+		/// <summary>
+		/// Get a count of log items matching the filter criteria
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing.</param>
+		/// <param name="logType">Filter using the log action. Possible values: "in_queue", "opened", "clickthru", "forward", "unsubscribe", "view", "spam", "skipped"</param>
+		/// <param name="listMemberId">Filter using the ID of the member.</param>
+		/// <param name="uniques">Return unique log item per member.</param>
+		/// <param name="totals">Return all the log items.</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>The number of log items matching the filtering criteria</returns>
 		public long GetMailingLogsCount(string userKey, int mailingId, string logType = null, int? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? clientId = null)
 		{
 			string path = "/Mailing/GetLog/";
@@ -1867,6 +1883,15 @@ namespace CakeMail.RestClient
 			return ExecuteCountRequest(path, parameters);
 		}
 
+		/// <summary>
+		/// Retrieve the links for a given mailing
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing.</param>
+		/// <param name="limit">Limit the number of resulting log items.</param>
+		/// <param name="offset">Offset the beginning of resulting log items.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>An enumeration of <see cref="Link">links</see> matching the filter criteria</returns>
 		public IEnumerable<Link> GetMailingLinks(string userKey, int mailingId, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			string path = "/Mailing/GetLinks/";
@@ -1884,6 +1909,13 @@ namespace CakeMail.RestClient
 			return ExecuteArrayRequest<Link>(path, parameters, "links");
 		}
 
+		/// <summary>
+		/// Get a count of links matching the filter criteria
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>The number of links matching the filtering criteria</returns>
 		public long GetMailingLinksCount(string userKey, int mailingId, int? clientId = null)
 		{
 			string path = "/Mailing/GetLinks/";
@@ -1899,6 +1931,13 @@ namespace CakeMail.RestClient
 			return ExecuteCountRequest(path, parameters);
 		}
 
+		/// <summary>
+		/// Retrieve a link
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="linkId">ID of the link.</param>
+		/// <param name="clientId">Client ID of the client in which the link is located.</param>
+		/// <returns>The <see cref="Link">link</see></returns>
 		public Link GetMailingLink(string userKey, int linkId, int? clientId = null)
 		{
 			string path = "/Mailing/GetLinkInfo/";
@@ -1915,7 +1954,7 @@ namespace CakeMail.RestClient
 
 		public IEnumerable<LogItem> GetMailingLinksLogs(string userKey, int mailingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
-			string path = "/Mailing/GetLog/";
+			string path = "/Mailing/GetLinksLog/";
 
 			var parameters = new List<KeyValuePair<string, object>>()
 			{
@@ -2894,7 +2933,7 @@ namespace CakeMail.RestClient
 				// The following may throw 'System.Security.Permissions.FileIOPermission' under some circumpstances
 				//var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
-				// Here's an alternative suggected by Phil Haack: http://haacked.com/archive/2010/11/04/assembly-location-and-medium-trust.aspx
+				// Here's an alternative suggested by Phil Haack: http://haacked.com/archive/2010/11/04/assembly-location-and-medium-trust.aspx
 				var assemblyVersion = new AssemblyName(typeof(CakeMailRestClient).Assembly.FullName).Version;
 				var version = string.Format("{0}.{1}.{2}.{3}", assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.Build, assemblyVersion.Revision);
 
