@@ -1975,25 +1975,75 @@ namespace CakeMail.RestClient
 
 		#region Methods related to RELAYS
 
-		public bool SendRelay(string userKey, string email, string senderEmail, string senderName, string html, string text, string subject, string encoding, bool trackOpens, bool trackClicksInHtml, bool trackClicksInText, int trackingId, int? clientId = null)
+		/// <summary>
+		/// Send a one-off email without tracking opens and clicks
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="recipientEmailAddress">The email address of the recipient.</param>
+		/// <param name="subject">Subject of the relay</param>
+		/// <param name="html">HTML content of the relay.</param>
+		/// <param name="text">Text content of the relay.</param>
+		/// <param name="senderEmail">Email address of the sender of the relay.</param>
+		/// <param name="senderName">Name of the sender of the relay.</param>
+		/// <param name="encoding">Encoding to be used for the relay. Possible values: 'utf-8', 'iso-8859-x'</param>
+		/// <param name="clientId">Client ID of the client in which the relay is located.</param>
+		/// <returns>True if the email is sent</returns>
+		public bool SendRelay(string userKey, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, string encoding = null, int? clientId = null)
 		{
 			string path = "/Relay/Send/";
 
 			var parameters = new List<KeyValuePair<string, object>>()
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("email", email),
-				new KeyValuePair<string, object>("subject", subject)
+				new KeyValuePair<string, object>("email", recipientEmailAddress),
+				new KeyValuePair<string, object>("subject", subject),
+				new KeyValuePair<string, object>("html_message", html),
+				new KeyValuePair<string, object>("text_message", text),
+				new KeyValuePair<string, object>("sender_email", senderEmail),
+				new KeyValuePair<string, object>("track_opening", "false"),
+				new KeyValuePair<string, object>("track_clicks_in_html", "false"),
+				new KeyValuePair<string, object>("track_clicks_in_text", "false")
 			};
 			if (senderName != null) parameters.Add(new KeyValuePair<string, object>("sender_name", senderName));
-			if (senderEmail != null) parameters.Add(new KeyValuePair<string, object>("sender_email", senderEmail));
-			if (html != null) parameters.Add(new KeyValuePair<string, object>("html_message", html));
-			if (text != null) parameters.Add(new KeyValuePair<string, object>("text_message", text));
 			if (encoding != null) parameters.Add(new KeyValuePair<string, object>("encoding", encoding));
-			parameters.Add(new KeyValuePair<string, object>("track_opening", trackOpens ? "true" : "false"));
-			parameters.Add(new KeyValuePair<string, object>("track_clicks_in_html", trackClicksInHtml ? "true" : "false"));
-			parameters.Add(new KeyValuePair<string, object>("track_clicks_in_text", trackClicksInText ? "true" : "false"));
-			parameters.Add(new KeyValuePair<string, object>("tracking_id", trackingId));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteObjectRequest<bool>(path, parameters);
+		}
+
+		/// <summary>
+		/// Send a one-off email. Track opens and clicks.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="trackingId">ID for tracking purposes.</param>
+		/// <param name="recipientEmailAddress">The email address of the recipient.</param>
+		/// <param name="subject">Subject of the relay</param>
+		/// <param name="html">HTML content of the relay.</param>
+		/// <param name="text">Text content of the relay.</param>
+		/// <param name="senderEmail">Email address of the sender of the relay.</param>
+		/// <param name="senderName">Name of the sender of the relay.</param>
+		/// <param name="encoding">Encoding to be used for the relay. Possible values: 'utf-8', 'iso-8859-x'</param>
+		/// <param name="clientId">Client ID of the client in which the relay is located.</param>
+		/// <returns>True if the email is sent</returns>
+		public bool SendTrackedRelay(string userKey, int trackingId, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, string encoding = null, int? clientId = null)
+		{
+			string path = "/Relay/Send/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("tracking_id", trackingId),
+				new KeyValuePair<string, object>("email", recipientEmailAddress),
+				new KeyValuePair<string, object>("subject", subject),
+				new KeyValuePair<string, object>("html_message", html),
+				new KeyValuePair<string, object>("text_message", text),
+				new KeyValuePair<string, object>("sender_email", senderEmail),
+				new KeyValuePair<string, object>("track_opening", "true"),
+				new KeyValuePair<string, object>("track_clicks_in_html", "true"),
+				new KeyValuePair<string, object>("track_clicks_in_text", "true")
+			};
+			if (senderName != null) parameters.Add(new KeyValuePair<string, object>("sender_name", senderName));
+			if (encoding != null) parameters.Add(new KeyValuePair<string, object>("encoding", encoding));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteObjectRequest<bool>(path, parameters);
