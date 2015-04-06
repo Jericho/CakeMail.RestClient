@@ -2049,21 +2049,65 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<bool>(path, parameters);
 		}
 
+		/// <summary>
+		/// Retrieve the log items for either a given tracked relay or for a client
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="trackingId">ID of the tracked relay. If this value is omitted, all log items for the client will be returned</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="limit">Limit the number of resulting log items.</param>
+		/// <param name="offset">Offset the beginning of resulting log items.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>An enumeration of <see cref="RelayLog">log items</see> matching the filter criteria</returns>
 		public IEnumerable<RelayLog> GetRelaySentLogs(string userKey, int? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			return GetRelayLogs<RelayLog>(userKey, "sent", "sent_logs", trackingId, start, end, limit, offset, clientId);
 		}
 
+		/// <summary>
+		/// Retrieve the log items for either a given tracked relay or for a client
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="trackingId">ID of the tracked relay. If this value is omitted, all log items for the client will be returned</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="limit">Limit the number of resulting log items.</param>
+		/// <param name="offset">Offset the beginning of resulting log items.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>An enumeration of <see cref="RelayOpenLog">log items</see> matching the filter criteria</returns>
 		public IEnumerable<RelayOpenLog> GetRelayOpenLogs(string userKey, int? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			return GetRelayLogs<RelayOpenLog>(userKey, "open", "open_logs", trackingId, start, end, limit, offset, clientId);
 		}
 
+		/// <summary>
+		/// Retrieve the log items for either a given tracked relay or for a client
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="trackingId">ID of the tracked relay. If this value is omitted, all log items for the client will be returned</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="limit">Limit the number of resulting log items.</param>
+		/// <param name="offset">Offset the beginning of resulting log items.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>An enumeration of <see cref="RelayClickLog">log items</see> matching the filter criteria</returns>
 		public IEnumerable<RelayClickLog> GetRelayClickLogs(string userKey, int? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
-			return GetRelayLogs<RelayClickLog>(userKey, "clickthru", "click_logs", trackingId, start, end, limit, offset, clientId);
+			return GetRelayLogs<RelayClickLog>(userKey, "clickthru", "clickthru_logs", trackingId, start, end, limit, offset, clientId);
 		}
 
+		/// <summary>
+		/// Retrieve the log items for either a given tracked relay or for a client
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="trackingId">ID of the tracked relay. If this value is omitted, all log items for the client will be returned</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="limit">Limit the number of resulting log items.</param>
+		/// <param name="offset">Offset the beginning of resulting log items.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>An enumeration of <see cref="RelayBounceLog">log items</see> matching the filter criteria</returns>
 		public IEnumerable<RelayBounceLog> GetRelayBounceLogs(string userKey, int? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			return GetRelayLogs<RelayBounceLog>(userKey, "bounce", "bounce_logs", trackingId, start, end, limit, offset, clientId);

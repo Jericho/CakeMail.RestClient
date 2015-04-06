@@ -94,7 +94,6 @@ namespace CakeMail.RestClient.UnitTests
 			var name = "My new list";
 			var defaultSenderName = "Bob Smith";
 			var defaultSenderAddress = "bobsmith@fictitiouscompany.com";
-			var policy = "accepted";
 			var listId = 123;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
