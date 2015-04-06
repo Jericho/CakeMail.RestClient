@@ -934,10 +934,31 @@ namespace CakeMail.RestClient
 
 		#region Methods related to SUPPRESSION LISTS
 
+		/// <summary>
+		/// Add email addresses to the suppression list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="emailAddresses">The email addresses to add to the suppression list</param>
+		/// <param name="clientId">Client ID of the client.</param>
+		/// <returns>An enumeration of <see cref="SuppressEmailResult">results</see>. Each item in this enumeration indicates the result of adding an email address to the suppression list.</returns>
 		IEnumerable<SuppressEmailResult> AddEmailAddressesToSuppressionList(string userKey, IEnumerable<string> emailAddresses, int? clientId = null);
 
+		/// <summary>
+		/// Add domains to the suppression list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="domains">The domains to add to the suppression list</param>
+		/// <param name="clientId">Client ID of the client.</param>
+		/// <returns>An enumeration of <see cref="SuppressDomainResult">results</see>. Each item in this enumeration indicates the result of adding a domain to the suppression list.</returns>
 		IEnumerable<SuppressDomainResult> AddDomainsToSuppressionList(string userKey, IEnumerable<string> domains, int? clientId = null);
 
+		/// <summary>
+		/// Add localparts to the suppression list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="domains">The localparts to add to the suppression list</param>
+		/// <param name="clientId">Client ID of the client.</param>
+		/// <returns>An enumeration of <see cref="SuppressLocalPartResult">results</see>. Each item in this enumeration indicates the result of adding a localpart to the suppression list.</returns>
 		IEnumerable<SuppressLocalPartResult> AddLocalPartsToSuppressionList(string userKey, IEnumerable<string> localParts, int? clientId = null);
 
 		IEnumerable<SuppressEmailResult> RemoveEmailAddressesFromSuppressionList(string userKey, IEnumerable<string> emailAddresses, int? clientId = null);

@@ -2136,6 +2136,13 @@ namespace CakeMail.RestClient
 
 		#region Methods related to SUPPRESSION LISTS
 
+		/// <summary>
+		/// Add email addresses to the suppression list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="emailAddresses">The email addresses to add to the suppression list</param>
+		/// <param name="clientId">Client ID of the client in which the relay is located.</param>
+		/// <returns>An enumeration of <see cref="SuppressEmailResult">results</see>. Each item in this enumeration indicates the result of adding an email address to the suppression list.</returns>
 		public IEnumerable<SuppressEmailResult> AddEmailAddressesToSuppressionList(string userKey, IEnumerable<string> emailAddresses, int? clientId = null)
 		{
 			string path = "/SuppressionList/ImportEmails/";
@@ -2158,6 +2165,13 @@ namespace CakeMail.RestClient
 			return ExecuteArrayRequest<SuppressEmailResult>(path, parameters, null);
 		}
 
+		/// <summary>
+		/// Add domains to the suppression list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="domains">The domains to add to the suppression list</param>
+		/// <param name="clientId">Client ID of the client in which the relay is located.</param>
+		/// <returns>An enumeration of <see cref="SuppressDomainResult">results</see>. Each item in this enumeration indicates the result of adding a domain to the suppression list.</returns>
 		public IEnumerable<SuppressDomainResult> AddDomainsToSuppressionList(string userKey, IEnumerable<string> domains, int? clientId = null)
 		{
 			string path = "/SuppressionList/ImportDomains/";
@@ -2180,6 +2194,13 @@ namespace CakeMail.RestClient
 			return ExecuteArrayRequest<SuppressDomainResult>(path, parameters, null);
 		}
 
+		/// <summary>
+		/// Add localparts to the suppression list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="domains">The localparts to add to the suppression list</param>
+		/// <param name="clientId">Client ID of the client.</param>
+		/// <returns>An enumeration of <see cref="SuppressLocalPartResult">results</see>. Each item in this enumeration indicates the result of adding a localpart to the suppression list.</returns>
 		public IEnumerable<SuppressLocalPartResult> AddLocalPartsToSuppressionList(string userKey, IEnumerable<string> localParts, int? clientId = null)
 		{
 			string path = "/SuppressionList/ImportLocalparts/";
@@ -2199,7 +2220,7 @@ namespace CakeMail.RestClient
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteArrayRequest<SuppressLocalPartResult>(path, parameters, null);
+			return ExecuteArrayRequest<SuppressLocalPartResult>(path, parameters, "localparts");
 		}
 
 		public IEnumerable<SuppressEmailResult> RemoveEmailAddressesFromSuppressionList(string userKey, IEnumerable<string> emailAddresses, int? clientId = null)
