@@ -654,9 +654,9 @@ namespace CakeMail.RestClient
 		/// <param name="end">Filter using a end date.</param>
 		/// <param name="sortBy">Sort resulting mailings. Possible values: 'name', 'created_on', 'scheduled_for', 'scheduled_on', 'active_emails'</param>
 		/// <param name="sortDirection">Direction of the sorting. Possible values: 'asc', 'desc'</param>
-		/// <param name="limit">Limit the number of resulting lists.</param>
-		/// <param name="offset">Offset the beginning of resulting lists.</param>
-		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <param name="limit">Limit the number of resulting mailings.</param>
+		/// <param name="offset">Offset the beginning of resulting mailings.</param>
+		/// <param name="clientId">Client ID of the client in which the mailings are located.</param>
 		/// <returns>Enumeration of <see cref="Mailing">mailings</see> matching the filtering criteria</returns>
 		IEnumerable<Mailing> GetMailings(string userKey, string status = null, string type = null, string name = null, int? listId = null, int? campaignId = null, int? recurringId = null, DateTime? start = null, DateTime? end = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null);
 
@@ -988,10 +988,34 @@ namespace CakeMail.RestClient
 		/// <returns>An enumeration of <see cref="SuppressLocalPartResult">results</see>. Each item in this enumeration indicates the result of removing a localpart from the suppression list.</returns>
 		IEnumerable<SuppressLocalPartResult> RemoveLocalPartsFromSuppressionList(string userKey, IEnumerable<string> localParts, int? clientId = null);
 
+		/// <summary>
+		/// Retrieve the email addresses on the suppression list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="limit">Limit the number of resulting email addresses.</param>
+		/// <param name="offset">Offset the beginning of resulting email addresses.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>An enumeration of <see cref="SuppressedEmail">addresses</see>. The result also indicates how each email address ended up on the suppression list.</returns>
 		IEnumerable<SuppressedEmail> GetSuppressedEmailAddresses(string userKey, int limit = 0, int offset = 0, int? clientId = null);
 
+		/// <summary>
+		/// Retrieve the domains on the suppression list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="limit">Limit the number of resulting domains.</param>
+		/// <param name="offset">Offset the beginning of resulting domains.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>An enumeration of domains.</returns>
 		IEnumerable<string> GetSuppressedDomains(string userKey, int limit = 0, int offset = 0, int? clientId = null);
 
+		/// <summary>
+		/// Retrieve the localparts on the suppression list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="limit">Limit the number of resulting localparts.</param>
+		/// <param name="offset">Offset the beginning of resulting localparts.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>An enumeration of localparts.</returns>
 		IEnumerable<string> GetSuppressedLocalParts(string userKey, int limit = 0, int offset = 0, int? clientId = null);
 
 		#endregion

@@ -1511,9 +1511,9 @@ namespace CakeMail.RestClient
 		/// <param name="end">Filter using a end date.</param>
 		/// <param name="sortBy">Sort resulting mailings. Possible values: 'name', 'created_on', 'scheduled_for', 'scheduled_on', 'active_emails'</param>
 		/// <param name="sortDirection">Direction of the sorting. Possible values: 'asc', 'desc'</param>
-		/// <param name="limit">Limit the number of resulting lists.</param>
-		/// <param name="offset">Offset the beginning of resulting lists.</param>
-		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <param name="limit">Limit the number of resulting mailings.</param>
+		/// <param name="offset">Offset the beginning of resulting mailings.</param>
+		/// <param name="clientId">Client ID of the client in which the mailings are located.</param>
 		/// <returns>Enumeration of <see cref="Mailing">mailings</see> matching the filtering criteria</returns>
 		public IEnumerable<Mailing> GetMailings(string userKey, string status = null, string type = null, string name = null, int? listId = null, int? campaignId = null, int? recurringId = null, DateTime? start = null, DateTime? end = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
@@ -2310,6 +2310,14 @@ namespace CakeMail.RestClient
 			return ExecuteArrayRequest<SuppressLocalPartResult>(path, parameters, "localparts");
 		}
 
+		/// <summary>
+		/// Retrieve the email addresses on the suppression list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="limit">Limit the number of resulting email addresses.</param>
+		/// <param name="offset">Offset the beginning of resulting email addresses.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>An enumeration of <see cref="SuppressedEmail">addresses</see>. The result also indicates how each email address ended up on the suppression list.</returns>
 		public IEnumerable<SuppressedEmail> GetSuppressedEmailAddresses(string userKey, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			var path = "/SuppressionList/ExportEmails/";
@@ -2326,6 +2334,14 @@ namespace CakeMail.RestClient
 			return ExecuteArrayRequest<SuppressedEmail>(path, parameters, "emails");
 		}
 
+		/// <summary>
+		/// Retrieve the domains on the suppression list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="limit">Limit the number of resulting domains.</param>
+		/// <param name="offset">Offset the beginning of resulting domains.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>An enumeration of domains.</returns>
 		public IEnumerable<string> GetSuppressedDomains(string userKey, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			var path = "/SuppressionList/ExportDomains/";
@@ -2340,12 +2356,19 @@ namespace CakeMail.RestClient
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			var result = ExecuteArrayRequest<ExpandoObject>(path, parameters, "domains");
-			if (result == null) return Enumerable.Empty<string>();
 
 			var domains = (from r in result select r.Single(p => p.Key == "domain").Value.ToString()).ToArray();
 			return domains;
 		}
 
+		/// <summary>
+		/// Retrieve the localparts on the suppression list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="limit">Limit the number of resulting localparts.</param>
+		/// <param name="offset">Offset the beginning of resulting localparts.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>An enumeration of localparts.</returns>
 		public IEnumerable<string> GetSuppressedLocalParts(string userKey, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			var path = "/SuppressionList/ExportLocalparts/";
@@ -2360,10 +2383,69 @@ namespace CakeMail.RestClient
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			var result = ExecuteArrayRequest<ExpandoObject>(path, parameters, "localparts");
-			if (result == null) return Enumerable.Empty<string>();
 
 			var localParts = (from r in result select r.Single(p => p.Key == "localpart").Value.ToString()).ToArray();
 			return localParts;
+		}
+
+		/// <summary>
+		/// Get a count of email addresses on the suppression list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>The number of email addresses on the suppresssion list</returns>
+		public long GetSuppressedEmailAddressesCount(string userKey, int? clientId = null)
+		{
+			var path = "/SuppressionList/ExportEmails/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
+		}
+
+		/// <summary>
+		/// Get a count of domains on the suppression list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>The number of domains on the suppresssion list</returns>
+		public long GetSuppressedDomainsCount(string userKey, int? clientId = null)
+		{
+			var path = "/SuppressionList/ExportDomains/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
+		}
+
+		/// <summary>
+		/// Get a count of localparts on the suppression list
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>The number of localparts on the suppresssion list</returns>
+		public long GetSuppressedLocalPartsCount(string userKey, int? clientId = null)
+		{
+			var path = "/SuppressionList/ExportLocalparts/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
 		}
 
 		#endregion
