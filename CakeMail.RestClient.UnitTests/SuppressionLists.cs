@@ -343,6 +343,34 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
+		public void RemoveEmailAddressesFromSuppressionList_with_null_array()
+		{
+			// Arrange
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":[]}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.RemoveEmailAddressesFromSuppressionList(USER_KEY, null);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(0, result.Count());
+		}
+
+		[TestMethod]
 		public void RemoveEmailAddressesFromSuppressionList_with_clientid()
 		{
 			// Arrange
