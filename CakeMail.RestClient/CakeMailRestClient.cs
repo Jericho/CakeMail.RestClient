@@ -2508,6 +2508,13 @@ namespace CakeMail.RestClient
 		//	return ExecuteObjectRequest<bool>(path, parameters);
 		//}
 
+		/// <summary>
+		/// Retrieve a trigger
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="triggerID">ID of the trigger</param>
+		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
+		/// <returns>The <see cref="Trigger">trigger</see></returns>
 		public Trigger GetTrigger(string userKey, int triggerId, int? clientId = null)
 		{
 			var path = "/Trigger/GetInfo/";
