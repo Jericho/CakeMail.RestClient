@@ -77,6 +77,7 @@ namespace CakeMail.RestClient.UnitTests
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
 			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
+				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
@@ -99,6 +100,7 @@ namespace CakeMail.RestClient.UnitTests
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
 			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
+				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
@@ -121,6 +123,7 @@ namespace CakeMail.RestClient.UnitTests
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
 			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
+				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
@@ -145,6 +148,7 @@ namespace CakeMail.RestClient.UnitTests
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
 			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
+				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
@@ -169,6 +173,7 @@ namespace CakeMail.RestClient.UnitTests
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
 			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
+				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
@@ -193,6 +198,7 @@ namespace CakeMail.RestClient.UnitTests
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
 			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
+				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
@@ -217,6 +223,7 @@ namespace CakeMail.RestClient.UnitTests
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
 			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
+				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
@@ -240,6 +247,7 @@ namespace CakeMail.RestClient.UnitTests
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
 			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
+				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
@@ -263,6 +271,7 @@ namespace CakeMail.RestClient.UnitTests
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
 			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
+				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
@@ -289,6 +298,7 @@ namespace CakeMail.RestClient.UnitTests
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
 			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
+				r.Resource == "/Campaign/Delete/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3
