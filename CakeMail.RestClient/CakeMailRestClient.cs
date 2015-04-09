@@ -2465,7 +2465,18 @@ namespace CakeMail.RestClient
 
 		#region Methods related to TRIGGERS
 
-		public int CreateTrigger(string userKey, string name, int listId, string encoding = null, string transferEncoding = null, int? campaignId = null, int? clientId = null)
+		/// <summary>
+		/// Create a trigger
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="name">Name of the trigger.</param>
+		/// <param name="listId">ID of the list you want to associate the trigger with.</param>
+		/// <param name="campaignId">ID of the campaign you want to associate the trigger with.</param>
+		/// <param name="encoding">Encoding to be used for the trigger. Possible values: 'utf-8', 'iso-8859-x'</param>
+		/// <param name="transferEncoding">Transfer encoding to be used for the trigger. Possible values: 'quoted-printable', 'base64'</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is created.</param>
+		/// <returns>ID of the new trigger</returns>
+		public int CreateTrigger(string userKey, string name, int listId, int? campaignId = null, string encoding = null, string transferEncoding = null, int? clientId = null)
 		{
 			string path = "/Trigger/Create/";
 
