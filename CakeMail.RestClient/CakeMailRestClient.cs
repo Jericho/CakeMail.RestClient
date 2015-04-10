@@ -354,8 +354,8 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("client_id", clientId)
 			};
-			if (startDate.HasValue) parameters.Add(new KeyValuePair<string, object>("start_date", ((DateTime)startDate.Value).ToCakeMailString()));
-			if (endDate.HasValue) parameters.Add(new KeyValuePair<string, object>("end_date", ((DateTime)endDate.Value).ToCakeMailString()));
+			if (startDate.HasValue) parameters.Add(new KeyValuePair<string, object>("start_date", startDate.Value.ToCakeMailString()));
+			if (endDate.HasValue) parameters.Add(new KeyValuePair<string, object>("end_date", endDate.Value.ToCakeMailString()));
 
 			return ExecuteObjectRequest<Client>(path, parameters);
 		}
@@ -1238,8 +1238,8 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("count", "false")
 			};
 			if (logType != null) parameters.Add(new KeyValuePair<string, object>("action", logType));
-			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
-			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value.ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value.ToCakeMailString()));
 			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
@@ -1270,8 +1270,8 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("count", "true")
 			};
 			if (logType != null) parameters.Add(new KeyValuePair<string, object>("action", logType));
-			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
-			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value.ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value.ToCakeMailString()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteCountRequest(path, parameters);
@@ -1530,8 +1530,8 @@ namespace CakeMail.RestClient
 			if (listId.HasValue) parameters.Add(new KeyValuePair<string, object>("list_id", listId.Value));
 			if (campaignId.HasValue) parameters.Add(new KeyValuePair<string, object>("campaign_id", campaignId.Value));
 			if (recurringId.HasValue) parameters.Add(new KeyValuePair<string, object>("recurring_id", recurringId.Value));
-			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_date", ((DateTime)start.Value).ToCakeMailString()));
-			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_date", ((DateTime)end.Value).ToCakeMailString()));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_date", start.Value.ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_date", end.Value.ToCakeMailString()));
 			if (sortBy != null) parameters.Add(new KeyValuePair<string, object>("sort_by", sortBy));
 			if (sortDirection != null) parameters.Add(new KeyValuePair<string, object>("direction", sortDirection));
 			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
@@ -1569,8 +1569,8 @@ namespace CakeMail.RestClient
 			if (listId.HasValue) parameters.Add(new KeyValuePair<string, object>("list_id", listId.Value));
 			if (campaignId.HasValue) parameters.Add(new KeyValuePair<string, object>("campaign_id", campaignId.Value));
 			if (recurringId.HasValue) parameters.Add(new KeyValuePair<string, object>("recurring_id", recurringId.Value));
-			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_date", ((DateTime)start.Value).ToCakeMailString()));
-			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_date", ((DateTime)end.Value).ToCakeMailString()));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_date", start.Value.ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_date", end.Value.ToCakeMailString()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteCountRequest(path, parameters);
@@ -1629,7 +1629,7 @@ namespace CakeMail.RestClient
 			if (trackClicksInHtml.HasValue) parameters.Add(new KeyValuePair<string, object>("clickthru_html", trackClicksInHtml.Value ? "true" : "false"));
 			if (trackClicksInText.HasValue) parameters.Add(new KeyValuePair<string, object>("clickthru_text", trackClicksInText.Value ? "true" : "false"));
 			if (trackingParameters != null) parameters.Add(new KeyValuePair<string, object>("tracking_params", trackingParameters));
-			if (endingOn.HasValue) parameters.Add(new KeyValuePair<string, object>("ending_on", ((DateTime)endingOn.Value).ToCakeMailString()));
+			if (endingOn.HasValue) parameters.Add(new KeyValuePair<string, object>("ending_on", endingOn.Value.ToCakeMailString()));
 			if (maxRecurrences.HasValue) parameters.Add(new KeyValuePair<string, object>("max_recurrences", maxRecurrences.Value));
 			if (recurringConditions != null) parameters.Add(new KeyValuePair<string, object>("recurring_conditions", recurringConditions));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
@@ -1742,7 +1742,7 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("mailing_id", mailingId)
 			};
-			if (date.HasValue) parameters.Add(new KeyValuePair<string, object>("date", ((DateTime)date.Value).ToCakeMailString()));
+			if (date.HasValue) parameters.Add(new KeyValuePair<string, object>("date", date.Value.ToCakeMailString()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteObjectRequest<bool>(path, parameters);
@@ -1839,8 +1839,8 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("count", "false")
 			};
 			if (logType != null) parameters.Add(new KeyValuePair<string, object>("action", logType));
-			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
-			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value.ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value.ToCakeMailString()));
 			if (listMemberId.HasValue) parameters.Add(new KeyValuePair<string, object>("record_id", listMemberId.Value));
 			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
@@ -1875,8 +1875,8 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("count", "true")
 			};
 			if (logType != null) parameters.Add(new KeyValuePair<string, object>("action", logType));
-			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
-			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value.ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value.ToCakeMailString()));
 			if (listMemberId.HasValue) parameters.Add(new KeyValuePair<string, object>("record_id", listMemberId.Value));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
@@ -1962,8 +1962,8 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("mailing_id", mailingId),
 				new KeyValuePair<string, object>("count", "false")
 			};
-			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
-			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value.ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value.ToCakeMailString()));
 			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
@@ -2123,8 +2123,8 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("log_type", logType)
 			};
 			if (trackingId.HasValue) parameters.Add(new KeyValuePair<string, object>("tracking_id", trackingId.Value));
-			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
-			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value.ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value.ToCakeMailString()));
 			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
@@ -2529,7 +2529,32 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<Trigger>(path, parameters);
 		}
 
-		public bool UpdateTrigger(string userKey, int triggerId, int? campaignId = null, string name = null, string action = null, string encoding = null, string transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClicksInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, int? delay = null, string status = null, string dateField = null, int? clientId = null)
+		/// <summary>
+		/// Update a trigger
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="triggerID">ID of the trigger</param>
+		/// <param name="campaignId">ID of the campaign you want to associate the trigger with.</param>
+		/// <param name="name">Name of the trigger</param>
+		/// <param name="action">Action of the trigger. Possible values: 'opt-in', 'douopt-in', 'opt-out', 'specific', 'annual'</param>
+		/// <param name="encoding">Encoding to be used for the trigger. Possible values: 'utf-8', 'iso-8859-x'</param>
+		/// <param name="transferEncoding">Transfer encoding to be used for the trigger. Possible values: 'quoted-printable', 'base64'</param>
+		/// <param name="subject">Subject of the trigger.</param>
+		/// <param name="senderEmail">Email address of the sender of the trigger.</param>
+		/// <param name="senderName">Name of the sender of the trigger.</param>
+		/// <param name="replyTo">Email address of the reply-to of the trigger.</param>
+		/// <param name="htmlContent">HTML content of the trigger.</param>
+		/// <param name="textContent">Text content of the trigger.</param>
+		/// <param name="trackOpens">Track the opens in the HTML version.</param>
+		/// <param name="trackClicksInHtml">Track the clicks in the HTML version.</param>
+		/// <param name="trackClicksInText">Track the clicks in the text version.</param>
+		/// <param name="trackingParameters">Additional tracking parameters for links.</param>
+		/// <param name="delay">Delay (in seconds) to be used when the trigger is unleashed.</param>
+		/// <param name="status">Status of the trigger. Possible values: 'active', 'inactive'</param>
+		/// <param name="dateField">Datetime field to be used for trigger with action 'specific' or 'annual'.</param>
+		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
+		/// <returns>True if the trigger was updated</returns>
+		public bool UpdateTrigger(string userKey, int triggerId, int? campaignId = null, string name = null, string action = null, string encoding = null, string transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClicksInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, int? delay = null, string status = null, DateTime? date = null, int? clientId = null)
 		{
 			var path = "/Trigger/SetInfo/";
 
@@ -2555,7 +2580,7 @@ namespace CakeMail.RestClient
 			if (trackingParameters != null) parameters.Add(new KeyValuePair<string, object>("tracking_params", trackingParameters));
 			if (delay != null) parameters.Add(new KeyValuePair<string, object>("delay", delay));
 			if (status != null) parameters.Add(new KeyValuePair<string, object>("status", status));
-			if (dateField != null) parameters.Add(new KeyValuePair<string, object>("date_field", dateField));
+			if (date.HasValue) parameters.Add(new KeyValuePair<string, object>("date_field", date.Value.ToCakeMailString()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteObjectRequest<bool>(path, parameters);
@@ -2684,8 +2709,8 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("count", "false")
 			};
 			if (logType != null) parameters.Add(new KeyValuePair<string, object>("action", logType));
-			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
-			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value.ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value.ToCakeMailString()));
 			if (listMemberId.HasValue) parameters.Add(new KeyValuePair<string, object>("record_id", listMemberId.Value));
 			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
@@ -2707,8 +2732,8 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("count", "true")
 			};
 			if (logType != null) parameters.Add(new KeyValuePair<string, object>("action", logType));
-			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
-			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value.ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value.ToCakeMailString()));
 			if (listMemberId.HasValue) parameters.Add(new KeyValuePair<string, object>("record_id", listMemberId.Value));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
@@ -2771,8 +2796,8 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("trigger_id", triggerId),
 				new KeyValuePair<string, object>("count", "false")
 			};
-			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", ((DateTime)start.Value).ToCakeMailString()));
-			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", ((DateTime)end.Value).ToCakeMailString()));
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value.ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value.ToCakeMailString()));
 			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));

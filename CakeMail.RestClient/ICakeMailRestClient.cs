@@ -1052,7 +1052,32 @@ namespace CakeMail.RestClient
 		/// <returns>The <see cref="Trigger">trigger</see></returns>
 		Trigger GetTrigger(string userKey, int triggerId, int? clientId = null);
 
-		bool UpdateTrigger(string userKey, int triggerId, int? campaignId = null, string name = null, string action = null, string encoding = null, string transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClicksInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, int? delay = null, string status = null, string dateField = null, int? clientId = null);
+		/// <summary>
+		/// Update a trigger
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="triggerID">ID of the trigger</param>
+		/// <param name="campaignId">ID of the campaign you want to associate the trigger with.</param>
+		/// <param name="name">Name of the trigger</param>
+		/// <param name="action">Action of the trigger. Possible values: 'opt-in', 'douopt-in', 'opt-out', 'specific', 'annual'</param>
+		/// <param name="encoding">Encoding to be used for the trigger. Possible values: 'utf-8', 'iso-8859-x'</param>
+		/// <param name="transferEncoding">Transfer encoding to be used for the trigger. Possible values: 'quoted-printable', 'base64'</param>
+		/// <param name="subject">Subject of the trigger.</param>
+		/// <param name="senderEmail">Email address of the sender of the trigger.</param>
+		/// <param name="senderName">Name of the sender of the trigger.</param>
+		/// <param name="replyTo">Email address of the reply-to of the trigger.</param>
+		/// <param name="htmlContent">HTML content of the trigger.</param>
+		/// <param name="textContent">Text content of the trigger.</param>
+		/// <param name="trackOpens">Track the opens in the HTML version.</param>
+		/// <param name="trackClicksInHtml">Track the clicks in the HTML version.</param>
+		/// <param name="trackClicksInText">Track the clicks in the text version.</param>
+		/// <param name="trackingParameters">Additional tracking parameters for links.</param>
+		/// <param name="delay">Delay (in seconds) to be used when the trigger is unleashed.</param>
+		/// <param name="status">Status of the trigger. Possible values: 'active', 'inactive'</param>
+		/// <param name="dateField">Datetime field to be used for trigger with action 'specific' or 'annual'.</param>
+		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
+		/// <returns>True if the trigger was updated</returns>
+		bool UpdateTrigger(string userKey, int triggerId, int? campaignId = null, string name = null, string action = null, string encoding = null, string transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClicksInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, int? delay = null, string status = null, DateTime? date = null, int? clientId = null);
 
 		IEnumerable<Trigger> GetTriggers(string userKey, string status = null, string action = null, int? listId = null, int? campaignId = null, int limit = 0, int offset = 0, int? clientId = null);
 
