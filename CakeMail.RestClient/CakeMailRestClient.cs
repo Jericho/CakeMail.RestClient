@@ -2645,6 +2645,15 @@ namespace CakeMail.RestClient
 			return ExecuteCountRequest(path, parameters);
 		}
 
+		/// <summary>
+		/// Send a test of a trigger.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="triggerID">ID of the trigger</param>
+		/// <param name="recipientEmail">Email address where the test will be sent.</param>
+		/// <param name="separated">True if you want the HTML and the text to be sent seperatly, false if you want to combine the HTML and the text in a multi-part email.</param>
+		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
+		/// <returns>True if the test email was sent</returns>
 		public bool SendTriggerTestEmail(string userKey, int triggerId, string recipientEmail, bool separated = false, int? clientId = null)
 		{
 			var path = "/Trigger/SendTestEmail/";
