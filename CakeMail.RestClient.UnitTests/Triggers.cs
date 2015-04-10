@@ -1007,5 +1007,297 @@ namespace CakeMail.RestClient.UnitTests
 			Assert.IsTrue(result);
 		}
 
+		[TestMethod]
+		public void GetTriggers_with_minimal_parameters()
+		{
+			// Arrange
+			var jsonTrigger1 = "{\"action\":\"opt-in\",\"campaign_id\":\"111\",\"delay\":\"0\",\"encoding\":\"utf-8\",\"id\":\"123\",\"list_id\":\"111\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/dff4a336984aa4b99469dc805938e947457d91aa10c4c551\",\"name\":\"list_111_opt_in\",\"parent_id\":\"0\",\"send_to\":\"[email]\",\"sender_email\":\"marketing@fictitiouscompany.com\",\"sender_name\":\"Marketing Group\",\"status\":\"active\",\"subject\":\"Subscription Confirmed\",\"transfer_encoding\":\"quoted-printable\"}";
+			var jsonTrigger2 = "{\"action\":\"opt-out\",\"campaign_id\":\"111\",\"delay\":\"0\",\"encoding\":\"utf-8\",\"id\":\"456\",\"list_id\":\"111\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/dff4a336984aa4b9c3ef15863200867f457d91aa10c4c551\",\"name\":\"list_111_opt_out\",\"parent_id\":\"0\",\"send_to\":\"[email]\",\"sender_email\":\"marketing@fictitiouscompany.com\",\"sender_name\":\"Marketing Group\",\"status\":\"active\",\"subject\":\"Unsubscribe Confirmed.\",\"transfer_encoding\":\"quoted-printable\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetList/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"triggers\":[{0},{1}]}}}}", jsonTrigger1, jsonTrigger2)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggers(USER_KEY);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+			Assert.AreEqual(123, result.ToArray()[0].Id);
+			Assert.AreEqual(456, result.ToArray()[1].Id);
+		}
+
+		[TestMethod]
+		public void GetTriggers_with_status()
+		{
+			// Arrange
+			var status = "active";
+			var jsonTrigger1 = "{\"action\":\"opt-in\",\"campaign_id\":\"111\",\"delay\":\"0\",\"encoding\":\"utf-8\",\"id\":\"123\",\"list_id\":\"111\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/dff4a336984aa4b99469dc805938e947457d91aa10c4c551\",\"name\":\"list_111_opt_in\",\"parent_id\":\"0\",\"send_to\":\"[email]\",\"sender_email\":\"marketing@fictitiouscompany.com\",\"sender_name\":\"Marketing Group\",\"status\":\"active\",\"subject\":\"Subscription Confirmed\",\"transfer_encoding\":\"quoted-printable\"}";
+			var jsonTrigger2 = "{\"action\":\"opt-out\",\"campaign_id\":\"111\",\"delay\":\"0\",\"encoding\":\"utf-8\",\"id\":\"456\",\"list_id\":\"111\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/dff4a336984aa4b9c3ef15863200867f457d91aa10c4c551\",\"name\":\"list_111_opt_out\",\"parent_id\":\"0\",\"send_to\":\"[email]\",\"sender_email\":\"marketing@fictitiouscompany.com\",\"sender_name\":\"Marketing Group\",\"status\":\"active\",\"subject\":\"Unsubscribe Confirmed.\",\"transfer_encoding\":\"quoted-printable\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetList/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"triggers\":[{0},{1}]}}}}", jsonTrigger1, jsonTrigger2)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggers(USER_KEY, status: status);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+			Assert.AreEqual(123, result.ToArray()[0].Id);
+			Assert.AreEqual(456, result.ToArray()[1].Id);
+		}
+
+		[TestMethod]
+		public void GetTriggers_with_action()
+		{
+			// Arrange
+			var action = "opt-in";
+			var jsonTrigger1 = "{\"action\":\"opt-in\",\"campaign_id\":\"111\",\"delay\":\"0\",\"encoding\":\"utf-8\",\"id\":\"123\",\"list_id\":\"111\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/dff4a336984aa4b99469dc805938e947457d91aa10c4c551\",\"name\":\"list_111_opt_in\",\"parent_id\":\"0\",\"send_to\":\"[email]\",\"sender_email\":\"marketing@fictitiouscompany.com\",\"sender_name\":\"Marketing Group\",\"status\":\"active\",\"subject\":\"Subscription Confirmed\",\"transfer_encoding\":\"quoted-printable\"}";
+			var jsonTrigger2 = "{\"action\":\"opt-in\",\"campaign_id\":\"111\",\"delay\":\"0\",\"encoding\":\"utf-8\",\"id\":\"456\",\"list_id\":\"222\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/dff4a336984aa4b9c3ef15863200867f457d91aa10c4c551\",\"name\":\"list_222_opt_in\",\"parent_id\":\"0\",\"send_to\":\"[email]\",\"sender_email\":\"marketing@fictitiouscompany.com\",\"sender_name\":\"Marketing Group\",\"status\":\"active\",\"subject\":\"Subscription Confirmed\",\"transfer_encoding\":\"quoted-printable\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetList/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == action && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"triggers\":[{0},{1}]}}}}", jsonTrigger1, jsonTrigger2)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggers(USER_KEY, action: action);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+			Assert.AreEqual(123, result.ToArray()[0].Id);
+			Assert.AreEqual(456, result.ToArray()[1].Id);
+		}
+
+		[TestMethod]
+		public void GetTriggers_with_listid()
+		{
+			// Arrange
+			var listId = 111;
+			var jsonTrigger1 = "{\"action\":\"opt-in\",\"campaign_id\":\"111\",\"delay\":\"0\",\"encoding\":\"utf-8\",\"id\":\"123\",\"list_id\":\"111\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/dff4a336984aa4b99469dc805938e947457d91aa10c4c551\",\"name\":\"list_111_opt_in\",\"parent_id\":\"0\",\"send_to\":\"[email]\",\"sender_email\":\"marketing@fictitiouscompany.com\",\"sender_name\":\"Marketing Group\",\"status\":\"active\",\"subject\":\"Subscription Confirmed\",\"transfer_encoding\":\"quoted-printable\"}";
+			var jsonTrigger2 = "{\"action\":\"opt-out\",\"campaign_id\":\"111\",\"delay\":\"0\",\"encoding\":\"utf-8\",\"id\":\"456\",\"list_id\":\"111\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/dff4a336984aa4b9c3ef15863200867f457d91aa10c4c551\",\"name\":\"list_111_opt_out\",\"parent_id\":\"0\",\"send_to\":\"[email]\",\"sender_email\":\"marketing@fictitiouscompany.com\",\"sender_name\":\"Marketing Group\",\"status\":\"active\",\"subject\":\"Unsubscribe Confirmed.\",\"transfer_encoding\":\"quoted-printable\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetList/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"triggers\":[{0},{1}]}}}}", jsonTrigger1, jsonTrigger2)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggers(USER_KEY, listId: listId);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+			Assert.AreEqual(123, result.ToArray()[0].Id);
+			Assert.AreEqual(456, result.ToArray()[1].Id);
+		}
+
+		[TestMethod]
+		public void GetTriggers_with_campaignid()
+		{
+			// Arrange
+			var campaignId = 111;
+			var jsonTrigger1 = "{\"action\":\"opt-in\",\"campaign_id\":\"111\",\"delay\":\"0\",\"encoding\":\"utf-8\",\"id\":\"123\",\"list_id\":\"111\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/dff4a336984aa4b99469dc805938e947457d91aa10c4c551\",\"name\":\"list_111_opt_in\",\"parent_id\":\"0\",\"send_to\":\"[email]\",\"sender_email\":\"marketing@fictitiouscompany.com\",\"sender_name\":\"Marketing Group\",\"status\":\"active\",\"subject\":\"Subscription Confirmed\",\"transfer_encoding\":\"quoted-printable\"}";
+			var jsonTrigger2 = "{\"action\":\"opt-out\",\"campaign_id\":\"111\",\"delay\":\"0\",\"encoding\":\"utf-8\",\"id\":\"456\",\"list_id\":\"111\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/dff4a336984aa4b9c3ef15863200867f457d91aa10c4c551\",\"name\":\"list_111_opt_out\",\"parent_id\":\"0\",\"send_to\":\"[email]\",\"sender_email\":\"marketing@fictitiouscompany.com\",\"sender_name\":\"Marketing Group\",\"status\":\"active\",\"subject\":\"Unsubscribe Confirmed.\",\"transfer_encoding\":\"quoted-printable\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetList/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "campaign_id" && (int)p.Value == campaignId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"triggers\":[{0},{1}]}}}}", jsonTrigger1, jsonTrigger2)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggers(USER_KEY, campaignId: campaignId);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+			Assert.AreEqual(123, result.ToArray()[0].Id);
+			Assert.AreEqual(456, result.ToArray()[1].Id);
+		}
+
+		[TestMethod]
+		public void GetTriggers_with_limit()
+		{
+			// Arrange
+			var limit = 5;
+			var jsonTrigger1 = "{\"action\":\"opt-in\",\"campaign_id\":\"111\",\"delay\":\"0\",\"encoding\":\"utf-8\",\"id\":\"123\",\"list_id\":\"111\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/dff4a336984aa4b99469dc805938e947457d91aa10c4c551\",\"name\":\"list_111_opt_in\",\"parent_id\":\"0\",\"send_to\":\"[email]\",\"sender_email\":\"marketing@fictitiouscompany.com\",\"sender_name\":\"Marketing Group\",\"status\":\"active\",\"subject\":\"Subscription Confirmed\",\"transfer_encoding\":\"quoted-printable\"}";
+			var jsonTrigger2 = "{\"action\":\"opt-out\",\"campaign_id\":\"111\",\"delay\":\"0\",\"encoding\":\"utf-8\",\"id\":\"456\",\"list_id\":\"111\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/dff4a336984aa4b9c3ef15863200867f457d91aa10c4c551\",\"name\":\"list_111_opt_out\",\"parent_id\":\"0\",\"send_to\":\"[email]\",\"sender_email\":\"marketing@fictitiouscompany.com\",\"sender_name\":\"Marketing Group\",\"status\":\"active\",\"subject\":\"Unsubscribe Confirmed.\",\"transfer_encoding\":\"quoted-printable\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetList/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "limit" && (int)p.Value == limit && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"triggers\":[{0},{1}]}}}}", jsonTrigger1, jsonTrigger2)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggers(USER_KEY, limit: limit);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+			Assert.AreEqual(123, result.ToArray()[0].Id);
+			Assert.AreEqual(456, result.ToArray()[1].Id);
+		}
+
+		[TestMethod]
+		public void GetTriggers_with_offset()
+		{
+			// Arrange
+			var offset = 25;
+			var jsonTrigger1 = "{\"action\":\"opt-in\",\"campaign_id\":\"111\",\"delay\":\"0\",\"encoding\":\"utf-8\",\"id\":\"123\",\"list_id\":\"111\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/dff4a336984aa4b99469dc805938e947457d91aa10c4c551\",\"name\":\"list_111_opt_in\",\"parent_id\":\"0\",\"send_to\":\"[email]\",\"sender_email\":\"marketing@fictitiouscompany.com\",\"sender_name\":\"Marketing Group\",\"status\":\"active\",\"subject\":\"Subscription Confirmed\",\"transfer_encoding\":\"quoted-printable\"}";
+			var jsonTrigger2 = "{\"action\":\"opt-out\",\"campaign_id\":\"111\",\"delay\":\"0\",\"encoding\":\"utf-8\",\"id\":\"456\",\"list_id\":\"111\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/dff4a336984aa4b9c3ef15863200867f457d91aa10c4c551\",\"name\":\"list_111_opt_out\",\"parent_id\":\"0\",\"send_to\":\"[email]\",\"sender_email\":\"marketing@fictitiouscompany.com\",\"sender_name\":\"Marketing Group\",\"status\":\"active\",\"subject\":\"Unsubscribe Confirmed.\",\"transfer_encoding\":\"quoted-printable\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetList/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "offset" && (int)p.Value == offset && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"triggers\":[{0},{1}]}}}}", jsonTrigger1, jsonTrigger2)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggers(USER_KEY, offset: offset);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+			Assert.AreEqual(123, result.ToArray()[0].Id);
+			Assert.AreEqual(456, result.ToArray()[1].Id);
+		}
+
+		[TestMethod]
+		public void GetTriggers_with_clientid()
+		{
+			// Arrange
+			var jsonTrigger1 = "{\"action\":\"opt-in\",\"campaign_id\":\"111\",\"delay\":\"0\",\"encoding\":\"utf-8\",\"id\":\"123\",\"list_id\":\"111\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/dff4a336984aa4b99469dc805938e947457d91aa10c4c551\",\"name\":\"list_111_opt_in\",\"parent_id\":\"0\",\"send_to\":\"[email]\",\"sender_email\":\"marketing@fictitiouscompany.com\",\"sender_name\":\"Marketing Group\",\"status\":\"active\",\"subject\":\"Subscription Confirmed\",\"transfer_encoding\":\"quoted-printable\"}";
+			var jsonTrigger2 = "{\"action\":\"opt-out\",\"campaign_id\":\"111\",\"delay\":\"0\",\"encoding\":\"utf-8\",\"id\":\"456\",\"list_id\":\"111\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/dff4a336984aa4b9c3ef15863200867f457d91aa10c4c551\",\"name\":\"list_111_opt_out\",\"parent_id\":\"0\",\"send_to\":\"[email]\",\"sender_email\":\"marketing@fictitiouscompany.com\",\"sender_name\":\"Marketing Group\",\"status\":\"active\",\"subject\":\"Unsubscribe Confirmed.\",\"transfer_encoding\":\"quoted-printable\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetList/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"triggers\":[{0},{1}]}}}}", jsonTrigger1, jsonTrigger2)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggers(USER_KEY, clientId: CLIENT_ID);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+			Assert.AreEqual(123, result.ToArray()[0].Id);
+			Assert.AreEqual(456, result.ToArray()[1].Id);
+		}
 	}
 }
