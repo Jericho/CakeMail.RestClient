@@ -1093,6 +1093,16 @@ namespace CakeMail.RestClient
 		/// <returns>An enumeration of <see cref="Trigger">triggers</see> matching the filter criteria</returns>
 		IEnumerable<Trigger> GetTriggers(string userKey, string status = null, string action = null, int? listId = null, int? campaignId = null, int limit = 0, int offset = 0, int? clientId = null);
 
+		/// <summary>
+		/// Get a count of triggers matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="status">Filter using the trigger status. Possible values: 'active', 'inactive'</param>
+		/// <param name="action">Filter using the trigger action. Possible values: 'opt-in', 'douopt-in', 'opt-out', 'specific', 'annual'</param>
+		/// <param name="listId">Filter using the ID of the trigger list.</param>
+		/// <param name="campaignId">Filter using the ID of the trigger campaign.</param>
+		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
+		/// <returns>The count of triggers matching the filtering criteria</returns>
 		long GetTriggersCount(string userKey, string status = null, string action = null, int? listId = null, int? campaignId = null, int? clientId = null);
 
 		bool SendTriggerTestEmail(string userKey, int triggerId, string recipientEmail, bool separated = false, int? clientId = null);
