@@ -2733,6 +2733,14 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<string>(path, parameters);
 		}
 
+		/// <summary>
+		/// Unleash a trigger
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="triggerId">ID of the trigger</param>
+		/// <param name="listMemberId">ID of the member to unleash the trigger to.</param>
+		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
+		/// <returns>True is the trigger is unleashed</returns>
 		public bool UnleashTrigger(string userKey, int triggerId, int listMemberId, int? clientId = null)
 		{
 			var path = "/Trigger/Unleash/";

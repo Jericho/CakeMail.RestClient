@@ -1143,6 +1143,14 @@ namespace CakeMail.RestClient
 		/// <returns>The rendered text</returns>
 		string GetTriggerRawText(string userKey, int triggerId, int? clientId = null);
 
+		/// <summary>
+		/// Unleash a trigger
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="triggerId">ID of the trigger</param>
+		/// <param name="listMemberId">ID of the member to unleash the trigger to.</param>
+		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
+		/// <returns>True is the trigger is unleashed</returns>
 		bool UnleashTrigger(string userKey, int triggerId, int listMemberId, int? clientId = null);
 
 		IEnumerable<LogItem> GetTriggerLogs(string userKey, int triggerId, string logType = null, int? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
