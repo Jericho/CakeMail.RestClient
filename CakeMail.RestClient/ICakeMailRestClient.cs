@@ -1220,6 +1220,15 @@ namespace CakeMail.RestClient
 
 		#region Methods related to TEMPLATES
 
+		/// <summary>
+		/// Create a template category
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="labels">Name of the category.</param>
+		/// <param name="isVisibleByDefault">Is the category visible by default.</param>
+		/// <param name="templatesCanBeCopied">Are the templates in the category copyable.</param>
+		/// <param name="clientId">Client ID of the client in which the category is created.</param>
+		/// <returns>ID of the new template category</returns>
 		int CreateTemplateCategory(string userKey, IDictionary<string, string> labels, bool isVisibleByDefault = true, bool templatesCanBeCopied = true, int? clientId = null);
 
 		bool DeleteTemplateCategory(string userKey, int categoryId, int? clientId = null);
