@@ -1196,9 +1196,23 @@ namespace CakeMail.RestClient
 		/// <returns>An enumeration of <see cref="Link">links</see> matching the filter criteria</returns>
 		IEnumerable<Link> GetTriggerLinks(string userKey, int triggerId, int limit = 0, int offset = 0, int? clientId = null);
 
+		/// <summary>
+		/// Get a count of links matching the filter criteria
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="triggerId">ID of the trigger.</param>
+		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
+		/// <returns>The number of links matching the filtering criteria</returns>
 		long GetTriggerLinksCount(string userKey, int triggerId, int? clientId = null);
 
-		Link GeTriggerLink(string userKey, int linkId, int? clientId = null);
+		/// <summary>
+		/// Retrieve a link
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="linkId">ID of the link.</param>
+		/// <param name="clientId">Client ID of the client in which the link is located.</param>
+		/// <returns>The <see cref="Link">link</see></returns>
+		Link GetTriggerLink(string userKey, int linkId, int? clientId = null);
 
 		IEnumerable<LogItem> GetTriggerLinksLogs(string userKey, int triggerId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
 

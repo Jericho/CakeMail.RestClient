@@ -2854,6 +2854,13 @@ namespace CakeMail.RestClient
 			return ExecuteArrayRequest<Link>(path, parameters, "links");
 		}
 
+		/// <summary>
+		/// Get a count of links matching the filter criteria
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="triggerId">ID of the trigger.</param>
+		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
+		/// <returns>The number of links matching the filtering criteria</returns>
 		public long GetTriggerLinksCount(string userKey, int triggerId, int? clientId = null)
 		{
 			string path = "/Trigger/GetLinks/";
@@ -2869,7 +2876,14 @@ namespace CakeMail.RestClient
 			return ExecuteCountRequest(path, parameters);
 		}
 
-		public Link GeTriggerLink(string userKey, int linkId, int? clientId = null)
+		/// <summary>
+		/// Retrieve a link
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="linkId">ID of the link.</param>
+		/// <param name="clientId">Client ID of the client in which the link is located.</param>
+		/// <returns>The <see cref="Link">link</see></returns>
+		public Link GetTriggerLink(string userKey, int linkId, int? clientId = null)
 		{
 			string path = "/Trigger/GetLinkInfo/";
 

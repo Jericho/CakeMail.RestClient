@@ -2676,5 +2676,135 @@ namespace CakeMail.RestClient.UnitTests
 			Assert.IsNotNull(result);
 			Assert.AreEqual(2, result.Count());
 		}
+
+		[TestMethod]
+		public void GetTriggerLinksCount_with_minimal_parameters()
+		{
+			// Arrange
+			var triggerId = 123;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetLinks/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "trigger_id" && (int)p.Value == triggerId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":{\"count\":\"2\"}}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggerLinksCount(USER_KEY, triggerId);
+
+			// Assert
+			Assert.AreEqual(2, result);
+		}
+
+		[TestMethod]
+		public void GetTriggerLinksCount_with_clientid()
+		{
+			// Arrange
+			var triggerId = 123;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetLinks/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "trigger_id" && (int)p.Value == triggerId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":{\"count\":\"2\"}}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggerLinksCount(USER_KEY, triggerId, clientId: CLIENT_ID);
+
+			// Assert
+			Assert.AreEqual(2, result);
+		}
+
+		[TestMethod]
+		public void GetTriggerLink_with_minimal_parameters()
+		{
+			// Arrange
+			var linkId = 12345;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetLinkInfo/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "link_id" && (int)p.Value == linkId && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"status\":\"active\",\"link_to\":\"http://www.fictitiouscompany.com.com/\"}}}}", linkId)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggerLink(USER_KEY, linkId);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(linkId, result.Id);
+		}
+
+		[TestMethod]
+		public void GetTriggerLink_with_clientid()
+		{
+			// Arrange
+			var linkId = 12345;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetLinkInfo/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "link_id" && (int)p.Value == linkId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"status\":\"active\",\"link_to\":\"http://www.fictitiouscompany.com.com/\"}}}}", linkId)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggerLink(USER_KEY, linkId, CLIENT_ID);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(linkId, result.Id);
+		}
 	}
 }
