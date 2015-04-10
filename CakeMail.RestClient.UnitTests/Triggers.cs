@@ -1847,5 +1847,396 @@ namespace CakeMail.RestClient.UnitTests
 			// Assert
 			Assert.IsTrue(result);
 		}
+
+		[TestMethod]
+		public void GetTriggerLogs_with_minimal_parameters()
+		{
+			// Arrange
+			var triggerId = 123;
+
+			var sentLog = "{\"id\":\"1\",\"record_id\":\"1\",\"email\":\"aaa@aaa.com\",\"action\":\"in_queue\",\"total\":\"1\",\"time\":\"2015-03-18 15:27:01\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":null,\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403e139cc9ce93542dea11dc1da82aac3298\",\"l_registered\":\"2015-03-18 15:23:31\"}";
+			var hardbounceLog = "{\"id\":\"312\",\"record_id\":\"11\",\"email\":\"aaa@aaa.com\",\"action\":\"bounce_hb\",\"total\":\"1\",\"time\":\"2015-03-18 15:29:36\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":\"{dsn} smtp;550 5.1.1 RESOLVER.ADR.RecipNotFound; not found\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403ec23295741ba72edcbcfd4b9079f78d8d\",\"l_registered\":\"2015-03-18 15:24:37\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetLog/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "trigger_id" && (int)p.Value == triggerId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"logs\":[{0},{1}]}}}}", sentLog, hardbounceLog)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggerLogs(USER_KEY, triggerId);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+		}
+
+		[TestMethod]
+		public void GetTriggerLogs_with_logtype()
+		{
+			// Arrange
+			var triggerId = 123;
+			var logType = "in_queue";
+
+			var sentLog = "{\"id\":\"1\",\"record_id\":\"1\",\"email\":\"aaa@aaa.com\",\"action\":\"in_queue\",\"total\":\"1\",\"time\":\"2015-03-18 15:27:01\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":null,\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403e139cc9ce93542dea11dc1da82aac3298\",\"l_registered\":\"2015-03-18 15:23:31\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetLog/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "trigger_id" && (int)p.Value == triggerId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == logType && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"logs\":[{0}]}}}}", sentLog)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggerLogs(USER_KEY, triggerId, logType: logType);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(1, result.Count());
+		}
+
+		[TestMethod]
+		public void GetTriggerLogs_with_listmemberid()
+		{
+			// Arrange
+			var triggerId = 123;
+			var listMemberId = 111;
+
+			var sentLog = "{\"id\":\"1\",\"record_id\":\"1\",\"email\":\"aaa@aaa.com\",\"action\":\"in_queue\",\"total\":\"1\",\"time\":\"2015-03-18 15:27:01\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":null,\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403e139cc9ce93542dea11dc1da82aac3298\",\"l_registered\":\"2015-03-18 15:23:31\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetLog/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "trigger_id" && (int)p.Value == triggerId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "record_id" && (int)p.Value == listMemberId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"logs\":[{0}]}}}}", sentLog)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggerLogs(USER_KEY, triggerId, listMemberId: listMemberId);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(1, result.Count());
+		}
+
+		[TestMethod]
+		public void GetTriggerLogs_with_startdate()
+		{
+			// Arrange
+			var triggerId = 123;
+			var start = new DateTime(2015, 1, 1);
+
+			var sentLog = "{\"id\":\"1\",\"record_id\":\"1\",\"email\":\"aaa@aaa.com\",\"action\":\"in_queue\",\"total\":\"1\",\"time\":\"2015-03-18 15:27:01\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":null,\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403e139cc9ce93542dea11dc1da82aac3298\",\"l_registered\":\"2015-03-18 15:23:31\"}";
+			var hardbounceLog = "{\"id\":\"312\",\"record_id\":\"11\",\"email\":\"aaa@aaa.com\",\"action\":\"bounce_hb\",\"total\":\"1\",\"time\":\"2015-03-18 15:29:36\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":\"{dsn} smtp;550 5.1.1 RESOLVER.ADR.RecipNotFound; not found\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403ec23295741ba72edcbcfd4b9079f78d8d\",\"l_registered\":\"2015-03-18 15:24:37\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetLog/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "trigger_id" && (int)p.Value == triggerId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "start_time" && (string)p.Value == start.ToCakeMailString() && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"logs\":[{0},{1}]}}}}", sentLog, hardbounceLog)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggerLogs(USER_KEY, triggerId, start: start);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+		}
+
+		[TestMethod]
+		public void GetTriggerLogs_with_enddate()
+		{
+			// Arrange
+			var triggerId = 123;
+			var end = new DateTime(2015, 12, 31);
+
+			var sentLog = "{\"id\":\"1\",\"record_id\":\"1\",\"email\":\"aaa@aaa.com\",\"action\":\"in_queue\",\"total\":\"1\",\"time\":\"2015-03-18 15:27:01\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":null,\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403e139cc9ce93542dea11dc1da82aac3298\",\"l_registered\":\"2015-03-18 15:23:31\"}";
+			var hardbounceLog = "{\"id\":\"312\",\"record_id\":\"11\",\"email\":\"aaa@aaa.com\",\"action\":\"bounce_hb\",\"total\":\"1\",\"time\":\"2015-03-18 15:29:36\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":\"{dsn} smtp;550 5.1.1 RESOLVER.ADR.RecipNotFound; not found\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403ec23295741ba72edcbcfd4b9079f78d8d\",\"l_registered\":\"2015-03-18 15:24:37\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetLog/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "trigger_id" && (int)p.Value == triggerId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "end_time" && (string)p.Value == end.ToCakeMailString() && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"logs\":[{0},{1}]}}}}", sentLog, hardbounceLog)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggerLogs(USER_KEY, triggerId, uniques: false, totals: false, end: end);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+		}
+
+		[TestMethod]
+		public void GetTriggerLogs_with_limit()
+		{
+			// Arrange
+			var triggerId = 123;
+			var limit = 5;
+
+			var sentLog = "{\"id\":\"1\",\"record_id\":\"1\",\"email\":\"aaa@aaa.com\",\"action\":\"in_queue\",\"total\":\"1\",\"time\":\"2015-03-18 15:27:01\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":null,\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403e139cc9ce93542dea11dc1da82aac3298\",\"l_registered\":\"2015-03-18 15:23:31\"}";
+			var hardbounceLog = "{\"id\":\"312\",\"record_id\":\"11\",\"email\":\"aaa@aaa.com\",\"action\":\"bounce_hb\",\"total\":\"1\",\"time\":\"2015-03-18 15:29:36\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":\"{dsn} smtp;550 5.1.1 RESOLVER.ADR.RecipNotFound; not found\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403ec23295741ba72edcbcfd4b9079f78d8d\",\"l_registered\":\"2015-03-18 15:24:37\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetLog/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "trigger_id" && (int)p.Value == triggerId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "limit" && (int)p.Value == limit && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"logs\":[{0},{1}]}}}}", sentLog, hardbounceLog)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggerLogs(USER_KEY, triggerId, uniques: false, totals: false, limit: limit);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+		}
+
+		[TestMethod]
+		public void GetTriggerLogs_with_offset()
+		{
+			// Arrange
+			var triggerId = 123;
+			var offset = 25;
+
+			var sentLog = "{\"id\":\"1\",\"record_id\":\"1\",\"email\":\"aaa@aaa.com\",\"action\":\"in_queue\",\"total\":\"1\",\"time\":\"2015-03-18 15:27:01\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":null,\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403e139cc9ce93542dea11dc1da82aac3298\",\"l_registered\":\"2015-03-18 15:23:31\"}";
+			var hardbounceLog = "{\"id\":\"312\",\"record_id\":\"11\",\"email\":\"aaa@aaa.com\",\"action\":\"bounce_hb\",\"total\":\"1\",\"time\":\"2015-03-18 15:29:36\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":\"{dsn} smtp;550 5.1.1 RESOLVER.ADR.RecipNotFound; not found\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403ec23295741ba72edcbcfd4b9079f78d8d\",\"l_registered\":\"2015-03-18 15:24:37\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetLog/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "trigger_id" && (int)p.Value == triggerId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "offset" && (int)p.Value == offset && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"logs\":[{0},{1}]}}}}", sentLog, hardbounceLog)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggerLogs(USER_KEY, triggerId, uniques: false, totals: false, offset: offset);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+		}
+
+		[TestMethod]
+		public void GetTriggerLogs_with_clientid()
+		{
+			// Arrange
+			var triggerId = 123;
+
+			var sentLog = "{\"id\":\"1\",\"record_id\":\"1\",\"email\":\"aaa@aaa.com\",\"action\":\"in_queue\",\"total\":\"1\",\"time\":\"2015-03-18 15:27:01\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":null,\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403e139cc9ce93542dea11dc1da82aac3298\",\"l_registered\":\"2015-03-18 15:23:31\"}";
+			var hardbounceLog = "{\"id\":\"312\",\"record_id\":\"11\",\"email\":\"aaa@aaa.com\",\"action\":\"bounce_hb\",\"total\":\"1\",\"time\":\"2015-03-18 15:29:36\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":\"{dsn} smtp;550 5.1.1 RESOLVER.ADR.RecipNotFound; not found\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403ec23295741ba72edcbcfd4b9079f78d8d\",\"l_registered\":\"2015-03-18 15:24:37\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetLog/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "trigger_id" && (int)p.Value == triggerId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"logs\":[{0},{1}]}}}}", sentLog, hardbounceLog)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggerLogs(USER_KEY, triggerId, uniques: false, totals: false, clientId: CLIENT_ID);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+		}
+
+		[TestMethod]
+		public void GetTriggerLogs_with_uniques_true()
+		{
+			// Arrange
+			var triggerId = 123;
+
+			var sentLog = "{\"id\":\"1\",\"record_id\":\"1\",\"email\":\"aaa@aaa.com\",\"action\":\"in_queue\",\"total\":\"1\",\"time\":\"2015-03-18 15:27:01\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":null,\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403e139cc9ce93542dea11dc1da82aac3298\",\"l_registered\":\"2015-03-18 15:23:31\"}";
+			var hardbounceLog = "{\"id\":\"312\",\"record_id\":\"11\",\"email\":\"aaa@aaa.com\",\"action\":\"bounce_hb\",\"total\":\"1\",\"time\":\"2015-03-18 15:29:36\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":\"{dsn} smtp;550 5.1.1 RESOLVER.ADR.RecipNotFound; not found\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403ec23295741ba72edcbcfd4b9079f78d8d\",\"l_registered\":\"2015-03-18 15:24:37\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetLog/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "trigger_id" && (int)p.Value == triggerId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"logs\":[{0},{1}]}}}}", sentLog, hardbounceLog)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggerLogs(USER_KEY, triggerId, uniques: true, totals: false);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+		}
+
+		[TestMethod]
+		public void GetTriggerLogs_with_totals_true()
+		{
+			// Arrange
+			var triggerId = 123;
+
+			var sentLog = "{\"id\":\"1\",\"record_id\":\"1\",\"email\":\"aaa@aaa.com\",\"action\":\"in_queue\",\"total\":\"1\",\"time\":\"2015-03-18 15:27:01\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":null,\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403e139cc9ce93542dea11dc1da82aac3298\",\"l_registered\":\"2015-03-18 15:23:31\"}";
+			var hardbounceLog = "{\"id\":\"312\",\"record_id\":\"11\",\"email\":\"aaa@aaa.com\",\"action\":\"bounce_hb\",\"total\":\"1\",\"time\":\"2015-03-18 15:29:36\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":\"{dsn} smtp;550 5.1.1 RESOLVER.ADR.RecipNotFound; not found\",\"show_email_link\":\"http://link.fictitiouscompany.com/v/443/f6f02aba584b403ec23295741ba72edcbcfd4b9079f78d8d\",\"l_registered\":\"2015-03-18 15:24:37\"}";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Trigger/GetLog/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "trigger_id" && (int)p.Value == triggerId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"logs\":[{0},{1}]}}}}", sentLog, hardbounceLog)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTriggerLogs(USER_KEY, triggerId, uniques: false, totals: true);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+		}
 	}
 }

@@ -2756,6 +2756,21 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<bool>(path, parameters);
 		}
 
+		/// <summary>
+		/// Retrieve the log items for a given trigger
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="triggerId">ID of the trigger.</param>
+		/// <param name="logType">Filter using the log action.</param>
+		/// <param name="listMemberId">Filter using the ID of the member.</param>
+		/// <param name="uniques">Return unique log item per member.</param>
+		/// <param name="totals">Return all the log items.</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="limit">Limit the number of resulting log items.</param>
+		/// <param name="offset">Offset the beginning of resulting log items.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>An enumeration of <see cref="LogItem">log items</see> matching the filter criteria</returns>
 		public IEnumerable<LogItem> GetTriggerLogs(string userKey, int triggerId, string logType = null, int? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			string path = "/Trigger/GetLog/";
