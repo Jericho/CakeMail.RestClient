@@ -1185,6 +1185,15 @@ namespace CakeMail.RestClient
 		/// <returns>The number of log items matching the filtering criteria</returns>
 		long GetTriggerLogsCount(string userKey, int triggerId, string logType = null, int? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? clientId = null);
 
+		/// <summary>
+		/// Retrieve the links for a given trigger
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="triggerId">ID of the trigger.</param>
+		/// <param name="limit">Limit the number of resulting log items.</param>
+		/// <param name="offset">Offset the beginning of resulting log items.</param>
+		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
+		/// <returns>An enumeration of <see cref="Link">links</see> matching the filter criteria</returns>
 		IEnumerable<Link> GetTriggerLinks(string userKey, int triggerId, int limit = 0, int offset = 0, int? clientId = null);
 
 		long GetTriggerLinksCount(string userKey, int triggerId, int? clientId = null);
