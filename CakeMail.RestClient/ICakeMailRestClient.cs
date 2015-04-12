@@ -1231,10 +1231,32 @@ namespace CakeMail.RestClient
 		/// <returns>ID of the new template category</returns>
 		int CreateTemplateCategory(string userKey, IDictionary<string, string> labels, bool isVisibleByDefault = true, bool templatesCanBeCopied = true, int? clientId = null);
 
+		/// <summary>
+		/// Delete a template category
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="categoryId">ID of the template category</param>
+		/// <param name="clientId">Client ID of the client in which the template category is located.</param>
+		/// <returns>True if the template category is deleted</returns>
 		bool DeleteTemplateCategory(string userKey, int categoryId, int? clientId = null);
 
+		/// <summary>
+		/// Retrieve a template category
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="categoryId">ID of the category</param>
+		/// <param name="clientId">Client ID of the client in which the category is located.</param>
+		/// <returns>The <see cref="TemplateCategory">category</see></returns>
 		TemplateCategory GetTemplateCategory(string userKey, int categoryId, int? clientId = null);
 
+		/// <summary>
+		/// Retrieve the template categories matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="limit">Limit the number of resulting categories.</param>
+		/// <param name="offset">Offset the beginning of resulting categories.</param>
+		/// <param name="clientId">Client ID of the client in which the categories are located.</param>
+		/// <returns>Enumeration of <see cref="TemplateCategory">categories</see> matching the filtering criteria</returns>
 		IEnumerable<TemplateCategory> GetTemplateCategories(string userKey, int limit = 0, int offset = 0, int? clientId = null);
 
 		long GetTemplateCategoriesCount(string userKey, int? clientId = null);

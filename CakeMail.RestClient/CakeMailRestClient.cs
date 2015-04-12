@@ -2937,7 +2937,7 @@ namespace CakeMail.RestClient
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("default", isVisibleByDefault ? "1" : "0"),
-				new KeyValuePair<string, object>("templates_copyable", templatesCanBeCopied ? "1" : "0"),
+				new KeyValuePair<string, object>("templates_copyable", templatesCanBeCopied ? "1" : "0")
 			};
 			if (labels != null)
 			{
@@ -2951,6 +2951,13 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<int>(path, parameters);
 		}
 
+		/// <summary>
+		/// Delete a template category
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="categoryId">ID of the template category</param>
+		/// <param name="clientId">Client ID of the client in which the template category is located.</param>
+		/// <returns>True if the template category is deleted</returns>
 		public bool DeleteTemplateCategory(string userKey, int categoryId, int? clientId = null)
 		{
 			string path = "/TemplateV2/DeleteCategory/";
@@ -2965,6 +2972,13 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<bool>(path, parameters);
 		}
 
+		/// <summary>
+		/// Retrieve a template category
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="categoryId">ID of the category</param>
+		/// <param name="clientId">Client ID of the client in which the category is located.</param>
+		/// <returns>The <see cref="TemplateCategory">category</see></returns>
 		public TemplateCategory GetTemplateCategory(string userKey, int categoryId, int? clientId = null)
 		{
 			var path = "/TemplateV2/GetCategory/";
@@ -2979,6 +2993,14 @@ namespace CakeMail.RestClient
 			return ExecuteObjectRequest<TemplateCategory>(path, parameters);
 		}
 
+		/// <summary>
+		/// Retrieve the template categories matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="limit">Limit the number of resulting categories.</param>
+		/// <param name="offset">Offset the beginning of resulting categories.</param>
+		/// <param name="clientId">Client ID of the client in which the categories are located.</param>
+		/// <returns>Enumeration of <see cref="TemplateCategory">categories</see> matching the filtering criteria</returns>
 		public IEnumerable<TemplateCategory> GetTemplateCategories(string userKey, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			var path = "/TemplateV2/GetCategories/";
