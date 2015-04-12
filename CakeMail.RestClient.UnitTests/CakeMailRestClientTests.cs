@@ -313,5 +313,32 @@ namespace CakeMail.RestClient.UnitTests
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
 			var result = apiClient.DeleteCampaign(USER_KEY, campaignId, CLIENT_ID);
 		}
+
+		[TestMethod]
+		[ExpectedException(typeof(CakeMailException))]
+		public void RestClient_Throws_exception_when_reponse_contains_invalid_json()
+		{
+			// Arrange
+			var campaignId = 123;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Campaign/Delete/" &&
+				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":\"{This content is not valid json (missing closing brackets)\""
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.DeleteCampaign(USER_KEY, campaignId, CLIENT_ID);
+		}
 	}
 }

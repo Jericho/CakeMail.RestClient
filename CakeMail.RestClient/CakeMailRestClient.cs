@@ -11,7 +11,6 @@ using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Runtime.Serialization;
 
 namespace CakeMail.RestClient
 {
@@ -1553,7 +1552,7 @@ namespace CakeMail.RestClient
 		/// <param name="recurringId">Filter using the ID of the mailing recurrence.</param>
 		/// <param name="start">Filter using a start date.</param>
 		/// <param name="end">Filter using a end date.</param>
-		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <param name="clientId">Client ID of the client in which the mailings are located.</param>
 		/// <returns>The count of mailings matching the filtering criteria</returns>
 		public long GetMailingsCount(string userKey, string status = null, string type = null, string name = null, int? listId = null, int? campaignId = null, int? recurringId = null, DateTime? start = null, DateTime? end = null, int? clientId = null)
 		{
@@ -3515,9 +3514,9 @@ namespace CakeMail.RestClient
 
 				return data;
 			}
-			catch (SerializationException ex)
+			catch (JsonReaderException ex)
 			{
-				throw new CakeMailException(string.Format("Received a 200 response but could not decode it as JSON: {0}", response.Content), ex);
+				throw new CakeMailException(string.Format("Unable to decode response from CakeMail as JSON: {0}", response.Content), ex);
 			}
 		}
 
