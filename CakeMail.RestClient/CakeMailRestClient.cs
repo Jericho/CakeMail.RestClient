@@ -100,7 +100,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<int>(path, parameters);
+			return ExecuteRequest<int>(path, parameters);
 		}
 
 		/// <summary>
@@ -121,7 +121,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -142,7 +142,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<Campaign>(path, parameters);
+			return ExecuteRequest<Campaign>(path, parameters);
 		}
 
 		/// <summary>
@@ -174,7 +174,7 @@ namespace CakeMail.RestClient
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteArrayRequest<Campaign>(path, parameters, "campaigns");
+			return ExecuteRequest<Campaign[]>(path, parameters, "campaigns");
 		}
 
 		/// <summary>
@@ -220,7 +220,7 @@ namespace CakeMail.RestClient
 			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		#endregion
@@ -316,7 +316,7 @@ namespace CakeMail.RestClient
 				if (primaryContactMobilePhone != null) parameters.Add(new KeyValuePair<string, object>("contact_mobile_phone", primaryContactMobilePhone));
 			}
 
-			return ExecuteObjectRequest<string>(path, parameters);
+			return ExecuteRequest<string>(path, parameters);
 		}
 
 		/// <summary>
@@ -333,7 +333,7 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("confirmation", confirmationCode)
 			};
 
-			return ExecuteObjectRequest<ClientRegistrationInfo>(path, parameters);
+			return ExecuteRequest<ClientRegistrationInfo>(path, parameters);
 		}
 
 		/// <summary>
@@ -356,7 +356,7 @@ namespace CakeMail.RestClient
 			if (startDate.HasValue) parameters.Add(new KeyValuePair<string, object>("start_date", startDate.Value.ToCakeMailString()));
 			if (endDate.HasValue) parameters.Add(new KeyValuePair<string, object>("end_date", endDate.Value.ToCakeMailString()));
 
-			return ExecuteObjectRequest<Client>(path, parameters);
+			return ExecuteRequest<Client>(path, parameters);
 		}
 
 		/// <summary>
@@ -376,7 +376,7 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("confirmation", confirmationCode)
 			};
 
-			return ExecuteObjectRequest<UnConfirmedClient>(path, parameters);
+			return ExecuteRequest<UnConfirmedClient>(path, parameters);
 		}
 
 		/// <summary>
@@ -509,7 +509,7 @@ namespace CakeMail.RestClient
 			if (defaultMonthLimit.HasValue) parameters.Add(new KeyValuePair<string, object>("default_month_limit", defaultMonthLimit.Value));
 			if (defaultContactLimit.HasValue) parameters.Add(new KeyValuePair<string, object>("default_contact_limit", defaultContactLimit.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -598,7 +598,7 @@ namespace CakeMail.RestClient
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		#endregion
@@ -661,7 +661,7 @@ namespace CakeMail.RestClient
 			if (spamPolicyAccepted) parameters.Add(new KeyValuePair<string, object>("list_policy", "accepted"));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<int>(path, parameters);
+			return ExecuteRequest<int>(path, parameters);
 		}
 
 		/// <summary>
@@ -682,7 +682,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -709,7 +709,7 @@ namespace CakeMail.RestClient
 			parameters.Add(new KeyValuePair<string, object>("with_engagement", calculateEngagement ? "true" : "false"));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<List>(path, parameters);
+			return ExecuteRequest<List>(path, parameters);
 		}
 
 		/// <summary>
@@ -804,7 +804,7 @@ namespace CakeMail.RestClient
 			if (webhook != null) parameters.Add(new KeyValuePair<string, object>("webhook", webhook));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -830,7 +830,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -854,7 +854,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -875,7 +875,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			var fieldsStructure = ExecuteObjectRequest<ExpandoObject>(path, parameters);
+			var fieldsStructure = ExecuteRequest<ExpandoObject>(path, parameters);
 			if (fieldsStructure == null) return Enumerable.Empty<ListField>();
 
 			var fields = fieldsStructure.Select(x => new ListField() { Name = x.Key, Type = x.Value.ToString() });
@@ -902,7 +902,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -925,7 +925,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -982,7 +982,7 @@ namespace CakeMail.RestClient
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<int>(path, parameters);
+			return ExecuteRequest<int>(path, parameters);
 		}
 
 		/// <summary>
@@ -1049,7 +1049,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -1072,7 +1072,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -1095,7 +1095,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -1118,7 +1118,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			var listMember = ExecuteObjectRequest<ListMember>(path, parameters);
+			var listMember = ExecuteRequest<ListMember>(path, parameters);
 			return listMember;
 		}
 
@@ -1209,7 +1209,7 @@ namespace CakeMail.RestClient
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -1309,7 +1309,7 @@ namespace CakeMail.RestClient
 			if (query != null) parameters.Add(new KeyValuePair<string, object>("query", query));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<int>(path, parameters);
+			return ExecuteRequest<int>(path, parameters);
 		}
 
 		/// <summary>
@@ -1346,7 +1346,7 @@ namespace CakeMail.RestClient
 			if (query != null) parameters.Add(new KeyValuePair<string, object>("query", query));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -1367,7 +1367,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -1451,7 +1451,7 @@ namespace CakeMail.RestClient
 			if (transferEncoding != null) parameters.Add(new KeyValuePair<string, object>("transfer_encoding", transferEncoding));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<int>(path, parameters);
+			return ExecuteRequest<int>(path, parameters);
 		}
 
 		/// <summary>
@@ -1472,7 +1472,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -1493,7 +1493,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<Mailing>(path, parameters);
+			return ExecuteRequest<Mailing>(path, parameters);
 		}
 
 		/// <summary>
@@ -1633,7 +1633,7 @@ namespace CakeMail.RestClient
 			if (recurringConditions != null) parameters.Add(new KeyValuePair<string, object>("recurring_conditions", recurringConditions));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -1658,7 +1658,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -1679,7 +1679,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<RawEmailMessage>(path, parameters);
+			return ExecuteRequest<RawEmailMessage>(path, parameters);
 		}
 
 		/// <summary>
@@ -1700,7 +1700,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<string>(path, parameters);
+			return ExecuteRequest<string>(path, parameters);
 		}
 
 		/// <summary>
@@ -1721,7 +1721,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<string>(path, parameters);
+			return ExecuteRequest<string>(path, parameters);
 		}
 
 		/// <summary>
@@ -1744,7 +1744,7 @@ namespace CakeMail.RestClient
 			if (date.HasValue) parameters.Add(new KeyValuePair<string, object>("date", date.Value.ToCakeMailString()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -1765,7 +1765,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -1786,7 +1786,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -1807,7 +1807,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -1948,7 +1948,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<Link>(path, parameters);
+			return ExecuteRequest<Link>(path, parameters);
 		}
 
 		public IEnumerable<LogItem> GetMailingLinksLogs(string userKey, int mailingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
@@ -2007,7 +2007,7 @@ namespace CakeMail.RestClient
 			if (encoding != null) parameters.Add(new KeyValuePair<string, object>("encoding", encoding));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -2045,7 +2045,7 @@ namespace CakeMail.RestClient
 			if (encoding != null) parameters.Add(new KeyValuePair<string, object>("encoding", encoding));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -2490,7 +2490,7 @@ namespace CakeMail.RestClient
 			if (campaignId.HasValue) parameters.Add(new KeyValuePair<string, object>("campaign_id", campaignId.Value));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<int>(path, parameters);
+			return ExecuteRequest<int>(path, parameters);
 		}
 
 		//public bool DeleteTrigger(string userKey, int triggerId, int? clientId = null)
@@ -2504,7 +2504,7 @@ namespace CakeMail.RestClient
 		//	};
 		//	if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-		//	return ExecuteObjectRequest<bool>(path, parameters);
+		//	return ExecuteRequest<bool>(path, parameters);
 		//}
 
 		/// <summary>
@@ -2525,7 +2525,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<Trigger>(path, parameters);
+			return ExecuteRequest<Trigger>(path, parameters);
 		}
 
 		/// <summary>
@@ -2582,7 +2582,7 @@ namespace CakeMail.RestClient
 			if (date.HasValue) parameters.Add(new KeyValuePair<string, object>("date_field", date.Value.ToCakeMailString()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -2666,7 +2666,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -2687,7 +2687,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<RawEmailMessage>(path, parameters);
+			return ExecuteRequest<RawEmailMessage>(path, parameters);
 		}
 
 		/// <summary>
@@ -2708,7 +2708,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<string>(path, parameters);
+			return ExecuteRequest<string>(path, parameters);
 		}
 
 		/// <summary>
@@ -2729,7 +2729,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<string>(path, parameters);
+			return ExecuteRequest<string>(path, parameters);
 		}
 
 		/// <summary>
@@ -2752,7 +2752,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -2893,7 +2893,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<Link>(path, parameters);
+			return ExecuteRequest<Link>(path, parameters);
 		}
 
 		public IEnumerable<LogItem> GetTriggerLinksLogs(string userKey, int triggerId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null)
@@ -2947,7 +2947,7 @@ namespace CakeMail.RestClient
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<int>(path, parameters);
+			return ExecuteRequest<int>(path, parameters);
 		}
 
 		/// <summary>
@@ -2968,7 +2968,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		/// <summary>
@@ -2989,7 +2989,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<TemplateCategory>(path, parameters);
+			return ExecuteRequest<TemplateCategory>(path, parameters);
 		}
 
 		/// <summary>
@@ -3050,7 +3050,7 @@ namespace CakeMail.RestClient
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		public IEnumerable<string> GetTemplateCategoryVisibility(string userKey, int categoryId, int limit = 0, int offset = 0, int? clientId = null)
@@ -3110,7 +3110,7 @@ namespace CakeMail.RestClient
 			if (categoryId.HasValue) parameters.Add(new KeyValuePair<string, object>("category_id", categoryId.Value));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<int>(path, parameters);
+			return ExecuteRequest<int>(path, parameters);
 		}
 
 		public bool DeleteTemplate(string userKey, int templateId, int? clientId = null)
@@ -3124,7 +3124,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		public TemplateCategory GetTemplate(string userKey, int templateId, int? clientId = null)
@@ -3138,7 +3138,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<TemplateCategory>(path, parameters);
+			return ExecuteRequest<TemplateCategory>(path, parameters);
 		}
 
 		public IEnumerable<TemplateCategory> GetTemplates(string userKey, int? categoryId = null, int limit = 0, int offset = 0, int? clientId = null)
@@ -3193,7 +3193,7 @@ namespace CakeMail.RestClient
 			if (categoryId.HasValue) parameters.Add(new KeyValuePair<string, object>("category_id", categoryId.Value));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		#endregion
@@ -3221,7 +3221,7 @@ namespace CakeMail.RestClient
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			// When a new user is created, the json payload only contains the 'id'
-			var user = ExecuteObjectRequest<User>(path, parameters);
+			var user = ExecuteRequest<User>(path, parameters);
 			return user.Id;
 		}
 
@@ -3246,7 +3246,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<User>(path, parameters);
+			return ExecuteRequest<User>(path, parameters);
 		}
 
 		public IEnumerable<User> GetUsers(string userKey, string status = null, int limit = 0, int offset = 0, int? clientId = null)
@@ -3306,7 +3306,7 @@ namespace CakeMail.RestClient
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<bool>(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
 		public LoginInfo Login(string userName, string password, int? clientId = null)
@@ -3321,7 +3321,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteObjectRequest<LoginInfo>(path, parameters);
+			return ExecuteRequest<LoginInfo>(path, parameters);
 		}
 
 		#endregion
@@ -3347,59 +3347,52 @@ namespace CakeMail.RestClient
 			}
 		}
 
-		private void ExecuteRequest(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, JsonSerializer jsonSerializer = null)
+		private long ExecuteCountRequest(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters)
 		{
-			var response = ExecuteRequest(urlPath, parameters);
-			ParseCakeMailResponse(response);
+			return ExecuteRequest<long>(urlPath, parameters, "count");
 		}
 
-		private T ExecuteObjectRequest<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, JsonSerializer jsonSerializer = null)
+		private T[] ExecuteArrayRequest<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string propertyName = null)
 		{
-			var response = ExecuteRequest(urlPath, parameters);
-			var data = ParseCakeMailResponse(response);
-
-			var dataObject = (jsonSerializer == null ? data.ToObject<T>() : data.ToObject<T>(jsonSerializer));
-			return dataObject;
+			return ExecuteRequest<T[]>(urlPath, parameters, propertyName);
 		}
 
-		private IEnumerable<T> ExecuteArrayRequest<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string arrayPropertyName)
+		private T ExecuteRequest<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string propertyName = null)
 		{
 			var response = ExecuteRequest(urlPath, parameters);
 			var data = ParseCakeMailResponse(response);
 
 			if (data is JArray)
 			{
-				return (data as JArray).ToObject<T[]>();
+				return (data as JArray).ToObject<T>();
+			}
+			else if (data is JValue)
+			{
+				return (data as JValue).ToObject<T>();
 			}
 			else if (data is JObject)
 			{
-				var property = (data as JObject).Properties().SingleOrDefault(p => p.Name.Equals(arrayPropertyName));
-				if (property == null) return Enumerable.Empty<T>();
-				else if (property.Value is JArray) return (property.Value as JArray).ToObject<T[]>();
-				else if (property.Value is JObject) return new T[] { (property.Value as JObject).ToObject<T>() };
-				else throw new CakeMailException(string.Format("Json contains CakeMail array {0} but the data is not valid", arrayPropertyName));
+				if (string.IsNullOrEmpty(propertyName))
+				{
+					return (data as JObject).ToObject<T>();
+				}
+				else
+				{
+					var property = (data as JObject).Properties().SingleOrDefault(p => p.Name.Equals(propertyName));
+					if (property == null) return default(T);
+					else if (property.Value is JArray) return (property.Value as JArray).ToObject<T>();
+					else if (property.Value is JValue) return (property.Value as JValue).ToObject<T>();
+					else if (property.Value is JObject) return (property.Value as JObject).ToObject<T>();
+					else throw new CakeMailException(string.Format("Json contains CakeMail property {0} but the data is not valid", propertyName));
+				}
+			}
+			else if (string.IsNullOrEmpty(propertyName))
+			{
+				throw new CakeMailException("Json does not contain valid data");
 			}
 			else
 			{
-				throw new CakeMailException(string.Format("Json does not contain CakeMail array {0}", arrayPropertyName));
-			}
-		}
-
-		private long ExecuteCountRequest(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters)
-		{
-			var response = ExecuteRequest(urlPath, parameters);
-			var data = ParseCakeMailResponse(response);
-
-			if (data is JObject)
-			{
-				var property = (data as JObject).Properties().SingleOrDefault(p => p.Name.Equals("count"));
-				if (property == null) throw new CakeMailException("Json does not contain 'count' property");
-				else if (property.Value is JValue) return (property.Value as JValue).ToObject<long>();
-				else throw new CakeMailException("Json contains 'count' propertyt but the data is not valid");
-			}
-			else
-			{
-				throw new CakeMailException("Json does not contain 'count' property");
+				throw new CakeMailException(string.Format("Json does not contain CakeMail property {0}", propertyName));
 			}
 		}
 
