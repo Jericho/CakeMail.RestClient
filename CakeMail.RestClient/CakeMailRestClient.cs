@@ -3036,6 +3036,16 @@ namespace CakeMail.RestClient
 			return ExecuteCountRequest(path, parameters);
 		}
 
+		/// <summary>
+		/// Update a template category
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="categoryId">ID of the category</param>
+		/// <param name="labels">Name of the category.</param>
+		/// <param name="isVisibleByDefault">Is the category visible by default.</param>
+		/// <param name="templatesCanBeCopied">Are the templates in the category copyable.</param>
+		/// <param name="clientId">Client ID of the client in which the category is located.</param>
+		/// <returns>True if the category was updated</returns>
 		public bool UpdateTemplateCategory(string userKey, int categoryId, IDictionary<string, string> labels, bool isVisibleByDefault = true, bool templatesCanBeCopied = true, int? clientId = null)
 		{
 			string path = "/TemplateV2/SetCategory/";

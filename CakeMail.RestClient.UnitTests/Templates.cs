@@ -19,7 +19,7 @@ namespace CakeMail.RestClient.UnitTests
 		public void CreateTemplateCategory_with_minimal_parameters()
 		{
 			// Arrange
-			var templateId = 123;
+			var categoryId = 123;
 			var labels = new Dictionary<string, string>()
 			{
 				{ "en_US", "My Category" },
@@ -43,7 +43,7 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", templateId)
+				Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", categoryId)
 			});
 
 			// Act
@@ -51,14 +51,14 @@ namespace CakeMail.RestClient.UnitTests
 			var result = apiClient.CreateTemplateCategory(USER_KEY, labels);
 
 			// Assert
-			Assert.AreEqual(templateId, result);
+			Assert.AreEqual(categoryId, result);
 		}
 
 		[TestMethod]
 		public void CreateTemplateCategory_with_no_labels()
 		{
 			// Arrange
-			var templateId = 123;
+			var categoryId = 123;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -75,7 +75,7 @@ namespace CakeMail.RestClient.UnitTests
 				{
 					StatusCode = HttpStatusCode.OK,
 					ContentType = "json",
-					Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", templateId)
+					Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", categoryId)
 				});
 
 			// Act
@@ -83,14 +83,14 @@ namespace CakeMail.RestClient.UnitTests
 			var result = apiClient.CreateTemplateCategory(USER_KEY, null);
 
 			// Assert
-			Assert.AreEqual(templateId, result);
+			Assert.AreEqual(categoryId, result);
 		}
 
 		[TestMethod]
 		public void CreateTemplateCategory_with_isvisiblebydefault_false()
 		{
 			// Arrange
-			var templateId = 123;
+			var categoryId = 123;
 			var labels = new Dictionary<string, string>()
 			{
 				{ "en_US", "My Category" },
@@ -114,7 +114,7 @@ namespace CakeMail.RestClient.UnitTests
 				{
 					StatusCode = HttpStatusCode.OK,
 					ContentType = "json",
-					Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", templateId)
+					Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", categoryId)
 				});
 
 			// Act
@@ -122,14 +122,14 @@ namespace CakeMail.RestClient.UnitTests
 			var result = apiClient.CreateTemplateCategory(USER_KEY, labels, isVisibleByDefault: false);
 
 			// Assert
-			Assert.AreEqual(templateId, result);
+			Assert.AreEqual(categoryId, result);
 		}
 
 		[TestMethod]
 		public void CreateTemplateCategory_with_templatescanbecopied_false()
 		{
 			// Arrange
-			var templateId = 123;
+			var categoryId = 123;
 			var labels = new Dictionary<string, string>()
 			{
 				{ "en_US", "My Category" },
@@ -153,7 +153,7 @@ namespace CakeMail.RestClient.UnitTests
 				{
 					StatusCode = HttpStatusCode.OK,
 					ContentType = "json",
-					Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", templateId)
+					Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", categoryId)
 				});
 
 			// Act
@@ -161,14 +161,14 @@ namespace CakeMail.RestClient.UnitTests
 			var result = apiClient.CreateTemplateCategory(USER_KEY, labels, templatesCanBeCopied: false);
 
 			// Assert
-			Assert.AreEqual(templateId, result);
+			Assert.AreEqual(categoryId, result);
 		}
 
 		[TestMethod]
 		public void CreateTemplateCategory_with_clientid()
 		{
 			// Arrange
-			var templateId = 123;
+			var categoryId = 123;
 			var labels = new Dictionary<string, string>()
 			{
 				{ "en_US", "My Category" },
@@ -193,7 +193,7 @@ namespace CakeMail.RestClient.UnitTests
 				{
 					StatusCode = HttpStatusCode.OK,
 					ContentType = "json",
-					Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", templateId)
+					Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", categoryId)
 				});
 
 			// Act
@@ -201,7 +201,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = apiClient.CreateTemplateCategory(USER_KEY, labels, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.AreEqual(templateId, result);
+			Assert.AreEqual(categoryId, result);
 		}
 
 		[TestMethod]
@@ -534,6 +534,247 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			Assert.AreEqual(2, result);
+		}
+
+		[TestMethod]
+		public void UpdateTemplateCategory_with_minimal_parameters()
+		{
+			// Arrange
+			var categoryId = 123;
+			var labels = new Dictionary<string, string>()
+			{
+				{ "en_US", "My Category" },
+				{ "fr_FR", "Ma Catégorie" }
+			};
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/TemplateV2/SetCategory/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "category_id" && (int)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[en_US]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[fr_FR]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":\"true\"}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.UpdateTemplateCategory(USER_KEY, categoryId, labels);
+
+			// Assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void UpdateTemplateCategory_with_default_true()
+		{
+			// Arrange
+			var categoryId = 123;
+			var labels = new Dictionary<string, string>()
+			{
+				{ "en_US", "My Category" },
+				{ "fr_FR", "Ma Catégorie" }
+			};
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/TemplateV2/SetCategory/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "category_id" && (int)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[en_US]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[fr_FR]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":\"true\"}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.UpdateTemplateCategory(USER_KEY, categoryId, labels, isVisibleByDefault: true);
+
+			// Assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void UpdateTemplateCategory_with_default_false()
+		{
+			// Arrange
+			var categoryId = 123;
+			var labels = new Dictionary<string, string>()
+			{
+				{ "en_US", "My Category" },
+				{ "fr_FR", "Ma Catégorie" }
+			};
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/TemplateV2/SetCategory/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "category_id" && (int)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "0" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[en_US]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[fr_FR]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":\"true\"}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.UpdateTemplateCategory(USER_KEY, categoryId, labels, isVisibleByDefault: false);
+
+			// Assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void UpdateTemplateCategory_with_copyable_true()
+		{
+			// Arrange
+			var categoryId = 123;
+			var labels = new Dictionary<string, string>()
+			{
+				{ "en_US", "My Category" },
+				{ "fr_FR", "Ma Catégorie" }
+			};
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/TemplateV2/SetCategory/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "category_id" && (int)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[en_US]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[fr_FR]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":\"true\"}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.UpdateTemplateCategory(USER_KEY, categoryId, labels, templatesCanBeCopied: true);
+
+			// Assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void UpdateTemplateCategory_with_copyable_false()
+		{
+			// Arrange
+			var categoryId = 123;
+			var labels = new Dictionary<string, string>()
+			{
+				{ "en_US", "My Category" },
+				{ "fr_FR", "Ma Catégorie" }
+			};
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/TemplateV2/SetCategory/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "category_id" && (int)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "0" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[en_US]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[fr_FR]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":\"true\"}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.UpdateTemplateCategory(USER_KEY, categoryId, labels, templatesCanBeCopied: false);
+
+			// Assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void UpdateTemplateCategory_with_clientid()
+		{
+			// Arrange
+			var categoryId = 123;
+			var labels = new Dictionary<string, string>()
+			{
+				{ "en_US", "My Category" },
+				{ "fr_FR", "Ma Catégorie" }
+			};
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/TemplateV2/SetCategory/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 7 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "category_id" && (int)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[en_US]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[fr_FR]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":\"true\"}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.UpdateTemplateCategory(USER_KEY, categoryId, labels, clientId: CLIENT_ID);
+
+			// Assert
+			Assert.IsTrue(result);
 		}
 	}
 }
