@@ -3116,7 +3116,7 @@ namespace CakeMail.RestClient
 			return ExecuteCountRequest(path, parameters);
 		}
 
-		public long SetTemplateCategoryVisibility(string userKey, int categoryId, IDictionary<int, bool> clientVisibility, int? clientId = null)
+		public bool SetTemplateCategoryVisibility(string userKey, int categoryId, IDictionary<int, bool> clientVisibility, int? clientId = null)
 		{
 			var path = "/TemplateV2/SetCategoryVisibility/";
 
@@ -3134,16 +3134,27 @@ namespace CakeMail.RestClient
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteCountRequest(path, parameters);
+			return ExecuteRequest<bool>(path, parameters);
 		}
 
-		public int CreateTemplate(string userKey, IDictionary<string, string> labels, string content = null, int? categoryId = null, int? clientId = null)
+		/// <summary>
+		/// Create a template
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="labels">Name of the template.</param>
+		/// <param name="content">Content of the template.</param>
+		/// <param name="categoryId">ID of the category.</param>
+		/// <param name="clientId">Client ID of the client in which the template is created.</param>
+		/// <returns>ID of the new template</returns>
+		public int CreateTemplate(string userKey, IDictionary<string, string> labels, string content, int categoryId, int? clientId = null)
 		{
 			string path = "/TemplateV2/CreateTemplate/";
 
 			var parameters = new List<KeyValuePair<string, object>>()
 			{
-				new KeyValuePair<string, object>("user_key", userKey)
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("content", content),
+				new KeyValuePair<string, object>("category_id", categoryId)
 			};
 			if (labels != null)
 			{
@@ -3152,13 +3163,18 @@ namespace CakeMail.RestClient
 					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}]", label.Key), label.Value));
 				}
 			}
-			if (content != null) parameters.Add(new KeyValuePair<string, object>("content", content));
-			if (categoryId.HasValue) parameters.Add(new KeyValuePair<string, object>("category_id", categoryId.Value));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteRequest<int>(path, parameters);
 		}
 
+		/// <summary>
+		/// Delete a template
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="categoryId">ID of the template</param>
+		/// <param name="clientId">Client ID of the client in which the template is located.</param>
+		/// <returns>True if the template is deleted</returns>
 		public bool DeleteTemplate(string userKey, int templateId, int? clientId = null)
 		{
 			string path = "/TemplateV2/DeleteTemplate/";
@@ -3173,7 +3189,14 @@ namespace CakeMail.RestClient
 			return ExecuteRequest<bool>(path, parameters);
 		}
 
-		public TemplateCategory GetTemplate(string userKey, int templateId, int? clientId = null)
+		/// <summary>
+		/// Retrieve a template
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="templateId">ID of the template</param>
+		/// <param name="clientId">Client ID of the client in which the template is located.</param>
+		/// <returns>The <see cref="Template">template</see></returns>
+		public Template GetTemplate(string userKey, int templateId, int? clientId = null)
 		{
 			var path = "/TemplateV2/GetTemplate/";
 
@@ -3184,10 +3207,18 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteRequest<TemplateCategory>(path, parameters);
+			return ExecuteRequest<Template>(path, parameters);
 		}
 
-		public IEnumerable<TemplateCategory> GetTemplates(string userKey, int? categoryId = null, int limit = 0, int offset = 0, int? clientId = null)
+		/// <summary>
+		/// Retrieve the templates matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="limit">Limit the number of resulting templates.</param>
+		/// <param name="offset">Offset the beginning of resulting templates.</param>
+		/// <param name="clientId">Client ID of the client in which the templates are located.</param>
+		/// <returns>Enumeration of <see cref="Template">templates</see> matching the filtering criteria</returns>
+		public IEnumerable<Template> GetTemplates(string userKey, int? categoryId = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			var path = "/TemplateV2/GetTemplates/";
 
@@ -3201,9 +3232,15 @@ namespace CakeMail.RestClient
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteArrayRequest<TemplateCategory>(path, parameters, "templates");
+			return ExecuteArrayRequest<Template>(path, parameters, "templates");
 		}
 
+		/// <summary>
+		/// Get a count of templates matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="clientId">Client ID of the client in which the templates are located.</param>
+		/// <returns>The count of templates matching the filtering criteria</returns>
 		public long GetTemplatesCount(string userKey, int? categoryId = null, int? clientId = null)
 		{
 			var path = "/TemplateV2/GetTemplates/";
@@ -3219,6 +3256,16 @@ namespace CakeMail.RestClient
 			return ExecuteCountRequest(path, parameters);
 		}
 
+		/// <summary>
+		/// Update a template
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="templateId">ID of the template</param>
+		/// <param name="labels">Name of the template.</param>
+		/// <param name="content">Content of the template.</param>
+		/// <param name="categoryId">ID of the category.</param>
+		/// <param name="clientId">Client ID of the client in which the template is located.</param>
+		/// <returns>True if the category was updated</returns>
 		public bool UpdateTemplate(string userKey, int templateId, IDictionary<string, string> labels, string content = null, int? categoryId = null, int? clientId = null)
 		{
 			string path = "/TemplateV2/SetTemplate/";

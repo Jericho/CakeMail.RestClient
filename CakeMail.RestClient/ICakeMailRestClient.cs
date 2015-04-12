@@ -1298,18 +1298,65 @@ namespace CakeMail.RestClient
 		/// <returns>The count of permissions matching the filtering criteria</returns>
 		long GetTemplateCategoryVisibilityCount(string userKey, int categoryId, int? clientId = null);
 
-		long SetTemplateCategoryVisibility(string userKey, int categoryId, IDictionary<int, bool> clientVisibility, int? clientId = null);
+		bool SetTemplateCategoryVisibility(string userKey, int categoryId, IDictionary<int, bool> clientVisibility, int? clientId = null);
 
-		int CreateTemplate(string userKey, IDictionary<string, string> labels, string content = null, int? categoryId = null, int? clientId = null);
+		/// <summary>
+		/// Create a template
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="labels">Name of the template.</param>
+		/// <param name="content">Content of the template.</param>
+		/// <param name="categoryId">ID of the category.</param>
+		/// <param name="clientId">Client ID of the client in which the template is created.</param>
+		/// <returns>ID of the new template</returns>
+		int CreateTemplate(string userKey, IDictionary<string, string> labels, string content, int categoryId, int? clientId = null);
 
+		/// <summary>
+		/// Delete a template
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="categoryId">ID of the template</param>
+		/// <param name="clientId">Client ID of the client in which the template is located.</param>
+		/// <returns>True if the template is deleted</returns>
 		bool DeleteTemplate(string userKey, int templateId, int? clientId = null);
 
-		TemplateCategory GetTemplate(string userKey, int templateId, int? clientId = null);
+		/// <summary>
+		/// Retrieve a template
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="templateId">ID of the template</param>
+		/// <param name="clientId">Client ID of the client in which the template is located.</param>
+		/// <returns>The <see cref="Template">template</see></returns>
+		Template GetTemplate(string userKey, int templateId, int? clientId = null);
 
-		IEnumerable<TemplateCategory> GetTemplates(string userKey, int? categoryId = null, int limit = 0, int offset = 0, int? clientId = null);
+		/// <summary>
+		/// Retrieve the templates matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="limit">Limit the number of resulting templates.</param>
+		/// <param name="offset">Offset the beginning of resulting templates.</param>
+		/// <param name="clientId">Client ID of the client in which the templates are located.</param>
+		/// <returns>Enumeration of <see cref="Template">templates</see> matching the filtering criteria</returns>
+		IEnumerable<Template> GetTemplates(string userKey, int? categoryId = null, int limit = 0, int offset = 0, int? clientId = null);
 
+		/// <summary>
+		/// Get a count of templates matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="clientId">Client ID of the client in which the templates are located.</param>
+		/// <returns>The count of templates matching the filtering criteria</returns>
 		long GetTemplatesCount(string userKey, int? categoryId = null, int? clientId = null);
 
+		/// <summary>
+		/// Update a template
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="templateId">ID of the template</param>
+		/// <param name="labels">Name of the template.</param>
+		/// <param name="content">Content of the template.</param>
+		/// <param name="categoryId">ID of the category.</param>
+		/// <param name="clientId">Client ID of the client in which the template is located.</param>
+		/// <returns>True if the category was updated</returns>
 		bool UpdateTemplate(string userKey, int templateId, IDictionary<string, string> labels, string content = null, int? categoryId = null, int? clientId = null);
 
 		#endregion
