@@ -3016,6 +3016,12 @@ namespace CakeMail.RestClient
 			return ExecuteArrayRequest<TemplateCategory>(path, parameters, "categories");
 		}
 
+		/// <summary>
+		/// Get a count of template categories matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="clientId">Client ID of the client in which the categories are located.</param>
+		/// <returns>The count of categories matching the filtering criteria</returns>
 		public long GetTemplateCategoriesCount(string userKey, int? clientId = null)
 		{
 			var path = "/TemplateV2/GetCategories/";

@@ -1259,6 +1259,12 @@ namespace CakeMail.RestClient
 		/// <returns>Enumeration of <see cref="TemplateCategory">categories</see> matching the filtering criteria</returns>
 		IEnumerable<TemplateCategory> GetTemplateCategories(string userKey, int limit = 0, int offset = 0, int? clientId = null);
 
+		/// <summary>
+		/// Get a count of template categories matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="clientId">Client ID of the client in which the categories are located.</param>
+		/// <returns>The count of categories matching the filtering criteria</returns>
 		long GetTemplateCategoriesCount(string userKey, int? clientId = null);
 
 		bool UpdateTemplateCategory(string userKey, int categoryId, IDictionary<string, string> labels, bool isVisibleByDefault = true, bool templatesCanBeCopied = true, int? clientId = null);
