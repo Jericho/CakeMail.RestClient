@@ -1279,7 +1279,24 @@ namespace CakeMail.RestClient
 		/// <returns>True if the category was updated</returns>
 		bool UpdateTemplateCategory(string userKey, int categoryId, IDictionary<string, string> labels, bool isVisibleByDefault = true, bool templatesCanBeCopied = true, int? clientId = null);
 
-		IEnumerable<string> GetTemplateCategoryVisibility(string userKey, int categoryId, int limit = 0, int offset = 0, int? clientId = null);
+		/// <summary>
+		/// Retrieve the list of permissions for a category
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="categoryId">ID of the category</param>
+		/// <param name="limit">Limit the number of resulting permissions.</param>
+		/// <param name="offset">Offset the beginning of resulting permissions.</param>
+		/// <param name="clientId">Client ID of the client in which the category is located.</param>
+		/// <returns>An enumeration of permissions</returns>
+		IEnumerable<TemplateCategoryVisibility> GetTemplateCategoryVisibility(string userKey, int categoryId, int limit = 0, int offset = 0, int? clientId = null);
+
+		/// <summary>
+		/// Get a count of permissions for a given template category.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="clientId">Client ID of the client in which the category is located.</param>
+		/// <returns>The count of permissions matching the filtering criteria</returns>
+		long GetTemplateCategoryVisibilityCount(string userKey, int categoryId, int? clientId = null);
 
 		long SetTemplateCategoryVisibility(string userKey, int categoryId, IDictionary<int, bool> clientVisibility, int? clientId = null);
 

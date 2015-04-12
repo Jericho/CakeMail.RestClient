@@ -3069,7 +3069,16 @@ namespace CakeMail.RestClient
 			return ExecuteRequest<bool>(path, parameters);
 		}
 
-		public IEnumerable<string> GetTemplateCategoryVisibility(string userKey, int categoryId, int limit = 0, int offset = 0, int? clientId = null)
+		/// <summary>
+		/// Retrieve the list of permissions for a category
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="categoryId">ID of the category</param>
+		/// <param name="limit">Limit the number of resulting permissions.</param>
+		/// <param name="offset">Offset the beginning of resulting permissions.</param>
+		/// <param name="clientId">Client ID of the client in which the category is located.</param>
+		/// <returns>An enumeration of permissions</returns>
+		public IEnumerable<TemplateCategoryVisibility> GetTemplateCategoryVisibility(string userKey, int categoryId, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			var path = "/TemplateV2/GetCategoryVisibility/";
 
@@ -3083,7 +3092,28 @@ namespace CakeMail.RestClient
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteArrayRequest<string>(path, parameters, "categories");
+			return ExecuteArrayRequest<TemplateCategoryVisibility>(path, parameters, "clients");
+		}
+
+		/// <summary>
+		/// Get a count of permissions for a given template category.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="clientId">Client ID of the client in which the category is located.</param>
+		/// <returns>The count of permissions matching the filtering criteria</returns>
+		public long GetTemplateCategoryVisibilityCount(string userKey, int categoryId, int? clientId = null)
+		{
+			var path = "/TemplateV2/GetCategoryVisibility/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("category_id", categoryId),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
 		}
 
 		public long SetTemplateCategoryVisibility(string userKey, int categoryId, IDictionary<int, bool> clientVisibility, int? clientId = null)
