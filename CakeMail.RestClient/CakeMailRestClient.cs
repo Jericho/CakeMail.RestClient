@@ -3305,7 +3305,7 @@ namespace CakeMail.RestClient
 		/// <param name="officePhone">Office phone number of the user.</param>
 		/// <param name="mobilePhone">Mobile phone number of the user.</param>
 		/// <param name="language">Language of the user. For example: 'en_US' for English (US)</param>
-		/// <param name="timezoneId">ID of the timezone of the user.</param>
+		/// <param name="timezoneId">ID of the timezone of the user. UTC (id 542) is the default value</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>ID of the new user</returns>
 		public int CreateUser(string userKey, string email, string password, string firstName = null, string lastName = null, string title = null, string officePhone = null, string mobilePhone = null, string language = null, int timezoneId = 542, int? clientId = null)
@@ -3341,7 +3341,7 @@ namespace CakeMail.RestClient
 		/// <returns>True if the user is suspended</returns>
 		public bool DeactivateUser(string userKey, int userId, int? clientId = null)
 		{
-			return UpdateUser(userKey, userId, "suspended", null, null, null, null, null, null, null, null, null, clientId);
+			return UpdateUser(userKey, userId, status: "suspended", clientId: clientId);
 		}
 
 		/// <summary>
@@ -3353,7 +3353,7 @@ namespace CakeMail.RestClient
 		/// <returns>True if the user is deleted</returns>
 		public bool DeleteUser(string userKey, int userId, int? clientId = null)
 		{
-			return UpdateUser(userKey, userId, "deleted", null, null, null, null, null, null, null, null, null, clientId);
+			return UpdateUser(userKey, userId, status: "deleted", clientId: clientId);
 		}
 
 		/// <summary>
@@ -3425,7 +3425,23 @@ namespace CakeMail.RestClient
 			return ExecuteCountRequest(path, parameters);
 		}
 
-		public bool UpdateUser(string userKey, int userId, string status, string email, string firstName, string lastName, string title, string officePhone, string mobilePhone, string language, string timezoneId, string password, int? clientId = null)
+		/// <summary>
+		/// Update a user
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="email">Email address of the user.</param>
+		/// <param name="password">Password of the user.</param>
+		/// <param name="firstName">First name of the user.</param>
+		/// <param name="lastName">Last name of the user.</param>
+		/// <param name="title">Title of the user.</param>
+		/// <param name="officePhone">Office phone number of the user.</param>
+		/// <param name="mobilePhone">Mobile phone number of the user.</param>
+		/// <param name="language">Language of the user. For example: 'en_US' for English (US)</param>
+		/// <param name="timezoneId">ID of the timezone of the user.</param>
+		/// <param name="status">Status of the user. Possible values: 'active', 'suspended'</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>True if the user was updated</returns>
+		public bool UpdateUser(string userKey, int userId, string email = null, string password = null, string firstName = null, string lastName = null, string title = null, string officePhone = null, string mobilePhone = null, string language = null, int? timezoneId = null, string status = null, int? clientId = null)
 		{
 			string path = "/User/SetInfo/";
 
@@ -3442,7 +3458,7 @@ namespace CakeMail.RestClient
 			if (officePhone != null) parameters.Add(new KeyValuePair<string, object>("office_phone", officePhone));
 			if (mobilePhone != null) parameters.Add(new KeyValuePair<string, object>("mobile_phone", mobilePhone));
 			if (language != null) parameters.Add(new KeyValuePair<string, object>("language", language));
-			if (timezoneId != null) parameters.Add(new KeyValuePair<string, object>("timezoneId", timezoneId));
+			if (timezoneId != null) parameters.Add(new KeyValuePair<string, object>("timezone_id", timezoneId));
 			if (password != null)
 			{
 				parameters.Add(new KeyValuePair<string, object>("password", password));
