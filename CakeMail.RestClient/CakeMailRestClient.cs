@@ -3377,6 +3377,15 @@ namespace CakeMail.RestClient
 			return ExecuteRequest<User>(path, parameters);
 		}
 
+		/// <summary>
+		/// Retrieve the users matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="status">Filter using the user status. Possible values: 'active', 'suspended'</param>
+		/// <param name="limit">Limit the number of resulting users.</param>
+		/// <param name="offset">Offset the beginning of resulting users.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>Enumeration of <see cref="User">users</see> matching the filtering criteria</returns>
 		public IEnumerable<User> GetUsers(string userKey, string status = null, int limit = 0, int offset = 0, int? clientId = null)
 		{
 			var path = "/User/GetList/";
