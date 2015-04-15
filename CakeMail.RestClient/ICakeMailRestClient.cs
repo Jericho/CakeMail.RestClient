@@ -1363,6 +1363,21 @@ namespace CakeMail.RestClient
 
 		#region Methods related to USERS
 
+		/// <summary>
+		/// Create a user
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="email">Email address of the user.</param>
+		/// <param name="password">Password of the user.</param>
+		/// <param name="firstName">First name of the user.</param>
+		/// <param name="lastName">Last name of the user.</param>
+		/// <param name="title">Title of the user.</param>
+		/// <param name="officePhone">Office phone number of the user.</param>
+		/// <param name="mobilePhone">Mobile phone number of the user.</param>
+		/// <param name="language">Language of the user. For example: 'en_US' for English (US)</param>
+		/// <param name="timezoneId">ID of the timezone of the user.</param>
+		/// <param name="clientId">Client ID of the client in which the category is created.</param>
+		/// <returns>ID of the new user</returns>
 		int CreateUser(string userKey, string email, string firstName, string lastName, string title, string officePhone, string mobilePhone, string language, string password, int timezoneId = 542, int? clientId = null);
 
 		bool DeactivateUser(string userKey, int userId, int? clientId = null);

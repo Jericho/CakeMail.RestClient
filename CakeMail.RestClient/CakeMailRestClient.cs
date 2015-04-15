@@ -3293,7 +3293,22 @@ namespace CakeMail.RestClient
 
 		#region Methods related to USERS
 
-		public int CreateUser(string userKey, string email, string firstName, string lastName, string title, string officePhone, string mobilePhone, string language, string password, int timezoneId = 542, int? clientId = null)
+		/// <summary>
+		/// Create a user
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="email">Email address of the user.</param>
+		/// <param name="password">Password of the user.</param>
+		/// <param name="firstName">First name of the user.</param>
+		/// <param name="lastName">Last name of the user.</param>
+		/// <param name="title">Title of the user.</param>
+		/// <param name="officePhone">Office phone number of the user.</param>
+		/// <param name="mobilePhone">Mobile phone number of the user.</param>
+		/// <param name="language">Language of the user. For example: 'en_US' for English (US)</param>
+		/// <param name="timezoneId">ID of the timezone of the user.</param>
+		/// <param name="clientId">Client ID of the client in which the category is created.</param>
+		/// <returns>ID of the new user</returns>
+		public int CreateUser(string userKey, string email, string password, string firstName = null, string lastName = null, string title = null, string officePhone = null, string mobilePhone = null, string language = null, int timezoneId = 542, int? clientId = null)
 		{
 			string path = "/User/Create/";
 
@@ -3313,9 +3328,8 @@ namespace CakeMail.RestClient
 			if (timezoneId > 0) parameters.Add(new KeyValuePair<string, object>("timezone_id", timezoneId));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			// When a new user is created, the json payload only contains the 'id'
-			var user = ExecuteRequest<User>(path, parameters);
-			return user.Id;
+			// When a new user is created, the payload contains a json object with two properties: 'id' and 'key'. We only care about the ID.
+			return ExecuteRequest<int>(path, parameters, "id");
 		}
 
 		public bool DeactivateUser(string userKey, int userId, int? clientId = null)

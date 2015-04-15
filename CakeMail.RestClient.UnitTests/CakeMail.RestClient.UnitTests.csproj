@@ -61,6 +61,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Users.cs" />
     <Compile Include="Templates.cs" />
     <Compile Include="Triggers.cs" />
     <Compile Include="SuppressionLists.cs" />
