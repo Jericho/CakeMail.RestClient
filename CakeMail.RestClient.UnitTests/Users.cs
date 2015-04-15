@@ -1147,5 +1147,72 @@ namespace CakeMail.RestClient.UnitTests
 			// Assert
 			Assert.IsTrue(result);
 		}
+
+		[TestMethod]
+		public void Login_with_minimal_parameters()
+		{
+			// Arrange
+			var email = "admin@fictitiouscompany.com";
+			var password = "abc123";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/User/Login/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
+				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "password" && (string)p.Value == password && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"client_id\":\"12345\",\"client_key\":\"... client key ...\",\"user_id\":\"111\",\"user_key\":\"{0}\",\"first_name\":\"Bob\",\"last_name\":\"Smith\",\"language\":\"en_US\",\"timezone\":\"UTC\",\"last_activity\":\"2015-04-15 18:53:32\",\"client_lineage\":\"1-12345\"}}}}", USER_KEY)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.Login(email, password);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(USER_KEY, result.UserKey);
+		}
+
+		[TestMethod]
+		public void Login_with_clientid()
+		{
+			// Arrange
+			var email = "admin@fictitiouscompany.com";
+			var password = "abc123";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/User/Login/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "password" && (string)p.Value == password && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"client_id\":\"12345\",\"client_key\":\"... client key ...\",\"user_id\":\"111\",\"user_key\":\"{0}\",\"first_name\":\"Bob\",\"last_name\":\"Smith\",\"language\":\"en_US\",\"timezone\":\"UTC\",\"last_activity\":\"2015-04-15 18:53:32\",\"client_lineage\":\"1-12345\"}}}}", USER_KEY)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.Login(email, password, clientId: CLIENT_ID);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(USER_KEY, result.UserKey);
+		}
 	}
 }

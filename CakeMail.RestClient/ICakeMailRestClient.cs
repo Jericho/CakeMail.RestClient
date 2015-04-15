@@ -1445,7 +1445,14 @@ namespace CakeMail.RestClient
 		/// <returns>True if the user was updated</returns>
 		bool UpdateUser(string userKey, int userId, string email = null, string password = null, string firstName = null, string lastName = null, string title = null, string officePhone = null, string mobilePhone = null, string language = null, int? timezoneId = null, string status = null, int? clientId = null);
 
-		LoginInfo Login(string userName, string password, int? clientId = null);
+		/// <summary>
+		/// Validate user name and password
+		/// </summary>
+		/// <param name="email">Email address of the user.</param>
+		/// <param name="password">Password of the user.</param>
+		/// <param name="clientId">ID of the client</param>
+		/// <returns>The <see cref="LoginIngo">login information</see> for the user</returns>
+		LoginInfo Login(string email, string password, int? clientId = null);
 
 		#endregion
 	}

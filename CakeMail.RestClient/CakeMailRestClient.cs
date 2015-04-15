@@ -3469,13 +3469,20 @@ namespace CakeMail.RestClient
 			return ExecuteRequest<bool>(path, parameters);
 		}
 
-		public LoginInfo Login(string userName, string password, int? clientId = null)
+		/// <summary>
+		/// Validate user name and password
+		/// </summary>
+		/// <param name="email">Email address of the user.</param>
+		/// <param name="password">Password of the user.</param>
+		/// <param name="clientId">ID of the client</param>
+		/// <returns>The <see cref="LoginIngo">login information</see> for the user</returns>
+		public LoginInfo Login(string email, string password, int? clientId = null)
 		{
 			var path = "/User/Login/";
 
 			var parameters = new List<KeyValuePair<string, object>>()
 			{
-				new KeyValuePair<string, object>("email", userName),
+				new KeyValuePair<string, object>("email", email),
 				new KeyValuePair<string, object>("password", password)
 
 			};
