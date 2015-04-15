@@ -3403,6 +3403,13 @@ namespace CakeMail.RestClient
 			return ExecuteArrayRequest<User>(path, parameters, "users");
 		}
 
+		/// <summary>
+		/// Get a count of users matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="status">Filter using the user status. Possible values: 'active', 'suspended'</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>The count of users matching the filtering criteria</returns>
 		public long GetUsersCount(string userKey, string status = null, int? clientId = null)
 		{
 			var path = "/User/GetList/";

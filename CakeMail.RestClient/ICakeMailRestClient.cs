@@ -1418,6 +1418,13 @@ namespace CakeMail.RestClient
 		/// <returns>Enumeration of <see cref="User">users</see> matching the filtering criteria</returns>
 		IEnumerable<User> GetUsers(string userKey, string status = null, int limit = 0, int offset = 0, int? clientId = null);
 
+		/// <summary>
+		/// Get a count of users matching the filtering criteria.
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="status">Filter using the user status. Possible values: 'active', 'suspended'</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>The count of users matching the filtering criteria</returns>
 		long GetUsersCount(string userKey, string status = null, int? clientId = null);
 
 		bool UpdateUser(string userKey, int userId, string status, string email, string firstName, string lastName, string title, string officePhone, string mobilePhone, string language, string timezoneId, string password, int? clientId = null);
