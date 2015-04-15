@@ -351,5 +351,134 @@ namespace CakeMail.RestClient.UnitTests
 			// Assert
 			Assert.AreEqual(userId, result);
 		}
+
+		[TestMethod]
+		public void DeactivateUser_with_minimal_parameters()
+		{
+			// Arrange
+			var userId = 12345;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/User/SetInfo/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "user_id" && (int)p.Value == userId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == "suspended" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":\"true\"}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.DeactivateUser(USER_KEY, userId);
+
+			// Assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void DeleteUser_with_minimal_parameters()
+		{
+			// Arrange
+			var userId = 12345;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/User/SetInfo/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "user_id" && (int)p.Value == userId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == "deleted" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":\"true\"}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.DeleteUser(USER_KEY, userId);
+
+			// Assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void GetUser_with_minimal_parameters()
+		{
+			// Arrange
+			var userId = 12345;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/User/GetInfo/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "user_id" && (int)p.Value == userId && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"permissions\":[\"admin_settings\",\"admin_marketplace\",\"admin_campaigns\",\"admin_lists\"],\"id\":\"{0}\",\"user_key\":\"{1}\",\"email\":\"admin@fictitiouscompany.com\",\"status\":\"active\",\"first_name\":\"John\",\"last_name\":\"Smith\",\"openid\":null,\"last_activity\":\"2015-04-15 19:05:46\",\"timezone_id\":\"542\"}}}}", userId, USER_KEY)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetUser(USER_KEY, userId);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(userId, result.Id);
+		}
+
+		[TestMethod]
+		public void GetUser_with_clientid()
+		{
+			// Arrange
+			var userId = 12345;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/User/GetInfo/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "user_id" && (int)p.Value == userId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"permissions\":[\"admin_settings\",\"admin_marketplace\",\"admin_campaigns\",\"admin_lists\"],\"id\":\"{0}\",\"user_key\":\"{1}\",\"email\":\"admin@fictitiouscompany.com\",\"status\":\"active\",\"first_name\":\"John\",\"last_name\":\"Smith\",\"openid\":null,\"last_activity\":\"2015-04-15 19:05:46\",\"timezone_id\":\"542\"}}}}", userId, USER_KEY)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetUser(USER_KEY, userId, CLIENT_ID);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(userId, result.Id);
+		}
 	}
 }

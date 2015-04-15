@@ -3306,7 +3306,7 @@ namespace CakeMail.RestClient
 		/// <param name="mobilePhone">Mobile phone number of the user.</param>
 		/// <param name="language">Language of the user. For example: 'en_US' for English (US)</param>
 		/// <param name="timezoneId">ID of the timezone of the user.</param>
-		/// <param name="clientId">Client ID of the client in which the category is created.</param>
+		/// <param name="clientId">ID of the client.</param>
 		/// <returns>ID of the new user</returns>
 		public int CreateUser(string userKey, string email, string password, string firstName = null, string lastName = null, string title = null, string officePhone = null, string mobilePhone = null, string language = null, int timezoneId = 542, int? clientId = null)
 		{
@@ -3317,7 +3317,8 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("email", email),
 				new KeyValuePair<string, object>("password", password),
-				new KeyValuePair<string, object>("password_confirmation", password)
+				new KeyValuePair<string, object>("password_confirmation", password),
+				new KeyValuePair<string, object>("timezone_id", timezoneId)
 			};
 			if (firstName != null) parameters.Add(new KeyValuePair<string, object>("first_name", firstName));
 			if (lastName != null) parameters.Add(new KeyValuePair<string, object>("last_name", lastName));
@@ -3325,23 +3326,43 @@ namespace CakeMail.RestClient
 			if (officePhone != null) parameters.Add(new KeyValuePair<string, object>("office_phone", officePhone));
 			if (mobilePhone != null) parameters.Add(new KeyValuePair<string, object>("mobile_phone", mobilePhone));
 			if (language != null) parameters.Add(new KeyValuePair<string, object>("language", language));
-			if (timezoneId > 0) parameters.Add(new KeyValuePair<string, object>("timezone_id", timezoneId));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			// When a new user is created, the payload contains a json object with two properties: 'id' and 'key'. We only care about the ID.
 			return ExecuteRequest<int>(path, parameters, "id");
 		}
 
+		/// <summary>
+		/// Suspend a user
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="userId">ID of the user.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>True if the user is suspended</returns>
 		public bool DeactivateUser(string userKey, int userId, int? clientId = null)
 		{
 			return UpdateUser(userKey, userId, "suspended", null, null, null, null, null, null, null, null, null, clientId);
 		}
 
+		/// <summary>
+		/// Delete a user
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="userId">ID of the user.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>True if the user is deleted</returns>
 		public bool DeleteUser(string userKey, int userId, int? clientId = null)
 		{
 			return UpdateUser(userKey, userId, "deleted", null, null, null, null, null, null, null, null, null, clientId);
 		}
 
+		/// <summary>
+		/// Retrieve a user
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="userID">ID of the user</param>
+		/// <param name="clientId">ID of the client</param>
+		/// <returns>The <see cref="User">user</see></returns>
 		public User GetUser(string userKey, int userId, int? clientId = null)
 		{
 			var path = "/User/GetInfo/";

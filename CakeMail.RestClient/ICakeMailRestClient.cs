@@ -1376,14 +1376,35 @@ namespace CakeMail.RestClient
 		/// <param name="mobilePhone">Mobile phone number of the user.</param>
 		/// <param name="language">Language of the user. For example: 'en_US' for English (US)</param>
 		/// <param name="timezoneId">ID of the timezone of the user.</param>
-		/// <param name="clientId">Client ID of the client in which the category is created.</param>
+		/// <param name="clientId">ID of the client.</param>
 		/// <returns>ID of the new user</returns>
 		int CreateUser(string userKey, string email, string firstName, string lastName, string title, string officePhone, string mobilePhone, string language, string password, int timezoneId = 542, int? clientId = null);
 
+		/// <summary>
+		/// Suspend a user
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="userId">ID of the user.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>True if the user is suspended</returns>
 		bool DeactivateUser(string userKey, int userId, int? clientId = null);
 
+		/// <summary>
+		/// Delete a user
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="userId">ID of the user.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <returns>True if the user is deleted</returns>
 		bool DeleteUser(string userKey, int userId, int? clientId = null);
 
+		/// <summary>
+		/// Retrieve a user
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="userID">ID of the user</param>
+		/// <param name="clientId">ID of the client</param>
+		/// <returns>The <see cref="User">user</see></returns>
 		User GetUser(string userKey, int userId, int? clientId = null);
 
 		IEnumerable<User> GetUsers(string userKey, string status = null, int limit = 0, int offset = 0, int? clientId = null);
