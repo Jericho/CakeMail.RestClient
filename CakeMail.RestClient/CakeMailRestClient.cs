@@ -613,9 +613,7 @@ namespace CakeMail.RestClient
 		{
 			var path = "/Country/GetList/";
 
-			var parameters = new List<KeyValuePair<string, object>>();
-
-			return ExecuteArrayRequest<Country>(path, parameters, "countries");
+			return ExecuteArrayRequest<Country>(path, null, "countries");
 		}
 
 		/// <summary>
@@ -627,8 +625,10 @@ namespace CakeMail.RestClient
 		{
 			var path = "/Country/GetProvinces/";
 
-			var parameters = new List<KeyValuePair<string, object>>();
-			parameters.Add(new KeyValuePair<string, object>("country_id", countryId));
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("country_id", countryId)
+			};
 
 			return ExecuteArrayRequest<Province>(path, parameters, "provinces");
 		}
@@ -702,11 +702,11 @@ namespace CakeMail.RestClient
 			var parameters = new List<KeyValuePair<string, object>>()
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("list_id", listId)
+				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("no_details", includeStatistics ? "false" : "true"),	// CakeMail expects 'false' if you want to include details
+				new KeyValuePair<string, object>("with_engagement", calculateEngagement ? "true" : "false")
 			};
 			if (subListId.HasValue) parameters.Add(new KeyValuePair<string, object>("sublist_id", subListId.Value));
-			parameters.Add(new KeyValuePair<string, object>("no_details", includeStatistics ? "false" : "true"));	// CakeMail expects 'false' if you want to include details
-			parameters.Add(new KeyValuePair<string, object>("with_engagement", calculateEngagement ? "true" : "false"));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteRequest<List>(path, parameters);
@@ -2455,9 +2455,7 @@ namespace CakeMail.RestClient
 		{
 			var path = "/Client/GetTimezones/";
 
-			var parameters = new List<KeyValuePair<string, object>>();
-
-			return ExecuteArrayRequest<Timezone>(path, parameters, "timezones");
+			return ExecuteArrayRequest<Timezone>(path, null, "timezones");
 		}
 
 		#endregion

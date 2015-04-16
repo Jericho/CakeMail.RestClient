@@ -263,6 +263,31 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(HttpException))]
+		public void RestClient_Throws_exception_when_responsecode_is_greater_than_599_and_custom_errormessage()
+		{
+			// Arrange
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Country/GetList/" &&
+				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
+			))).Returns(new RestResponse()
+			{
+				ResponseStatus = RestSharp.ResponseStatus.Completed,
+				StatusCode = (HttpStatusCode)600,
+				ErrorMessage = "This is a bogus error message"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetCountries();
+		}
+
+		[TestMethod]
 		[ExpectedException(typeof(CakeMailException))]
 		public void RestClient_Throws_exception_when_cakemail_api_returns_failure()
 		{
