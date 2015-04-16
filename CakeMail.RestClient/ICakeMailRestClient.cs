@@ -15,7 +15,7 @@ namespace CakeMail.RestClient
 		/// <param name="name">Name of the campaign.</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is created.</param>
 		/// <returns>ID of the new campaign</returns>
-		int CreateCampaign(string userKey, string name, int? clientId = null);
+		long CreateCampaign(string userKey, string name, long? clientId = null);
 
 		/// <summary>
 		/// Delete a campaign.
@@ -24,7 +24,7 @@ namespace CakeMail.RestClient
 		/// <param name="campaignId">ID of the campaign to delete.</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <returns>True if the campaign is deleted</returns>
-		bool DeleteCampaign(string userKey, int campaignId, int? clientId = null);
+		bool DeleteCampaign(string userKey, long campaignId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve a campaign.
@@ -33,7 +33,7 @@ namespace CakeMail.RestClient
 		/// <param name="campaignId">ID of the campaign.</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <returns>The <see cref="Campaign">campaign</see></returns>
-		Campaign GetCampaign(string userKey, int campaignId, int? clientId = null);
+		Campaign GetCampaign(string userKey, long campaignId, long? clientId = null);
 
 		/// <summary>
 		/// Get a list of campaigns matching the filtering criteria.
@@ -47,7 +47,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting campaigns.</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <returns>Enumeration of <see cref="Campaign">campaigns</see> matching the filtering criteria</returns>
-		IEnumerable<Campaign> GetCampaigns(string userKey, string status = null, string name = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<Campaign> GetCampaigns(string userKey, string status = null, string name = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Get a count of campaigns matching the filtering criteria.
@@ -57,7 +57,7 @@ namespace CakeMail.RestClient
 		/// <param name="name">Filter using the campaign name.</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <returns>The count of campaigns matching the filtering criteria</returns>
-		long GetCampaignsCount(string userKey, string status = null, string name = null, int? clientId = null);
+		long GetCampaignsCount(string userKey, string status = null, string name = null, long? clientId = null);
 
 		/// <summary>
 		/// Update a campaign
@@ -67,7 +67,7 @@ namespace CakeMail.RestClient
 		/// <param name="name">The name of the campaign</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <returns>True if the record was updated.</returns>
-		bool UpdateCampaign(string userKey, int campaignId, string name, int? clientId = null);
+		bool UpdateCampaign(string userKey, long campaignId, string name, long? clientId = null);
 
 		#endregion
 
@@ -107,7 +107,7 @@ namespace CakeMail.RestClient
 		/// <param name="primaryContactTimezoneId">ID of the timezone of the primary contact</param>
 		/// <param name="primaryContactPassword">Password of the primary contact</param>
 		/// <returns>A confirmation code which must be used subsequently to 'activate' the client</returns>
-		string CreateClient(int parentId, string name, string address1 = null, string address2 = null, string city = null, string provinceId = null, string postalCode = null, string countryId = null, string website = null, string phone = null, string fax = null, string adminEmail = null, string adminFirstName = null, string adminLastName = null, string adminTitle = null, string adminOfficePhone = null, string adminMobilePhone = null, string adminLanguage = null, int? adminTimezoneId = null, string adminPassword = null, bool primaryContactSameAsAdmin = true, string primaryContactEmail = null, string primaryContactFirstName = null, string primaryContactLastName = null, string primaryContactTitle = null, string primaryContactOfficePhone = null, string primaryContactMobilePhone = null, string primaryContactLanguage = null, int? primaryContactTimezoneId = null, string primaryContactPassword = null);
+		string CreateClient(long parentId, string name, string address1 = null, string address2 = null, string city = null, string provinceId = null, string postalCode = null, string countryId = null, string website = null, string phone = null, string fax = null, string adminEmail = null, string adminFirstName = null, string adminLastName = null, string adminTitle = null, string adminOfficePhone = null, string adminMobilePhone = null, string adminLanguage = null, long? adminTimezoneId = null, string adminPassword = null, bool primaryContactSameAsAdmin = true, string primaryContactEmail = null, string primaryContactFirstName = null, string primaryContactLastName = null, string primaryContactTitle = null, string primaryContactOfficePhone = null, string primaryContactMobilePhone = null, string primaryContactLanguage = null, long? primaryContactTimezoneId = null, string primaryContactPassword = null);
 
 		/// <summary>
 		/// Activate a pending client
@@ -124,7 +124,7 @@ namespace CakeMail.RestClient
 		/// <param name="startDate">Start date to return stats about the client.</param>
 		/// <param name="endDate">End date to return stats about the client.</param>
 		/// <returns>The <see cref="Client">client</see></returns>
-		Client GetClient(string userKey, int clientId, DateTime? startDate = null, DateTime? endDate = null);
+		Client GetClient(string userKey, long clientId, DateTime? startDate = null, DateTime? endDate = null);
 
 		/// <summary>
 		/// Retrieve a pending client
@@ -147,7 +147,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting clients.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>Enumeration of <see cref="Client">clients</see> matching the filtering criteria</returns>
-		IEnumerable<Client> GetClients(string userKey, string status = null, string name = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<Client> GetClients(string userKey, string status = null, string name = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Get a count of clients matching the filtering criteria
@@ -157,7 +157,7 @@ namespace CakeMail.RestClient
 		/// <param name="name">Filter using the client name.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>The number of clients matching the filtering criteria</returns>
-		long GetClientsCount(string userKey, string status = null, string name = null, int? clientId = null);
+		long GetClientsCount(string userKey, string status = null, string name = null, long? clientId = null);
 
 		/// <summary>
 		/// Update a client
@@ -195,7 +195,7 @@ namespace CakeMail.RestClient
 		/// <param name="defaultMonthLimit"></param>
 		/// <param name="defaultContactLimit"></param>
 		/// <returns>True if the record was updated.</returns>
-		bool UpdateClient(string userKey, int clientId, string name = null, string status = null, int? parentId = null, string address1 = null, string address2 = null, string city = null, string provinceId = null, string postalCode = null, string countryId = null, string website = null, string phone = null, string fax = null, string authDomain = null, string bounceDomain = null, string dkimDomain = null, string doptinIp = null, string forwardDomain = null, string forwardIp = null, string ipPool = null, string mdDomain = null, bool? isReseller = null, string currency = null, string planType = null, int? mailingLimit = null, int? monthLimit = null, int? contactLimit = null, int? defaultMailingLimit = null, int? defaultMonthLimit = null, int? defaultContactLimit = null);
+		bool UpdateClient(string userKey, long clientId, string name = null, string status = null, long? parentId = null, string address1 = null, string address2 = null, string city = null, string provinceId = null, string postalCode = null, string countryId = null, string website = null, string phone = null, string fax = null, string authDomain = null, string bounceDomain = null, string dkimDomain = null, string doptinIp = null, string forwardDomain = null, string forwardIp = null, string ipPool = null, string mdDomain = null, bool? isReseller = null, string currency = null, string planType = null, int? mailingLimit = null, int? monthLimit = null, int? contactLimit = null, int? defaultMailingLimit = null, int? defaultMonthLimit = null, int? defaultContactLimit = null);
 
 		/// <summary>
 		/// Activate a client which has been previously suspended
@@ -204,7 +204,7 @@ namespace CakeMail.RestClient
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>True if the client was activated</returns>
 		/// <remarks>This method is simply a shortcut for: UpdateClient(userKey, clientId, status: "active")</remarks>
-		bool ActivateClient(string userKey, int clientId);
+		bool ActivateClient(string userKey, long clientId);
 
 		/// <summary>
 		/// Suspend a client
@@ -213,7 +213,7 @@ namespace CakeMail.RestClient
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>True if the client was suspended</returns>
 		/// <remarks>This method is simply a shortcut for: UpdateClient(userKey, clientId, status: "suspended_by_reseller")</remarks>
-		bool SuspendClient(string userKey, int clientId);
+		bool SuspendClient(string userKey, long clientId);
 
 		/// <summary>
 		/// Delete a client
@@ -222,7 +222,7 @@ namespace CakeMail.RestClient
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>True if the client was deleted</returns>
 		/// <remarks>This method is simply a shortcut for: UpdateClient(userKey, clientId, status: "deleted")</remarks>
-		bool DeleteClient(string userKey, int clientId);
+		bool DeleteClient(string userKey, long clientId);
 
 		#endregion
 
@@ -235,7 +235,7 @@ namespace CakeMail.RestClient
 		/// <param name="userId">ID of the user.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>An enumeration of permissions</returns>
-		IEnumerable<string> GetUserPermissions(string userKey, int userId, int? clientId = null);
+		IEnumerable<string> GetUserPermissions(string userKey, long userId, long? clientId = null);
 
 		/// <summary>
 		/// Set the permissions granted to a given user
@@ -245,7 +245,7 @@ namespace CakeMail.RestClient
 		/// <param name="permissions">Enumeration of permissions</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>True if the operation succeeded</returns>
-		bool SetUserPermissions(string userKey, int userId, IEnumerable<string> permissions, int? clientId = null);
+		bool SetUserPermissions(string userKey, long userId, IEnumerable<string> permissions, long? clientId = null);
 
 		#endregion
 
@@ -278,7 +278,7 @@ namespace CakeMail.RestClient
 		/// <param name="spamPolicyAccepted">Indicates if the anti-spam policy has been accepted</param>
 		/// <param name="clientId">Client ID of the client in which the list is created.</param>
 		/// <returns>ID of the new list</returns>
-		int CreateList(string userKey, string name, string defaultSenderName, string defaultSenderEmailAddress, bool spamPolicyAccepted = false, int? clientId = null);
+		long CreateList(string userKey, string name, string defaultSenderName, string defaultSenderEmailAddress, bool spamPolicyAccepted = false, long? clientId = null);
 
 		/// <summary>
 		/// Delete a list
@@ -287,19 +287,18 @@ namespace CakeMail.RestClient
 		/// <param name="listId">ID of the list</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>True if the list is deleted</returns>
-		bool DeleteList(string userKey, int listId, int? clientId = null);
+		bool DeleteList(string userKey, long listId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve a list
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="listId">ID of the list</param>
-		/// <param name="subListId">ID of the segment</param>
 		/// <param name="includeStatistics">True if you want the statistics</param>
 		/// <param name="calculateEngagement">True if you want the engagement information to be calculated</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>The <see cref="List">list</see></returns>
-		List GetList(string userKey, int listId, int? subListId = null, bool includeStatistics = true, bool calculateEngagement = false, int? clientId = null);
+		List GetList(string userKey, long listId, bool includeStatistics = true, bool calculateEngagement = false, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the lists matching the filtering criteria.
@@ -313,7 +312,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting lists.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>Enumeration of <see cref="List">lists</see> matching the filtering criteria</returns>
-		IEnumerable<List> GetLists(string userKey, string status = null, string name = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<List> GetLists(string userKey, string status = null, string name = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Get a count of lists matching the filtering criteria.
@@ -323,7 +322,7 @@ namespace CakeMail.RestClient
 		/// <param name="name">Filter using the list name.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>The count of lists matching the filtering criteria</returns>
-		long GetListsCount(string userKey, string name = null, int? clientId = null);
+		long GetListsCount(string userKey, string name = null, long? clientId = null);
 
 		/// <summary>
 		/// Update a list
@@ -343,7 +342,7 @@ namespace CakeMail.RestClient
 		/// <param name="query">Rules for the segment.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>True if the list was updated</returns>
-		bool UpdateList(string userKey, int listId, string name = null, string language = null, bool? spamPolicyAccepted = null, string status = null, string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, int? clientId = null);
+		bool UpdateList(string userKey, long listId, string name = null, string language = null, bool? spamPolicyAccepted = null, string status = null, string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, long? clientId = null);
 
 		/// <summary>
 		/// Add a new field to a list
@@ -354,7 +353,7 @@ namespace CakeMail.RestClient
 		/// <param name="type">Type of the field. Possible values: 'text', 'integer', 'datetime' or 'mediumtext'</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>True if the field was added to the list</returns>
-		bool AddListField(string userKey, int listId, string name, string type, int? clientId = null);
+		bool AddListField(string userKey, long listId, string name, string type, long? clientId = null);
 
 		/// <summary>
 		/// Remove a field from a list
@@ -364,7 +363,7 @@ namespace CakeMail.RestClient
 		/// <param name="name">Name of the field.</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>True if the field was removed from the list</returns>
-		bool DeleteListField(string userKey, int listId, string name, int? clientId = null);
+		bool DeleteListField(string userKey, long listId, string name, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the list of fields of a list
@@ -373,7 +372,7 @@ namespace CakeMail.RestClient
 		/// <param name="listId">ID of the list.</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>An enumeration of <see cref="ListField">fields</see></returns>
-		IEnumerable<ListField> GetListFields(string userKey, int listId, int? clientId = null);
+		IEnumerable<ListField> GetListFields(string userKey, long listId, long? clientId = null);
 
 		/// <summary>
 		/// Add a test email to the list.
@@ -383,7 +382,7 @@ namespace CakeMail.RestClient
 		/// <param name="email">The email address</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>True if the email address was added</returns>
-		bool AddTestEmail(string userKey, int listId, string email, int? clientId = null);
+		bool AddTestEmail(string userKey, long listId, string email, long? clientId = null);
 
 		/// <summary>
 		/// Delete a test email from a list.
@@ -393,7 +392,7 @@ namespace CakeMail.RestClient
 		/// <param name="email">The email address</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>True if the email address was deleted</returns>
-		bool DeleteTestEmail(string userKey, int listId, string email, int? clientId = null);
+		bool DeleteTestEmail(string userKey, long listId, string email, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the lists of test email addresses for a given list
@@ -402,7 +401,7 @@ namespace CakeMail.RestClient
 		/// <param name="listId">ID of the list.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>Enumeration of <see cref="string">test email addresses</see></returns>
-		IEnumerable<string> GetTestEmails(string userKey, int listId, int? clientId = null);
+		IEnumerable<string> GetTestEmails(string userKey, long listId, long? clientId = null);
 
 		/// <summary>
 		/// Add a subscriber to a list.
@@ -415,7 +414,7 @@ namespace CakeMail.RestClient
 		/// <param name="customFields">Additional data for the subscriber.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>ID of the new subscriber</returns>
-		int Subscribe(string userKey, int listId, string email, bool autoResponders = true, bool triggers = true, IEnumerable<KeyValuePair<string, object>> customFields = null, int? clientId = null);
+		long Subscribe(string userKey, long listId, string email, bool autoResponders = true, bool triggers = true, IEnumerable<KeyValuePair<string, object>> customFields = null, long? clientId = null);
 
 		/// <summary>
 		/// Add multiple subscribers to a list.
@@ -427,7 +426,7 @@ namespace CakeMail.RestClient
 		/// <param name="listMembers">Subscribers.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>An enumeration of <see cref="ImportResult">results</see></returns>
-		IEnumerable<ImportResult> Import(string userKey, int listId, IEnumerable<ListMember> susbscribers, bool autoResponders = true, bool triggers = true, int? clientId = null);
+		IEnumerable<ImportResult> Import(string userKey, long listId, IEnumerable<ListMember> susbscribers, bool autoResponders = true, bool triggers = true, long? clientId = null);
 
 		/// <summary>
 		/// Unsubscribe a member from the list.
@@ -437,7 +436,7 @@ namespace CakeMail.RestClient
 		/// <param name="email">Email address of the member.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>True if the member was unsubscribed</returns>
-		bool Unsubscribe(string userKey, int listId, string email, int? clientId = null);
+		bool Unsubscribe(string userKey, long listId, string email, long? clientId = null);
 
 		/// <summary>
 		/// Unsubscribe a member from the list.
@@ -447,7 +446,7 @@ namespace CakeMail.RestClient
 		/// <param name="listMemberId">ID of the member.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>True if the member was unsubscribed</returns>
-		bool Unsubscribe(string userKey, int listId, int listMemberId, int? clientId = null);
+		bool Unsubscribe(string userKey, long listId, long listMemberId, long? clientId = null);
 
 		/// <summary>
 		/// Delete a member from the list.
@@ -457,7 +456,7 @@ namespace CakeMail.RestClient
 		/// <param name="listMemberId">ID of the member.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>True if the member was deleted</returns>
-		bool DeleteListMember(string userKey, int listId, int listMemberId, int? clientId = null);
+		bool DeleteListMember(string userKey, long listId, long listMemberId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the information about a list member
@@ -467,7 +466,7 @@ namespace CakeMail.RestClient
 		/// <param name="listMemberId">ID of the member.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>The <see cref=" Listmember">list mamber</see></returns>
-		ListMember GetListMember(string userKey, int listId, int listMemberId, int? clientId = null);
+		ListMember GetListMember(string userKey, long listId, long listMemberId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the list members matching the filtering criteria.
@@ -482,7 +481,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting members.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>Enumeration of <see cref="List">lists</see> matching the filtering criteria</returns>
-		IEnumerable<ListMember> GetListMembers(string userKey, int listId, string status = null, string query = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<ListMember> GetListMembers(string userKey, long listId, string status = null, string query = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Get a count of list members matching the filtering criteria
@@ -492,7 +491,7 @@ namespace CakeMail.RestClient
 		/// <param name="status">Filter using the member status. Possible values: 'active', 'unsubscribed', 'deleted', 'inactive_bounced', 'spam'</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>The number of list members matching the filtering criteria</returns>
-		long GetListMembersCount(string userKey, int listId, string status = null, int? clientId = null);
+		long GetListMembersCount(string userKey, long listId, string status = null, long? clientId = null);
 
 		/// <summary>
 		/// Update a list member
@@ -503,7 +502,7 @@ namespace CakeMail.RestClient
 		/// <param name="customFields">Additional data for the member</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>True if the member was updated</returns>
-		bool UpdateListMember(string userKey, int listId, int listMemberId, IEnumerable<KeyValuePair<string, object>> customFields = null, int? clientId = null);
+		bool UpdateListMember(string userKey, long listId, long listMemberId, IEnumerable<KeyValuePair<string, object>> customFields = null, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the log items for a given list
@@ -517,7 +516,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>An enumeration of <see cref="LogItem">log items</see> matching the filter criteria</returns>
-		IEnumerable<LogItem> GetListLogs(string userKey, int listId, string logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<LogItem> GetListLogs(string userKey, long listId, string logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Get a count of log items matching the filter criteria
@@ -529,7 +528,7 @@ namespace CakeMail.RestClient
 		/// <param name="end">Filter using an end date</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>The number of log items matching the filtering criteria</returns>
-		long GetListLogsCount(string userKey, int listId, string logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? clientId = null);
+		long GetListLogsCount(string userKey, long listId, string logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, long? clientId = null);
 
 		#endregion
 
@@ -551,7 +550,18 @@ namespace CakeMail.RestClient
 		///		3) The percent sign is the wilcard
 		///		Here's an example: (`email` LIKE "a%")
 		///	</remarks>
-		int CreateSegment(string userKey, int listId, string name, string query = null, int? clientId = null);
+		long CreateSegment(string userKey, long listId, string name, string query = null, long? clientId = null);
+
+		/// <summary>
+		/// Retrieve a segment
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="segmentId">ID of the segment</param>
+		/// <param name="includeStatistics">True if you want the statistics</param>
+		/// <param name="calculateEngagement">True if you want the engagement information to be calculated</param>
+		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <returns>The <see cref="Segment">segment</see></returns>
+		Segment GetSegment(string userKey, long segmentId, bool includeStatistics = true, bool calculateEngagement = false, long? clientId = null);
 
 		/// <summary>
 		/// Update a segment (AKA sublist)
@@ -573,7 +583,7 @@ namespace CakeMail.RestClient
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>True if the segment was updated</returns>
 		/// <remarks>A segment is sometimes referred to as a 'sub-list'</remarks>
-		bool UpdateSegment(string userKey, int segmentId, int listId, string name = null, string query = null, int? clientId = null);
+		bool UpdateSegment(string userKey, long segmentId, long listId, string name = null, string query = null, long? clientId = null);
 
 		/// <summary>
 		/// Delete a segment
@@ -582,7 +592,7 @@ namespace CakeMail.RestClient
 		/// <param name="segmentId">ID of the segment</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>True if the segment was deleted</returns>
-		bool DeleteSegment(string userKey, int segmentId, int? clientId = null);
+		bool DeleteSegment(string userKey, long segmentId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the segments matching the filtering criteria.
@@ -593,7 +603,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting segments.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>Enumeration of <see cref="Segment">segments</see> matching the filtering criteria</returns>
-		IEnumerable<Segment> GetSegments(string userKey, int listId, int limit = 0, int offset = 0, bool includeDetails = true, int? clientId = null);
+		IEnumerable<Segment> GetSegments(string userKey, long listId, int limit = 0, int offset = 0, bool includeDetails = true, long? clientId = null);
 
 		/// <summary>
 		/// Get a count of segments matching the filtering criteria.
@@ -602,7 +612,7 @@ namespace CakeMail.RestClient
 		/// <param name="listId">ID of the list</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>The count of campaigns matching the filtering criteria</returns>
-		long GetSegmentsCount(string userKey, int listId, int? clientId = null);
+		long GetSegmentsCount(string userKey, long listId, long? clientId = null);
 
 		#endregion
 
@@ -620,7 +630,7 @@ namespace CakeMail.RestClient
 		/// <param name="transferEncoding">Transfer encoding to be used for the mailing. Possible values: 'quoted-printable', 'base64'</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is created.</param>
 		/// <returns>ID of the new mailing</returns>
-		int CreateMailing(string userKey, string name, int? campaignId = null, string type = "standard", int? recurringId = null, string encoding = null, string transferEncoding = null, int? clientId = null);
+		long CreateMailing(string userKey, string name, long? campaignId = null, string type = "standard", long? recurringId = null, string encoding = null, string transferEncoding = null, long? clientId = null);
 
 		/// <summary>
 		/// Delete a mailing
@@ -629,7 +639,7 @@ namespace CakeMail.RestClient
 		/// <param name="mailingId">ID of the mailing</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>True if the mailing is deleted</returns>
-		bool DeleteMailing(string userKey, int mailingId, int? clientId = null);
+		bool DeleteMailing(string userKey, long mailingId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve a mailing
@@ -638,7 +648,7 @@ namespace CakeMail.RestClient
 		/// <param name="listId">ID of the mailing</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>The <see cref="Mailing">mailing</see></returns>
-		Mailing GetMailing(string userKey, int mailingId, int? clientId = null);
+		Mailing GetMailing(string userKey, long mailingId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the mailings matching the filtering criteria.
@@ -658,7 +668,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting mailings.</param>
 		/// <param name="clientId">Client ID of the client in which the mailings are located.</param>
 		/// <returns>Enumeration of <see cref="Mailing">mailings</see> matching the filtering criteria</returns>
-		IEnumerable<Mailing> GetMailings(string userKey, string status = null, string type = null, string name = null, int? listId = null, int? campaignId = null, int? recurringId = null, DateTime? start = null, DateTime? end = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<Mailing> GetMailings(string userKey, string status = null, string type = null, string name = null, long? listId = null, long? campaignId = null, long? recurringId = null, DateTime? start = null, DateTime? end = null, string sortBy = null, string sortDirection = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Get a count of mailings matching the filtering criteria.
@@ -674,7 +684,7 @@ namespace CakeMail.RestClient
 		/// <param name="end">Filter using a end date.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>The count of mailings matching the filtering criteria</returns>
-		long GetMailingsCount(string userKey, string status = null, string type = null, string name = null, int? listId = null, int? campaignId = null, int? recurringId = null, DateTime? start = null, DateTime? end = null, int? clientId = null);
+		long GetMailingsCount(string userKey, string status = null, string type = null, string name = null, long? listId = null, long? campaignId = null, long? recurringId = null, DateTime? start = null, DateTime? end = null, long? clientId = null);
 
 		/// <summary>
 		/// Update a mailing
@@ -703,7 +713,7 @@ namespace CakeMail.RestClient
 		/// <param name="recurringConditions">The recurring conditions for a 'recurring' mailing.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>True if the mailing was updated</returns>
-		bool UpdateMailing(string userKey, int mailingId, int? campaignId = null, int? listId = null, int? sublistId = null, string name = null, string type = null, string encoding = null, string transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClicksInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, DateTime? endingOn = null, int? maxRecurrences = null, string recurringConditions = null, int? clientId = null);
+		bool UpdateMailing(string userKey, long mailingId, long? campaignId = null, long? listId = null, long? sublistId = null, string name = null, string type = null, string encoding = null, string transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClicksInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, DateTime? endingOn = null, int? maxRecurrences = null, string recurringConditions = null, long? clientId = null);
 
 		/// <summary>
 		/// Send a test of a mailing.
@@ -714,7 +724,7 @@ namespace CakeMail.RestClient
 		/// <param name="separated">True if you want the HTML and the text to be sent seperatly, false if you want to combine the HTML and the text in a multi-part email.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>True if the test email was sent</returns>
-		bool SendMailingTestEmail(string userKey, int mailingId, string recipientEmail, bool separated = false, int? clientId = null);
+		bool SendMailingTestEmail(string userKey, long mailingId, string recipientEmail, bool separated = false, long? clientId = null);
 
 		/// <summary>
 		/// Get the multi-part version of a mailing
@@ -723,7 +733,7 @@ namespace CakeMail.RestClient
 		/// <param name="mailingId">ID of the mailing</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>The <see cref="RawEmailMessage">multi-part message</see></returns>
-		RawEmailMessage GetMailingRawEmailMessage(string userKey, int mailingId, int? clientId = null);
+		RawEmailMessage GetMailingRawEmailMessage(string userKey, long mailingId, long? clientId = null);
 
 		/// <summary>
 		/// Get the rendered HTML version of a mailing.
@@ -732,7 +742,7 @@ namespace CakeMail.RestClient
 		/// <param name="mailingId">ID of the mailing</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>The rendered HTML</returns>
-		string GetMailingRawHtml(string userKey, int mailingId, int? clientId = null);
+		string GetMailingRawHtml(string userKey, long mailingId, long? clientId = null);
 
 		/// <summary>
 		/// Get the rendered text version of a mailing.
@@ -741,7 +751,7 @@ namespace CakeMail.RestClient
 		/// <param name="mailingId">ID of the mailing</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>The rendered text</returns>
-		string GetMailingRawText(string userKey, int mailingId, int? clientId = null);
+		string GetMailingRawText(string userKey, long mailingId, long? clientId = null);
 
 		/// <summary>
 		/// Schedule a mailing
@@ -751,7 +761,7 @@ namespace CakeMail.RestClient
 		/// <param name="date">Date when the mailing is scheduled. If not provided, the mailing will be sent right away.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>True if the mailing is scheduled</returns>
-		bool ScheduleMailing(string userKey, int mailingId, DateTime? date = null, int? clientId = null);
+		bool ScheduleMailing(string userKey, long mailingId, DateTime? date = null, long? clientId = null);
 
 		/// <summary>
 		/// Unschedule a mailing
@@ -760,7 +770,7 @@ namespace CakeMail.RestClient
 		/// <param name="mailingId">ID of the mailing</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>True if the mailing is unscheduled</returns>
-		bool UnscheduleMailing(string userKey, int mailingId, int? clientId = null);
+		bool UnscheduleMailing(string userKey, long mailingId, long? clientId = null);
 
 		/// <summary>
 		/// Suspend a delivering mailing
@@ -769,7 +779,7 @@ namespace CakeMail.RestClient
 		/// <param name="mailingId">ID of the mailing</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>True if the mailing is suspended</returns>
-		bool SuspendMailing(string userKey, int mailingId, int? clientId = null);
+		bool SuspendMailing(string userKey, long mailingId, long? clientId = null);
 
 		/// <summary>
 		/// Resume a suspended mailing
@@ -778,7 +788,7 @@ namespace CakeMail.RestClient
 		/// <param name="mailingId">ID of the mailing</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>True if the mailing is resumed</returns>
-		bool ResumeMailing(string userKey, int mailingId, int? clientId = null);
+		bool ResumeMailing(string userKey, long mailingId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the log items for a given mailing
@@ -795,7 +805,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="LogItem">log items</see> matching the filter criteria</returns>
-		IEnumerable<LogItem> GetMailingLogs(string userKey, int mailingId, string logType = null, int? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<LogItem> GetMailingLogs(string userKey, long mailingId, string logType = null, long? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Get a count of log items matching the filter criteria
@@ -810,7 +820,7 @@ namespace CakeMail.RestClient
 		/// <param name="end">Filter using an end date</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>The number of log items matching the filtering criteria</returns>
-		long GetMailingLogsCount(string userKey, int mailingId, string logType = null, int? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? clientId = null);
+		long GetMailingLogsCount(string userKey, long mailingId, string logType = null, long? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the links for a given mailing
@@ -821,7 +831,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="Link">links</see> matching the filter criteria</returns>
-		IEnumerable<Link> GetMailingLinks(string userKey, int mailingId, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<Link> GetMailingLinks(string userKey, long mailingId, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Get a count of links matching the filter criteria
@@ -830,7 +840,7 @@ namespace CakeMail.RestClient
 		/// <param name="mailingId">ID of the mailing.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>The number of links matching the filtering criteria</returns>
-		long GetMailingLinksCount(string userKey, int mailingId, int? clientId = null);
+		long GetMailingLinksCount(string userKey, long mailingId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve a link
@@ -839,9 +849,9 @@ namespace CakeMail.RestClient
 		/// <param name="linkId">ID of the link.</param>
 		/// <param name="clientId">Client ID of the client in which the link is located.</param>
 		/// <returns>The <see cref="Link">link</see></returns>
-		Link GetMailingLink(string userKey, int linkId, int? clientId = null);
+		Link GetMailingLink(string userKey, long linkId, long? clientId = null);
 
-		IEnumerable<LogItem> GetMailingLinksLogs(string userKey, int mailingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<LogItem> GetMailingLinksLogs(string userKey, long mailingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		#endregion
 
@@ -860,7 +870,7 @@ namespace CakeMail.RestClient
 		/// <param name="encoding">Encoding to be used for the relay. Possible values: 'utf-8', 'iso-8859-x'</param>
 		/// <param name="clientId">Client ID of the client in which the relay is located.</param>
 		/// <returns>True if the email is sent</returns>
-		bool SendRelay(string userKey, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, string encoding = null, int? clientId = null);
+		bool SendRelay(string userKey, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, string encoding = null, long? clientId = null);
 
 		/// <summary>
 		/// Send a one-off email. Track opens and clicks.
@@ -876,7 +886,7 @@ namespace CakeMail.RestClient
 		/// <param name="encoding">Encoding to be used for the relay. Possible values: 'utf-8', 'iso-8859-x'</param>
 		/// <param name="clientId">Client ID of the client in which the relay is located.</param>
 		/// <returns>True if the email is sent</returns>
-		bool SendTrackedRelay(string userKey, int trackingId, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, string encoding = null, int? clientId = null);
+		bool SendTrackedRelay(string userKey, long trackingId, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, string encoding = null, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the log items for either a given tracked relay or for a client
@@ -889,7 +899,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="RelayLog">log items</see> matching the filter criteria</returns>
-		IEnumerable<RelayLog> GetRelaySentLogs(string userKey, int? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<RelayLog> GetRelaySentLogs(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the log items for either a given tracked relay or for a client
@@ -902,7 +912,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="RelayOpenLog">log items</see> matching the filter criteria</returns>
-		IEnumerable<RelayOpenLog> GetRelayOpenLogs(string userKey, int? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<RelayOpenLog> GetRelayOpenLogs(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the log items for either a given tracked relay or for a client
@@ -915,7 +925,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="RelayClickLog">log items</see> matching the filter criteria</returns>
-		IEnumerable<RelayClickLog> GetRelayClickLogs(string userKey, int? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<RelayClickLog> GetRelayClickLogs(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the log items for either a given tracked relay or for a client
@@ -928,7 +938,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="RelayBounceLog">log items</see> matching the filter criteria</returns>
-		IEnumerable<RelayBounceLog> GetRelayBounceLogs(string userKey, int? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<RelayBounceLog> GetRelayBounceLogs(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		#endregion
 
@@ -941,7 +951,7 @@ namespace CakeMail.RestClient
 		/// <param name="emailAddresses">The email addresses to add to the suppression list</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>An enumeration of <see cref="SuppressEmailResult">results</see>. Each item in this enumeration indicates the result of adding an email address to the suppression list.</returns>
-		IEnumerable<SuppressEmailResult> AddEmailAddressesToSuppressionList(string userKey, IEnumerable<string> emailAddresses, int? clientId = null);
+		IEnumerable<SuppressEmailResult> AddEmailAddressesToSuppressionList(string userKey, IEnumerable<string> emailAddresses, long? clientId = null);
 
 		/// <summary>
 		/// Add domains to the suppression list
@@ -950,7 +960,7 @@ namespace CakeMail.RestClient
 		/// <param name="domains">The domains to add to the suppression list</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>An enumeration of <see cref="SuppressDomainResult">results</see>. Each item in this enumeration indicates the result of adding a domain to the suppression list.</returns>
-		IEnumerable<SuppressDomainResult> AddDomainsToSuppressionList(string userKey, IEnumerable<string> domains, int? clientId = null);
+		IEnumerable<SuppressDomainResult> AddDomainsToSuppressionList(string userKey, IEnumerable<string> domains, long? clientId = null);
 
 		/// <summary>
 		/// Add localparts to the suppression list
@@ -959,7 +969,7 @@ namespace CakeMail.RestClient
 		/// <param name="domains">The localparts to add to the suppression list</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>An enumeration of <see cref="SuppressLocalPartResult">results</see>. Each item in this enumeration indicates the result of adding a localpart to the suppression list.</returns>
-		IEnumerable<SuppressLocalPartResult> AddLocalPartsToSuppressionList(string userKey, IEnumerable<string> localParts, int? clientId = null);
+		IEnumerable<SuppressLocalPartResult> AddLocalPartsToSuppressionList(string userKey, IEnumerable<string> localParts, long? clientId = null);
 
 		/// <summary>
 		/// Remove email addresses from the suppression list
@@ -968,7 +978,7 @@ namespace CakeMail.RestClient
 		/// <param name="emailAddresses">The email addresses to remove from the suppression list</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>An enumeration of <see cref="SuppressEmailResult">results</see>. Each item in this enumeration indicates the result of removing an email address from the suppression list.</returns>
-		IEnumerable<SuppressEmailResult> RemoveEmailAddressesFromSuppressionList(string userKey, IEnumerable<string> emailAddresses, int? clientId = null);
+		IEnumerable<SuppressEmailResult> RemoveEmailAddressesFromSuppressionList(string userKey, IEnumerable<string> emailAddresses, long? clientId = null);
 
 		/// <summary>
 		/// Remove domains from the suppression list
@@ -977,7 +987,7 @@ namespace CakeMail.RestClient
 		/// <param name="domains">The domains to remove from the suppression list</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>An enumeration of <see cref="SuppressDomainResult">results</see>. Each item in this enumeration indicates the result of removing a domain from the suppression list.</returns>
-		IEnumerable<SuppressDomainResult> RemoveDomainsFromSuppressionList(string userKey, IEnumerable<string> domains, int? clientId = null);
+		IEnumerable<SuppressDomainResult> RemoveDomainsFromSuppressionList(string userKey, IEnumerable<string> domains, long? clientId = null);
 
 		/// <summary>
 		/// Remove localparts from the suppression list
@@ -986,7 +996,7 @@ namespace CakeMail.RestClient
 		/// <param name="domains">The localparts to remove from the suppression list</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>An enumeration of <see cref="SuppressLocalPartResult">results</see>. Each item in this enumeration indicates the result of removing a localpart from the suppression list.</returns>
-		IEnumerable<SuppressLocalPartResult> RemoveLocalPartsFromSuppressionList(string userKey, IEnumerable<string> localParts, int? clientId = null);
+		IEnumerable<SuppressLocalPartResult> RemoveLocalPartsFromSuppressionList(string userKey, IEnumerable<string> localParts, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the email addresses on the suppression list
@@ -996,7 +1006,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting email addresses.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>An enumeration of <see cref="SuppressedEmail">addresses</see>. The result also indicates how each email address ended up on the suppression list.</returns>
-		IEnumerable<SuppressedEmail> GetSuppressedEmailAddresses(string userKey, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<SuppressedEmail> GetSuppressedEmailAddresses(string userKey, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the domains on the suppression list
@@ -1006,7 +1016,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting domains.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>An enumeration of domains.</returns>
-		IEnumerable<string> GetSuppressedDomains(string userKey, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<string> GetSuppressedDomains(string userKey, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the localparts on the suppression list
@@ -1016,7 +1026,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting localparts.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>An enumeration of localparts.</returns>
-		IEnumerable<string> GetSuppressedLocalParts(string userKey, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<string> GetSuppressedLocalParts(string userKey, int limit = 0, int offset = 0, long? clientId = null);
 
 		#endregion
 
@@ -1039,9 +1049,9 @@ namespace CakeMail.RestClient
 		/// <param name="transferEncoding">Transfer encoding to be used for the trigger. Possible values: 'quoted-printable', 'base64'</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is created.</param>
 		/// <returns>ID of the new trigger</returns>
-		int CreateTrigger(string userKey, string name, int listId, int? campaignId = null, string encoding = null, string transferEncoding = null, int? clientId = null);
+		long CreateTrigger(string userKey, string name, long listId, long? campaignId = null, string encoding = null, string transferEncoding = null, long? clientId = null);
 
-		//bool DeleteTrigger(string userKey, int triggerId, int? clientId = null);
+		//bool DeleteTrigger(string userKey, long triggerId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve a trigger
@@ -1050,7 +1060,7 @@ namespace CakeMail.RestClient
 		/// <param name="triggerID">ID of the trigger</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <returns>The <see cref="Trigger">trigger</see></returns>
-		Trigger GetTrigger(string userKey, int triggerId, int? clientId = null);
+		Trigger GetTrigger(string userKey, long triggerId, long? clientId = null);
 
 		/// <summary>
 		/// Update a trigger
@@ -1077,7 +1087,7 @@ namespace CakeMail.RestClient
 		/// <param name="dateField">Datetime field to be used for trigger with action 'specific' or 'annual'.</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <returns>True if the trigger was updated</returns>
-		bool UpdateTrigger(string userKey, int triggerId, int? campaignId = null, string name = null, string action = null, string encoding = null, string transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClicksInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, int? delay = null, string status = null, DateTime? date = null, int? clientId = null);
+		bool UpdateTrigger(string userKey, long triggerId, long? campaignId = null, string name = null, string action = null, string encoding = null, string transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClicksInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, int? delay = null, string status = null, DateTime? date = null, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the triggers matching the filtering criteria
@@ -1091,7 +1101,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting triggers.</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <returns>An enumeration of <see cref="Trigger">triggers</see> matching the filter criteria</returns>
-		IEnumerable<Trigger> GetTriggers(string userKey, string status = null, string action = null, int? listId = null, int? campaignId = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<Trigger> GetTriggers(string userKey, string status = null, string action = null, long? listId = null, long? campaignId = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Get a count of triggers matching the filtering criteria.
@@ -1103,7 +1113,7 @@ namespace CakeMail.RestClient
 		/// <param name="campaignId">Filter using the ID of the trigger campaign.</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <returns>The count of triggers matching the filtering criteria</returns>
-		long GetTriggersCount(string userKey, string status = null, string action = null, int? listId = null, int? campaignId = null, int? clientId = null);
+		long GetTriggersCount(string userKey, string status = null, string action = null, long? listId = null, long? campaignId = null, long? clientId = null);
 
 		/// <summary>
 		/// Send a test of a trigger.
@@ -1114,7 +1124,7 @@ namespace CakeMail.RestClient
 		/// <param name="separated">True if you want the HTML and the text to be sent seperatly, false if you want to combine the HTML and the text in a multi-part email.</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <returns>True if the test email was sent</returns>
-		bool SendTriggerTestEmail(string userKey, int triggerId, string recipientEmail, bool separated = false, int? clientId = null);
+		bool SendTriggerTestEmail(string userKey, long triggerId, string recipientEmail, bool separated = false, long? clientId = null);
 
 		/// <summary>
 		/// Get the multi-part version of a trigger
@@ -1123,7 +1133,7 @@ namespace CakeMail.RestClient
 		/// <param name="triggerId">ID of the trigger</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <returns>The <see cref="RawEmailMessage">multi-part message</see></returns>
-		RawEmailMessage GetTriggerRawEmailMessage(string userKey, int triggerId, int? clientId = null);
+		RawEmailMessage GetTriggerRawEmailMessage(string userKey, long triggerId, long? clientId = null);
 
 		/// <summary>
 		/// Get the rendered HTML version of a trigger.
@@ -1132,7 +1142,7 @@ namespace CakeMail.RestClient
 		/// <param name="triggerId">ID of the trigger</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <returns>The rendered HTML</returns>
-		string GetTriggerRawHtml(string userKey, int triggerId, int? clientId = null);
+		string GetTriggerRawHtml(string userKey, long triggerId, long? clientId = null);
 
 		/// <summary>
 		/// Get the rendered text version of a mailing.
@@ -1141,7 +1151,7 @@ namespace CakeMail.RestClient
 		/// <param name="triggerId">ID of the trigger</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <returns>The rendered text</returns>
-		string GetTriggerRawText(string userKey, int triggerId, int? clientId = null);
+		string GetTriggerRawText(string userKey, long triggerId, long? clientId = null);
 
 		/// <summary>
 		/// Unleash a trigger
@@ -1151,7 +1161,7 @@ namespace CakeMail.RestClient
 		/// <param name="listMemberId">ID of the member to unleash the trigger to.</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <returns>True is the trigger is unleashed</returns>
-		bool UnleashTrigger(string userKey, int triggerId, int listMemberId, int? clientId = null);
+		bool UnleashTrigger(string userKey, long triggerId, long listMemberId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the log items for a given trigger
@@ -1168,7 +1178,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="LogItem">log items</see> matching the filter criteria</returns>
-		IEnumerable<LogItem> GetTriggerLogs(string userKey, int triggerId, string logType = null, int? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<LogItem> GetTriggerLogs(string userKey, long triggerId, string logType = null, long? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Get a count of log items matching the filter criteria
@@ -1183,7 +1193,7 @@ namespace CakeMail.RestClient
 		/// <param name="end">Filter using an end date</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <returns>The number of log items matching the filtering criteria</returns>
-		long GetTriggerLogsCount(string userKey, int triggerId, string logType = null, int? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? clientId = null);
+		long GetTriggerLogsCount(string userKey, long triggerId, string logType = null, long? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the links for a given trigger
@@ -1194,7 +1204,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <returns>An enumeration of <see cref="Link">links</see> matching the filter criteria</returns>
-		IEnumerable<Link> GetTriggerLinks(string userKey, int triggerId, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<Link> GetTriggerLinks(string userKey, long triggerId, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Get a count of links matching the filter criteria
@@ -1203,7 +1213,7 @@ namespace CakeMail.RestClient
 		/// <param name="triggerId">ID of the trigger.</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <returns>The number of links matching the filtering criteria</returns>
-		long GetTriggerLinksCount(string userKey, int triggerId, int? clientId = null);
+		long GetTriggerLinksCount(string userKey, long triggerId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve a link
@@ -1212,9 +1222,9 @@ namespace CakeMail.RestClient
 		/// <param name="linkId">ID of the link.</param>
 		/// <param name="clientId">Client ID of the client in which the link is located.</param>
 		/// <returns>The <see cref="Link">link</see></returns>
-		Link GetTriggerLink(string userKey, int linkId, int? clientId = null);
+		Link GetTriggerLink(string userKey, long linkId, long? clientId = null);
 
-		IEnumerable<LogItem> GetTriggerLinksLogs(string userKey, int triggerId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<LogItem> GetTriggerLinksLogs(string userKey, long triggerId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		#endregion
 
@@ -1229,7 +1239,7 @@ namespace CakeMail.RestClient
 		/// <param name="templatesCanBeCopied">Are the templates in the category copyable.</param>
 		/// <param name="clientId">Client ID of the client in which the category is created.</param>
 		/// <returns>ID of the new template category</returns>
-		int CreateTemplateCategory(string userKey, IDictionary<string, string> labels, bool isVisibleByDefault = true, bool templatesCanBeCopied = true, int? clientId = null);
+		long CreateTemplateCategory(string userKey, IDictionary<string, string> labels, bool isVisibleByDefault = true, bool templatesCanBeCopied = true, long? clientId = null);
 
 		/// <summary>
 		/// Delete a template category
@@ -1238,7 +1248,7 @@ namespace CakeMail.RestClient
 		/// <param name="categoryId">ID of the template category</param>
 		/// <param name="clientId">Client ID of the client in which the template category is located.</param>
 		/// <returns>True if the template category is deleted</returns>
-		bool DeleteTemplateCategory(string userKey, int categoryId, int? clientId = null);
+		bool DeleteTemplateCategory(string userKey, long categoryId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve a template category
@@ -1247,7 +1257,7 @@ namespace CakeMail.RestClient
 		/// <param name="categoryId">ID of the category</param>
 		/// <param name="clientId">Client ID of the client in which the category is located.</param>
 		/// <returns>The <see cref="TemplateCategory">category</see></returns>
-		TemplateCategory GetTemplateCategory(string userKey, int categoryId, int? clientId = null);
+		TemplateCategory GetTemplateCategory(string userKey, long categoryId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the template categories matching the filtering criteria.
@@ -1257,7 +1267,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting categories.</param>
 		/// <param name="clientId">Client ID of the client in which the categories are located.</param>
 		/// <returns>Enumeration of <see cref="TemplateCategory">categories</see> matching the filtering criteria</returns>
-		IEnumerable<TemplateCategory> GetTemplateCategories(string userKey, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<TemplateCategory> GetTemplateCategories(string userKey, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Get a count of template categories matching the filtering criteria.
@@ -1265,7 +1275,7 @@ namespace CakeMail.RestClient
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="clientId">Client ID of the client in which the categories are located.</param>
 		/// <returns>The count of categories matching the filtering criteria</returns>
-		long GetTemplateCategoriesCount(string userKey, int? clientId = null);
+		long GetTemplateCategoriesCount(string userKey, long? clientId = null);
 
 		/// <summary>
 		/// Update a template category
@@ -1277,7 +1287,7 @@ namespace CakeMail.RestClient
 		/// <param name="templatesCanBeCopied">Are the templates in the category copyable.</param>
 		/// <param name="clientId">Client ID of the client in which the category is located.</param>
 		/// <returns>True if the category was updated</returns>
-		bool UpdateTemplateCategory(string userKey, int categoryId, IDictionary<string, string> labels, bool isVisibleByDefault = true, bool templatesCanBeCopied = true, int? clientId = null);
+		bool UpdateTemplateCategory(string userKey, long categoryId, IDictionary<string, string> labels, bool isVisibleByDefault = true, bool templatesCanBeCopied = true, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the list of permissions for a category
@@ -1288,7 +1298,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting permissions.</param>
 		/// <param name="clientId">Client ID of the client in which the category is located.</param>
 		/// <returns>An enumeration of permissions</returns>
-		IEnumerable<TemplateCategoryVisibility> GetTemplateCategoryVisibility(string userKey, int categoryId, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<TemplateCategoryVisibility> GetTemplateCategoryVisibility(string userKey, long categoryId, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Get a count of permissions for a given template category.
@@ -1296,9 +1306,9 @@ namespace CakeMail.RestClient
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="clientId">Client ID of the client in which the category is located.</param>
 		/// <returns>The count of permissions matching the filtering criteria</returns>
-		long GetTemplateCategoryVisibilityCount(string userKey, int categoryId, int? clientId = null);
+		long GetTemplateCategoryVisibilityCount(string userKey, long categoryId, long? clientId = null);
 
-		bool SetTemplateCategoryVisibility(string userKey, int categoryId, IDictionary<int, bool> clientVisibility, int? clientId = null);
+		bool SetTemplateCategoryVisibility(string userKey, long categoryId, IDictionary<int, bool> clientVisibility, long? clientId = null);
 
 		/// <summary>
 		/// Create a template
@@ -1309,7 +1319,7 @@ namespace CakeMail.RestClient
 		/// <param name="categoryId">ID of the category.</param>
 		/// <param name="clientId">Client ID of the client in which the template is created.</param>
 		/// <returns>ID of the new template</returns>
-		int CreateTemplate(string userKey, IDictionary<string, string> labels, string content, int categoryId, int? clientId = null);
+		long CreateTemplate(string userKey, IDictionary<string, string> labels, string content, long categoryId, long? clientId = null);
 
 		/// <summary>
 		/// Delete a template
@@ -1318,7 +1328,7 @@ namespace CakeMail.RestClient
 		/// <param name="categoryId">ID of the template</param>
 		/// <param name="clientId">Client ID of the client in which the template is located.</param>
 		/// <returns>True if the template is deleted</returns>
-		bool DeleteTemplate(string userKey, int templateId, int? clientId = null);
+		bool DeleteTemplate(string userKey, long templateId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve a template
@@ -1327,7 +1337,7 @@ namespace CakeMail.RestClient
 		/// <param name="templateId">ID of the template</param>
 		/// <param name="clientId">Client ID of the client in which the template is located.</param>
 		/// <returns>The <see cref="Template">template</see></returns>
-		Template GetTemplate(string userKey, int templateId, int? clientId = null);
+		Template GetTemplate(string userKey, long templateId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the templates matching the filtering criteria.
@@ -1337,7 +1347,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting templates.</param>
 		/// <param name="clientId">Client ID of the client in which the templates are located.</param>
 		/// <returns>Enumeration of <see cref="Template">templates</see> matching the filtering criteria</returns>
-		IEnumerable<Template> GetTemplates(string userKey, int? categoryId = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<Template> GetTemplates(string userKey, long? categoryId = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Get a count of templates matching the filtering criteria.
@@ -1345,7 +1355,7 @@ namespace CakeMail.RestClient
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="clientId">Client ID of the client in which the templates are located.</param>
 		/// <returns>The count of templates matching the filtering criteria</returns>
-		long GetTemplatesCount(string userKey, int? categoryId = null, int? clientId = null);
+		long GetTemplatesCount(string userKey, long? categoryId = null, long? clientId = null);
 
 		/// <summary>
 		/// Update a template
@@ -1357,7 +1367,7 @@ namespace CakeMail.RestClient
 		/// <param name="categoryId">ID of the category.</param>
 		/// <param name="clientId">Client ID of the client in which the template is located.</param>
 		/// <returns>True if the category was updated</returns>
-		bool UpdateTemplate(string userKey, int templateId, IDictionary<string, string> labels, string content = null, int? categoryId = null, int? clientId = null);
+		bool UpdateTemplate(string userKey, long templateId, IDictionary<string, string> labels, string content = null, long? categoryId = null, long? clientId = null);
 
 		#endregion
 
@@ -1378,7 +1388,7 @@ namespace CakeMail.RestClient
 		/// <param name="timezoneId">ID of the timezone of the user.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>ID of the new user</returns>
-		int CreateUser(string userKey, string email, string firstName, string lastName, string title, string officePhone, string mobilePhone, string language, string password, int timezoneId = 542, int? clientId = null);
+		long CreateUser(string userKey, string email, string firstName, string lastName, string title, string officePhone, string mobilePhone, string language, string password, long timezoneId = 542, long? clientId = null);
 
 		/// <summary>
 		/// Suspend a user
@@ -1387,7 +1397,7 @@ namespace CakeMail.RestClient
 		/// <param name="userId">ID of the user.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>True if the user is suspended</returns>
-		bool DeactivateUser(string userKey, int userId, int? clientId = null);
+		bool DeactivateUser(string userKey, long userId, long? clientId = null);
 
 		/// <summary>
 		/// Delete a user
@@ -1396,7 +1406,7 @@ namespace CakeMail.RestClient
 		/// <param name="userId">ID of the user.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>True if the user is deleted</returns>
-		bool DeleteUser(string userKey, int userId, int? clientId = null);
+		bool DeleteUser(string userKey, long userId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve a user
@@ -1405,7 +1415,7 @@ namespace CakeMail.RestClient
 		/// <param name="userID">ID of the user</param>
 		/// <param name="clientId">ID of the client</param>
 		/// <returns>The <see cref="User">user</see></returns>
-		User GetUser(string userKey, int userId, int? clientId = null);
+		User GetUser(string userKey, long userId, long? clientId = null);
 
 		/// <summary>
 		/// Retrieve the users matching the filtering criteria.
@@ -1416,7 +1426,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting users.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>Enumeration of <see cref="User">users</see> matching the filtering criteria</returns>
-		IEnumerable<User> GetUsers(string userKey, string status = null, int limit = 0, int offset = 0, int? clientId = null);
+		IEnumerable<User> GetUsers(string userKey, string status = null, int limit = 0, int offset = 0, long? clientId = null);
 
 		/// <summary>
 		/// Get a count of users matching the filtering criteria.
@@ -1425,7 +1435,7 @@ namespace CakeMail.RestClient
 		/// <param name="status">Filter using the user status. Possible values: 'active', 'suspended'</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>The count of users matching the filtering criteria</returns>
-		long GetUsersCount(string userKey, string status = null, int? clientId = null);
+		long GetUsersCount(string userKey, string status = null, long? clientId = null);
 
 		/// <summary>
 		/// Update a user
@@ -1443,7 +1453,7 @@ namespace CakeMail.RestClient
 		/// <param name="status">Status of the user. Possible values: 'active', 'suspended'</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>True if the user was updated</returns>
-		bool UpdateUser(string userKey, int userId, string email = null, string password = null, string firstName = null, string lastName = null, string title = null, string officePhone = null, string mobilePhone = null, string language = null, int? timezoneId = null, string status = null, int? clientId = null);
+		bool UpdateUser(string userKey, long userId, string email = null, string password = null, string firstName = null, string lastName = null, string title = null, string officePhone = null, string mobilePhone = null, string language = null, long? timezoneId = null, string status = null, long? clientId = null);
 
 		/// <summary>
 		/// Validate user name and password
@@ -1452,7 +1462,7 @@ namespace CakeMail.RestClient
 		/// <param name="password">Password of the user.</param>
 		/// <param name="clientId">ID of the client</param>
 		/// <returns>The <see cref="LoginIngo">login information</see> for the user</returns>
-		LoginInfo Login(string email, string password, int? clientId = null);
+		LoginInfo Login(string email, string password, long? clientId = null);
 
 		#endregion
 	}

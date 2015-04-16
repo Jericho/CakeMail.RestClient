@@ -9,10 +9,10 @@ namespace CakeMail.RestClient.Models
 		#region Properties
 
 		[JsonProperty("id")]
-		public int Id { get; set; }
+		public long Id { get; set; }
 
 		[JsonProperty("list_id")]
-		public int ListId { get; set; }
+		public long ListId { get; set; }
 
 		[JsonProperty("name")]
 		public string Name { get; set; }
@@ -21,7 +21,7 @@ namespace CakeMail.RestClient.Models
 		public string Query { get; set; }
 
 		[JsonProperty("mailings_count")]
-		public int MailingsCount { get; set; }
+		public long MailingsCount { get; set; }
 
 		[JsonProperty("last_used")]
 		[JsonConverter(typeof(CakeMailDateTimeConverter))]
@@ -35,7 +35,7 @@ namespace CakeMail.RestClient.Models
 		public int? Engagement { get; set; }
 
 		[JsonProperty("count")]
-		public int Count { get; set; }
+		public long Count { get; set; }
 
 		#endregion
 	}

@@ -8,13 +8,13 @@ namespace CakeMail.RestClient.Models
 		#region Properties
 
 		[JsonProperty("id")]
-		public int Id { get; set; }
+		public long Id { get; set; }
 
 		[JsonProperty("status")]
 		public string Status { get; set; }
 
 		[JsonProperty("owner_client_id")]
-		public int OwnerClientId { get; set; }
+		public long OwnerClientId { get; set; }
 
 		[JsonProperty("templates_copyable")]
 		[JsonConverter(typeof(CakeMailIntegerBooleanConverter))]
@@ -28,13 +28,13 @@ namespace CakeMail.RestClient.Models
 		public string Name { get; set; }
 
 		[JsonProperty("amount_templates")]
-		public int AmountTemplates { get; set; }
+		public long AmountTemplates { get; set; }
 
 		[JsonProperty("amount_clients")]
-		public int AmountCLients { get; set; }
+		public long AmountCLients { get; set; }
 
 		[JsonProperty("level")]
-		public int Level { get; set; }
+		public long Level { get; set; }
 
 		#endregion
 	}

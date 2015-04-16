@@ -27,7 +27,7 @@ namespace CakeMail.RestClient.Models
 		public string Fax { get; set; }
 
 		[JsonProperty("parent_id")]
-		public int ParentId { get; set; }
+		public long ParentId { get; set; }
 
 		[JsonProperty("phone")]
 		public string Phone { get; set; }

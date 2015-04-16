@@ -13,7 +13,7 @@ namespace CakeMail.RestClient.UnitTests
 	{
 		private const string API_KEY = "...dummy API key...";
 		private const string USER_KEY = "...dummy USER key...";
-		private const int CLIENT_ID = 999;
+		private const long CLIENT_ID = 999;
 
 		[TestMethod]
 		public void RestClient_constructor()
@@ -32,7 +32,7 @@ namespace CakeMail.RestClient.UnitTests
 			var proxy = apiClient.Proxy;
 
 			// Assert
-			Assert.AreEqual("CakeMail .NET REST Client 1.0.0.0", userAgent);
+			Assert.AreEqual("CakeMail .NET REST Client 2.0.0.0", userAgent);
 			Assert.AreEqual(new Uri(string.Format("https://{0}", mockHost)), baseUrl);
 			Assert.AreEqual(mockTimeout, timeout);
 			Assert.AreEqual(new Uri(string.Format("http://{0}:{1}", mockProxyHost, mockProxyPort)), ((WebProxy)proxy).Address);

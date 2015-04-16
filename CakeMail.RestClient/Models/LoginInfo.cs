@@ -9,13 +9,13 @@ namespace CakeMail.RestClient.Models
 		#region Properties
 
 		[JsonProperty("client_id")]
-		public int ClientId { get; set; }
+		public long ClientId { get; set; }
 
 		[JsonProperty("client_key")]
 		public string ClientKey { get; set; }
 
 		[JsonProperty("user_id")]
-		public int UserId { get; set; }
+		public long UserId { get; set; }
 
 		[JsonProperty("user_key")]
 		public string UserKey { get; set; }
