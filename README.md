@@ -21,6 +21,9 @@ CakeMailRestAPI is available as a Nuget package.
 
 ## Release Notes
 
++ **2.0**    Unique identifiers changed to 'long' instead of 'int'.
+             "Magic strings" replaced with enums. For example, instead of specifying sort direction with 'asc' and 'desc', you can now use SortDirection.Ascending and SortDirection.Descending.
+
 + **1.0**    Initial release
  
 ## Usage
