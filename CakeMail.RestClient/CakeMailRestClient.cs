@@ -215,9 +215,9 @@ namespace CakeMail.RestClient
 			var parameters = new List<KeyValuePair<string, object>>()
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("campaign_id", campaignId)
+				new KeyValuePair<string, object>("campaign_id", campaignId),
+				new KeyValuePair<string, object>("name", name)
 			};
-			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteRequest<bool>(path, parameters);

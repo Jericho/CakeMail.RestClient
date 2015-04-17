@@ -190,7 +190,38 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void DeleteSegment_with_all_parameters()
+		public void DeleteSegment_wit_minimal_parameters()
+		{
+			// Arrange
+			var segmentId = 12345;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/DeleteSublist/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "sublist_id" && (long)p.Value == segmentId && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":\"true\"}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.DeleteSegment(USER_KEY, segmentId);
+
+			// Assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void DeleteSegment_with_clientid()
 		{
 			// Arrange
 			var segmentId = 12345;
@@ -222,7 +253,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void DeleteSegment_without_clientid()
+		public void GetSegment_with_minimal_parameters()
 		{
 			// Arrange
 			var segmentId = 12345;
@@ -231,25 +262,199 @@ namespace CakeMail.RestClient.UnitTests
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
 			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
-				r.Resource == "/List/DeleteSublist/" &&
+				r.Resource == "/List/GetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "sublist_id" && (long)p.Value == segmentId && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "sublist_id" && (long)p.Value == segmentId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"list_id\":\"111\",\"name\":\"First Segment\",\"query\":\"(`email` LIKE \\\"%aa%\\\")\",\"mailings_count\":\"0\",\"last_used\":\"0000-00-00 00:00:00\",\"created_on\":\"2015-03-27 21:15:19\",\"engagement\":null,\"count\":\"0\"}}}}", segmentId)
 			});
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.DeleteSegment(USER_KEY, segmentId, null);
+			var result = apiClient.GetSegment(USER_KEY, segmentId);
 
 			// Assert
-			Assert.IsTrue(result);
+			Assert.IsNotNull(result);
+			Assert.AreEqual(segmentId, result.Id);
+		}
+
+		[TestMethod]
+		public void GetSegment_with_includestatistics_true()
+		{
+			// Arrange
+			var segmentId = 12345;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/GetInfo/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "sublist_id" && (long)p.Value == segmentId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"list_id\":\"111\",\"name\":\"First Segment\",\"query\":\"(`email` LIKE \\\"%aa%\\\")\",\"mailings_count\":\"0\",\"last_used\":\"0000-00-00 00:00:00\",\"created_on\":\"2015-03-27 21:15:19\",\"engagement\":null,\"count\":\"0\"}}}}", segmentId)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetSegment(USER_KEY, segmentId, includeStatistics: true);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(segmentId, result.Id);
+		}
+
+		[TestMethod]
+		public void GetSegment_with_includestatistics_false()
+		{
+			// Arrange
+			var segmentId = 12345;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/GetInfo/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "sublist_id" && (long)p.Value == segmentId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"list_id\":\"111\",\"name\":\"First Segment\",\"query\":\"(`email` LIKE \\\"%aa%\\\")\",\"mailings_count\":\"0\",\"last_used\":\"0000-00-00 00:00:00\",\"created_on\":\"2015-03-27 21:15:19\",\"engagement\":null,\"count\":\"0\"}}}}", segmentId)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetSegment(USER_KEY, segmentId, includeStatistics: false);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(segmentId, result.Id);
+		}
+
+		[TestMethod]
+		public void GetSegment_with_calculateengagement_true()
+		{
+			// Arrange
+			var segmentId = 12345;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/GetInfo/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "sublist_id" && (long)p.Value == segmentId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"list_id\":\"111\",\"name\":\"First Segment\",\"query\":\"(`email` LIKE \\\"%aa%\\\")\",\"mailings_count\":\"0\",\"last_used\":\"0000-00-00 00:00:00\",\"created_on\":\"2015-03-27 21:15:19\",\"engagement\":null,\"count\":\"0\"}}}}", segmentId)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetSegment(USER_KEY, segmentId, calculateEngagement: true);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(segmentId, result.Id);
+		}
+
+		[TestMethod]
+		public void GetSegment_with_calculateengagement_false()
+		{
+			// Arrange
+			var segmentId = 12345;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/GetInfo/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "sublist_id" && (long)p.Value == segmentId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"list_id\":\"111\",\"name\":\"First Segment\",\"query\":\"(`email` LIKE \\\"%aa%\\\")\",\"mailings_count\":\"0\",\"last_used\":\"0000-00-00 00:00:00\",\"created_on\":\"2015-03-27 21:15:19\",\"engagement\":null,\"count\":\"0\"}}}}", segmentId)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetSegment(USER_KEY, segmentId, calculateEngagement: false);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(segmentId, result.Id);
+		}
+
+		[TestMethod]
+		public void GetSegment_with_clientid()
+		{
+			// Arrange
+			var segmentId = 12345;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/GetInfo/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "sublist_id" && (long)p.Value == segmentId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"list_id\":\"111\",\"name\":\"First Segment\",\"query\":\"(`email` LIKE \\\"%aa%\\\")\",\"mailings_count\":\"0\",\"last_used\":\"0000-00-00 00:00:00\",\"created_on\":\"2015-03-27 21:15:19\",\"engagement\":null,\"count\":\"0\"}}}}", segmentId)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetSegment(USER_KEY, segmentId, clientId: CLIENT_ID);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(segmentId, result.Id);
 		}
 
 		[TestMethod]
@@ -406,7 +611,39 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetSegmentsCount_with_all_parameters()
+		public void GetSegmentsCount_with_minimal_parameters()
+		{
+			// Arrange
+			var listId = 123;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/GetList/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":{\"count\":\"2\"}}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetSegmentsCount(USER_KEY, listId);
+
+			// Assert
+			Assert.AreEqual(2, result);
+		}
+
+		[TestMethod]
+		public void GetSegmentsCount_with_clientid()
 		{
 			// Arrange
 			var listId = 123;
@@ -433,38 +670,6 @@ namespace CakeMail.RestClient.UnitTests
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
 			var result = apiClient.GetSegmentsCount(USER_KEY, listId, CLIENT_ID);
-
-			// Assert
-			Assert.AreEqual(2, result);
-		}
-
-		[TestMethod]
-		public void GetSegmentsCount_without_clientid()
-		{
-			// Arrange
-			var listId = 123;
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/GetList/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
-			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":{\"count\":\"2\"}}"
-			});
-
-			// Act
-			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSegmentsCount(USER_KEY, listId, null);
 
 			// Assert
 			Assert.AreEqual(2, result);
