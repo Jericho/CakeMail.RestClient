@@ -21,10 +21,13 @@ CakeMailRestAPI is available as a Nuget package.
 
 ## Release Notes
 
-+ **2.0**    Unique identifiers changed to 'long' instead of 'int'.
-             "Magic strings" replaced with enums. For example, instead of specifying sort direction with 'asc' and 'desc', you can now use SortDirection.Ascending and SortDirection.Descending.
++ **2.0.0**
+    - Unique identifiers changed to 'long' instead of 'int'.
+    - "Magic strings" replaced with enums. For example, instead of specifying sort direction with 'asc' and 'desc', you can now use SortDirection.Ascending and SortDirection.Descending.
 
-+ **1.0**    Initial release
+
++ **1.0.0**
+    - Initial release
  
 ## Usage
 
@@ -48,8 +51,8 @@ A campaign is simply a way to logically group mailings toghether. You can think 
 A word of caution: the word 'Campaign' is used in the CakeMail UI to refer to mailings which is really confusing!
 
 ```csharp
-var campaigns = cakeMail.GetCampaigns(userKey, status: "ongoing", sortBy: "name", sortDirection: "asc", limit: 50, offset: 0);
-var campaignsCount = cakeMail.GetCampaignsCount(userKey, "ongoing");
+var campaigns = cakeMail.GetCampaigns(userKey, status: MailingStatus.Ongoing, sortBy: MailingSortBy.Name, sortDirection: SortDirection.Ascending, limit: 50, offset: 0);
+var campaignsCount = cakeMail.GetCampaignsCount(userKey, MailingStatus.Ongoing);
 
 var campaignId = cakeMail.CreateCampaign(userKey, "2015 User Conference");
 var campaign = cakeMail.GetCampaign(userKey, campaignId);
@@ -62,7 +65,7 @@ var deleted = cakeMail.DeleteCampaign(userKey, campaignId);
 A List is a collection of subscribers (or List Members, or Records). Each subscriber or List Member is uniquely identified by their email address, and may include an limited amount of Fields containing demographic information associated to each email address.
 
 ```csharp
-var lists = cakeMail.GetLists(userKey, sortBy: "name", sortDirection: "desc", limit: 50, offset: 0);
+var lists = cakeMail.GetLists(userKey, sortBy: ListSortBy.Name, sortDirection: SortDirection.Descending, limit: 50, offset: 0);
 var listsCount = cakeMail.GetListsCount(userKey);
 
 var listId = cakeMail.CreateList(userKey, "Customers and Prospects", "The XYZ Marketing Group", "marketing@yourcompany.com", true);
