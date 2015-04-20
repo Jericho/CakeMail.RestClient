@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Net;
 using CakeMail.RestClient.Utilities;
+using CakeMail.RestClient.Models;
 
 namespace CakeMail.RestClient.UnitTests
 {
@@ -110,7 +111,7 @@ namespace CakeMail.RestClient.UnitTests
 			var html = "<html><body>Hello World</body></html>";
 			var text = "Hello Wolrd";
 			var subject = "Hello!";
-			var encoding = "utf-8";
+			var encoding = MessageEncoding.Utf8;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -126,7 +127,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "html_message" && (string)p.Value == html && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "text_message" && (string)p.Value == text && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sender_email" && (string)p.Value == senderEmail && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "encoding" && (string)p.Value == encoding && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "encoding" && (string)p.Value == encoding.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "track_opening" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "track_clicks_in_html" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "track_clicks_in_text" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
@@ -288,7 +289,7 @@ namespace CakeMail.RestClient.UnitTests
 			var html = "<html><body>Hello World</body></html>";
 			var text = "Hello Wolrd";
 			var subject = "Hello!";
-			var encoding = "utf-8";
+			var encoding = MessageEncoding.Utf8;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -305,7 +306,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "html_message" && (string)p.Value == html && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "text_message" && (string)p.Value == text && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sender_email" && (string)p.Value == senderEmail && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "encoding" && (string)p.Value == encoding && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "encoding" && (string)p.Value == encoding.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "track_opening" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "track_clicks_in_html" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "track_clicks_in_text" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1

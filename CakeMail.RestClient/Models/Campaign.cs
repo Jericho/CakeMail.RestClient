@@ -1,5 +1,6 @@
 ﻿using CakeMail.RestClient.Utilities;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 
 namespace CakeMail.RestClient.Models
@@ -15,7 +16,7 @@ namespace CakeMail.RestClient.Models
 		public long ClientId { get; set; }
 
 		[JsonProperty("status")]
-		public string Status { get; set; }
+		public CampaignStatus? Status { get; set; }
 
 		[JsonProperty("name")]
 		public string Name { get; set; }
