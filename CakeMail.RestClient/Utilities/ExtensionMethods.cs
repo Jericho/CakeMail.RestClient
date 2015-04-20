@@ -23,23 +23,20 @@ namespace CakeMail.RestClient.Utilities
 			return (attrib == null ? "" : attrib.Value);
 		}
 
-		public static T GetValueFromEnumMember<T>(this string enumMember)
+		public static T GetValueFromEnumMember<T>(this string enumMember) where T : struct, IConvertible
 		{
 			var type = typeof(T);
-			if (!type.IsEnum) throw new InvalidOperationException();
+			if (!type.IsEnum) throw new NotSupportedException("Type given must be an Enum");
 			foreach (var field in type.GetFields())
 			{
-				var attribute = Attribute.GetCustomAttribute(field,
-					typeof(EnumMemberAttribute)) as EnumMemberAttribute;
+				var attribute = Attribute.GetCustomAttribute(field, typeof(EnumMemberAttribute)) as EnumMemberAttribute;
 				if (attribute != null)
 				{
-					if (attribute.Value == enumMember)
-						return (T)field.GetValue(null);
+					if (attribute.Value == enumMember) return (T)field.GetValue(null);
 				}
 				else
 				{
-					if (field.Name == enumMember)
-						return (T)field.GetValue(null);
+					if (field.Name == enumMember) return (T)field.GetValue(null);
 				}
 			}
 			throw new ArgumentException("Not found.", "description");
