@@ -1,11 +1,11 @@
 ﻿using CakeMail.RestClient.Models;
+using CakeMail.RestClient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RestSharp;
 using System;
 using System.Linq;
 using System.Net;
-using CakeMail.RestClient.Utilities;
 
 namespace CakeMail.RestClient.UnitTests
 {

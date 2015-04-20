@@ -1,6 +1,5 @@
 ﻿using CakeMail.RestClient.Utilities;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System;
 
 namespace CakeMail.RestClient.Models

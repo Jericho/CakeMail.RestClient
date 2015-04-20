@@ -1,8 +1,6 @@
 ﻿using CakeMail.RestClient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Runtime.Serialization;
 
 namespace CakeMail.RestClient.UnitTests.Utilities
