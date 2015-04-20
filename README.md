@@ -28,10 +28,25 @@ CakeMailRestAPI is available as a Nuget package.
 
 + **1.0.0**
     - Initial release
- 
+
+## Installation
+
+The easiest way to include CakeMail.RestClient in your C# project is by grabing the nuget package:
+
+```
+PM> Install-Package CakeMail.RestClient
+```
+
+Once you have the CakeMail.RestClient library properly referenced in your project, add the following namespace:
+
+```csharp
+using CakeMail.RestClient;
+```
+
 ## Usage
 
 ### Login
+
 ```csharp
 var apiKey = "... your api key ...";
 var userName = "youremail@whatever.com";
@@ -77,36 +92,36 @@ cakeMail.AddListField(userKey, listId, "customer_since", "datetime");
 You can add members to your list like so:
 ```
 cakeMail.Subscribe(userKey, listId, "bob_the_customer@hotmail.com", true, true, new[] {
-	new KeyValuePair<string, object>("first_name", "Bob"), 
-	new KeyValuePair<string, object>("last_name", "Smith"), 
-	new KeyValuePair<string, object>("customer_since", DateTime.UtcNow) 
+    new KeyValuePair<string, object>("first_name", "Bob"), 
+    new KeyValuePair<string, object>("last_name", "Smith"), 
+    new KeyValuePair<string, object>("customer_since", DateTime.UtcNow) 
 });
 cakeMail.Subscribe(userKey, listId, "jane_the_prospect@hotmail.com", true, true, new[] {
-	new KeyValuePair<string, object>("first_name", "Jane"), 
-	new KeyValuePair<string, object>("last_name", "Doe")
+    new KeyValuePair<string, object>("first_name", "Jane"), 
+    new KeyValuePair<string, object>("last_name", "Doe")
 });
 ```
 or you can import a group of members:
 ```
 var member1 = new ListMember()
 {
-	Email = "bob_the_customer@hotmail.com",
-	CustomFields = new Dictionary<string, object>()
-	{
-		{ "first_name", "Bob" },
-		{ "last_name", "Smith" },
-		{ "customer_since", DateTime.UtcNow }
-	}
+    Email = "bob_the_customer@hotmail.com",
+    CustomFields = new Dictionary<string, object>()
+    {
+        { "first_name", "Bob" },
+        { "last_name", "Smith" },
+        { "customer_since", DateTime.UtcNow }
+    }
 };
 
 var member2 = new ListMember()
 {
-	Email = "jane_the_prospect@hotmail.com",
-	CustomFields = new Dictionary<string, object>()
-	{
-		{ "first_name", "Jane" },
-		{ "last_name", "Doe" }
-	}
+    Email = "jane_the_prospect@hotmail.com",
+    CustomFields = new Dictionary<string, object>()
+    {
+        { "first_name", "Jane" },
+        { "last_name", "Doe" }
+    }
 };
 
 var importResult = cakeMail.Import(userKey, listId, new[] { member1, member2 });
