@@ -1,22 +1,25 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
-    <version>$version$</version>
-    <title>$title$</title>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
-    <licenseUrl>http://jericho.mit-license.org</licenseUrl>
-    <projectUrl>https://github.com/Jericho/CakeMail.RestClient</projectUrl>
-    <iconUrl>https://github.com/identicons/jericho.png</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
-    <releaseNotes>Initial release</releaseNotes>
-    <copyright>Copyright 2015</copyright>
-    <tags>CakeMail API REST</tags>
-    <dependencies>
-      <dependency id="Newtonsoft.Json" version="6.0.8" />
-      <dependency id="RestSharp" version="105.0.1" />
-    </dependencies>
+	<id>$id$</id>
+	<version>$version$</version>
+	<title>$title$</title>
+	<authors>$author$</authors>
+	<owners>$author$</owners>
+	<licenseUrl>http://jericho.mit-license.org</licenseUrl>
+	<projectUrl>https://github.com/Jericho/CakeMail.RestClient</projectUrl>
+	<iconUrl>https://github.com/identicons/jericho.png</iconUrl>
+	<requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<description>$description$</description>
+	<releaseNotes>
+		- Unique identifiers changed to 'long' instead of 'int'.
+		- "Magic strings" replaced with enums. For example, instead of specifying sort direction with 'asc' and 'desc', you can now use SortDirection.Ascending and SortDirection.Descending.
+	</releaseNotes>
+	<copyright>Copyright 2015</copyright>
+	<tags>CakeMail API REST</tags>
+	<dependencies>
+	  <dependency id="Newtonsoft.Json" version="6.0.8" />
+	  <dependency id="RestSharp" version="105.0.1" />
+	</dependencies>
   </metadata>
 </package>
