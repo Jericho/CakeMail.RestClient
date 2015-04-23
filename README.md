@@ -24,7 +24,8 @@ CakeMailRestAPI is available as a Nuget package.
 + **2.0.0**
     - Unique identifiers changed to 'long' instead of 'int'.
     - "Magic strings" replaced with enums. For example, instead of specifying sort direction with 'asc' and 'desc', you can now use SortDirection.Ascending and SortDirection.Descending.
-
+    - Fix bug in CreateTemplateCategory which prevents creating new categories
+    - Fix bug in DeleteTemplateCategory which causes an exception to be thrown despite the fact the category was successfuly deleted
 
 + **1.0.0**
     - Initial release

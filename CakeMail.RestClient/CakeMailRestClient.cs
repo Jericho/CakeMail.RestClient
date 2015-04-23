@@ -2961,14 +2961,20 @@ namespace CakeMail.RestClient
 			};
 			if (labels != null)
 			{
+				var labelsCount = 0;
 				foreach (var label in labels)
 				{
-					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}]", label.Key), label.Value));
+					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}][language]", labelsCount), label.Key));
+					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}][name]", labelsCount), label.Value));
+					labelsCount++;
 				}
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteRequest<int>(path, parameters);
+			// The data returned when creating a new category is a little bit unusual
+			// Instead of simply returning the unique identifier of the new record like all the other 'Create' methods, for example: {"status":"success","data":"4593766"}
+			// this method return an object with a single property called 'id' containing the unique dietifyer of the new record, like this: {"status":"success","data":{"id":"14052"}}
+			return ExecuteRequest<long>(path, parameters, "id");
 		}
 
 		/// <summary>
@@ -2989,7 +2995,11 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteRequest<bool>(path, parameters);
+			// The data returned when creating a new category is a little bit unusual
+			// Instead of returning a boolean value to indicate success, it returns an empty array!!!
+			// For example:  {"status":"success","data":[]}
+			ExecuteRequest(path, parameters);
+			return true;
 		}
 
 		/// <summary>

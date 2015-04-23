@@ -33,13 +33,15 @@ namespace CakeMail.RestClient.UnitTests
 				r.Resource == "/TemplateV2/CreateCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 7 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "label[en_US]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "label[fr_FR]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1
-				))).Returns(new RestResponse()
+				r.Parameters.Count(p => p.Name == "label[0][language]" && (string)p.Value == "en_US" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[0][name]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[1][language]" && (string)p.Value == "fr_FR" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[1][name]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -71,12 +73,12 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1
-				))).Returns(new RestResponse()
-				{
-					StatusCode = HttpStatusCode.OK,
-					ContentType = "json",
-					Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", categoryId)
-				});
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", categoryId)
+			});
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
@@ -104,18 +106,20 @@ namespace CakeMail.RestClient.UnitTests
 				r.Resource == "/TemplateV2/CreateCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 7 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "0" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "label[en_US]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "label[fr_FR]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1
-				))).Returns(new RestResponse()
-				{
-					StatusCode = HttpStatusCode.OK,
-					ContentType = "json",
-					Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", categoryId)
-				});
+				r.Parameters.Count(p => p.Name == "label[0][language]" && (string)p.Value == "en_US" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[0][name]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[1][language]" && (string)p.Value == "fr_FR" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[1][name]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", categoryId)
+			});
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
@@ -143,18 +147,20 @@ namespace CakeMail.RestClient.UnitTests
 				r.Resource == "/TemplateV2/CreateCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 7 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "0" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "label[en_US]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "label[fr_FR]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1
-				))).Returns(new RestResponse()
-				{
-					StatusCode = HttpStatusCode.OK,
-					ContentType = "json",
-					Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", categoryId)
-				});
+				r.Parameters.Count(p => p.Name == "label[0][language]" && (string)p.Value == "en_US" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[0][name]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[1][language]" && (string)p.Value == "fr_FR" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[1][name]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", categoryId)
+			});
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
@@ -182,12 +188,14 @@ namespace CakeMail.RestClient.UnitTests
 				r.Resource == "/TemplateV2/CreateCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 8 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "label[en_US]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "label[fr_FR]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[0][language]" && (string)p.Value == "en_US" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[0][name]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[1][language]" && (string)p.Value == "fr_FR" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[1][name]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 				))).Returns(new RestResponse()
 				{
