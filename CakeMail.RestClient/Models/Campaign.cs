@@ -4,6 +4,9 @@ using System;
 
 namespace CakeMail.RestClient.Models
 {
+	/// <summary>
+	/// A Campaign is a group of Mailings and can be seen as a folder.
+	/// </summary>
 	public class Campaign
 	{
 		#region Properties

@@ -54,6 +54,11 @@ namespace CakeMail.RestClient
 
 		#region Constructors and Destructors
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CakeMailRestClient"/> class.
+		/// </summary>
+		/// <param name="apiKey">The API Key received from CakeMail</param>
+		/// <param name="restClient">The rest client</param>
 		public CakeMailRestClient(string apiKey, IRestClient restClient)
 		{
 			this.ApiKey = apiKey;
@@ -66,6 +71,7 @@ namespace CakeMail.RestClient
 		/// <param name="apiKey">The API Key received from CakeMail</param>
 		/// <param name="host">The host where the API is hosted. The default is api.wbsrvc.com</param>
 		/// <param name="timeout">Timeout in milliseconds for connection to web service. The default is 5000.</param>
+		/// <param name="webProxy">The web proxy</param>
 		public CakeMailRestClient(string apiKey, string host = "api.wbsrvc.com", int timeout = 5000, IWebProxy webProxy = null)
 		{
 			this.ApiKey = apiKey;
@@ -589,11 +595,9 @@ namespace CakeMail.RestClient
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("user_id", userId)
 			};
-			var recordCount = 0;
-			foreach (var permission in permissions)
+			foreach (var item in permissions.Select((name, i) => new { Index = i, Name = name }))
 			{
-				parameters.Add(new KeyValuePair<string, object>(string.Format("permission[{0}]", recordCount), permission));
-				recordCount++;
+				parameters.Add(new KeyValuePair<string, object>(string.Format("permission[{0}]", item.Index), item.Name));
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
@@ -1007,19 +1011,17 @@ namespace CakeMail.RestClient
 			};
 			if (listMembers != null)
 			{
-				var recordCount = 0;
-				foreach (var listMember in listMembers)
+				foreach (var item in listMembers.Select((member, i) => new { Index = i, Email = member.Email, CustomFields = member.CustomFields }))
 				{
-					parameters.Add(new KeyValuePair<string, object>(string.Format("record[{0}][email]", recordCount), listMember.Email));
-					if (listMember.CustomFields != null)
+					parameters.Add(new KeyValuePair<string, object>(string.Format("record[{0}][email]", item.Index), item.Email));
+					if (item.CustomFields != null)
 					{
-						foreach (var customField in listMember.CustomFields)
+						foreach (var customField in item.CustomFields)
 						{
-							if (customField.Value is DateTime) parameters.Add(new KeyValuePair<string, object>(string.Format("record[{0}][{1}]", recordCount, customField.Key), ((DateTime)customField.Value).ToCakeMailString()));
-							else parameters.Add(new KeyValuePair<string, object>(string.Format("record[{0}][{1}]", recordCount, customField.Key), customField.Value));
+							if (customField.Value is DateTime) parameters.Add(new KeyValuePair<string, object>(string.Format("record[{0}][{1}]", item.Index, customField.Key), ((DateTime)customField.Value).ToCakeMailString()));
+							else parameters.Add(new KeyValuePair<string, object>(string.Format("record[{0}][{1}]", item.Index, customField.Key), customField.Value));
 						}
 					}
-					recordCount++;
 				}
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
@@ -2171,11 +2173,9 @@ namespace CakeMail.RestClient
 			};
 			if (emailAddresses != null)
 			{
-				var recordCount = 0;
-				foreach (var emailAddress in emailAddresses)
+				foreach (var item in emailAddresses.Select((email, i) => new { Index = i, Email = email }))
 				{
-					parameters.Add(new KeyValuePair<string, object>(string.Format("email[{0}]", recordCount), emailAddress));
-					recordCount++;
+					parameters.Add(new KeyValuePair<string, object>(string.Format("email[{0}]", item.Index), item.Email));
 				}
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
@@ -2200,11 +2200,9 @@ namespace CakeMail.RestClient
 			};
 			if (domains != null)
 			{
-				var recordCount = 0;
-				foreach (var domain in domains)
+				foreach (var item in domains.Select((domain, i) => new { Index = i, Domain = domain }))
 				{
-					parameters.Add(new KeyValuePair<string, object>(string.Format("domain[{0}]", recordCount), domain));
-					recordCount++;
+					parameters.Add(new KeyValuePair<string, object>(string.Format("domain[{0}]", item.Index), item.Domain));
 				}
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
@@ -2229,11 +2227,9 @@ namespace CakeMail.RestClient
 			};
 			if (localParts != null)
 			{
-				var recordCount = 0;
-				foreach (var localPart in localParts)
+				foreach (var item in localParts.Select((localPart, i) => new { Index = i, LocalPart = localPart }))
 				{
-					parameters.Add(new KeyValuePair<string, object>(string.Format("localpart[{0}]", recordCount), localPart));
-					recordCount++;
+					parameters.Add(new KeyValuePair<string, object>(string.Format("localpart[{0}]", item.Index), item.LocalPart));
 				}
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
@@ -2258,11 +2254,9 @@ namespace CakeMail.RestClient
 			};
 			if (emailAddresses != null)
 			{
-				var recordCount = 0;
-				foreach (var emailAddress in emailAddresses)
+				foreach (var item in emailAddresses.Select((email, i) => new { Index = i, Email = email }))
 				{
-					parameters.Add(new KeyValuePair<string, object>(string.Format("email[{0}]", recordCount), emailAddress));
-					recordCount++;
+					parameters.Add(new KeyValuePair<string, object>(string.Format("email[{0}]", item.Index), item.Email));
 				}
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
@@ -2287,11 +2281,9 @@ namespace CakeMail.RestClient
 			};
 			if (domains != null)
 			{
-				var recordCount = 0;
-				foreach (var domain in domains)
+				foreach (var item in domains.Select((domain, i) => new { Index = i, Domain = domain }))
 				{
-					parameters.Add(new KeyValuePair<string, object>(string.Format("domain[{0}]", recordCount), domain));
-					recordCount++;
+					parameters.Add(new KeyValuePair<string, object>(string.Format("domain[{0}]", item.Index), item.Domain));
 				}
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
@@ -2316,11 +2308,9 @@ namespace CakeMail.RestClient
 			};
 			if (localParts != null)
 			{
-				var recordCount = 0;
-				foreach (var localPart in localParts)
+				foreach (var item in localParts.Select((localPart, i) => new { Index = i, LocalPart = localPart }))
 				{
-					parameters.Add(new KeyValuePair<string, object>(string.Format("localpart[{0}]", recordCount), localPart));
-					recordCount++;
+					parameters.Add(new KeyValuePair<string, object>(string.Format("localpart[{0}]", item.Index), item.LocalPart));
 				}
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
@@ -2961,19 +2951,17 @@ namespace CakeMail.RestClient
 			};
 			if (labels != null)
 			{
-				var labelsCount = 0;
-				foreach (var label in labels)
+				foreach (var item in labels.Select((label, i) => new { Index = i, Language = label.Key, Name = label.Value }))
 				{
-					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}][language]", labelsCount), label.Key));
-					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}][name]", labelsCount), label.Value));
-					labelsCount++;
+					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}][language]", item.Index), item.Language));
+					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}][name]", item.Index), item.Name));
 				}
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			// The data returned when creating a new category is a little bit unusual
 			// Instead of simply returning the unique identifier of the new record like all the other 'Create' methods, for example: {"status":"success","data":"4593766"}
-			// this method return an object with a single property called 'id' containing the unique dietifyer of the new record, like this: {"status":"success","data":{"id":"14052"}}
+			// this method return an object with a single property called 'id' containing the unique identifier of the new record, like this: {"status":"success","data":{"id":"14052"}}
 			return ExecuteRequest<long>(path, parameters, "id");
 		}
 
@@ -3107,7 +3095,7 @@ namespace CakeMail.RestClient
 		/// <param name="categoryId">ID of the category</param>
 		/// <param name="limit">Limit the number of resulting permissions.</param>
 		/// <param name="offset">Offset the beginning of resulting permissions.</param>
-		/// <param name="clientId">Client ID of the client in which the category is located.</param>
+		/// <param name="clientId">ID of the client in which the category is located.</param>
 		/// <returns>An enumeration of permissions</returns>
 		public IEnumerable<TemplateCategoryVisibility> GetTemplateCategoryVisibility(string userKey, long categoryId, int limit = 0, int offset = 0, long? clientId = null)
 		{
@@ -3148,6 +3136,14 @@ namespace CakeMail.RestClient
 			return ExecuteCountRequest(path, parameters);
 		}
 
+		/// <summary>
+		/// Set the permissions for a category
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="categoryId">ID of the category</param>
+		/// <param name="clientVisibility">The list of clients and their associated boolean that indicates if they have access to the category</param>
+		/// <param name="clientId">ID of the client in which the category is located.</param>
+		/// <returns>True if the permissions are successfully updated</returns>
 		public bool SetTemplateCategoryVisibility(string userKey, long categoryId, IDictionary<int, bool> clientVisibility, long? clientId = null)
 		{
 			var path = "/TemplateV2/SetCategoryVisibility/";
@@ -3159,9 +3155,10 @@ namespace CakeMail.RestClient
 			};
 			if (clientVisibility != null)
 			{
-				foreach (var visibility in clientVisibility)
+				foreach (var item in clientVisibility.Select((visibility, i) => new { Index = i, ClientId = visibility.Key, Visible = visibility.Value }))
 				{
-					parameters.Add(new KeyValuePair<string, object>(string.Format("client[{0}][visible]", visibility.Key), visibility.Value ? "true" : "false"));
+					parameters.Add(new KeyValuePair<string, object>(string.Format("client[{0}][client_id]", item.Index), item.ClientId));
+					parameters.Add(new KeyValuePair<string, object>(string.Format("client[{0}][visible]", item.Index), item.Visible ? "true" : "false"));
 				}
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
@@ -3645,7 +3642,7 @@ namespace CakeMail.RestClient
 				var debugHeadersMsg = string.Format("Request headers: {0}", string.Join("&", request.Parameters.Where(p => p.Type == ParameterType.HttpHeader).Select(p => string.Concat(p.Name, "=", p.Value))));
 				var debugParametersMsg = string.Format("Request parameters: {0}", string.Join("&", request.Parameters.Where(p => p.Type != ParameterType.HttpHeader).Select(p => string.Concat(p.Name, "=", p.Value))));
 				var debugResponseMsg = string.Format("Response received from CakeMail: {0}", response.Content);
-				Debug.WriteLine("============================\r\n{0}\r\n{1}\r\n{2}\r\n{3}\r\n============================", debugRequestMsg, debugHeadersMsg, debugParametersMsg, debugResponseMsg);
+				Debug.WriteLine("{0}\r\n{1}\r\n{2}\r\n{3}\r\n{4}\r\n{0}", new string('=', 25), debugRequestMsg, debugHeadersMsg, debugParametersMsg, debugResponseMsg);
 #endif
 				#endregion
 

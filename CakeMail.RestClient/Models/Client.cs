@@ -4,6 +4,9 @@ using System;
 
 namespace CakeMail.RestClient.Models
 {
+	/// <summary>
+	/// A Client is basically an account. A client can have multiple users.
+	/// </summary>
 	public class Client
 	{
 		#region Properties

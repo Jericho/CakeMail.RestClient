@@ -1310,6 +1310,14 @@ namespace CakeMail.RestClient
 		/// <returns>The count of permissions matching the filtering criteria</returns>
 		long GetTemplateCategoryVisibilityCount(string userKey, long categoryId, long? clientId = null);
 
+		/// <summary>
+		/// Set the permissions for a category
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="categoryId">ID of the category</param>
+		/// <param name="clientVisibility">The list of clients and their associated boolean that indicates if they have access to the category</param>
+		/// <param name="clientId">ID of the client in which the category is located.</param>
+		/// <returns>True if the permissions are successfully updated</returns>
 		bool SetTemplateCategoryVisibility(string userKey, long categoryId, IDictionary<int, bool> clientVisibility, long? clientId = null);
 
 		/// <summary>

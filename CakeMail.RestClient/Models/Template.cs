@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace CakeMail.RestClient.Models
 {
+	/// <summary>
+	/// A Template is HTML or Text based content that may be stored for later use.
+	/// </summary>
 	public class Template
 	{
 		#region Properties

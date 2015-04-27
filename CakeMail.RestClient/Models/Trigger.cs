@@ -4,6 +4,9 @@ using System;
 
 namespace CakeMail.RestClient.Models
 {
+	/// <summary>
+	/// A Trigger is an individual email that is sent to a recipient following a specific action. This can be used to build auto-responders.
+	/// </summary>
 	public class Trigger
 	{
 		#region Properties

@@ -4,6 +4,10 @@ using System;
 
 namespace CakeMail.RestClient.Models
 {
+	/// <summary>
+	/// A List is a collection of subscribers (or List Members, or Records). 
+	/// Each subscriber or List Member is uniquely identified by their email address, and may include an limited amount of Fields containing demographic information associated to each email address.
+	/// </summary>
 	public class List
 	{
 		#region Properties

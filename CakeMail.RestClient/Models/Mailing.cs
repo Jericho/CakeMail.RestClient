@@ -4,6 +4,9 @@ using System;
 
 namespace CakeMail.RestClient.Models
 {
+	/// <summary>
+	/// A mailing is an email campaign. It can be used to send standard email campaigns, A/B split campaigns or recurring campaigns.
+	/// </summary>
 	public class Mailing
 	{
 		#region Properties
