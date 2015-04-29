@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RestSharp;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
@@ -364,6 +365,42 @@ namespace CakeMail.RestClient.UnitTests
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
 			var result = apiClient.DeleteCampaign(USER_KEY, campaignId, CLIENT_ID);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(CakeMailException))]
+		public void RestClient_Throws_exception_when_reponse_does_not_contain_expected_property()
+		{
+			// Arrange
+			var categoryId = 123;
+			var labels = new Dictionary<string, string>()
+			{
+				{ "en_US", "My Category" }
+			};
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/TemplateV2/CreateCategory/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[0][language]" && (string)p.Value == "en_US" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "label[0][name]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"we_expected_a_property_named_id_but_instead_we_received_this_bogus_property\":\"{0}\"}}}}", categoryId)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.CreateTemplateCategory(USER_KEY, labels);
 		}
 	}
 }
