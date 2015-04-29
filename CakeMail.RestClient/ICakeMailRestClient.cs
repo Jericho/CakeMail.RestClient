@@ -1318,7 +1318,7 @@ namespace CakeMail.RestClient
 		/// <param name="clientVisibility">The list of clients and their associated boolean that indicates if they have access to the category</param>
 		/// <param name="clientId">ID of the client in which the category is located.</param>
 		/// <returns>True if the permissions are successfully updated</returns>
-		bool SetTemplateCategoryVisibility(string userKey, long categoryId, IDictionary<int, bool> clientVisibility, long? clientId = null);
+		bool SetTemplateCategoryVisibility(string userKey, long categoryId, IDictionary<long, bool> clientVisibility, long? clientId = null);
 
 		/// <summary>
 		/// Create a template
