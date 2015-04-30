@@ -19,8 +19,11 @@ namespace CakeMail.RestClient.IntegrationTests
 			}
 			finally
 			{
+				// Clear the keyboard buffer
+				while (Console.KeyAvailable) { Console.ReadKey(); }
+
 				Console.WriteLine("");
-				Console.WriteLine("Press any key to close...");
+				Console.WriteLine("Press any key...");
 				Console.ReadKey();
 			}
 		}
@@ -37,6 +40,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			var clientId = string.IsNullOrEmpty(overrideClientId) ? loginInfo.ClientId : long.Parse(overrideClientId);
 			var userKey = loginInfo.UserKey;
 
+			TimezonesTests.ExecuteAllMethods(api);
 			CountriesTests.ExecuteAllMethods(api);
 			ClientsTests.ExecuteAllMethods(api, userKey, clientId);
 			UsersTests.ExecuteAllMethods(api, userKey, clientId);

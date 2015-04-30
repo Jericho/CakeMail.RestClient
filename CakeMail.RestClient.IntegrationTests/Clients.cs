@@ -24,10 +24,10 @@ namespace CakeMail.RestClient.IntegrationTests
 			var registrationInfo = api.ConfirmClient(confirmation);
 			Console.WriteLine("Client has been confirmed. Id = {0}", registrationInfo.ClientId);
 
-			var clients = api.GetClients(userKey, null, null, ClientsSortBy.CompanyName, SortDirection.Ascending, 2, 0, clientId);
+			var clients = api.GetClients(userKey, null, null, ClientsSortBy.CompanyName, SortDirection.Ascending, null, null, clientId);
 			Console.WriteLine("All clients retrieved. Count = {0}", clients.Count());
 
-			var clientsCount = api.GetClientsCount(userKey);
+			var clientsCount = api.GetClientsCount(userKey, null, null, clientId);
 			Console.WriteLine("Clients count = {0}", clientsCount);
 
 			var updated = api.UpdateClient(userKey, registrationInfo.ClientId, name: "Fictitious Company");
