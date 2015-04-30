@@ -2458,7 +2458,7 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"members\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
 			});
 
 			// Act
@@ -2498,7 +2498,7 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"members\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
 			});
 
 			// Act
@@ -2538,7 +2538,7 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"members\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
 			});
 
 			// Act
@@ -2578,7 +2578,7 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"members\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
 			});
 
 			// Act
@@ -2618,7 +2618,7 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"members\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
 			});
 
 			// Act
@@ -2658,7 +2658,7 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"members\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
 			});
 
 			// Act
@@ -2698,7 +2698,7 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"members\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
 			});
 
 			// Act
@@ -2737,7 +2737,7 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"members\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
 			});
 
 			// Act
