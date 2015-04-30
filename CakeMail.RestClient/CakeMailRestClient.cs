@@ -178,7 +178,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting campaigns.</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <returns>Enumeration of <see cref="Campaign">campaigns</see> matching the filtering criteria</returns>
-		public IEnumerable<Campaign> GetCampaigns(string userKey, CampaignStatus? status = null, string name = null, CampaignsSortBy? sortBy = null, SortDirection? sortDirection = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<Campaign> GetCampaigns(string userKey, CampaignStatus? status = null, string name = null, CampaignsSortBy? sortBy = null, SortDirection? sortDirection = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			var path = "/Campaign/GetList/";
 
@@ -412,7 +412,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting clients.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>Enumeration of <see cref="Client">clients</see> matching the filtering criteria</returns>
-		public IEnumerable<Client> GetClients(string userKey, ClientStatus? status = null, string name = null, ClientsSortBy? sortBy = null, SortDirection? sortDirection = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<Client> GetClients(string userKey, ClientStatus? status = null, string name = null, ClientsSortBy? sortBy = null, SortDirection? sortDirection = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			var path = "/Client/GetList/";
 
@@ -740,7 +740,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting lists.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>Enumeration of <see cref="List">lists</see> matching the filtering criteria</returns>
-		public IEnumerable<List> GetLists(string userKey, ListStatus? status = null, string name = null, ListsSortBy? sortBy = null, SortDirection? sortDirection = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<List> GetLists(string userKey, ListStatus? status = null, string name = null, ListsSortBy? sortBy = null, SortDirection? sortDirection = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			var path = "/List/GetList/";
 
@@ -1150,7 +1150,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting members.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>Enumeration of <see cref="List">lists</see> matching the filtering criteria</returns>
-		public IEnumerable<ListMember> GetListMembers(string userKey, long listId, ListMemberStatus? status = null, string query = null, ListMembersSortBy? sortBy = null, SortDirection? sortDirection = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<ListMember> GetListMembers(string userKey, long listId, ListMemberStatus? status = null, string query = null, ListMembersSortBy? sortBy = null, SortDirection? sortDirection = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			var path = "/List/Show/";
 
@@ -1241,7 +1241,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>An enumeration of <see cref="LogItem">log items</see> matching the filter criteria</returns>
-		public IEnumerable<LogItem> GetListLogs(string userKey, long listId, LogType? logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<LogItem> GetListLogs(string userKey, long listId, LogType? logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			string path = "/List/GetLog/";
 
@@ -1415,7 +1415,7 @@ namespace CakeMail.RestClient
 		/// <param name="includeDetails">Retrieve all the stats for the segment</param>
 		/// <param name="clientId">ID of the client</param>
 		/// <returns>Enumeration of <see cref="Segment">segments</see> matching the filtering criteria</returns>
-		public IEnumerable<Segment> GetSegments(string userKey, long listId, int limit = 0, int offset = 0, bool includeDetails = true, long? clientId = null)
+		public IEnumerable<Segment> GetSegments(string userKey, long listId, int? limit = 0, int? offset = 0, bool includeDetails = true, long? clientId = null)
 		{
 			var path = "/List/GetSublists/";
 
@@ -1550,7 +1550,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting mailings.</param>
 		/// <param name="clientId">Client ID of the client in which the mailings are located.</param>
 		/// <returns>Enumeration of <see cref="Mailing">mailings</see> matching the filtering criteria</returns>
-		public IEnumerable<Mailing> GetMailings(string userKey, MailingStatus? status = null, MailingType? type = null, string name = null, long? listId = null, long? campaignId = null, long? recurringId = null, DateTime? start = null, DateTime? end = null, MailingsSortBy? sortBy = null, SortDirection? sortDirection = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<Mailing> GetMailings(string userKey, MailingStatus? status = null, MailingType? type = null, string name = null, long? listId = null, long? campaignId = null, long? recurringId = null, DateTime? start = null, DateTime? end = null, MailingsSortBy? sortBy = null, SortDirection? sortDirection = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			var path = "/Mailing/GetList/";
 
@@ -1861,7 +1861,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="LogItem">log items</see> matching the filter criteria</returns>
-		public IEnumerable<LogItem> GetMailingLogs(string userKey, long mailingId, LogType? logType = null, long? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<LogItem> GetMailingLogs(string userKey, long mailingId, LogType? logType = null, long? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			string path = "/Mailing/GetLog/";
 
@@ -1927,7 +1927,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="Link">links</see> matching the filter criteria</returns>
-		public IEnumerable<Link> GetMailingLinks(string userKey, long mailingId, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<Link> GetMailingLinks(string userKey, long mailingId, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			string path = "/Mailing/GetLinks/";
 
@@ -1987,7 +1987,7 @@ namespace CakeMail.RestClient
 			return ExecuteRequest<Link>(path, parameters);
 		}
 
-		public IEnumerable<LogItem> GetMailingLinksLogs(string userKey, long mailingId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<LogItem> GetMailingLinksLogs(string userKey, long mailingId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			string path = "/Mailing/GetLinksLog/";
 
@@ -2095,7 +2095,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="RelayLog">log items</see> matching the filter criteria</returns>
-		public IEnumerable<RelayLog> GetRelaySentLogs(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<RelayLog> GetRelaySentLogs(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			return GetRelayLogs<RelayLog>(userKey, "sent", "sent_logs", trackingId, start, end, limit, offset, clientId);
 		}
@@ -2111,7 +2111,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="RelayOpenLog">log items</see> matching the filter criteria</returns>
-		public IEnumerable<RelayOpenLog> GetRelayOpenLogs(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<RelayOpenLog> GetRelayOpenLogs(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			return GetRelayLogs<RelayOpenLog>(userKey, "open", "open_logs", trackingId, start, end, limit, offset, clientId);
 		}
@@ -2127,7 +2127,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="RelayClickLog">log items</see> matching the filter criteria</returns>
-		public IEnumerable<RelayClickLog> GetRelayClickLogs(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<RelayClickLog> GetRelayClickLogs(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			return GetRelayLogs<RelayClickLog>(userKey, "clickthru", "clickthru_logs", trackingId, start, end, limit, offset, clientId);
 		}
@@ -2143,12 +2143,12 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="RelayBounceLog">log items</see> matching the filter criteria</returns>
-		public IEnumerable<RelayBounceLog> GetRelayBounceLogs(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<RelayBounceLog> GetRelayBounceLogs(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			return GetRelayLogs<RelayBounceLog>(userKey, "bounce", "bounce_logs", trackingId, start, end, limit, offset, clientId);
 		}
 
-		private IEnumerable<T> GetRelayLogs<T>(string userKey, string logType, string arrayPropertyName, long? trackingId = null, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null) where T : RelayLog, new()
+		private IEnumerable<T> GetRelayLogs<T>(string userKey, string logType, string arrayPropertyName, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null) where T : RelayLog, new()
 		{
 			string path = "/Relay/GetLogs/";
 
@@ -2341,7 +2341,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting email addresses.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>An enumeration of <see cref="SuppressedEmail">addresses</see>. The result also indicates how each email address ended up on the suppression list.</returns>
-		public IEnumerable<SuppressedEmail> GetSuppressedEmailAddresses(string userKey, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<SuppressedEmail> GetSuppressedEmailAddresses(string userKey, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			var path = "/SuppressionList/ExportEmails/";
 
@@ -2365,7 +2365,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting domains.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>An enumeration of domains.</returns>
-		public IEnumerable<string> GetSuppressedDomains(string userKey, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<string> GetSuppressedDomains(string userKey, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			var path = "/SuppressionList/ExportDomains/";
 
@@ -2392,7 +2392,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting localparts.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>An enumeration of localparts.</returns>
-		public IEnumerable<string> GetSuppressedLocalParts(string userKey, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<string> GetSuppressedLocalParts(string userKey, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			var path = "/SuppressionList/ExportLocalparts/";
 
@@ -2623,7 +2623,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting triggers.</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <returns>An enumeration of <see cref="Trigger">triggers</see> matching the filter criteria</returns>
-		public IEnumerable<Trigger> GetTriggers(string userKey, TriggerStatus? status = null, TriggerAction? action = null, long? listId = null, long? campaignId = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<Trigger> GetTriggers(string userKey, TriggerStatus? status = null, TriggerAction? action = null, long? listId = null, long? campaignId = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			var path = "/Trigger/GetList/";
 
@@ -2796,7 +2796,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="LogItem">log items</see> matching the filter criteria</returns>
-		public IEnumerable<LogItem> GetTriggerLogs(string userKey, long triggerId, LogType? logType = null, long? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<LogItem> GetTriggerLogs(string userKey, long triggerId, LogType? logType = null, long? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			string path = "/Trigger/GetLog/";
 
@@ -2862,7 +2862,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <returns>An enumeration of <see cref="Link">links</see> matching the filter criteria</returns>
-		public IEnumerable<Link> GetTriggerLinks(string userKey, long triggerId, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<Link> GetTriggerLinks(string userKey, long triggerId, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			string path = "/Trigger/GetLinks/";
 
@@ -2922,7 +2922,7 @@ namespace CakeMail.RestClient
 			return ExecuteRequest<Link>(path, parameters);
 		}
 
-		public IEnumerable<LogItem> GetTriggerLinksLogs(string userKey, long triggerId, DateTime? start = null, DateTime? end = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<LogItem> GetTriggerLinksLogs(string userKey, long triggerId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			string path = "/Trigger/GetLog/";
 
@@ -3034,7 +3034,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting categories.</param>
 		/// <param name="clientId">Client ID of the client in which the categories are located.</param>
 		/// <returns>Enumeration of <see cref="TemplateCategory">categories</see> matching the filtering criteria</returns>
-		public IEnumerable<TemplateCategory> GetTemplateCategories(string userKey, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<TemplateCategory> GetTemplateCategories(string userKey, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			var path = "/TemplateV2/GetCategories/";
 
@@ -3112,7 +3112,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting permissions.</param>
 		/// <param name="clientId">ID of the client in which the category is located.</param>
 		/// <returns>An enumeration of permissions</returns>
-		public IEnumerable<TemplateCategoryVisibility> GetTemplateCategoryVisibility(string userKey, long categoryId, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<TemplateCategoryVisibility> GetTemplateCategoryVisibility(string userKey, long categoryId, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			var path = "/TemplateV2/GetCategoryVisibility/";
 
@@ -3263,7 +3263,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting templates.</param>
 		/// <param name="clientId">Client ID of the client in which the templates are located.</param>
 		/// <returns>Enumeration of <see cref="Template">templates</see> matching the filtering criteria</returns>
-		public IEnumerable<Template> GetTemplates(string userKey, long? categoryId = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<Template> GetTemplates(string userKey, long? categoryId = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			var path = "/TemplateV2/GetTemplates/";
 
@@ -3432,7 +3432,7 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting users.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>Enumeration of <see cref="User">users</see> matching the filtering criteria</returns>
-		public IEnumerable<User> GetUsers(string userKey, UserStatus? status = null, int limit = 0, int offset = 0, long? clientId = null)
+		public IEnumerable<User> GetUsers(string userKey, UserStatus? status = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			var path = "/User/GetList/";
 
