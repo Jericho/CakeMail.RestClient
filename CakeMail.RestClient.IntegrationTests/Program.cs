@@ -44,6 +44,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			CountriesTests.ExecuteAllMethods(api);
 			ClientsTests.ExecuteAllMethods(api, userKey, clientId);
 			UsersTests.ExecuteAllMethods(api, userKey, clientId);
+			CampaignsTests.ExecuteAllMethods(api, userKey, clientId);
 			ListsTests.ExecuteAllMethods(api, userKey, clientId);
 		}
 	}
