@@ -1168,7 +1168,7 @@ namespace CakeMail.RestClient
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteArrayRequest<ListMember>(path, parameters, "members");
+			return ExecuteArrayRequest<ListMember>(path, parameters, "records");
 		}
 
 		/// <summary>
