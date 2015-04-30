@@ -13,7 +13,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			Console.WriteLine("Executing USERS methods...");
 
 			var users = api.GetUsers(userKey, UserStatus.Active, null, null, clientId);
-			Console.WriteLine("All users retrieved (limited to first 50). Count = {0}", users.Count());
+			Console.WriteLine("All users retrieved. Count = {0}", users.Count());
 
 			var usersCount = api.GetUsersCount(userKey, UserStatus.Active, clientId);
 			Console.WriteLine("Users count = {0}", usersCount);
