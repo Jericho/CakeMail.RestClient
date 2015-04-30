@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6DE42E
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakeMail.RestClient.IntegrationTests", "CakeMail.RestClient.IntegrationTests\CakeMail.RestClient.IntegrationTests.csproj", "{677D93C3-10C8-47AC-B196-60CA28F57A84}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{677D93C3-10C8-47AC-B196-60CA28F57A84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{677D93C3-10C8-47AC-B196-60CA28F57A84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{677D93C3-10C8-47AC-B196-60CA28F57A84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{677D93C3-10C8-47AC-B196-60CA28F57A84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,5 +51,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{86C4AFC4-0C39-42C5-86A3-68462EA966DF} = {F7E19221-12B8-4C6E-B87A-167A1E95EBA1}
 		{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF} = {9D4FE070-9A1E-4746-BD77-5D81D7FF21FF}
+		{677D93C3-10C8-47AC-B196-60CA28F57A84} = {9D4FE070-9A1E-4746-BD77-5D81D7FF21FF}
 	EndGlobalSection
 EndGlobal
