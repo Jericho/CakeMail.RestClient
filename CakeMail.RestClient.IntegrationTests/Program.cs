@@ -53,6 +53,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			SuppressionListsTests.ExecuteAllMethods(api, userKey, clientId);
 			RelaysTests.ExecuteAllMethods(api, userKey, clientId);
 			TriggersTests.ExecuteAllMethods(api, userKey, clientId);
+			MailingsTests.ExecuteAllMethods(api, userKey, clientId);
 		}
 	}
 }

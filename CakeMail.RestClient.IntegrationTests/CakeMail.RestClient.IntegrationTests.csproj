@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients.cs" />
+    <Compile Include="Mailings.cs" />
     <Compile Include="Relays.cs" />
     <Compile Include="SuppressionLists.cs" />
     <Compile Include="Permissions.cs" />

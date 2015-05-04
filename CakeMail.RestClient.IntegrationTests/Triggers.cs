@@ -27,7 +27,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			var trigger = api.GetTrigger(userKey, triggerId, clientId);
 			Console.WriteLine("Trigger retrieved: Name = {0}", trigger.Name);
 
-			var updated = api.UpdateTrigger(userKey, triggerId, name: "UPDATED INTEGRATION TEST: trigger", htmlContent: "<html><body>Hello World in HTML. <a href=\"http://cakemail.com\">CakeMail's web site</a></body</html>", textContent: "Hello World in text", subject: "This is a test", clientId: clientId);
+			var updated = api.UpdateTrigger(userKey, triggerId, name: "UPDATED INTEGRATION TEST: trigger", htmlContent: "<html><body>Hello World in HTML. <a href=\"http://cakemail.com\">CakeMail web site</a></body</html>", textContent: "Hello World in text", subject: "This is a test", clientId: clientId);
 			Console.WriteLine("Trigger updated: {0}", updated ? "success" : "failed");
 
 			var rawEmail = api.GetTriggerRawEmailMessage(userKey, triggerId, clientId);

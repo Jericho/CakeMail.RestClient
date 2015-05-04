@@ -1,10 +1,6 @@
-﻿using CakeMail.RestClient;
-using CakeMail.RestClient.Models;
+﻿using CakeMail.RestClient.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using CakeMail.RestClient.Models;
-using System;
 using System.Linq;
 
 namespace CakeMail.RestClient.IntegrationTests
@@ -62,7 +58,7 @@ namespace CakeMail.RestClient.IntegrationTests
 					{ "MyCustomField3", "qwerty" }
 				}
 			};
-			var member2 = new ListMember() 
+			var member2 = new ListMember()
 			{
 				Email = "bbb@bbb.com",
 				CustomFields = new Dictionary<string, object>()
@@ -100,8 +96,10 @@ namespace CakeMail.RestClient.IntegrationTests
 			Console.WriteLine("Segments retrieved. Count = {0}", segments.Count());
 
 			var firstSegmentDeleted = api.DeleteSegment(userKey, firstSegmentId, clientId);
+			Console.WriteLine("First segment deleted");
+
 			var secondSegmentDeleted = api.DeleteSegment(userKey, secondSegmentId, clientId);
-			Console.WriteLine("Two segments deleted");
+			Console.WriteLine("Second segment deleted");
 
 			var deleted = api.DeleteList(userKey, listId, clientId);
 			Console.WriteLine("List deleted: {0}", deleted ? "success" : "failed");
