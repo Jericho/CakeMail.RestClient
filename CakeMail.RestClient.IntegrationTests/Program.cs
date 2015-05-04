@@ -15,6 +15,8 @@ namespace CakeMail.RestClient.IntegrationTests
 			}
 			catch (Exception e)
 			{
+				Console.WriteLine("");
+				Console.WriteLine("");
 				Console.WriteLine("An error has occured: {0}", e.Message);
 			}
 			finally
@@ -44,8 +46,11 @@ namespace CakeMail.RestClient.IntegrationTests
 			CountriesTests.ExecuteAllMethods(api);
 			ClientsTests.ExecuteAllMethods(api, userKey, clientId);
 			UsersTests.ExecuteAllMethods(api, userKey, clientId);
+			PermissionsTests.ExecuteAllMethods(api, userKey, clientId);
 			CampaignsTests.ExecuteAllMethods(api, userKey, clientId);
 			ListsTests.ExecuteAllMethods(api, userKey, clientId);
+			TemplatesTests.ExecuteAllMethods(api, userKey, clientId);
+			SuppressionListsTests.ExecuteAllMethods(api, userKey, clientId);
 		}
 	}
 }
