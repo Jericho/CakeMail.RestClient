@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients.cs" />
+    <Compile Include="Relays.cs" />
     <Compile Include="SuppressionLists.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Countries.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Timezones.cs" />
     <Compile Include="Lists.cs" />
     <Compile Include="Templates.cs" />
+    <Compile Include="Triggers.cs" />
     <Compile Include="Users.cs" />
   </ItemGroup>
   <ItemGroup>

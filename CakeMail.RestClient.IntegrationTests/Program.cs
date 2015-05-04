@@ -51,6 +51,8 @@ namespace CakeMail.RestClient.IntegrationTests
 			ListsTests.ExecuteAllMethods(api, userKey, clientId);
 			TemplatesTests.ExecuteAllMethods(api, userKey, clientId);
 			SuppressionListsTests.ExecuteAllMethods(api, userKey, clientId);
+			RelaysTests.ExecuteAllMethods(api, userKey, clientId);
+			TriggersTests.ExecuteAllMethods(api, userKey, clientId);
 		}
 	}
 }

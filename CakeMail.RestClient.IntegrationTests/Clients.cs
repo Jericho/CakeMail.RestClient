@@ -1,5 +1,4 @@
-﻿using CakeMail.RestClient;
-using CakeMail.RestClient.Models;
+﻿using CakeMail.RestClient.Models;
 using System;
 using System.Linq;
 
