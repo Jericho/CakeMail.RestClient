@@ -2998,7 +2998,7 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			// The data returned when creating a new category is a little bit unusual
+			// The data returned when deleting a category is a little bit unusual
 			// Instead of returning a boolean value to indicate success, it returns an empty array!!!
 			// For example:  {"status":"success","data":[]}
 			ExecuteRequest(path, parameters);
@@ -3202,14 +3202,18 @@ namespace CakeMail.RestClient
 			};
 			if (labels != null)
 			{
-				foreach (var label in labels)
+				foreach (var item in labels.Select((label, i) => new { Index = i, Language = label.Key, Name = label.Value }))
 				{
-					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}]", label.Key), label.Value));
+					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}][language]", item.Index), item.Language));
+					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}][name]", item.Index), item.Name));
 				}
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteRequest<long>(path, parameters);
+			// The data returned when creating a new template is a little bit unusual
+			// Instead of simply returning the unique identifier of the new record like all the other 'Create' methods, for example: {"status":"success","data":"4593766"}
+			// this method return an object with a single property called 'id' containing the unique identifier of the new record, like this: {"status":"success","data":{"id":"14052"}}
+			return ExecuteRequest<long>(path, parameters, "id");
 		}
 
 		/// <summary>
@@ -3230,7 +3234,11 @@ namespace CakeMail.RestClient
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteRequest<bool>(path, parameters);
+			// The data returned when deleting a template is a little bit unusual
+			// Instead of returning a boolean value to indicate success, it returns an empty array!!!
+			// For example:  {"status":"success","data":[]}
+			ExecuteRequest(path, parameters);
+			return true;
 		}
 
 		/// <summary>
