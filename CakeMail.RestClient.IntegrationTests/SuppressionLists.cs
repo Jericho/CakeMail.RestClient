@@ -1,5 +1,4 @@
-﻿using CakeMail.RestClient.Models;
-using System;
+﻿using System;
 using System.Linq;
 
 namespace CakeMail.RestClient.IntegrationTests
