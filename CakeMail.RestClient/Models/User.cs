@@ -28,7 +28,7 @@ namespace CakeMail.RestClient.Models
 		public string EmailAddress { get; set; }
 
 		[JsonProperty("status")]
-		public string Status { get; set; }
+		public UserStatus Status { get; set; }
 
 		[JsonProperty("created_on")]
 		[JsonConverter(typeof(CakeMailDateTimeConverter))]

@@ -12,7 +12,7 @@ namespace CakeMail.RestClient.Models
 		#region Properties
 
 		[JsonProperty("action")]
-		public string Action { get; set; }
+		public TriggerAction? Action { get; set; }
 
 		[JsonProperty("campaign_id")]
 		public long CampaignId { get; set; }
@@ -70,7 +70,7 @@ namespace CakeMail.RestClient.Models
 		public string SenderName { get; set; }
 
 		[JsonProperty("status")]
-		public string Status { get; set; }
+		public TriggerStatus Status { get; set; }
 
 		[JsonProperty("subject")]
 		public string Subject { get; set; }

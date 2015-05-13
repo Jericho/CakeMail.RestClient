@@ -14,6 +14,8 @@ namespace CakeMail.RestClient.Models
 		[EnumMember(Value = "delivering")]
 		Delivering,
 		[EnumMember(Value = "delivered")]
-		Delivered
+		Delivered,
+		[EnumMember(Value = "archived")]
+		Archived
 	}
 }

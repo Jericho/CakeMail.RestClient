@@ -25,7 +25,7 @@ namespace CakeMail.RestClient.Models
 		/// The status.
 		/// </value>
 		[JsonProperty("status")]
-		public string Status { get; set; }
+		public ListMemberStatus Status { get; set; }
 
 		/// <summary>
 		/// Gets or sets the bounce_type.

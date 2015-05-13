@@ -27,7 +27,7 @@ namespace CakeMail.RestClient.Models
 		public long SublistId { get; set; }
 
 		[JsonProperty("status")]
-		public string Status { get; set; }
+		public MailingStatus Status { get; set; }
 
 		[JsonProperty("next_step")]
 		public string NextStep { get; set; }
@@ -87,7 +87,7 @@ namespace CakeMail.RestClient.Models
 		public string TrackingParameters { get; set; }
 
 		[JsonProperty("type")]
-		public string Type { get; set; }
+		public MailingType Type { get; set; }
 
 		[JsonProperty("ending_on")]
 		[JsonConverter(typeof(CakeMailDateTimeConverter))]

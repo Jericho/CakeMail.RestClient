@@ -19,7 +19,7 @@ namespace CakeMail.RestClient.Models
 		public string Name { get; set; }
 
 		[JsonProperty("status")]
-		public string Status { get; set; }
+		public ListStatus Status { get; set; }
 
 		[JsonProperty("policy")]
 		public string Policy { get; set; }

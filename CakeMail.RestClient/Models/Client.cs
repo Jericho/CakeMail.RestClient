@@ -151,7 +151,7 @@ namespace CakeMail.RestClient.Models
 		public bool IsReseller { get; set; }
 
 		[JsonProperty("status")]
-		public string Status { get; set; }
+		public ClientStatus Status { get; set; }
 
 		[JsonProperty("lineage_status")]
 		public string LineageStatus { get; set; }
