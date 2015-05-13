@@ -802,6 +802,11 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="LogItem">log items</see> matching the filter criteria</returns>
+		/// <remarks>
+		/// CakeMail throws an exception if you attempt to retrieve the logs for a mailing that hasn't been sent. 
+		/// The current error message is cryptic: Table 'api_cake_logs.mailing_xxxxxxx_big' doesn't exist.
+		/// I was assured in May 2015 that they will improve this message to make it more informative.
+		/// </remarks>
 		IEnumerable<LogItem> GetMailingLogs(string userKey, long mailingId, LogType? logType = null, long? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null);
 
 		/// <summary>

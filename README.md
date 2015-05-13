@@ -136,10 +136,10 @@ A mailing is an email campaign. It can be used to send standard email campaigns,
 
 ```
 var invitationMailingId = cakeMail.CreateMailing(userKey, "2015 User Conference invitation", campaignId);
-cakeMail.UpdateMailing(userKey, invitationMailingId, listId: listId, htmlContent: "<html><body>You are invited to attend our annual user conference</body</html>", textContent: "You are invited to attend our annual user conference", subject: "Invitation to our 2015 user conference");
+cakeMail.UpdateMailing(userKey, invitationMailingId, listId: listId, htmlContent: "<html><body>You are invited to attend our annual user conference</body></html>", textContent: "You are invited to attend our annual user conference", subject: "Invitation to our 2015 user conference");
 cakeMail.ScheduleMailing(userKey, invitationMailingId);
 
 var reminderMailingId = cakeMail.CreateMailing(userKey, "2015 User Conference reminder", campaignId);
-cakeMail.UpdateMailing(userKey, reminderMailingId, listId: listId, htmlContent: "<html><body>Don't forget our upcoming annual user conference</body</html>", textContent: "Don't forget our upcoming annual user conference", subject: "Reminder about our 2015 user conference");
+cakeMail.UpdateMailing(userKey, reminderMailingId, listId: listId, htmlContent: "<html><body>Don't forget our upcoming annual user conference</body></html>", textContent: "Don't forget our upcoming annual user conference", subject: "Reminder about our 2015 user conference");
 cakeMail.ScheduleMailing(userKey, reminderMailingId, DateTime.UtcNow.AddDays(2));
 ```

@@ -22,7 +22,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			Console.WriteLine("New mailing created. Id: {0}", mailingId);
 
 			var list = api.GetLists(userKey, ListStatus.Active, null, ListsSortBy.Name, SortDirection.Descending, 1, 0, clientId).First();
-			var updated = api.UpdateMailing(userKey, mailingId, name: "UPDATED Integration Test", listId: list.Id, htmlContent: "<html><body>Hello World in HTML.  <a href=\"http://cakemail.com\">CakeMail web site</a></body</html>", textContent: "Hello World in text", subject: "This is a test", clientId: clientId);
+			var updated = api.UpdateMailing(userKey, mailingId, name: "UPDATED Integration Test", listId: list.Id, htmlContent: "<html><body>Hello World in HTML.  <a href=\"http://cakemail.com\">CakeMail web site</a></body></html>", textContent: "Hello World in text", subject: "This is a test", clientId: clientId);
 			Console.WriteLine("Mailing updated: {0}", updated ? "success" : "failed");
 
 			var mailing = api.GetMailing(userKey, mailingId, clientId);
@@ -46,8 +46,12 @@ namespace CakeMail.RestClient.IntegrationTests
 			var unscheduled = api.UnscheduleMailing(userKey, mailingId, clientId);
 			Console.WriteLine("Mailing unscheduled: {0}", unscheduled ? "success" : "failed");
 
-			var logs = api.GetMailingLogs(userKey, mailingId, null, null, false, false, null, null, 25, 0, clientId);
-			Console.WriteLine("Mailing logs retrieved. Count = {0}", logs.Count());
+			var sentMailings = mailings.Where(m => m.Status == MailingStatus.Delivered);
+			if (sentMailings.Any())
+			{
+				var logs = api.GetMailingLogs(userKey, sentMailings.First().Id, null, null, false, false, null, null, 25, 0, clientId);
+				Console.WriteLine("Mailing logs retrieved. Count = {0}", logs.Count());
+			}
 
 			var links = api.GetMailingLinks(userKey, mailingId, null, null, clientId);
 			Console.WriteLine("Mailing links retrieved. Count = {0}", links.Count());
@@ -56,7 +60,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			Console.WriteLine("Mailing links count = {0}", linksCount);
 
 			var deleted = api.DeleteMailing(userKey, mailingId, clientId);
-			Console.WriteLine("List deleted: {0}", deleted ? "success" : "failed");
+			Console.WriteLine("Mailing deleted: {0}", deleted ? "success" : "failed");
 
 			Console.WriteLine(new string('-', 25));
 			Console.WriteLine("");
