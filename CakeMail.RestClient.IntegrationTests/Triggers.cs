@@ -27,7 +27,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			var trigger = api.GetTrigger(userKey, triggerId, clientId);
 			Console.WriteLine("Trigger retrieved: Name = {0}", trigger.Name);
 
-			var updated = api.UpdateTrigger(userKey, triggerId, name: "UPDATED INTEGRATION TEST: trigger", htmlContent: "<html><body>Hello World in HTML. <a href=\"http://cakemail.com\">CakeMail web site</a></body</html>", textContent: "Hello World in text", subject: "This is a test", clientId: clientId);
+			var updated = api.UpdateTrigger(userKey, triggerId, name: "UPDATED INTEGRATION TEST: trigger", htmlContent: "<html><body>Hello World in HTML. <a href=\"http://cakemail.com\">CakeMail web site</a></body</html>", textContent: "Hello World in text", subject: "This is a test", trackClicksInHtml: true, trackClicksInText: true, trackOpens: true, clientId: clientId);
 			Console.WriteLine("Trigger updated: {0}", updated ? "success" : "failed");
 
 			var rawEmail = api.GetTriggerRawEmailMessage(userKey, triggerId, clientId);
@@ -48,8 +48,11 @@ namespace CakeMail.RestClient.IntegrationTests
 			var linksCount = api.GetTriggerLinksCount(userKey, triggerId, clientId);
 			Console.WriteLine("Trigger links count = {0}", linksCount);
 
-			var link = api.GetTriggerLink(userKey, links.First().Id, clientId);
-			Console.WriteLine("Trigger link retrieved. URI = {0}", link.Uri);
+			if (links.Any())
+			{
+				var link = api.GetTriggerLink(userKey, links.First().Id, clientId);
+				Console.WriteLine("Trigger link retrieved. URI = {0}", link.Uri);
+			}
 
 			Console.WriteLine(new string('-', 25));
 			Console.WriteLine("");
