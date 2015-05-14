@@ -22,7 +22,7 @@ namespace CakeMail.RestClient.Models
 		public string Email { get; set; }
 
 		[JsonProperty("action")]
-		public string Action { get; set; }
+		public LogType LogType { get; set; }
 
 		[JsonProperty("total")]
 		public long Total { get; set; }
