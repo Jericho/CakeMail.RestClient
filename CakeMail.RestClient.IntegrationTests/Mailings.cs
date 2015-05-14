@@ -46,21 +46,29 @@ namespace CakeMail.RestClient.IntegrationTests
 			var unscheduled = api.UnscheduleMailing(userKey, mailingId, clientId);
 			Console.WriteLine("Mailing unscheduled: {0}", unscheduled ? "success" : "failed");
 
+			var deleted = api.DeleteMailing(userKey, mailingId, clientId);
+			Console.WriteLine("Mailing deleted: {0}", deleted ? "success" : "failed");
+
 			var sentMailings = mailings.Where(m => m.Status == MailingStatus.Delivered);
 			if (sentMailings.Any())
 			{
-				var logs = api.GetMailingLogs(userKey, sentMailings.First().Id, null, null, false, false, null, null, 25, 0, clientId);
+				var sentMailingId = sentMailings.First().Id;
+
+				var logs = api.GetMailingLogs(userKey, sentMailingId, null, null, false, false, null, null, 25, 0, clientId);
 				Console.WriteLine("Mailing logs retrieved. Count = {0}", logs.Count());
+
+				var links = api.GetMailingLinks(userKey, sentMailingId, null, null, clientId);
+				Console.WriteLine("Mailing links retrieved. Count = {0}", links.Count());
+
+				var linksCount = api.GetMailingLinksCount(userKey, sentMailingId, clientId);
+				Console.WriteLine("Mailing links count = {0}", linksCount);
+
+				var linksStats = api.GetMailingLinksWithStats(userKey, sentMailingId, null, null, null, null, clientId);
+				Console.WriteLine("Mailing links stats retrieved. Count = {0}", linksStats);
+
+				var linksStatsCount = api.GetMailingLinksWithStatsCount(userKey, sentMailingId, null, null, null, null, clientId);
+				Console.WriteLine("Mailing links stats count = {0}", linksStatsCount);
 			}
-
-			var links = api.GetMailingLinks(userKey, mailingId, null, null, clientId);
-			Console.WriteLine("Mailing links retrieved. Count = {0}", links.Count());
-
-			var linksCount = api.GetMailingLinksCount(userKey, mailingId, clientId);
-			Console.WriteLine("Mailing links count = {0}", linksCount);
-
-			var deleted = api.DeleteMailing(userKey, mailingId, clientId);
-			Console.WriteLine("Mailing deleted: {0}", deleted ? "success" : "failed");
 
 			Console.WriteLine(new string('-', 25));
 			Console.WriteLine("");

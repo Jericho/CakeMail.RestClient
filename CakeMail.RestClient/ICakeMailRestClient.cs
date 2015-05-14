@@ -853,7 +853,31 @@ namespace CakeMail.RestClient
 		/// <returns>The <see cref="Link">link</see></returns>
 		Link GetMailingLink(string userKey, long linkId, long? clientId = null);
 
-		IEnumerable<LogItem> GetMailingLinksLogs(string userKey, long mailingId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null);
+		/// <summary>
+		/// Retrieve the links (with their statistics) for a given mailing
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing.</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="limit">Limit the number of resulting links.</param>
+		/// <param name="offset">Offset the beginning of resulting links.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>An enumeration of <see cref="LinkStats">links with their statistics</see> matching the filter criteria</returns>
+		IEnumerable<LinkStats> GetMailingLinksWithStats(string userKey, long mailingId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null);
+
+		/// <summary>
+		/// Get a count of links (with their statistics) for a given mailing
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing.</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="limit">Limit the number of resulting links.</param>
+		/// <param name="offset">Offset the beginning of resulting links.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>An enumeration of <see cref="LinkStats">links with their statistics</see> matching the filter criteria</returns>
+		long GetMailingLinksWithStatsCount(string userKey, long mailingId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null);
 
 		#endregion
 

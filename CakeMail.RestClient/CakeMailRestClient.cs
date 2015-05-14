@@ -1932,6 +1932,9 @@ namespace CakeMail.RestClient
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="Link">links</see> matching the filter criteria</returns>
+		/// <remarks>
+		/// The CakeMail API returns an empty array if you attempt to get the links in a mailing that has not been sent, even if the HTML contains multiple links.
+		/// </remarks>
 		public IEnumerable<Link> GetMailingLinks(string userKey, long mailingId, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			string path = "/Mailing/GetLinks/";
@@ -1992,7 +1995,18 @@ namespace CakeMail.RestClient
 			return ExecuteRequest<Link>(path, parameters);
 		}
 
-		public IEnumerable<LogItem> GetMailingLinksLogs(string userKey, long mailingId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
+		/// <summary>
+		/// Retrieve the links (with their statistics) for a given mailing
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing.</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="limit">Limit the number of resulting links.</param>
+		/// <param name="offset">Offset the beginning of resulting links.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>An enumeration of <see cref="LinkStats">links with their statistics</see> matching the filter criteria</returns>
+		public IEnumerable<LinkStats> GetMailingLinksWithStats(string userKey, long mailingId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			string path = "/Mailing/GetLinksLog/";
 
@@ -2008,7 +2022,37 @@ namespace CakeMail.RestClient
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteArrayRequest<LogItem>(path, parameters, "logs");
+			return ExecuteArrayRequest<LinkStats>(path, parameters, "links");
+		}
+
+		/// <summary>
+		/// Get a count of links (with their statistics) for a given mailing
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="mailingId">ID of the mailing.</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="limit">Limit the number of resulting links.</param>
+		/// <param name="offset">Offset the beginning of resulting links.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>An enumeration of <see cref="LinkStats">links with their statistics</see> matching the filter criteria</returns>
+		public long GetMailingLinksWithStatsCount(string userKey, long mailingId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
+		{
+			string path = "/Mailing/GetLinksLog/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("mailing_id", mailingId),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value.ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value.ToCakeMailString()));
+			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
+			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
 		}
 
 		#endregion
