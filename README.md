@@ -27,6 +27,7 @@ CakeMailRestAPI is available as a Nuget package.
     - Fix bug in CreateTemplateCategory which prevents creating new categories
     - Fix bug in DeleteTemplateCategory which causes an exception to be thrown despite the fact the category was successfuly deleted
     - Fix bug in GetListMembers which causes exception: 'Json does not contain property members'
+	- Fix GetTriggerLinksLogs
     - Added XML comments file for convenient intellisense in Visual Studio
 
 + **1.0.0**

@@ -2973,7 +2973,7 @@ namespace CakeMail.RestClient
 
 		public IEnumerable<LogItem> GetTriggerLinksLogs(string userKey, long triggerId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
-			string path = "/Trigger/GetLog/";
+			string path = "/Trigger/GetLinksLog/";
 
 			var parameters = new List<KeyValuePair<string, object>>()
 			{
@@ -2987,7 +2987,7 @@ namespace CakeMail.RestClient
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return ExecuteArrayRequest<LogItem>(path, parameters, "logs");
+			return ExecuteArrayRequest<LogItem>(path, parameters, "links");
 		}
 
 		#endregion
