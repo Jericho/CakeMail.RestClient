@@ -13,6 +13,8 @@ namespace CakeMail.RestClient.Models
 		Sent,
 		[EnumMember(Value = "opened")]
 		Open,
+		[EnumMember(Value = "opened_forward")]
+		OpenForward,
 		[EnumMember(Value = "clickthru")]
 		Click,
 		[EnumMember(Value = "forward")]
@@ -24,6 +26,28 @@ namespace CakeMail.RestClient.Models
 		[EnumMember(Value = "spam")]
 		Spam,
 		[EnumMember(Value = "skipped")]
-		Skipped
+		Skipped,
+		[EnumMember(Value = "implied_open")]
+		ImpliedOpen,
+
+		[EnumMember(Value = "bounce_sb")]
+		SoftBounce,
+		[EnumMember(Value = "bounce_ac")]
+		AddressChange,
+		[EnumMember(Value = "bounce_ar")]
+		AutoReply,
+		[EnumMember(Value = "bounce_cr")]
+		ChallengeResponse,
+		[EnumMember(Value = "bounce_mb")]
+		MailBlock,
+		[EnumMember(Value = "bounce_fm")]
+		FullMailbox,
+		[EnumMember(Value = "bounce_tr")]
+		TransientBounce,
+
+		[EnumMember(Value = "bounce_hb")]
+		HardBounce,
+		[EnumMember(Value = "bounce_df")]
+		DnsFailure
 	}
 }
