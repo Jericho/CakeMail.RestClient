@@ -2957,6 +2957,10 @@ namespace CakeMail.RestClient
 		/// <param name="linkId">ID of the link.</param>
 		/// <param name="clientId">Client ID of the client in which the link is located.</param>
 		/// <returns>The <see cref="Link">link</see></returns>
+		/// <remarks>
+		/// This method is documented on CakeMail's web site (http://dev.cakemail.com/api/Trigger/GetLinkInfo) but unfortunately, it's not implemented.
+		/// Invoking this method will result in an exception with the following error message: "Invalid Method: GetLinkInfo".
+		/// </remarks>
 		public Link GetTriggerLink(string userKey, long linkId, long? clientId = null)
 		{
 			string path = "/Trigger/GetLinkInfo/";
@@ -2971,6 +2975,17 @@ namespace CakeMail.RestClient
 			return ExecuteRequest<Link>(path, parameters);
 		}
 
+		/// <summary>
+		/// Retrieve the log items associated with the links in a given trigger
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="triggerId">ID of the trigger.</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="limit">Limit the number of resulting log items.</param>
+		/// <param name="offset">Offset the beginning of resulting log items.</param>
+		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <returns>An enumeration of <see cref="LogItem">log items</see> matching the filter criteria</returns>
 		public IEnumerable<LogItem> GetTriggerLinksLogs(string userKey, long triggerId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			string path = "/Trigger/GetLinksLog/";
@@ -2988,6 +3003,32 @@ namespace CakeMail.RestClient
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteArrayRequest<LogItem>(path, parameters, "links");
+		}
+
+		/// <summary>
+		/// Get a count of log items associated with the links in a given trigger matching the filter criteria
+		/// </summary>
+		/// <param name="userKey">User Key of the user who initiates the call.</param>
+		/// <param name="triggerId">ID of the trigger.</param>
+		/// <param name="start">Filter using a start date</param>
+		/// <param name="end">Filter using an end date</param>
+		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
+		/// <returns>The number of log items matching the filtering criteria</returns>
+		public long GetTriggerLinksLogsCount(string userKey, long triggerId, DateTime? start = null, DateTime? end = null, long? clientId = null)
+		{
+			string path = "/Trigger/GetLinksLog/";
+
+			var parameters = new List<KeyValuePair<string, object>>()
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("trigger_id", triggerId),
+				new KeyValuePair<string, object>("count", "true")
+			};
+			if (start.HasValue) parameters.Add(new KeyValuePair<string, object>("start_time", start.Value.ToCakeMailString()));
+			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value.ToCakeMailString()));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return ExecuteCountRequest(path, parameters);
 		}
 
 		#endregion
