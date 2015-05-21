@@ -19,10 +19,10 @@ namespace CakeMail.RestClient.IntegrationTests
 			var campaign = api.GetCampaigns(userKey, CampaignStatus.Ongoing, null, CampaignsSortBy.Name, SortDirection.Ascending, 1, 0, clientId).First();
 
 			var triggers = api.GetTriggers(userKey, TriggerStatus.Active, null, null, null, null, null, clientId);
-			Console.WriteLine("All triggers retrieved. Count = {0}", triggers.Count());
+			Console.WriteLine("Active triggers retrieved. Count = {0}", triggers.Count());
 
 			var triggersCount = api.GetTriggersCount(userKey, TriggerStatus.Active, null, null, null, clientId);
-			Console.WriteLine("Triggers count = {0}", triggersCount);
+			Console.WriteLine("Active triggers count = {0}", triggersCount);
 
 			var triggerId = api.CreateTrigger(userKey, "Integration Testing: trigger", listId, campaign.Id, null, null, clientId);
 			Console.WriteLine("New trigger created. Id: {0}", triggerId);
@@ -49,19 +49,19 @@ namespace CakeMail.RestClient.IntegrationTests
 			Thread.Sleep(2000);
 
 			var logs = api.GetTriggerLogs(userKey, triggerId, null, null, false, false, null, null, null, null, clientId);
-			Console.WriteLine("All trigger logs retrieved. Count = {0}", logs.Count());
+			Console.WriteLine("Trigger logs retrieved. Count = {0}", logs.Count());
 
 			var links = api.GetTriggerLinks(userKey, triggerId, 0, 0, clientId);
-			Console.WriteLine("All trigger links retrieved. Count = {0}", links.Count());
+			Console.WriteLine("Trigger links retrieved. Count = {0}", links.Count());
 
 			var linksCount = api.GetTriggerLinksCount(userKey, triggerId, clientId);
 			Console.WriteLine("Trigger links count = {0}", linksCount);
 
-			var linksLogs = api.GetTriggerLinksLogs(userKey, triggerId, null, null, null, null, clientId);
-			Console.WriteLine("Trigger links logs retrieved. Count = {0}", linksLogs.Count());
+			var linksStats = api.GetTriggerLinksWithStats(userKey, triggerId, null, null, null, null, clientId);
+			Console.WriteLine("Trigger links stats retrieved. Count = {0}", linksStats.Count());
 
-			var linksLogsCount = api.GetTriggerLinksLogsCount(userKey, triggerId, null, null, clientId);
-			Console.WriteLine("Trigger links logs count = {0}", linksLogsCount);
+			var linksStatsCount = api.GetTriggerLinksWithStatsCount(userKey, triggerId, null, null, clientId);
+			Console.WriteLine("Trigger links stats count = {0}", linksStatsCount);
 
 			if (links.Any())
 			{
