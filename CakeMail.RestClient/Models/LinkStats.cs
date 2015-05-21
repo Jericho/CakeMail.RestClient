@@ -12,9 +12,6 @@ namespace CakeMail.RestClient.Models
 		[JsonProperty("link_to")]
 		public string Uri { get; set; }
 
-		[JsonProperty("mailing_id")]
-		public long MailingId { get; set; }
-
 		[JsonProperty("unique")]
 		public long UniqueClicks { get; set; }
 
