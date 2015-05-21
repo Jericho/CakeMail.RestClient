@@ -2809,13 +2809,13 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTriggerLinksLogs_with_minimal_parameters()
+		public void GetTriggerLinksWithStats_with_minimal_parameters()
 		{
 			// Arrange
 			var triggerId = 123;
 
-			var jsonClickLog1 = "{\"email\":\"aaa@aaa.com\",\"host\":null,\"ip\":\"127.0.0.1\",\"link_to\":\"http://www.fictitiouscompany.com\",\"relay_id\":\"88750676\",\"sent_id\":\"8356550\",\"time\":\"2015-04-06 00:17:52\",\"tracking_id\":\"1744041192\",\"user_agent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Version/7.0 Mobile/11D257 Safari/9537.53\"}";
-			var jsonClickLog2 = "{\"email\":\"bbb@bbb.com\",\"host\":null,\"ip\":\"127.0.0.1\",\"link_to\":\"http://www.fictitiouscompany.com\",\"relay_id\":\"86668371\",\"sent_id\":\"8013252\",\"time\":\"2015-04-06 00:47:14\",\"tracking_id\":\"1558835933\",\"user_agent\":\"Mozilla/5.0 (iPad; CPU OS 8_1_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B440 Safari/600.1.4\"}";
+			var jsonClickLog1 = "{\"id\":\"1111\",\"link_to\":\"http://www.fictitiouscompany.com\",\"unique\":\"1\",\"total\":\"5\",\"unique_rate\":\"1\",\"total_rate\":\"1\"}";
+			var jsonClickLog2 = "{\"id\":\"2222\",\"link_to\":\"http://www.cakemail.com\",\"unique\":\"1\",\"total\":\"5\",\"unique_rate\":\"1\",\"total_rate\":\"1\"}";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -2837,7 +2837,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTriggerLinksLogs(USER_KEY, triggerId);
+			var result = apiClient.GetTriggerLinksWithStats(USER_KEY, triggerId);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -2845,14 +2845,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTriggerLinksLogs_with_startdate()
+		public void GetTriggerLinksWithStats_with_startdate()
 		{
 			// Arrange
 			var triggerId = 123;
 			var start = new DateTime(2015, 1, 1);
 
-			var jsonClickLog1 = "{\"email\":\"aaa@aaa.com\",\"host\":null,\"ip\":\"127.0.0.1\",\"link_to\":\"http://www.fictitiouscompany.com\",\"relay_id\":\"88750676\",\"sent_id\":\"8356550\",\"time\":\"2015-04-06 00:17:52\",\"tracking_id\":\"1744041192\",\"user_agent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Version/7.0 Mobile/11D257 Safari/9537.53\"}";
-			var jsonClickLog2 = "{\"email\":\"bbb@bbb.com\",\"host\":null,\"ip\":\"127.0.0.1\",\"link_to\":\"http://www.fictitiouscompany.com\",\"relay_id\":\"86668371\",\"sent_id\":\"8013252\",\"time\":\"2015-04-06 00:47:14\",\"tracking_id\":\"1558835933\",\"user_agent\":\"Mozilla/5.0 (iPad; CPU OS 8_1_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B440 Safari/600.1.4\"}";
+			var jsonClickLog1 = "{\"id\":\"1111\",\"link_to\":\"http://www.fictitiouscompany.com\",\"unique\":\"1\",\"total\":\"5\",\"unique_rate\":\"1\",\"total_rate\":\"1\"}";
+			var jsonClickLog2 = "{\"id\":\"2222\",\"link_to\":\"http://www.cakemail.com\",\"unique\":\"1\",\"total\":\"5\",\"unique_rate\":\"1\",\"total_rate\":\"1\"}";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -2875,7 +2875,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTriggerLinksLogs(USER_KEY, triggerId, start: start);
+			var result = apiClient.GetTriggerLinksWithStats(USER_KEY, triggerId, start: start);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -2883,14 +2883,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTriggerLinksLogs_with_enddate()
+		public void GetTriggerLinksWithStats_with_enddate()
 		{
 			// Arrange
 			var triggerId = 123;
 			var end = new DateTime(2015, 12, 31);
 
-			var jsonClickLog1 = "{\"email\":\"aaa@aaa.com\",\"host\":null,\"ip\":\"127.0.0.1\",\"link_to\":\"http://www.fictitiouscompany.com\",\"relay_id\":\"88750676\",\"sent_id\":\"8356550\",\"time\":\"2015-04-06 00:17:52\",\"tracking_id\":\"1744041192\",\"user_agent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Version/7.0 Mobile/11D257 Safari/9537.53\"}";
-			var jsonClickLog2 = "{\"email\":\"bbb@bbb.com\",\"host\":null,\"ip\":\"127.0.0.1\",\"link_to\":\"http://www.fictitiouscompany.com\",\"relay_id\":\"86668371\",\"sent_id\":\"8013252\",\"time\":\"2015-04-06 00:47:14\",\"tracking_id\":\"1558835933\",\"user_agent\":\"Mozilla/5.0 (iPad; CPU OS 8_1_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B440 Safari/600.1.4\"}";
+			var jsonClickLog1 = "{\"id\":\"1111\",\"link_to\":\"http://www.fictitiouscompany.com\",\"unique\":\"1\",\"total\":\"5\",\"unique_rate\":\"1\",\"total_rate\":\"1\"}";
+			var jsonClickLog2 = "{\"id\":\"2222\",\"link_to\":\"http://www.cakemail.com\",\"unique\":\"1\",\"total\":\"5\",\"unique_rate\":\"1\",\"total_rate\":\"1\"}";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -2913,7 +2913,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTriggerLinksLogs(USER_KEY, triggerId, end: end);
+			var result = apiClient.GetTriggerLinksWithStats(USER_KEY, triggerId, end: end);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -2921,14 +2921,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTriggerLinksLogs_with_limit()
+		public void GetTriggerLinksWithStats_with_limit()
 		{
 			// Arrange
 			var triggerId = 123;
 			var limit = 5;
 
-			var jsonClickLog1 = "{\"email\":\"aaa@aaa.com\",\"host\":null,\"ip\":\"127.0.0.1\",\"link_to\":\"http://www.fictitiouscompany.com\",\"relay_id\":\"88750676\",\"sent_id\":\"8356550\",\"time\":\"2015-04-06 00:17:52\",\"tracking_id\":\"1744041192\",\"user_agent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Version/7.0 Mobile/11D257 Safari/9537.53\"}";
-			var jsonClickLog2 = "{\"email\":\"bbb@bbb.com\",\"host\":null,\"ip\":\"127.0.0.1\",\"link_to\":\"http://www.fictitiouscompany.com\",\"relay_id\":\"86668371\",\"sent_id\":\"8013252\",\"time\":\"2015-04-06 00:47:14\",\"tracking_id\":\"1558835933\",\"user_agent\":\"Mozilla/5.0 (iPad; CPU OS 8_1_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B440 Safari/600.1.4\"}";
+			var jsonClickLog1 = "{\"id\":\"1111\",\"link_to\":\"http://www.fictitiouscompany.com\",\"unique\":\"1\",\"total\":\"5\",\"unique_rate\":\"1\",\"total_rate\":\"1\"}";
+			var jsonClickLog2 = "{\"id\":\"2222\",\"link_to\":\"http://www.cakemail.com\",\"unique\":\"1\",\"total\":\"5\",\"unique_rate\":\"1\",\"total_rate\":\"1\"}";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -2951,7 +2951,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTriggerLinksLogs(USER_KEY, triggerId, limit: limit);
+			var result = apiClient.GetTriggerLinksWithStats(USER_KEY, triggerId, limit: limit);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -2959,14 +2959,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTriggerLinksLogs_with_offset()
+		public void GetTriggerLinksWithStats_with_offset()
 		{
 			// Arrange
 			var triggerId = 123;
 			var offset = 25;
 
-			var jsonClickLog1 = "{\"email\":\"aaa@aaa.com\",\"host\":null,\"ip\":\"127.0.0.1\",\"link_to\":\"http://www.fictitiouscompany.com\",\"relay_id\":\"88750676\",\"sent_id\":\"8356550\",\"time\":\"2015-04-06 00:17:52\",\"tracking_id\":\"1744041192\",\"user_agent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Version/7.0 Mobile/11D257 Safari/9537.53\"}";
-			var jsonClickLog2 = "{\"email\":\"bbb@bbb.com\",\"host\":null,\"ip\":\"127.0.0.1\",\"link_to\":\"http://www.fictitiouscompany.com\",\"relay_id\":\"86668371\",\"sent_id\":\"8013252\",\"time\":\"2015-04-06 00:47:14\",\"tracking_id\":\"1558835933\",\"user_agent\":\"Mozilla/5.0 (iPad; CPU OS 8_1_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B440 Safari/600.1.4\"}";
+			var jsonClickLog1 = "{\"id\":\"1111\",\"link_to\":\"http://www.fictitiouscompany.com\",\"unique\":\"1\",\"total\":\"5\",\"unique_rate\":\"1\",\"total_rate\":\"1\"}";
+			var jsonClickLog2 = "{\"id\":\"2222\",\"link_to\":\"http://www.cakemail.com\",\"unique\":\"1\",\"total\":\"5\",\"unique_rate\":\"1\",\"total_rate\":\"1\"}";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -2989,7 +2989,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTriggerLinksLogs(USER_KEY, triggerId, offset: offset);
+			var result = apiClient.GetTriggerLinksWithStats(USER_KEY, triggerId, offset: offset);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -2997,13 +2997,13 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTriggerLinksLogs_with_clientid()
+		public void GetTriggerLinksWithStats_with_clientid()
 		{
 			// Arrange
 			var triggerId = 123;
 
-			var jsonClickLog1 = "{\"email\":\"aaa@aaa.com\",\"host\":null,\"ip\":\"127.0.0.1\",\"link_to\":\"http://www.fictitiouscompany.com\",\"relay_id\":\"88750676\",\"sent_id\":\"8356550\",\"time\":\"2015-04-06 00:17:52\",\"tracking_id\":\"1744041192\",\"user_agent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Version/7.0 Mobile/11D257 Safari/9537.53\"}";
-			var jsonClickLog2 = "{\"email\":\"bbb@bbb.com\",\"host\":null,\"ip\":\"127.0.0.1\",\"link_to\":\"http://www.fictitiouscompany.com\",\"relay_id\":\"86668371\",\"sent_id\":\"8013252\",\"time\":\"2015-04-06 00:47:14\",\"tracking_id\":\"1558835933\",\"user_agent\":\"Mozilla/5.0 (iPad; CPU OS 8_1_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B440 Safari/600.1.4\"}";
+			var jsonClickLog1 = "{\"id\":\"1111\",\"link_to\":\"http://www.fictitiouscompany.com\",\"unique\":\"1\",\"total\":\"5\",\"unique_rate\":\"1\",\"total_rate\":\"1\"}";
+			var jsonClickLog2 = "{\"id\":\"2222\",\"link_to\":\"http://www.cakemail.com\",\"unique\":\"1\",\"total\":\"5\",\"unique_rate\":\"1\",\"total_rate\":\"1\"}";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -3026,7 +3026,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTriggerLinksLogs(USER_KEY, triggerId, clientId: CLIENT_ID);
+			var result = apiClient.GetTriggerLinksWithStats(USER_KEY, triggerId, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -3034,7 +3034,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 		
 		[TestMethod]
-		public void GetTriggerLinksLogsCount_with_minimal_parameters()
+		public void GetTriggerLinksWithStatsCount_with_minimal_parameters()
 		{
 			// Arrange
 			var triggerId = 123;
@@ -3059,7 +3059,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTriggerLinksLogsCount(USER_KEY, triggerId);
+			var result = apiClient.GetTriggerLinksWithStatsCount(USER_KEY, triggerId);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -3067,7 +3067,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTriggerLinksLogsCount_with_startdate()
+		public void GetTriggerLinksWithStatsCount_with_startdate()
 		{
 			// Arrange
 			var triggerId = 123;
@@ -3094,7 +3094,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTriggerLinksLogsCount(USER_KEY, triggerId, start: start);
+			var result = apiClient.GetTriggerLinksWithStatsCount(USER_KEY, triggerId, start: start);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -3102,7 +3102,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTriggerLinksLogsCount_with_enddate()
+		public void GetTriggerLinksWithStatsCount_with_enddate()
 		{
 			// Arrange
 			var triggerId = 123;
@@ -3129,7 +3129,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTriggerLinksLogsCount(USER_KEY, triggerId, end: end);
+			var result = apiClient.GetTriggerLinksWithStatsCount(USER_KEY, triggerId, end: end);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -3137,7 +3137,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTriggerLinksLogsCount_with_clientid()
+		public void GetTriggerLinksWithStatsCount_with_clientid()
 		{
 			// Arrange
 			var triggerId = 123;
@@ -3163,7 +3163,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTriggerLinksLogsCount(USER_KEY, triggerId, clientId: CLIENT_ID);
+			var result = apiClient.GetTriggerLinksWithStatsCount(USER_KEY, triggerId, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);

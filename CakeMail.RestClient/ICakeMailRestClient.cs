@@ -876,7 +876,7 @@ namespace CakeMail.RestClient
 		/// <param name="limit">Limit the number of resulting links.</param>
 		/// <param name="offset">Offset the beginning of resulting links.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
-		/// <returns>An enumeration of <see cref="LinkStats">links with their statistics</see> matching the filter criteria</returns>
+		/// <returns>The number of links matching the filter criteria</returns>
 		long GetMailingLinksWithStatsCount(string userKey, long mailingId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null);
 
 		#endregion
@@ -1259,7 +1259,7 @@ namespace CakeMail.RestClient
 		Link GetTriggerLink(string userKey, long linkId, long? clientId = null);
 
 		/// <summary>
-		/// Retrieve the log items associated with the links in a given trigger
+		/// Retrieve the links (with their statistics) for a given trigger
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="triggerId">ID of the trigger.</param>
@@ -1268,19 +1268,19 @@ namespace CakeMail.RestClient
 		/// <param name="limit">Limit the number of resulting log items.</param>
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
-		/// <returns>An enumeration of <see cref="LogItem">log items</see> matching the filter criteria</returns>
-		IEnumerable<LogItem> GetTriggerLinksLogs(string userKey, long triggerId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null);
+		/// <returns>An enumeration of <see cref="LinkStats">links with their statistics</see> matching the filter criteria</returns>
+		IEnumerable<LinkStats> GetTriggerLinksWithStats(string userKey, long triggerId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null);
 
 		/// <summary>
-		/// Get a count of log items associated with the links in a given trigger matching the filter criteria
+		/// Get a count of links (with their statistics) for a given trigger
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="triggerId">ID of the trigger.</param>
 		/// <param name="start">Filter using a start date</param>
 		/// <param name="end">Filter using an end date</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
-		/// <returns>The number of log items matching the filtering criteria</returns>
-		long GetTriggerLinksLogsCount(string userKey, long triggerId, DateTime? start = null, DateTime? end = null, long? clientId = null);
+		/// <returns>The number of links matching the filter criteria</returns>
+		long GetTriggerLinksWithStatsCount(string userKey, long triggerId, DateTime? start = null, DateTime? end = null, long? clientId = null);
 
 		#endregion
 
