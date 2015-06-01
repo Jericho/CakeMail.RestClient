@@ -14,7 +14,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			Console.WriteLine("Executing TRIGGERS methods...");
 
 			var listId = api.CreateList(userKey, "INTEGRATION TESTING list for trigger", "Bob Smith", "bobsmith@fictitiouscomapny.com", true, clientId);
-			var listMemberId = api.Subscribe(userKey, listId, "desautelsj@hotmail.com", true, true, null, clientId);
+			var listMemberId = api.Subscribe(userKey, listId, "recipient@destination.com", true, true, null, clientId);
 
 			var campaign = api.GetCampaigns(userKey, CampaignStatus.Ongoing, null, CampaignsSortBy.Name, SortDirection.Ascending, 1, 0, clientId).First();
 
