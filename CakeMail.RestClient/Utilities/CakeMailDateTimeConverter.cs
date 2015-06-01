@@ -4,8 +4,17 @@ using System;
 
 namespace CakeMail.RestClient.Utilities
 {
+	/// <summary>
+	/// Converter class used in conjuction with JSON.NET to convert a DateTime into a string format acceptable to CakeMail
+	/// </summary>
 	public class CakeMailDateTimeConverter : DateTimeConverterBase
 	{
+		/// <summary>
+		/// Writes the JSON representation of the DateTime value
+		/// </summary>
+		/// <param name="writer">The Newtonsoft.Json.JsonWriter to write to</param>
+		/// <param name="value">The value</param>
+		/// <param name="serializer">The calling serializer</param>
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
 			if (value is DateTime)
@@ -19,6 +28,14 @@ namespace CakeMail.RestClient.Utilities
 			}
 		}
 
+		/// <summary>
+		/// Reads the JSON representation of the CakeMail DateTime
+		/// </summary>
+		/// <param name="reader">The Newtonsoft.Json.JsonReader to read from</param>
+		/// <param name="objectType">Type of the object</param>
+		/// <param name="existingValue">The existing value of object being read</param>
+		/// <param name="serializer">The calling serializer</param>
+		/// <returns>The DateTime value</returns>
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{
 			if (reader.TokenType == JsonToken.Null) return (DateTime?)null;
@@ -30,6 +47,11 @@ namespace CakeMail.RestClient.Utilities
 			return date;
 		}
 
+		/// <summary>
+		/// Determines whether this instance can convert the specified object type.
+		/// </summary>
+		/// <param name="objectType"></param>
+		/// <returns>true if this instance can convert the specified object type; otherwise, false.</returns>
 		public override bool CanConvert(Type objectType)
 		{
 			return (objectType == typeof(DateTime) || objectType == typeof(DateTime?));

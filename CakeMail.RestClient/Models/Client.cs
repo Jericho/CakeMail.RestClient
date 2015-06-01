@@ -4,12 +4,15 @@ using System;
 
 namespace CakeMail.RestClient.Models
 {
+	/// <summary>
+	/// A Client is basically an account. A client can have multiple users.
+	/// </summary>
 	public class Client
 	{
 		#region Properties
 
 		[JsonProperty("id")]
-		public int Id { get; set; }
+		public long Id { get; set; }
 
 		[JsonProperty("lineage")]
 		public string Lineage { get; set; }
@@ -39,7 +42,7 @@ namespace CakeMail.RestClient.Models
 		public string Name { get; set; }
 
 		[JsonProperty("contact_id")]
-		public int ContactId { get; set; }
+		public long ContactId { get; set; }
 
 		[JsonProperty("country")]
 		public string CountryName { get; set; }
@@ -51,10 +54,10 @@ namespace CakeMail.RestClient.Models
 		public string Currency { get; set; }
 
 		[JsonProperty("default_mailing_limit")]
-		public int DefaultMailingLimit { get; set; }
+		public long DefaultMailingLimit { get; set; }
 
 		[JsonProperty("default_month_limit")]
-		public int DefaultMonthLimit { get; set; }
+		public long DefaultMonthLimit { get; set; }
 
 		[JsonProperty("dkim_domain")]
 		public string DkimDomain { get; set; }
@@ -84,10 +87,10 @@ namespace CakeMail.RestClient.Models
 		public DateTime LastActivityOn { get; set; }
 
 		[JsonProperty("mailing_limit")]
-		public int MailingLimit { get; set; }
+		public long MailingLimit { get; set; }
 
 		[JsonProperty("manager_id")]
-		public int ManagerId { get; set; }
+		public long ManagerId { get; set; }
 
 		[JsonProperty("md_domain")]
 		public string MdDomain { get; set; }
@@ -96,19 +99,19 @@ namespace CakeMail.RestClient.Models
 		public string ParentMdDomain { get; set; }
 
 		[JsonProperty("month_limit")]
-		public int MonthLimit { get; set; }
+		public long MonthLimit { get; set; }
 
 		[JsonProperty("default_contact_limit")]
-		public int DefaultContactLimit { get; set; }
+		public long DefaultContactLimit { get; set; }
 
 		[JsonProperty("contact_limit")]
-		public int ContactLimit { get; set; }
+		public long ContactLimit { get; set; }
 
 		[JsonProperty("mta_id")]
 		public string MtaId { get; set; }
 
 		[JsonProperty("parent_id")]
-		public int ParentId { get; set; }
+		public long ParentId { get; set; }
 
 		[JsonProperty("phone")]
 		public string Phone { get; set; }
@@ -148,7 +151,7 @@ namespace CakeMail.RestClient.Models
 		public bool IsReseller { get; set; }
 
 		[JsonProperty("status")]
-		public string Status { get; set; }
+		public ClientStatus Status { get; set; }
 
 		[JsonProperty("lineage_status")]
 		public string LineageStatus { get; set; }

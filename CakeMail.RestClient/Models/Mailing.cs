@@ -4,27 +4,30 @@ using System;
 
 namespace CakeMail.RestClient.Models
 {
+	/// <summary>
+	/// A mailing is an email campaign. It can be used to send standard email campaigns, A/B split campaigns or recurring campaigns.
+	/// </summary>
 	public class Mailing
 	{
 		#region Properties
 
 		[JsonProperty("id")]
-		public int Id { get; set; }
+		public long Id { get; set; }
 
 		[JsonProperty("campaign_id")]
-		public int CampaignId { get; set; }
+		public long CampaignId { get; set; }
 
 		[JsonProperty("list_id")]
-		public int ListId { get; set; }
+		public long ListId { get; set; }
 
 		[JsonProperty("list_name")]
 		public string ListName { get; set; }
 
 		[JsonProperty("sublist_id")]
-		public int SublistId { get; set; }
+		public long SublistId { get; set; }
 
 		[JsonProperty("status")]
-		public string Status { get; set; }
+		public MailingStatus Status { get; set; }
 
 		[JsonProperty("next_step")]
 		public string NextStep { get; set; }
@@ -84,14 +87,14 @@ namespace CakeMail.RestClient.Models
 		public string TrackingParameters { get; set; }
 
 		[JsonProperty("type")]
-		public string Type { get; set; }
+		public MailingType Type { get; set; }
 
 		[JsonProperty("ending_on")]
 		[JsonConverter(typeof(CakeMailDateTimeConverter))]
 		public DateTime EndingOn { get; set; }
 
 		[JsonProperty("max_recurrences")]
-		public int MaxRecurrences { get; set; }
+		public long MaxRecurrences { get; set; }
 
 		[JsonProperty("recurring_conditions")]
 		public string RecurringConditions { get; set; }
@@ -122,55 +125,55 @@ namespace CakeMail.RestClient.Models
 		public DateTime ModifiedOn { get; set; }
 
 		[JsonProperty("active_emails")]
-		public int ActiveEmails { get; set; }
+		public long ActiveEmails { get; set; }
 
 		[JsonProperty("bounce_ar")]
-		public int Bounce_AR { get; set; }
+		public long Bounce_AR { get; set; }
 
 		[JsonProperty("bounce_cr")]
-		public int Bounce_CR { get; set; }
+		public long Bounce_CR { get; set; }
 
 		[JsonProperty("bounce_df")]
-		public int Bounce_DF { get; set; }
+		public long Bounce_DF { get; set; }
 
 		[JsonProperty("bounce_fm")]
-		public int Bounce_FM { get; set; }
+		public long Bounce_FM { get; set; }
 
 		[JsonProperty("bounce_hb")]
-		public int Bounce_HB { get; set; }
+		public long Bounce_HB { get; set; }
 
 		[JsonProperty("bounce_mb")]
-		public int Bounce_MB { get; set; }
+		public long Bounce_MB { get; set; }
 
 		[JsonProperty("bounce_sb")]
-		public int Bounce_SB { get; set; }
+		public long Bounce_SB { get; set; }
 
 		[JsonProperty("bounce_tr")]
-		public int Bounce_TR { get; set; }
+		public long Bounce_TR { get; set; }
 
 		[JsonProperty("forwards")]
-		public int Forwards { get; set; }
+		public long Forwards { get; set; }
 
 		[JsonProperty("opened_forwards")]
-		public int OpenedForwards { get; set; }
+		public long OpenedForwards { get; set; }
 
 		[JsonProperty("sent")]
-		public int Sent { get; set; }
+		public long Sent { get; set; }
 
 		[JsonProperty("skipped")]
-		public int Skipped { get; set; }
+		public long Skipped { get; set; }
 
 		[JsonProperty("total_clicks")]
-		public int TotalClicks { get; set; }
+		public long TotalClicks { get; set; }
 
 		[JsonProperty("total_opens")]
-		public int TotalOpens { get; set; }
+		public long TotalOpens { get; set; }
 
 		[JsonProperty("unique_clicks")]
-		public int UniqueClicks { get; set; }
+		public long UniqueClicks { get; set; }
 
 		[JsonProperty("unique_opens")]
-		public int UniqueOpens { get; set; }
+		public long UniqueOpens { get; set; }
 
 		[JsonProperty("unsubscribes")]
 		public int? unsubscribes { get; set; }

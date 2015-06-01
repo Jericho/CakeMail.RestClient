@@ -2,6 +2,9 @@
 
 namespace CakeMail.RestClient.Models
 {
+	/// <summary>
+	/// A country
+	/// </summary>
 	public class Country
 	{
 		#region Properties

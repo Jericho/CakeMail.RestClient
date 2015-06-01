@@ -1,14 +1,20 @@
 ﻿using CakeMail.RestClient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using System;
-using System.IO;
+using System.Runtime.Serialization;
 
 namespace CakeMail.RestClient.UnitTests.Utilities
 {
 	[TestClass]
 	public class ExtensionMethodsTests
 	{
+		private enum UnitTestingEnum
+		{
+			AAA,
+			[EnumMember(Value = "BBB")]
+			BBB
+		}
+
 		[TestMethod]
 		public void ToCakeMailString_handles_DateTime_MinValue()
 		{
@@ -33,6 +39,86 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 
 			// Assert
 			Assert.AreEqual("2015-03-20 17:41:59", result);
+		}
+
+		[TestMethod]
+		public void GetEnumMemberValue_handles_zero_attributes()
+		{
+			// Arrange
+			var value = UnitTestingEnum.AAA;
+
+			// Act
+			var result = value.GetEnumMemberValue();
+
+			// Assert
+			Assert.AreEqual(String.Empty, result);
+		}
+
+		[TestMethod]
+		public void GetEnumMemberValue_handles_attribute()
+		{
+			// Arrange
+			var value = UnitTestingEnum.BBB;
+
+			// Act
+			var result = value.GetEnumMemberValue();
+
+			// Assert
+			Assert.AreEqual("BBB", result);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
+		public void GetValueFromEnumMember_thows_exception_when_invalid_type()
+		{
+			// Arrange
+			var enumMember = "BBB";
+
+			// Act
+			var result = ExtensionMethods.GetValueFromEnumMember<int>(enumMember);
+
+			// Assert
+			// Nothing to assert, an exception will be thrown
+		}
+
+		[TestMethod]
+		public void GetValueFromEnumMember_handles_value_matching_attribute()
+		{
+			// Arrange
+			var enumMember = "BBB";
+
+			// Act
+			var result = ExtensionMethods.GetValueFromEnumMember<UnitTestingEnum>(enumMember);
+
+			// Assert
+			Assert.AreEqual(UnitTestingEnum.BBB, result);
+		}
+
+		[TestMethod]
+		public void GetValueFromEnumMember_handles_value_matching_enum_name()
+		{
+			// Arrange
+			var enumMember = "AAA";
+
+			// Act
+			var result = ExtensionMethods.GetValueFromEnumMember<UnitTestingEnum>(enumMember);
+
+			// Assert
+			Assert.AreEqual(UnitTestingEnum.AAA, result);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void GetValueFromEnumMember_thows_exception_when_no_match()
+		{
+			// Arrange
+			var enumMember = "CCC";
+
+			// Act
+			var result = ExtensionMethods.GetValueFromEnumMember<UnitTestingEnum>(enumMember);
+
+			// Assert
+			// Nothing to assert, an exception will be thrown
 		}
 	}
 }

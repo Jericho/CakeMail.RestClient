@@ -1,4 +1,5 @@
-﻿using CakeMail.RestClient.Utilities;
+﻿using CakeMail.RestClient.Models;
+using CakeMail.RestClient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RestSharp;
@@ -13,7 +14,75 @@ namespace CakeMail.RestClient.UnitTests
 	{
 		private const string API_KEY = "...dummy API key...";
 		private const string USER_KEY = "...dummy USER key...";
-		private const int CLIENT_ID = 999;
+		private const long CLIENT_ID = 999;
+
+		[TestMethod]
+		public void CreateClient_with_minimal_parameters()
+		{
+			// Arrange
+			string name = "Fictitious Inc";
+
+			string confirmationCode = "... dummy confirmation code ...";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Client/Create/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "parent_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "company_name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "contact_same_as_admin" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", confirmationCode)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.CreateClient(CLIENT_ID, name);
+
+			// Assert
+			Assert.AreEqual(confirmationCode, result);
+		}
+
+		[TestMethod]
+		public void CreateClient_with_minimal_parameters_and_contactsameasadmin_false()
+		{
+			// Arrange
+			string name = "Fictitious Inc";
+
+			string confirmationCode = "... dummy confirmation code ...";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/Client/Create/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "parent_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "company_name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "contact_same_as_admin" && (string)p.Value == "0" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", confirmationCode)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.CreateClient(CLIENT_ID, name, primaryContactSameAsAdmin: false);
+
+			// Assert
+			Assert.AreEqual(confirmationCode, result);
+		}
 
 		[TestMethod]
 		public void CreateClient_with_all_parameters()
@@ -60,7 +129,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 32 &&
 
-				r.Parameters.Count(p => p.Name == "parent_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "parent_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "company_name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
 
 				r.Parameters.Count(p => p.Name == "address1" && (string)p.Value == address1 && p.Type == ParameterType.GetOrPost) == 1 &&
@@ -82,7 +151,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "admin_office_phone" && (string)p.Value == adminOfficePhone && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "admin_mobile_phone" && (string)p.Value == adminMobilePhone && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "admin_language" && (string)p.Value == adminLanguage && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "admin_timezone_id" && (int)p.Value == adminTimezoneId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "admin_timezone_id" && (long)p.Value == adminTimezoneId && p.Type == ParameterType.GetOrPost) == 1 &&
 
 				r.Parameters.Count(p => p.Name == "contact_same_as_admin" && (string)p.Value == "0" && p.Type == ParameterType.GetOrPost) == 1 &&
 
@@ -95,69 +164,8 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "contact_office_phone" && (string)p.Value == primaryContactOfficePhone && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "contact_mobile_phone" && (string)p.Value == primaryContactMobilePhone && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "contact_language" && (string)p.Value == primaryContactLanguage && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "contact_timezone_id" && (int)p.Value == primaryContactTimezoneId && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "contact_timezone_id" && (long)p.Value == primaryContactTimezoneId && p.Type == ParameterType.GetOrPost) == 1
 
-			))).Returns(new RestResponse()
-			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", confirmationCode)
-			});
-
-			// Act
-			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateClient(CLIENT_ID, name, address1, address2, city, provinceId, postalCode, countryId, website, phone, fax, adminEmail, adminFirstName, adminLastName, adminTitle, adminOfficePhone, adminMobilePhone, adminLanguage, adminTimezoneId, adminPassword, false, primaryContactEmail, primaryContactFirstName, primaryContactLastName, primaryContactTitle, primaryContactOfficePhone, primaryContactMobilePhone, primaryContactLanguage, primaryContactTimezoneId, primaryContactPassword);
-
-			// Assert
-			Assert.AreEqual(confirmationCode, result);
-		}
-
-		[TestMethod]
-		public void CreateClient_with_minimal_parameters()
-		{
-			// Arrange
-			string name = "Fictitious Inc";
-			string address1 = null;
-			string address2 = null;
-			string city = null;
-			string provinceId = null;
-			string postalCode = null;
-			string countryId = null;
-			string website = null;
-			string phone = null;
-			string fax = null;
-			string adminEmail = null;
-			string adminFirstName = null;
-			string adminLastName = null;
-			string adminTitle = null;
-			string adminOfficePhone = null;
-			string adminMobilePhone = null;
-			string adminLanguage = null;
-			int? adminTimezoneId = null;
-			string adminPassword = null;
-			string primaryContactEmail = null;
-			string primaryContactFirstName = null;
-			string primaryContactLastName = null;
-			string primaryContactTitle = null;
-			string primaryContactOfficePhone = null;
-			string primaryContactMobilePhone = null;
-			string primaryContactLanguage = null;
-			int? primaryContactTimezoneId = null;
-			string primaryContactPassword = null;
-
-			string confirmationCode = "... dummy confirmation code ...";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/Client/Create/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "parent_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "company_name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "contact_same_as_admin" && (string)p.Value == "0" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -194,7 +202,7 @@ namespace CakeMail.RestClient.UnitTests
 			string adminOfficePhone = "333-333-3333";
 			string adminMobilePhone = "444-444-4444";
 			string adminLanguage = "en";
-			int? adminTimezoneId = 542;
+			long? adminTimezoneId = 542;
 			string adminPassword = "MySecretPassword";
 			string primaryContactEmail = "janedoe@fictitiouscompany.com";
 			string primaryContactFirstName = "Jane";
@@ -203,7 +211,7 @@ namespace CakeMail.RestClient.UnitTests
 			string primaryContactOfficePhone = "555-555-5555";
 			string primaryContactMobilePhone = "666-666-6666";
 			string primaryContactLanguage = "en";
-			int? primaryContactTimezoneId = 542;
+			long? primaryContactTimezoneId = 542;
 			string primaryContactPassword = "SuperSecretPassword";
 
 			string confirmationCode = "... dummy confirmation code ...";
@@ -217,7 +225,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 22 &&
 
-				r.Parameters.Count(p => p.Name == "parent_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "parent_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "company_name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
 
 				r.Parameters.Count(p => p.Name == "address1" && (string)p.Value == address1 && p.Type == ParameterType.GetOrPost) == 1 &&
@@ -239,7 +247,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "admin_office_phone" && (string)p.Value == adminOfficePhone && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "admin_mobile_phone" && (string)p.Value == adminMobilePhone && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "admin_language" && (string)p.Value == adminLanguage && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "admin_timezone_id" && (int)p.Value == adminTimezoneId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "admin_timezone_id" && (long)p.Value == adminTimezoneId && p.Type == ParameterType.GetOrPost) == 1 &&
 
 				r.Parameters.Count(p => p.Name == "contact_same_as_admin" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1
 
@@ -323,12 +331,9 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetClient_with_all_parameters()
+		public void GetClient_with_minimal_parameters()
 		{
 			// Arrange
-			var startDate = new DateTime(2014, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-			var endDate = new DateTime(2014, 12, 31, 23, 59, 59, 999, DateTimeKind.Utc);
-
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
 			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
@@ -336,11 +341,9 @@ namespace CakeMail.RestClient.UnitTests
 				r.Resource == "/Client/GetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "start_date" && (string)p.Value == startDate.ToCakeMailString() && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "end_date" && (string)p.Value == endDate.ToCakeMailString() && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -350,7 +353,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetClient(USER_KEY, CLIENT_ID, startDate, endDate);
+			var result = apiClient.GetClient(USER_KEY, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -374,7 +377,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "start_date" && (string)p.Value == startDate.ToCakeMailString() && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -408,7 +411,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "end_date" && (string)p.Value == endDate.ToCakeMailString() && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -429,7 +432,7 @@ namespace CakeMail.RestClient.UnitTests
 		public void GetClients_with_status()
 		{
 			// Arrange
-			var status = "active";
+			var status = ClientStatus.Active;
 
 			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
@@ -444,7 +447,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -501,7 +504,7 @@ namespace CakeMail.RestClient.UnitTests
 		public void GetClients_with_sortBy()
 		{
 			// Arrange
-			var sortBy = "company_name";
+			var sortBy = ClientsSortBy.CompanyName;
 
 			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
@@ -516,7 +519,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "sort_by" && (string)p.Value == sortBy && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "sort_by" && (string)p.Value == sortBy.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -537,7 +540,7 @@ namespace CakeMail.RestClient.UnitTests
 		public void GetClients_with_sortdirection()
 		{
 			// Arrange
-			var sortDirection = "asc";
+			var sortDirection = SortDirection.Ascending;
 
 			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
@@ -552,7 +555,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "direction" && (string)p.Value == sortDirection && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "direction" && (string)p.Value == sortDirection.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -658,7 +661,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -668,7 +671,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetClients(USER_KEY,clientId: CLIENT_ID);
+			var result = apiClient.GetClients(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -679,7 +682,7 @@ namespace CakeMail.RestClient.UnitTests
 		public void GetClientsCount_with_status()
 		{
 			// Arrange
-			var status = "active";
+			var status = ClientStatus.Active;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -691,7 +694,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -755,7 +758,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -787,7 +790,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "company_name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -808,7 +811,7 @@ namespace CakeMail.RestClient.UnitTests
 		public void UpdateClient_status()
 		{
 			// Arrange
-			var status = "active";
+			var status = ClientStatus.Active;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -819,8 +822,8 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -851,8 +854,8 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "parent_id" && (int)p.Value == parentId && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "parent_id" && (long)p.Value == parentId && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -883,7 +886,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "address1" && (string)p.Value == address1 && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -915,7 +918,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "address2" && (string)p.Value == address2 && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -947,7 +950,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "city" && (string)p.Value == city && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -979,7 +982,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "province_id" && (string)p.Value == provinceId && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1011,7 +1014,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "postal_code" && (string)p.Value == postalCode && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1043,7 +1046,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "country_id" && (string)p.Value == countryId && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1075,7 +1078,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "website" && (string)p.Value == website && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1108,7 +1111,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "phone" && (string)p.Value == phone && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1140,7 +1143,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "fax" && (string)p.Value == fax && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1172,7 +1175,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "auth_domain" && (string)p.Value == authDomain && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1204,7 +1207,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "bounce_domain" && (string)p.Value == bounceDomain && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1236,7 +1239,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "dkim_domain" && (string)p.Value == dkimDomain && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1268,7 +1271,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "doptin_ip" && (string)p.Value == doptinIp && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1300,7 +1303,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "forward_domain" && (string)p.Value == forwardDomain && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1332,7 +1335,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "forward_ip" && (string)p.Value == forwardIp && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1364,7 +1367,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "ip_pool" && (string)p.Value == ipPool && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1396,7 +1399,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "md_domain" && (string)p.Value == mdDomain && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1428,7 +1431,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "reseller" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1460,7 +1463,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "reseller" && (string)p.Value == "0" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1492,7 +1495,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "currency" && (string)p.Value == currency && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1524,7 +1527,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "plan_type" && (string)p.Value == planType && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1556,7 +1559,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "mailing_limit" && (int)p.Value == mailingLimit && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1588,7 +1591,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "month_limit" && (int)p.Value == monthLimit && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1620,7 +1623,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "contact_limit" && (int)p.Value == contactLimit && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1652,7 +1655,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default_mailing_limit" && (int)p.Value == defaultMailingLimit && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1684,7 +1687,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default_month_limit" && (int)p.Value == defaultMonthLimit && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1716,7 +1719,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default_contact_limit" && (int)p.Value == defaultContactLimit && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1746,7 +1749,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == "active" && p.Type == ParameterType.GetOrPost) == 1
 				))).Returns(new RestResponse()
 				{
@@ -1776,7 +1779,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == "suspended_by_reseller" && p.Type == ParameterType.GetOrPost) == 1
 				))).Returns(new RestResponse()
 				{
@@ -1806,7 +1809,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == "deleted" && p.Type == ParameterType.GetOrPost) == 1
 				))).Returns(new RestResponse()
 				{

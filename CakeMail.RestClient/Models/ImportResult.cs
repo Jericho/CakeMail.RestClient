@@ -10,10 +10,10 @@ namespace CakeMail.RestClient.Models
 		public string Email { get; set; }
 
 		[JsonProperty("id")]
-		public int ListMemberId { get; set; }
+		public long ListMemberId { get; set; }
 
 		[JsonProperty("error_code")]
-		public int ErrorCode { get; set; }
+		public long ErrorCode { get; set; }
 
 		[JsonProperty("error_message")]
 		public string ErrorMessage { get; set; }

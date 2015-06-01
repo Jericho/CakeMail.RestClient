@@ -15,10 +15,10 @@ namespace CakeMail.RestClient.UnitTests
 	{
 		private const string API_KEY = "...dummy API key...";
 		private const string USER_KEY = "...dummy USER key...";
-		private const int CLIENT_ID = 999;
+		private const long CLIENT_ID = 999;
 
 		[TestMethod]
-		public void CreateList_with_all_parameters()
+		public void CreateList_with_minimal_parameters()
 		{
 			// Arrange
 			var name = "My new list";
@@ -33,13 +33,11 @@ namespace CakeMail.RestClient.UnitTests
 				r.Resource == "/List/Create/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sender_name" && (string)p.Value == defaultSenderName && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "sender_email" && (string)p.Value == defaultSenderAddress && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_policy" && (string)p.Value == "accepted" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "sender_email" && (string)p.Value == defaultSenderAddress && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -49,14 +47,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateList(USER_KEY, name, defaultSenderName, defaultSenderAddress, true, CLIENT_ID);
+			var result = apiClient.CreateList(USER_KEY, name, defaultSenderName, defaultSenderAddress);
 
 			// Assert
 			Assert.AreEqual(listId, result);
 		}
 
 		[TestMethod]
-		public void CreateList_without_policy()
+		public void CreateList_with_spampolicyaccepted_false()
 		{
 			// Arrange
 			var name = "My new list";
@@ -71,12 +69,11 @@ namespace CakeMail.RestClient.UnitTests
 				r.Resource == "/List/Create/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sender_name" && (string)p.Value == defaultSenderName && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "sender_email" && (string)p.Value == defaultSenderAddress && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "sender_email" && (string)p.Value == defaultSenderAddress && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -86,14 +83,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateList(USER_KEY, name, defaultSenderName, defaultSenderAddress, false, CLIENT_ID);
+			var result = apiClient.CreateList(USER_KEY, name, defaultSenderName, defaultSenderAddress, spamPolicyAccepted: false);
 
 			// Assert
 			Assert.AreEqual(listId, result);
 		}
 
 		[TestMethod]
-		public void CreateList_without_clientid()
+		public void CreateList_with_spampolicyaccepted_true()
 		{
 			// Arrange
 			var name = "My new list";
@@ -123,46 +120,51 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateList(USER_KEY, name, defaultSenderName, defaultSenderAddress, true, null);
+			var result = apiClient.CreateList(USER_KEY, name, defaultSenderName, defaultSenderAddress, spamPolicyAccepted: true);
 
 			// Assert
 			Assert.AreEqual(listId, result);
 		}
 
 		[TestMethod]
-		public void DeleteList_with_all_parameters()
+		public void CreateList_with_clientid()
 		{
 			// Arrange
-			var listId = 12345;
+			var name = "My new list";
+			var defaultSenderName = "Bob Smith";
+			var defaultSenderAddress = "bobsmith@fictitiouscompany.com";
+			var listId = 123;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
 			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
-				r.Resource == "/List/Delete/" &&
+				r.Resource == "/List/Create/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "sender_name" && (string)p.Value == defaultSenderName && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "sender_email" && (string)p.Value == defaultSenderAddress && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
+				Content = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", listId)
 			});
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.DeleteList(USER_KEY, listId, CLIENT_ID);
+			var result = apiClient.CreateList(USER_KEY, name, defaultSenderName, defaultSenderAddress, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			Assert.AreEqual(listId, result);
 		}
 
 		[TestMethod]
-		public void DeleteList_without_clientid()
+		public void DeleteList_with_minimal_parameters()
 		{
 			// Arrange
 			var listId = 12345;
@@ -176,7 +178,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -193,13 +195,42 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetList_with_all_parameters()
+		public void DeleteList_with_clientid()
 		{
 			// Arrange
 			var listId = 12345;
-			var subListId = 6789;
-			var includeDetails = true;
-			var calculateEngagement = true;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/Delete/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":\"true\"}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.DeleteList(USER_KEY, listId, CLIENT_ID);
+
+			// Assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void GetList_with_minimal_parameters()
+		{
+			// Arrange
+			var listId = 12345;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -208,13 +239,11 @@ namespace CakeMail.RestClient.UnitTests
 				r.Resource == "/List/GetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "sublist_id" && (int)p.Value == subListId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == (includeDetails ? "false" : "true") && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == (calculateEngagement ? "true" : "false") && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -224,7 +253,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetList(USER_KEY, listId, subListId, includeDetails, calculateEngagement, CLIENT_ID);
+			var result = apiClient.GetList(USER_KEY, listId);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -232,13 +261,146 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetList_without_sublist()
+		public void GetList_with_includestatistics_true()
 		{
 			// Arrange
 			var listId = 12345;
-			var subListId = (int?)null;
-			var includeDetails = true;
-			var calculateEngagement = true;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/GetInfo/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"name\":\"Dummy list\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}}}}", listId)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetList(USER_KEY, listId, includeStatistics: true);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(listId, result.Id);
+		}
+
+		[TestMethod]
+		public void GetList_with_includestatistics_false()
+		{
+			// Arrange
+			var listId = 12345;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/GetInfo/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"name\":\"Dummy list\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}}}}", listId)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetList(USER_KEY, listId, includeStatistics: false);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(listId, result.Id);
+		}
+
+		[TestMethod]
+		public void GetList_with_calculateengagement_true()
+		{
+			// Arrange
+			var listId = 12345;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/GetInfo/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"name\":\"Dummy list\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}}}}", listId)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetList(USER_KEY, listId, calculateEngagement: true);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(listId, result.Id);
+		}
+
+		[TestMethod]
+		public void GetList_with_calculateengagement_false()
+		{
+			// Arrange
+			var listId = 12345;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/GetInfo/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"name\":\"Dummy list\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}}}}", listId)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetList(USER_KEY, listId, calculateEngagement: false);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(listId, result.Id);
+		}
+
+		[TestMethod]
+		public void GetList_with_clientid()
+		{
+			// Arrange
+			var listId = 12345;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -249,10 +411,10 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == (includeDetails ? "false" : "true") && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == (calculateEngagement ? "true" : "false") && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -262,84 +424,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetList(USER_KEY, listId, subListId, includeDetails, calculateEngagement, CLIENT_ID);
-
-			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(listId, result.Id);
-		}
-
-		[TestMethod]
-		public void GetList_without_clientid()
-		{
-			// Arrange
-			var listId = 12345;
-			var subListId = 6789;
-			var includeDetails = true;
-			var calculateEngagement = true;
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/GetInfo/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "sublist_id" && (int)p.Value == subListId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == (includeDetails ? "false" : "true") && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == (calculateEngagement ? "true" : "false") && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
-			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"name\":\"Dummy list\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}}}}", listId)
-			});
-
-			// Act
-			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetList(USER_KEY, listId, subListId, includeDetails, calculateEngagement, null);
-
-			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(listId, result.Id);
-		}
-
-		[TestMethod]
-		public void GetList_no_details()
-		{
-			// Arrange
-			var listId = 12345;
-			var subListId = 6789;
-			var includeDetails = false;
-			var calculateEngagement = false;
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/GetInfo/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "sublist_id" && (int)p.Value == subListId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == (includeDetails ? "false" : "true") && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == (calculateEngagement ? "true" : "false") && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
-			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"name\":\"Dummy list\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}}}}", listId)
-			});
-
-			// Act
-			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetList(USER_KEY, listId, subListId, includeDetails, calculateEngagement, CLIENT_ID);
+			var result = apiClient.GetList(USER_KEY, listId, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -350,7 +435,7 @@ namespace CakeMail.RestClient.UnitTests
 		public void GetLists_with_status()
 		{
 			// Arrange
-			var status = "active";
+			var status = ListStatus.Active;
 
 			var jsonList1 = "{\"id\":\"123\",\"name\":\"Dummy list 1\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
 			var jsonList2 = "{\"id\":\"456\",\"name\":\"Dummy list 2\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
@@ -364,7 +449,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -426,7 +511,7 @@ namespace CakeMail.RestClient.UnitTests
 		public void GetLists_with_sortby()
 		{
 			// Arrange
-			var sortBy = "name";
+			var sortBy = ListsSortBy.Name;
 
 			var jsonList1 = "{\"id\":\"123\",\"name\":\"Dummy list 1\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
 			var jsonList2 = "{\"id\":\"456\",\"name\":\"Dummy list 2\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
@@ -440,7 +525,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "sort_by" && (string)p.Value == sortBy && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "sort_by" && (string)p.Value == sortBy.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -464,7 +549,7 @@ namespace CakeMail.RestClient.UnitTests
 		public void GetLists_with_sortdirection()
 		{
 			// Arrange
-			var sortDirection = "asc";
+			var sortDirection = SortDirection.Ascending;
 
 			var jsonList1 = "{\"id\":\"123\",\"name\":\"Dummy list 1\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
 			var jsonList2 = "{\"id\":\"456\",\"name\":\"Dummy list 2\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
@@ -478,7 +563,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "direction" && (string)p.Value == sortDirection && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "direction" && (string)p.Value == sortDirection.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -590,7 +675,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -608,6 +693,38 @@ namespace CakeMail.RestClient.UnitTests
 			Assert.AreEqual(2, result.Count());
 			Assert.AreEqual(123, result.ToArray()[0].Id);
 			Assert.AreEqual(456, result.ToArray()[1].Id);
+		}
+
+		[TestMethod]
+		public void GetListsCount_with_status()
+		{
+			// Arrange
+			var status = ListStatus.Active;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/GetList/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":{\"count\":\"2\"}}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetListsCount(USER_KEY, status: status);
+
+			// Assert
+			Assert.AreEqual(2, result);
 		}
 
 		[TestMethod]
@@ -655,7 +772,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -688,7 +805,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -721,7 +838,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "language" && (string)p.Value == language && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -753,7 +870,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_policy" && (string)p.Value == "accepted" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -785,7 +902,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_policy" && (string)p.Value == "declined" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -807,7 +924,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var listId = 123;
-			var status = "archived";
+			var status = ListStatus.Archived;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -818,8 +935,8 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -851,7 +968,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sender_name" && (string)p.Value == senderName && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -884,7 +1001,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sender_email" && (string)p.Value == senderEmail && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -917,7 +1034,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "goto_oi" && (string)p.Value == goto_oi && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -950,7 +1067,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "goto_di" && (string)p.Value == goto_di && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -983,7 +1100,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "goto_oo" && (string)p.Value == goto_oo && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1016,7 +1133,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "webhook" && (string)p.Value == webhook && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1048,8 +1165,8 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -1066,49 +1183,12 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void AddListField_with_all_parameters()
+		public void AddListField_with_minimal_parameters()
 		{
 			// Arrange
 			var listId = 123;
 			var name = "My field";
-			var type = "text";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/EditStructure/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "field" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "type" && (string)p.Value == type && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == "add" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
-			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
-
-			// Act
-			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.AddListField(USER_KEY, listId, name, type, CLIENT_ID);
-
-			// Assert
-			Assert.IsTrue(result);
-		}
-
-		[TestMethod]
-		public void AddListField_without_clientid()
-		{
-			// Arrange
-			var listId = 123;
-			var name = "My field";
-			var type = "text";
+			var fieldType = FieldType.Text;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -1119,9 +1199,9 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "field" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "type" && (string)p.Value == type && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "type" && (string)p.Value == fieldType.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == "add" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1132,14 +1212,85 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.AddListField(USER_KEY, listId, name, type, null);
+			var result = apiClient.AddListField(USER_KEY, listId, name, fieldType);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void DeleteListField_with_all_parameters()
+		public void AddListField_with_clientid()
+		{
+			// Arrange
+			var listId = 123;
+			var name = "My field";
+			var fieldType = FieldType.Integer;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/EditStructure/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "field" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "type" && (string)p.Value == fieldType.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == "add" && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":\"true\"}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.AddListField(USER_KEY, listId, name, fieldType, CLIENT_ID);
+
+			// Assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void DeleteListField_with_minimal_parameters()
+		{
+			// Arrange
+			var listId = 123;
+			var name = "My field";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/EditStructure/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "field" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == "delete" && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":\"true\"}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.DeleteListField(USER_KEY, listId, name);
+
+			// Assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void DeleteListField_with_clientid()
 		{
 			// Arrange
 			var listId = 123;
@@ -1154,10 +1305,10 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "field" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == "delete" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -1174,74 +1325,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void DeleteListField_without_clientid()
-		{
-			// Arrange
-			var listId = 123;
-			var name = "My field";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/EditStructure/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "field" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == "delete" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
-			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
-
-			// Act
-			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.DeleteListField(USER_KEY, listId, name, null);
-
-			// Assert
-			Assert.IsTrue(result);
-		}
-
-		[TestMethod]
-		public void GetListFields_with_all_parameters()
-		{
-			// Arrange
-			var listId = 123;
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/GetFields/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
-			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":{\"id\":\"integer\",\"email\":\"text\",\"registered\":\"timestamp\"}}"
-			});
-
-			// Act
-			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetListFields(USER_KEY, listId, CLIENT_ID);
-
-			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
-		}
-
-		[TestMethod]
-		public void GetListFields_without_clientid()
+		public void GetListFields_with_minimal_parameters()
 		{
 			// Arrange
 			var listId = 123;
@@ -1255,7 +1339,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -1265,7 +1349,40 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetListFields(USER_KEY, listId, null);
+			var result = apiClient.GetListFields(USER_KEY, listId);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(3, result.Count());
+		}
+
+		[TestMethod]
+		public void GetListFields_with_clientid()
+		{
+			// Arrange
+			var listId = 123;
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/GetFields/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":{\"id\":\"integer\",\"email\":\"text\",\"registered\":\"timestamp\"}}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetListFields(USER_KEY, listId, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1287,7 +1404,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -1305,7 +1422,40 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void AddTestEmail_with_all_parameters()
+		public void AddTestEmail_with_minimal_parameters()
+		{
+			// Arrange
+			var listId = 123;
+			var email = "test@test.com";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/AddTestEmail/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = "{\"status\":\"success\",\"data\":\"true\"}"
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.AddTestEmail(USER_KEY, listId, email);
+
+			// Assert
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void AddTestEmail_with_clientid()
 		{
 			// Arrange
 			var listId = 123;
@@ -1320,9 +1470,9 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -1339,7 +1489,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void AddTestEmail_without_clientid()
+		public void DeleteTestEmail_with_minimal_parameters()
 		{
 			// Arrange
 			var listId = 123;
@@ -1349,12 +1499,12 @@ namespace CakeMail.RestClient.UnitTests
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
 			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
-				r.Resource == "/List/AddTestEmail/" &&
+				r.Resource == "/List/DeleteTestEmail/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -1365,14 +1515,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.AddTestEmail(USER_KEY, listId, email, null);
+			var result = apiClient.DeleteTestEmail(USER_KEY, listId, email);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void DeleteTestEmail_with_all_parameters()
+		public void DeleteTestEmail_with_clientid()
 		{
 			// Arrange
 			var listId = 123;
@@ -1387,9 +1537,9 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -1406,78 +1556,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void DeleteTestEmail_without_clientid()
-		{
-			// Arrange
-			var listId = 123;
-			var email = "test@test.com";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/DeleteTestEmail/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
-			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
-
-			// Act
-			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.DeleteTestEmail(USER_KEY, listId, email, null);
-
-			// Assert
-			Assert.IsTrue(result);
-		}
-
-		[TestMethod]
-		public void GetTestEmails_with_all_parameters()
-		{
-			// Arrange
-			var listId = 123;
-
-			var testEmail1 = "aaa@aaa.com";
-			var testEmail2 = "bbb@bbb.com";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/GetTestEmails/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
-			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"testemails\":[\"{0}\",\"{1}\"]}}}}", testEmail1, testEmail2)
-			});
-
-			// Act
-			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTestEmails(USER_KEY, listId, CLIENT_ID);
-
-			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(testEmail1, result.ToArray()[0]);
-			Assert.AreEqual(testEmail2, result.ToArray()[1]);
-		}
-
-		[TestMethod]
-		public void GetTestEmails_without_clientid()
+		public void GetTestEmails_with_minimal_parameters()
 		{
 			// Arrange
 			var listId = 123;
@@ -1494,7 +1573,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -1504,7 +1583,45 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTestEmails(USER_KEY, listId, null);
+			var result = apiClient.GetTestEmails(USER_KEY, listId);
+
+			// Assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count());
+			Assert.AreEqual(testEmail1, result.ToArray()[0]);
+			Assert.AreEqual(testEmail2, result.ToArray()[1]);
+		}
+
+		[TestMethod]
+		public void GetTestEmails_with_clientid()
+		{
+			// Arrange
+			var listId = 123;
+
+			var testEmail1 = "aaa@aaa.com";
+			var testEmail2 = "bbb@bbb.com";
+
+			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
+			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
+			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+				r.Method == Method.POST &&
+				r.Resource == "/List/GetTestEmails/" &&
+				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
+				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
+				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+			))).Returns(new RestResponse()
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"testemails\":[\"{0}\",\"{1}\"]}}}}", testEmail1, testEmail2)
+			});
+
+			// Act
+			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var result = apiClient.GetTestEmails(USER_KEY, listId, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1530,7 +1647,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
@@ -1566,7 +1683,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
@@ -1602,7 +1719,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
@@ -1638,7 +1755,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
@@ -1683,7 +1800,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 8 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
@@ -1730,11 +1847,11 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -1770,7 +1887,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 7 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "import_to" && (string)p.Value == "active" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
@@ -1812,7 +1929,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 7 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "import_to" && (string)p.Value == "active" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
@@ -1854,7 +1971,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 7 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "import_to" && (string)p.Value == "active" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
@@ -1896,7 +2013,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 7 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "import_to" && (string)p.Value == "active" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
@@ -1938,7 +2055,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 15 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "import_to" && (string)p.Value == "active" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
@@ -1988,13 +2105,13 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 8 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "import_to" && (string)p.Value == "active" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record[0][email]" && (string)p.Value == "aaa@aaa.com" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record[1][email]" && (string)p.Value == "bbb@bbb.com" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -2027,7 +2144,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "import_to" && (string)p.Value == "active" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
@@ -2063,7 +2180,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -2096,9 +2213,9 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -2130,8 +2247,8 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "record_id" && (int)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -2163,9 +2280,9 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "record_id" && (int)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -2197,8 +2314,8 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "record_id" && (int)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -2230,9 +2347,9 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "record_id" && (int)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -2264,8 +2381,8 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "record_id" && (int)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -2298,9 +2415,9 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "record_id" && (int)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -2335,13 +2452,13 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"members\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
 			});
 
 			// Act
@@ -2360,7 +2477,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var listId = 123;
-			var status = "active";
+			var status = ListMemberStatus.Active;
 
 			var jsonMember1 = string.Format("{{\"id\":\"1\",\"status\":\"{0}\",\"bounce_type\":\"none\",\"bounce_count\":\"0\",\"email\":\"aa@aa.com\",\"registered\":\"2015-04-01 15:08:22\"}}", status);
 			var jsonMember2 = string.Format("{{\"id\":\"2\",\"status\":\"{0}\",\"bounce_type\":\"none\",\"bounce_count\":\"0\",\"email\":\"bb@bb.com\",\"registered\":\"2015-04-01 15:08:22\"}}", status);
@@ -2374,14 +2491,14 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"members\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
 			});
 
 			// Act
@@ -2414,14 +2531,14 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "query" && (string)p.Value == query && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"members\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
 			});
 
 			// Act
@@ -2440,7 +2557,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var listId = 123;
-			var sortBy = "email";
+			var sortBy = ListMembersSortBy.EmailAddress;
 
 			var jsonMember1 = "{\"id\":\"1\",\"status\":\"active\",\"bounce_type\":\"none\",\"bounce_count\":\"0\",\"email\":\"aa@aa.com\",\"registered\":\"2015-04-01 15:08:22\"}";
 			var jsonMember2 = "{\"id\":\"2\",\"status\":\"active\",\"bounce_type\":\"none\",\"bounce_count\":\"0\",\"email\":\"bb@bb.com\",\"registered\":\"2015-04-01 15:08:22\"}";
@@ -2454,14 +2571,14 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "sort_by" && (string)p.Value == sortBy && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "sort_by" && (string)p.Value == sortBy.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"members\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
 			});
 
 			// Act
@@ -2480,7 +2597,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var listId = 123;
-			var sortDirection = "asc";
+			var sortDirection = SortDirection.Ascending;
 
 			var jsonMember1 = "{\"id\":\"1\",\"status\":\"active\",\"bounce_type\":\"none\",\"bounce_count\":\"0\",\"email\":\"aa@aa.com\",\"registered\":\"2015-04-01 15:08:22\"}";
 			var jsonMember2 = "{\"id\":\"2\",\"status\":\"active\",\"bounce_type\":\"none\",\"bounce_count\":\"0\",\"email\":\"bb@bb.com\",\"registered\":\"2015-04-01 15:08:22\"}";
@@ -2494,14 +2611,14 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "direction" && (string)p.Value == sortDirection && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "direction" && (string)p.Value == sortDirection.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"members\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
 			});
 
 			// Act
@@ -2534,14 +2651,14 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "limit" && (int)p.Value == limit && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"members\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
 			});
 
 			// Act
@@ -2574,14 +2691,14 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "offset" && (int)p.Value == offset && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"members\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
 			});
 
 			// Act
@@ -2613,14 +2730,14 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"members\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
+				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2)
 			});
 
 			// Act
@@ -2649,7 +2766,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -2672,7 +2789,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var listId = 123;
-			var status = "active";
+			var status = ListMemberStatus.Active;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -2683,8 +2800,8 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -2717,8 +2834,8 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
@@ -2752,8 +2869,8 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "record_id" && (int)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -2790,8 +2907,8 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "record_id" && (int)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "data[fullname]" && (string)p.Value == "Bob Smith" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "data[birthday]" && (string)p.Value == "1973-01-01 00:00:00" && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
@@ -2825,9 +2942,9 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "record_id" && (int)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
 			))).Returns(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
@@ -2861,7 +2978,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
@@ -2886,7 +3003,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var listId = 123;
-			var logType = "subscribe";
+			var logType = LogType.Subscribe;
 
 			var subscribeLog = "{\"log_id\":\"70\",\"id\":\"70\",\"record_id\":\"70\",\"email\":\"aaa@aaa.com\",\"action\":\"subscribe\",\"total\":\"1\",\"time\":\"2015-03-06 16:25:40\",\"user_agent\":null,\"ip\":null,\"host\":null,\"extra\":\"insert\",\"l_registered\":\"2015-03-06 16:25:40\"}";
 
@@ -2899,8 +3016,8 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == logType && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == logType.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
@@ -2939,7 +3056,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "start_time" && (string)p.Value == start.ToCakeMailString() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
@@ -2979,7 +3096,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "end_time" && (string)p.Value == end.ToCakeMailString() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
@@ -3019,7 +3136,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "limit" && (int)p.Value == limit && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
@@ -3059,7 +3176,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "offset" && (int)p.Value == offset && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
@@ -3098,8 +3215,8 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
@@ -3137,7 +3254,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
@@ -3175,7 +3292,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
@@ -3210,7 +3327,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
@@ -3234,7 +3351,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var listId = 123;
-			var logType = "clickthru";
+			var logType = LogType.Click;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
@@ -3245,8 +3362,8 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == logType && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == logType.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
@@ -3281,7 +3398,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "start_time" && (string)p.Value == start.ToCakeMailString() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
@@ -3317,7 +3434,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "end_time" && (string)p.Value == end.ToCakeMailString() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
@@ -3352,8 +3469,8 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (int)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
@@ -3387,7 +3504,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
@@ -3421,7 +3538,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (int)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
+				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1

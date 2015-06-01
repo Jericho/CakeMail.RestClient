@@ -5,7 +5,7 @@ using System;
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	/// A user who is authorized to log in the UI.
+	/// A User is an individual associated to a Client. A User has access to a single Account.
 	/// </summary>
 	/// <remarks>The Id and UserId properties are interchangable. They alway contain the same value</remarks>
 	public class User
@@ -13,22 +13,22 @@ namespace CakeMail.RestClient.Models
 		#region Properties
 
 		[JsonProperty("id")]
-		public int Id { get; set; }
+		public long Id { get; set; }
 
 		[JsonProperty("user_id")]
-		public int UserId { get; set; }
+		public long UserId { get; set; }
 
 		[JsonProperty("user_key")]
 		public string UserKey { get; set; }
 
 		[JsonProperty("client_id")]
-		public int ClientId { get; set; }
+		public long ClientId { get; set; }
 
 		[JsonProperty("email")]
 		public string EmailAddress { get; set; }
 
 		[JsonProperty("status")]
-		public string Status { get; set; }
+		public UserStatus Status { get; set; }
 
 		[JsonProperty("created_on")]
 		[JsonConverter(typeof(CakeMailDateTimeConverter))]
@@ -54,7 +54,7 @@ namespace CakeMail.RestClient.Models
 		public string Timezone { get; set; }
 
 		[JsonProperty("timezone_id")]
-		public int timezone_id { get; set; }
+		public long timezone_id { get; set; }
 
 		[JsonProperty("office_phone")]
 		public string OfficePhone { get; set; }
@@ -63,7 +63,7 @@ namespace CakeMail.RestClient.Models
 		public string MobilePhone { get; set; }
 
 		[JsonProperty("wysiwyg")]
-		public int Wysiwyg { get; set; }
+		public long Wysiwyg { get; set; }
 
 		[JsonProperty("help_visible")]
 		public bool HelpVisible { get; set; }

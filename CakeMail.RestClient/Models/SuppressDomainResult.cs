@@ -10,7 +10,7 @@ namespace CakeMail.RestClient.Models
 		public string Domain { get; set; }
 
 		[JsonProperty("error_code")]
-		public int ErrorCode { get; set; }
+		public long ErrorCode { get; set; }
 
 		[JsonProperty("error_message")]
 		public string ErrorMessage { get; set; }

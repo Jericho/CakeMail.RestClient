@@ -21,11 +21,36 @@ CakeMailRestAPI is available as a Nuget package.
 
 ## Release Notes
 
-+ **1.0**    Initial release
- 
++ **2.0.0**
+    - Unique identifiers changed to 'long' instead of 'int'.
+    - "Magic strings" replaced with enums. For example, instead of specifying sort direction with 'asc' and 'desc', you can now use SortDirection.Ascending and SortDirection.Descending.
+    - Fix bug in CreateTemplateCategory which prevents creating new categories
+    - Fix bug in DeleteTemplateCategory which causes an exception to be thrown despite the fact the category was successfuly deleted
+    - Fix bug in GetListMembers which causes exception: 'Json does not contain property members'
+	- Fix GetTriggerLinksLogs
+    - Added XML comments file for convenient intellisense in Visual Studio
+
++ **1.0.0**
+    - Initial release
+
+## Installation
+
+The easiest way to include CakeMail.RestClient in your C# project is by grabing the nuget package:
+
+```
+PM> Install-Package CakeMail.RestClient
+```
+
+Once you have the CakeMail.RestClient library properly referenced in your project, add the following namespace:
+
+```csharp
+using CakeMail.RestClient;
+```
+
 ## Usage
 
 ### Login
+
 ```csharp
 var apiKey = "... your api key ...";
 var userName = "youremail@whatever.com";
@@ -45,8 +70,8 @@ A campaign is simply a way to logically group mailings toghether. You can think 
 A word of caution: the word 'Campaign' is used in the CakeMail UI to refer to mailings which is really confusing!
 
 ```csharp
-var campaigns = cakeMail.GetCampaigns(userKey, status: "ongoing", sortBy: "name", sortDirection: "asc", limit: 50, offset: 0);
-var campaignsCount = cakeMail.GetCampaignsCount(userKey, "ongoing");
+var campaigns = cakeMail.GetCampaigns(userKey, status: MailingStatus.Ongoing, sortBy: MailingSortBy.Name, sortDirection: SortDirection.Ascending, limit: 50, offset: 0);
+var campaignsCount = cakeMail.GetCampaignsCount(userKey, MailingStatus.Ongoing);
 
 var campaignId = cakeMail.CreateCampaign(userKey, "2015 User Conference");
 var campaign = cakeMail.GetCampaign(userKey, campaignId);
@@ -59,7 +84,7 @@ var deleted = cakeMail.DeleteCampaign(userKey, campaignId);
 A List is a collection of subscribers (or List Members, or Records). Each subscriber or List Member is uniquely identified by their email address, and may include an limited amount of Fields containing demographic information associated to each email address.
 
 ```csharp
-var lists = cakeMail.GetLists(userKey, sortBy: "name", sortDirection: "desc", limit: 50, offset: 0);
+var lists = cakeMail.GetLists(userKey, sortBy: ListSortBy.Name, sortDirection: SortDirection.Descending, limit: 50, offset: 0);
 var listsCount = cakeMail.GetListsCount(userKey);
 
 var listId = cakeMail.CreateList(userKey, "Customers and Prospects", "The XYZ Marketing Group", "marketing@yourcompany.com", true);
@@ -71,36 +96,36 @@ cakeMail.AddListField(userKey, listId, "customer_since", "datetime");
 You can add members to your list like so:
 ```
 cakeMail.Subscribe(userKey, listId, "bob_the_customer@hotmail.com", true, true, new[] {
-	new KeyValuePair<string, object>("first_name", "Bob"), 
-	new KeyValuePair<string, object>("last_name", "Smith"), 
-	new KeyValuePair<string, object>("customer_since", DateTime.UtcNow) 
+    new KeyValuePair<string, object>("first_name", "Bob"), 
+    new KeyValuePair<string, object>("last_name", "Smith"), 
+    new KeyValuePair<string, object>("customer_since", DateTime.UtcNow) 
 });
 cakeMail.Subscribe(userKey, listId, "jane_the_prospect@hotmail.com", true, true, new[] {
-	new KeyValuePair<string, object>("first_name", "Jane"), 
-	new KeyValuePair<string, object>("last_name", "Doe")
+    new KeyValuePair<string, object>("first_name", "Jane"), 
+    new KeyValuePair<string, object>("last_name", "Doe")
 });
 ```
 or you can import a group of members:
 ```
 var member1 = new ListMember()
 {
-	Email = "bob_the_customer@hotmail.com",
-	CustomFields = new Dictionary<string, object>()
-	{
-		{ "first_name", "Bob" },
-		{ "last_name", "Smith" },
-		{ "customer_since", DateTime.UtcNow }
-	}
+    Email = "bob_the_customer@hotmail.com",
+    CustomFields = new Dictionary<string, object>()
+    {
+        { "first_name", "Bob" },
+        { "last_name", "Smith" },
+        { "customer_since", DateTime.UtcNow }
+    }
 };
 
 var member2 = new ListMember()
 {
-	Email = "jane_the_prospect@hotmail.com",
-	CustomFields = new Dictionary<string, object>()
-	{
-		{ "first_name", "Jane" },
-		{ "last_name", "Doe" }
-	}
+    Email = "jane_the_prospect@hotmail.com",
+    CustomFields = new Dictionary<string, object>()
+    {
+        { "first_name", "Jane" },
+        { "last_name", "Doe" }
+    }
 };
 
 var importResult = cakeMail.Import(userKey, listId, new[] { member1, member2 });
@@ -112,10 +137,10 @@ A mailing is an email campaign. It can be used to send standard email campaigns,
 
 ```
 var invitationMailingId = cakeMail.CreateMailing(userKey, "2015 User Conference invitation", campaignId);
-cakeMail.UpdateMailing(userKey, invitationMailingId, listId: listId, htmlContent: "<html><body>You are invited to attend our annual user conference</body</html>", textContent: "You are invited to attend our annual user conference", subject: "Invitation to our 2015 user conference");
+cakeMail.UpdateMailing(userKey, invitationMailingId, listId: listId, htmlContent: "<html><body>You are invited to attend our annual user conference</body></html>", textContent: "You are invited to attend our annual user conference", subject: "Invitation to our 2015 user conference");
 cakeMail.ScheduleMailing(userKey, invitationMailingId);
 
 var reminderMailingId = cakeMail.CreateMailing(userKey, "2015 User Conference reminder", campaignId);
-cakeMail.UpdateMailing(userKey, reminderMailingId, listId: listId, htmlContent: "<html><body>Don't forget our upcoming annual user conference</body</html>", textContent: "Don't forget our upcoming annual user conference", subject: "Reminder about our 2015 user conference");
+cakeMail.UpdateMailing(userKey, reminderMailingId, listId: listId, htmlContent: "<html><body>Don't forget our upcoming annual user conference</body></html>", textContent: "Don't forget our upcoming annual user conference", subject: "Reminder about our 2015 user conference");
 cakeMail.ScheduleMailing(userKey, reminderMailingId, DateTime.UtcNow.AddDays(2));
 ```

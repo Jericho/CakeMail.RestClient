@@ -4,15 +4,18 @@ using System;
 
 namespace CakeMail.RestClient.Models
 {
+	/// <summary>
+	/// A Trigger is an individual email that is sent to a recipient following a specific action. This can be used to build auto-responders.
+	/// </summary>
 	public class Trigger
 	{
 		#region Properties
 
 		[JsonProperty("action")]
-		public string Action { get; set; }
+		public TriggerAction? Action { get; set; }
 
 		[JsonProperty("campaign_id")]
-		public int CampaignId { get; set; }
+		public long CampaignId { get; set; }
 
 		[JsonProperty("clickthru_html")]
 		public bool TrackClicksInHtml { get; set; }
@@ -21,7 +24,7 @@ namespace CakeMail.RestClient.Models
 		public bool TrackClicksInText { get; set; }
 
 		[JsonProperty("delay")]
-		public int Delay { get; set; }
+		public long Delay { get; set; }
 
 		[JsonProperty("encoding")]
 		public string Encoding { get; set; }
@@ -40,10 +43,10 @@ namespace CakeMail.RestClient.Models
 		public DateTime CreatedOn { get; set; }
 
 		[JsonProperty("id")]
-		public int Id { get; set; }
+		public long Id { get; set; }
 
 		[JsonProperty("list_id")]
-		public int ListId { get; set; }
+		public long ListId { get; set; }
 
 		[JsonProperty("list_name")]
 		public string ListName { get; set; }
@@ -55,7 +58,7 @@ namespace CakeMail.RestClient.Models
 		public bool TrackOpens { get; set; }
 
 		[JsonProperty("parent_id")]
-		public int ParentId { get; set; }
+		public long ParentId { get; set; }
 
 		[JsonProperty("send_to")]
 		public string SendTo { get; set; }
@@ -67,7 +70,7 @@ namespace CakeMail.RestClient.Models
 		public string SenderName { get; set; }
 
 		[JsonProperty("status")]
-		public string Status { get; set; }
+		public TriggerStatus Status { get; set; }
 
 		[JsonProperty("subject")]
 		public string Subject { get; set; }

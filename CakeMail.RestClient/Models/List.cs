@@ -4,18 +4,22 @@ using System;
 
 namespace CakeMail.RestClient.Models
 {
+	/// <summary>
+	/// A List is a collection of subscribers (or List Members, or Records). 
+	/// Each subscriber or List Member is uniquely identified by their email address, and may include an limited amount of Fields containing demographic information associated to each email address.
+	/// </summary>
 	public class List
 	{
 		#region Properties
 
 		[JsonProperty("id")]
-		public int Id { get; set; }
+		public long Id { get; set; }
 
 		[JsonProperty("name")]
 		public string Name { get; set; }
 
 		[JsonProperty("status")]
-		public string Status { get; set; }
+		public ListStatus Status { get; set; }
 
 		[JsonProperty("policy")]
 		public string Policy { get; set; }
@@ -46,37 +50,37 @@ namespace CakeMail.RestClient.Models
 		public string goto_oo { get; set; }
 
 		[JsonProperty("b_ac_limit")]
-		public int b_ac_limit { get; set; }
+		public long b_ac_limit { get; set; }
 
 		[JsonProperty("b_cr_limit")]
-		public int b_cr_limit { get; set; }
+		public long b_cr_limit { get; set; }
 
 		[JsonProperty("b_df_limit")]
-		public int b_df_limit { get; set; }
+		public long b_df_limit { get; set; }
 
 		[JsonProperty("b_fm_limit")]
-		public int b_fm_limit { get; set; }
+		public long b_fm_limit { get; set; }
 
 		[JsonProperty("b_hb_limit")]
-		public int b_hb_limit { get; set; }
+		public long b_hb_limit { get; set; }
 
 		[JsonProperty("b_mb_limit")]
-		public int b_mb_limit { get; set; }
+		public long b_mb_limit { get; set; }
 
 		[JsonProperty("b_sb_limit")]
-		public int b_sb_limit { get; set; }
+		public long b_sb_limit { get; set; }
 
 		[JsonProperty("b_tr_limit")]
-		public int b_tr_limit { get; set; }
+		public long b_tr_limit { get; set; }
 
 		[JsonProperty("di_trig_cnt")]
-		public int di_trig_cnt { get; set; }
+		public long di_trig_cnt { get; set; }
 
 		[JsonProperty("oi_trig_cnt")]
-		public int oi_trig_cnt { get; set; }
+		public long oi_trig_cnt { get; set; }
 
 		[JsonProperty("oo_trig_cnt")]
-		public int oo_trig_cnt { get; set; }
+		public long oo_trig_cnt { get; set; }
 
 		[JsonProperty("oi_url")]
 		public string oi_url { get; set; }

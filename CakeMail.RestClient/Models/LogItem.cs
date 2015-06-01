@@ -10,22 +10,22 @@ namespace CakeMail.RestClient.Models
 		#region Properties
 
 		[JsonProperty("id")]
-		public int Id { get; set; }
+		public long Id { get; set; }
 
 		[JsonProperty("log_id")]
-		public int LogId { get; set; }
+		public long LogId { get; set; }
 
 		[JsonProperty("record_id")]
-		public int ListMemberId { get; set; }
+		public long ListMemberId { get; set; }
 
 		[JsonProperty("email")]
 		public string Email { get; set; }
 
 		[JsonProperty("action")]
-		public string Action { get; set; }
+		public LogType LogType { get; set; }
 
 		[JsonProperty("total")]
-		public int Total { get; set; }
+		public long Total { get; set; }
 
 		[JsonProperty("time")]
 		[JsonConverter(typeof(CakeMailDateTimeConverter))]

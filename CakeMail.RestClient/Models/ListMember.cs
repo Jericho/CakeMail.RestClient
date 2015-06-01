@@ -16,7 +16,7 @@ namespace CakeMail.RestClient.Models
 		/// The id.
 		/// </value>
 		[JsonProperty("id")]
-		public int Id { get; set; }
+		public long Id { get; set; }
 
 		/// <summary>
 		/// Gets or sets the status.
@@ -25,7 +25,7 @@ namespace CakeMail.RestClient.Models
 		/// The status.
 		/// </value>
 		[JsonProperty("status")]
-		public string Status { get; set; }
+		public ListMemberStatus Status { get; set; }
 
 		/// <summary>
 		/// Gets or sets the bounce_type.
@@ -43,7 +43,7 @@ namespace CakeMail.RestClient.Models
 		/// The bounce_count.
 		/// </value>
 		[JsonProperty("bounce_count")]
-		public int BounceCount { get; set; }
+		public long BounceCount { get; set; }
 
 		/// <summary>
 		/// Gets or sets the email.

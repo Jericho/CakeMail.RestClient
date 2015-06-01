@@ -4,18 +4,21 @@ using System;
 
 namespace CakeMail.RestClient.Models
 {
+	/// <summary>
+	/// A Campaign is a group of Mailings and can be seen as a folder.
+	/// </summary>
 	public class Campaign
 	{
 		#region Properties
 
 		[JsonProperty("id")]
-		public int Id { get; set; }
+		public long Id { get; set; }
 
 		[JsonProperty("client_id")]
-		public int ClientId { get; set; }
+		public long ClientId { get; set; }
 
 		[JsonProperty("status")]
-		public string Status { get; set; }
+		public CampaignStatus? Status { get; set; }
 
 		[JsonProperty("name")]
 		public string Name { get; set; }

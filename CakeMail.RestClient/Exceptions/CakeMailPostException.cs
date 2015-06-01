@@ -7,14 +7,18 @@ namespace CakeMail.RestClient.Exceptions
 	/// </summary>
 	public class CakeMailPostException : CakeMailException
 	{
+		/// <summary>
+		/// The data that was posted
+		/// </summary>
 		public string PostData { get; set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CakeMailPostException"/> class.
 		/// </summary>
 		/// <param name="message">A message that describes the error.</param>
+		/// <param name="postData">The data that was posted</param>
 		public CakeMailPostException(string message, string postData)
-			: base(message) 
+			: base(message)
 		{
 			this.PostData = postData;
 		}
@@ -23,6 +27,7 @@ namespace CakeMail.RestClient.Exceptions
 		/// Initializes a new instance of the <see cref="CakeMailPostException"/> class.
 		/// </summary>
 		/// <param name="message">A message that describes the error.</param>
+		/// <param name="postData">The data that was posted</param>
 		/// <param name="innerException">The inner exception.</param>
 		public CakeMailPostException(string message, string postData, Exception innerException)
 			: base(message, innerException)
