@@ -60,9 +60,7 @@ before_build:
 
 after_test: 
     - packages\OpenCover.4.5.3723\OpenCover.Console.exe -register:user -filter:"+[CakeMail.RestClient]* -[CakeMail.RestClient]CakeMail.RestClient.Models.* -[CakeMail.RestClient]CakeMail.RestClient.Properties.*" -target:"vstest.console.exe" -targetargs:"""CakeMail.RestClient.UnitTests\bin\%configuration%\CakeMail.RestClient.UnitTests.dll""" -output:coverage.xml
-    - cat coverage.xml
-    - curl https://codecov.io/bash > temp.sh
-    - bash temp.sh
+    - bash <(curl -s https://raw.githubusercontent.com/codecov/codecov-bash/wip/codecov)
 
 
 #---------------------------------#
