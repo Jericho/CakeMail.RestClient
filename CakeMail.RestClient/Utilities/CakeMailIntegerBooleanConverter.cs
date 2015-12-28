@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System;
 
 namespace CakeMail.RestClient.Utilities
@@ -7,7 +6,7 @@ namespace CakeMail.RestClient.Utilities
 	/// <summary>
 	/// Converter class used in conjuction with JSON.NET to convert a Boolean into a string format acceptable to CakeMail
 	/// </summary>
-	public class CakeMailIntegerBooleanConverter : DateTimeConverterBase
+	public class CakeMailIntegerBooleanConverter : JsonConverter
 	{
 		/// <summary>
 		/// Writes the JSON representation of the Boolean value
