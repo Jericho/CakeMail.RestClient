@@ -18,16 +18,16 @@ namespace CakeMail.RestClient.IntegrationTests
 			var user = users.First();
 			Console.WriteLine("For testing purposes, we selected {0} {1}", user.FirstName, user.LastName);
 
-			var originalUserPermissions = api.GetUserPermissions(userKey, user.Id, clientId);
+			var originalUserPermissions = api.Permissions.GetUserPermissions(userKey, user.Id, clientId);
 			Console.WriteLine("Current user permissions: {0}", string.Join(", ", originalUserPermissions));
 
-			var updated = api.SetUserPermissions(userKey, user.Id, new[] { "admin_settings" }, clientId);
+			var updated = api.Permissions.SetUserPermissions(userKey, user.Id, new[] { "admin_settings" }, clientId);
 			Console.WriteLine("Permissions updated: {0}", updated ? "success" : "failed");
 
-			var newUserPermissions = api.GetUserPermissions(userKey, user.Id, clientId);
+			var newUserPermissions = api.Permissions.GetUserPermissions(userKey, user.Id, clientId);
 			Console.WriteLine("New user permissions: {0}", string.Join(", ", newUserPermissions));
 
-			updated = api.SetUserPermissions(userKey, user.Id, originalUserPermissions, clientId);
+			updated = api.Permissions.SetUserPermissions(userKey, user.Id, originalUserPermissions, clientId);
 			Console.WriteLine("Permissions reset to original values: {0}", updated ? "success" : "failed");
 
 			Console.WriteLine(new string('-', 25));
