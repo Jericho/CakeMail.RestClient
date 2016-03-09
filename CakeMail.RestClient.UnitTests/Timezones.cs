@@ -33,7 +33,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTimezones();
+			var result = apiClient.Timezones.GetAll();
 
 			// Assert
 			Assert.IsNotNull(result);

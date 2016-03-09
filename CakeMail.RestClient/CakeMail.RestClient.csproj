@@ -109,6 +109,7 @@
     <Compile Include="Resources\Countries.cs" />
     <Compile Include="Resources\Lists.cs" />
     <Compile Include="Resources\Permissions.cs" />
+    <Compile Include="Resources\Timezones.cs" />
     <Compile Include="Utilities\CakeMailIntegerBooleanConverter.cs" />
     <Compile Include="Utilities\Constants.cs" />
     <Compile Include="Utilities\ExtensionMethods.cs" />

@@ -71,6 +71,7 @@ namespace CakeMail.RestClient
 		public Countries Countries { get; private set; }
 		public Permissions Permissions { get; private set; }
 		public Lists Lists { get; private set; }
+		public Timezones Timezones { get; private set; }
 
 		#endregion
 
@@ -1337,21 +1338,6 @@ namespace CakeMail.RestClient
 
 		#endregion
 
-		#region Methods related to TIMEZONES
-
-		/// <summary>
-		/// Retrieve the list of all timezones known to the CakeMail system
-		/// </summary>
-		/// <returns>An enumeration of all <see cref="Timezone">timezones</see>.</returns>
-		public IEnumerable<Timezone> GetTimezones()
-		{
-			var path = "/Client/GetTimezones/";
-
-			return ExecuteArrayRequest<Timezone>(path, null, "timezones");
-		}
-
-		#endregion
-
 		#region Methods related to TRIGGERS
 
 		/// <summary>
@@ -2502,6 +2488,7 @@ namespace CakeMail.RestClient
 			this.Countries = new Countries(this);
 			this.Permissions = new Permissions(this);
 			this.Lists = new Lists(this);
+			this.Timezones = new Timezones(this);
 		}
 
 		private static string GetVersion()

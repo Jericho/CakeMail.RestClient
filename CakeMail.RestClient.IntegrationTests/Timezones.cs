@@ -11,7 +11,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			Console.WriteLine(new string('-', 25));
 			Console.WriteLine("Executing TIMEZONES methods...");
 
-			var timezones = api.GetTimezones();
+			var timezones = api.Timezones.GetAll();
 			Console.WriteLine("Retrieved all timezones. There are {0} timezones.", timezones.Count());
 
 			var utcTimezones = timezones.Where(tz => tz.Name.Contains("UTC")).ToArray();
