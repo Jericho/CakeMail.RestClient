@@ -1,5 +1,6 @@
 ﻿using CakeMail.RestClient.Exceptions;
 using CakeMail.RestClient.Models;
+using CakeMail.RestClient.Resources;
 using CakeMail.RestClient.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -17,7 +18,7 @@ namespace CakeMail.RestClient
 	/// <summary>
 	/// Core class for using the CakeMail Api
 	/// </summary>
-	public class CakeMailRestClient : ICakeMailRestClient
+	public class CakeMailRestClient
 	{
 		#region Fields
 
@@ -65,6 +66,8 @@ namespace CakeMail.RestClient
 			get { return _client.BaseUrl; }
 		}
 
+		public Campaigns Campaigns { get; private set; }
+
 		#endregion
 
 		#region Constructors and Destructors
@@ -78,6 +81,8 @@ namespace CakeMail.RestClient
 		{
 			this.ApiKey = apiKey;
 			_client = restClient;
+
+			InitializeResources();
 		}
 
 		/// <summary>
@@ -97,151 +102,8 @@ namespace CakeMail.RestClient
 				UserAgent = string.Format("CakeMail .NET REST Client {0}", _version),
 				Proxy = webProxy
 			};
-		}
 
-		#endregion
-
-		#region Methods related to CAMPAIGNS
-
-		/// <summary>
-		/// Create a new campaign
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="name">Name of the campaign.</param>
-		/// <param name="clientId">Client ID of the client in which the campaign is created.</param>
-		/// <returns>ID of the new campaign</returns>
-		public long CreateCampaign(string userKey, string name, long? clientId = null)
-		{
-			string path = "/Campaign/Create/";
-
-			var parameters = new List<KeyValuePair<string, object>>()
-			{
-				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("name", name)
-			};
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-			return ExecuteRequest<long>(path, parameters);
-		}
-
-		/// <summary>
-		/// Delete a campaign.
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="campaignId">ID of the campaign to delete.</param>
-		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
-		/// <returns>True if the campaign is deleted</returns>
-		public bool DeleteCampaign(string userKey, long campaignId, long? clientId = null)
-		{
-			string path = "/Campaign/Delete/";
-
-			var parameters = new List<KeyValuePair<string, object>>()
-			{
-				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("campaign_id", campaignId),
-			};
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-			return ExecuteRequest<bool>(path, parameters);
-		}
-
-		/// <summary>
-		/// Retrieve a campaign.
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="campaignId">ID of the campaign.</param>
-		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
-		/// <returns>The <see cref="Campaign">campaign</see></returns>
-		public Campaign GetCampaign(string userKey, long campaignId, long? clientId = null)
-		{
-			var path = "/Campaign/GetInfo/";
-
-			var parameters = new List<KeyValuePair<string, object>>()
-			{
-				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("campaign_id", campaignId)
-			};
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-			return ExecuteRequest<Campaign>(path, parameters);
-		}
-
-		/// <summary>
-		/// Retrieve the campaigns matching the filtering criteria.
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="status">Filter using the campaign status. Possible value 'ongoing', 'closed'</param>
-		/// <param name="name">Filter using the campaign name.</param>
-		/// <param name="sortBy">Sort resulting campaigns. Possible value 'created_on', 'name'</param>
-		/// <param name="sortDirection">Direction of the sorting. Possible value 'asc', 'desc'</param>
-		/// <param name="limit">Limit the number of resulting campaigns.</param>
-		/// <param name="offset">Offset the beginning of resulting campaigns.</param>
-		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
-		/// <returns>Enumeration of <see cref="Campaign">campaigns</see> matching the filtering criteria</returns>
-		public IEnumerable<Campaign> GetCampaigns(string userKey, CampaignStatus? status = null, string name = null, CampaignsSortBy? sortBy = null, SortDirection? sortDirection = null, int? limit = 0, int? offset = 0, long? clientId = null)
-		{
-			var path = "/Campaign/GetList/";
-
-			var parameters = new List<KeyValuePair<string, object>>()
-			{
-				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("count", "false")
-			};
-			if (status.HasValue) parameters.Add(new KeyValuePair<string, object>("status", status.Value.GetEnumMemberValue()));
-			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
-			if (sortBy.HasValue) parameters.Add(new KeyValuePair<string, object>("sort_by", sortBy.Value.GetEnumMemberValue()));
-			if (sortDirection.HasValue) parameters.Add(new KeyValuePair<string, object>("direction", sortDirection.Value.GetEnumMemberValue()));
-			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
-			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-			return ExecuteRequest<Campaign[]>(path, parameters, "campaigns");
-		}
-
-		/// <summary>
-		/// Get a count of campaigns matching the filtering criteria.
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="status">Filter using the campaign status. Possible value 'ongoing', 'closed'</param>
-		/// <param name="name">Filter using the campaign name.</param>
-		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
-		/// <returns>The count of campaigns matching the filtering criteria</returns>
-		public long GetCampaignsCount(string userKey, CampaignStatus? status = null, string name = null, long? clientId = null)
-		{
-			var path = "/Campaign/GetList/";
-			var parameters = new List<KeyValuePair<string, object>>()
-			{
-				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("count", "true")
-			};
-			if (status.HasValue) parameters.Add(new KeyValuePair<string, object>("status", status.Value.GetEnumMemberValue()));
-			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-			return ExecuteCountRequest(path, parameters);
-		}
-
-		/// <summary>
-		/// Update a campaign
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="campaignId">ID of the campaign.</param>
-		/// <param name="name">The name of the campaign</param>
-		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
-		/// <returns>True if the record was updated.</returns>
-		public bool UpdateCampaign(string userKey, long campaignId, string name, long? clientId = null)
-		{
-			string path = "/Campaign/SetInfo/";
-
-			var parameters = new List<KeyValuePair<string, object>>()
-			{
-				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("campaign_id", campaignId),
-				new KeyValuePair<string, object>("name", name)
-			};
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-			return ExecuteRequest<bool>(path, parameters);
+			InitializeResources();
 		}
 
 		#endregion
@@ -3638,38 +3500,19 @@ namespace CakeMail.RestClient
 
 		#endregion
 
-		#region Private Methods
+		#region Internal Methods
 
-		private static string GetVersion()
-		{
-			try
-			{
-				// The following may throw 'System.Security.Permissions.FileIOPermission' under some circumpstances
-				//var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
-
-				// Here's an alternative suggested by Phil Haack: http://haacked.com/archive/2010/11/04/assembly-location-and-medium-trust.aspx
-				var assemblyVersion = new AssemblyName(typeof(CakeMailRestClient).Assembly.FullName).Version;
-				var version = string.Format("{0}.{1}.{2}.{3}", assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.Build, assemblyVersion.Revision);
-
-				return version;
-			}
-			catch
-			{
-				return "0.0.0.0";
-			}
-		}
-
-		private long ExecuteCountRequest(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters)
+		internal long ExecuteCountRequest(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters)
 		{
 			return ExecuteRequest<long>(urlPath, parameters, "count");
 		}
 
-		private T[] ExecuteArrayRequest<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string propertyName = null)
+		internal T[] ExecuteArrayRequest<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string propertyName = null)
 		{
 			return ExecuteRequest<T[]>(urlPath, parameters, propertyName);
 		}
 
-		private T ExecuteRequest<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string propertyName = null)
+		internal T ExecuteRequest<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string propertyName = null)
 		{
 			// Execute the API call
 			var response = ExecuteRequest(urlPath, parameters);
@@ -3693,6 +3536,34 @@ namespace CakeMail.RestClient
 			if (property.Value is JArray) return (property.Value as JArray).ToObject<T>();
 			else if (property.Value is JValue) return (property.Value as JValue).ToObject<T>();
 			return (property.Value as JObject).ToObject<T>();
+		}
+
+		#endregion
+
+		#region Private Methods
+
+		private void InitializeResources()
+		{
+			this.Campaigns = new Campaigns(this);
+		}
+
+		private static string GetVersion()
+		{
+			try
+			{
+				// The following may throw 'System.Security.Permissions.FileIOPermission' under some circumpstances
+				//var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+
+				// Here's an alternative suggested by Phil Haack: http://haacked.com/archive/2010/11/04/assembly-location-and-medium-trust.aspx
+				var assemblyVersion = new AssemblyName(typeof(CakeMailRestClient).Assembly.FullName).Version;
+				var version = string.Format("{0}.{1}.{2}.{3}", assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.Build, assemblyVersion.Revision);
+
+				return version;
+			}
+			catch
+			{
+				return "0.0.0.0";
+			}
 		}
 
 		private IRestResponse ExecuteRequest(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters)

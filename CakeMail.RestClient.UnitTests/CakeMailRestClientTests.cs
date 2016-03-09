@@ -337,7 +337,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.DeleteCampaign(USER_KEY, campaignId, CLIENT_ID);
+			var result = apiClient.Campaigns.Delete(USER_KEY, campaignId, CLIENT_ID);
 		}
 
 		[TestMethod]
@@ -364,7 +364,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.DeleteCampaign(USER_KEY, campaignId, CLIENT_ID);
+			var result = apiClient.Campaigns.Delete(USER_KEY, campaignId, CLIENT_ID);
 		}
 
 		[TestMethod]
