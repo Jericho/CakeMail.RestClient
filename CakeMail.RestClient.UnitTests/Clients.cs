@@ -44,7 +44,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateClient(CLIENT_ID, name);
+			var result = apiClient.Clients.Create(CLIENT_ID, name);
 
 			// Assert
 			Assert.AreEqual(confirmationCode, result);
@@ -78,7 +78,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateClient(CLIENT_ID, name, primaryContactSameAsAdmin: false);
+			var result = apiClient.Clients.Create(CLIENT_ID, name, primaryContactSameAsAdmin: false);
 
 			// Assert
 			Assert.AreEqual(confirmationCode, result);
@@ -175,7 +175,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateClient(CLIENT_ID, name, address1, address2, city, provinceId, postalCode, countryId, website, phone, fax, adminEmail, adminFirstName, adminLastName, adminTitle, adminOfficePhone, adminMobilePhone, adminLanguage, adminTimezoneId, adminPassword, false, primaryContactEmail, primaryContactFirstName, primaryContactLastName, primaryContactTitle, primaryContactOfficePhone, primaryContactMobilePhone, primaryContactLanguage, primaryContactTimezoneId, primaryContactPassword);
+			var result = apiClient.Clients.Create(CLIENT_ID, name, address1, address2, city, provinceId, postalCode, countryId, website, phone, fax, adminEmail, adminFirstName, adminLastName, adminTitle, adminOfficePhone, adminMobilePhone, adminLanguage, adminTimezoneId, adminPassword, false, primaryContactEmail, primaryContactFirstName, primaryContactLastName, primaryContactTitle, primaryContactOfficePhone, primaryContactMobilePhone, primaryContactLanguage, primaryContactTimezoneId, primaryContactPassword);
 
 			// Assert
 			Assert.AreEqual(confirmationCode, result);
@@ -260,7 +260,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateClient(CLIENT_ID, name, address1, address2, city, provinceId, postalCode, countryId, website, phone, fax, adminEmail, adminFirstName, adminLastName, adminTitle, adminOfficePhone, adminMobilePhone, adminLanguage, adminTimezoneId, adminPassword, true, primaryContactEmail, primaryContactFirstName, primaryContactLastName, primaryContactTitle, primaryContactOfficePhone, primaryContactMobilePhone, primaryContactLanguage, primaryContactTimezoneId, primaryContactPassword);
+			var result = apiClient.Clients.Create(CLIENT_ID, name, address1, address2, city, provinceId, postalCode, countryId, website, phone, fax, adminEmail, adminFirstName, adminLastName, adminTitle, adminOfficePhone, adminMobilePhone, adminLanguage, adminTimezoneId, adminPassword, true, primaryContactEmail, primaryContactFirstName, primaryContactLastName, primaryContactTitle, primaryContactOfficePhone, primaryContactMobilePhone, primaryContactLanguage, primaryContactTimezoneId, primaryContactPassword);
 
 			// Assert
 			Assert.AreEqual(confirmationCode, result);
@@ -291,7 +291,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.ConfirmClient(confirmationId);
+			var result = apiClient.Clients.Confirm(confirmationId);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -323,7 +323,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetClient(USER_KEY, confirmationCode);
+			var result = apiClient.Clients.Get(USER_KEY, confirmationCode);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -353,7 +353,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetClient(USER_KEY, CLIENT_ID);
+			var result = apiClient.Clients.Get(USER_KEY, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -387,7 +387,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetClient(USER_KEY, CLIENT_ID, startDate, endDate);
+			var result = apiClient.Clients.Get(USER_KEY, CLIENT_ID, startDate, endDate);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -421,7 +421,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetClient(USER_KEY, CLIENT_ID, startDate, endDate);
+			var result = apiClient.Clients.Get(USER_KEY, CLIENT_ID, startDate, endDate);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -457,7 +457,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetClients(USER_KEY, status: status);
+			var result = apiClient.Clients.GetList(USER_KEY, status: status);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -493,7 +493,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetClients(USER_KEY, name: name);
+			var result = apiClient.Clients.GetList(USER_KEY, name: name);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -529,7 +529,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetClients(USER_KEY, sortBy: sortBy);
+			var result = apiClient.Clients.GetList(USER_KEY, sortBy: sortBy);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -565,7 +565,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetClients(USER_KEY, sortDirection: sortDirection);
+			var result = apiClient.Clients.GetList(USER_KEY, sortDirection: sortDirection);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -601,7 +601,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetClients(USER_KEY, limit: limit);
+			var result = apiClient.Clients.GetList(USER_KEY, limit: limit);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -637,7 +637,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetClients(USER_KEY, offset: offset);
+			var result = apiClient.Clients.GetList(USER_KEY, offset: offset);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -671,7 +671,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetClients(USER_KEY, clientId: CLIENT_ID);
+			var result = apiClient.Clients.GetList(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -704,7 +704,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetClientsCount(USER_KEY, status: status);
+			var result = apiClient.Clients.GetCount(USER_KEY, status: status);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -737,7 +737,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetClientsCount(USER_KEY, name: name);
+			var result = apiClient.Clients.GetCount(USER_KEY, name: name);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -768,7 +768,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetClientsCount(USER_KEY, clientId: CLIENT_ID);
+			var result = apiClient.Clients.GetCount(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -801,7 +801,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, name: name);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, name: name);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -833,7 +833,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, status: status);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, status: status);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -865,7 +865,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, parentId: parentId);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, parentId: parentId);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -897,7 +897,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, address1: address1);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, address1: address1);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -929,7 +929,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, address2: address2);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, address2: address2);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -961,7 +961,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, city: city);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, city: city);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -993,7 +993,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, provinceId: provinceId);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, provinceId: provinceId);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1025,7 +1025,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, postalCode: postalCode);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, postalCode: postalCode);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1057,7 +1057,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, countryId: countryId);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, countryId: countryId);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1089,7 +1089,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, website: website);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, website: website);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1122,7 +1122,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, phone: phone);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, phone: phone);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1154,7 +1154,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, fax: fax);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, fax: fax);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1186,7 +1186,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, authDomain: authDomain);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, authDomain: authDomain);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1218,7 +1218,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, bounceDomain: bounceDomain);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, bounceDomain: bounceDomain);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1250,7 +1250,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, dkimDomain: dkimDomain);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, dkimDomain: dkimDomain);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1282,7 +1282,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, doptinIp: doptinIp);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, doptinIp: doptinIp);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1314,7 +1314,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, forwardDomain: forwardDomain);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, forwardDomain: forwardDomain);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1346,7 +1346,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, forwardIp: forwardIp);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, forwardIp: forwardIp);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1378,7 +1378,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, ipPool: ipPool);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, ipPool: ipPool);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1410,7 +1410,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, mdDomain: mdDomain);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, mdDomain: mdDomain);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1442,7 +1442,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, isReseller: isReseller);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, isReseller: isReseller);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1474,7 +1474,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, isReseller: isReseller);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, isReseller: isReseller);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1506,7 +1506,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, currency: currency);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, currency: currency);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1538,7 +1538,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, planType: planType);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, planType: planType);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1570,7 +1570,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, mailingLimit: mailingLimit);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, mailingLimit: mailingLimit);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1602,7 +1602,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, monthLimit: monthLimit);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, monthLimit: monthLimit);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1634,7 +1634,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, contactLimit: contactLimit);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, contactLimit: contactLimit);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1666,7 +1666,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, defaultMailingLimit: defaultMailingLimit);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, defaultMailingLimit: defaultMailingLimit);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1698,7 +1698,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, defaultMonthLimit: defaultMonthLimit);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, defaultMonthLimit: defaultMonthLimit);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1730,7 +1730,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateClient(USER_KEY, CLIENT_ID, defaultContactLimit: defaultContactLimit);
+			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, defaultContactLimit: defaultContactLimit);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1760,7 +1760,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.ActivateClient(USER_KEY, CLIENT_ID);
+			var result = apiClient.Clients.Activate(USER_KEY, CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1790,7 +1790,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuspendClient(USER_KEY, CLIENT_ID);
+			var result = apiClient.Clients.Suspend(USER_KEY, CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1820,7 +1820,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.DeleteClient(USER_KEY, CLIENT_ID);
+			var result = apiClient.Clients.Delete(USER_KEY, CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
