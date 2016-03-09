@@ -88,17 +88,17 @@ namespace CakeMail.RestClient.IntegrationTests
 			var logs = api.Lists.GetLogs(userKey, listId, LogType.Open, false, false, null, null, null, null, clientId);
 			Console.WriteLine("Retrieved 'Opens'. Count = {0}", logs.Count());
 
-			var firstSegmentId = api.CreateSegment(userKey, listId, "Segment #1", "(`email` LIKE \"aa%\")", clientId);
-			var secondSegmentId = api.CreateSegment(userKey, listId, "Segment #2", "(`email` LIKE \"bb%\")", clientId);
+			var firstSegmentId = api.Segments.Create(userKey, listId, "Segment #1", "(`email` LIKE \"aa%\")", clientId);
+			var secondSegmentId = api.Segments.Create(userKey, listId, "Segment #2", "(`email` LIKE \"bb%\")", clientId);
 			Console.WriteLine("Two segments created");
 
-			var segments = api.GetSegments(userKey, listId, 0, 0, true, clientId);
+			var segments = api.Segments.GetSegments(userKey, listId, 0, 0, true, clientId);
 			Console.WriteLine("Segments retrieved. Count = {0}", segments.Count());
 
-			var firstSegmentDeleted = api.DeleteSegment(userKey, firstSegmentId, clientId);
+			var firstSegmentDeleted = api.Segments.Delete(userKey, firstSegmentId, clientId);
 			Console.WriteLine("First segment deleted");
 
-			var secondSegmentDeleted = api.DeleteSegment(userKey, secondSegmentId, clientId);
+			var secondSegmentDeleted = api.Segments.Delete(userKey, secondSegmentId, clientId);
 			Console.WriteLine("Second segment deleted");
 
 			var deleted = api.Lists.Delete(userKey, listId, clientId);
