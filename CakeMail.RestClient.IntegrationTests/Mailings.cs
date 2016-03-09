@@ -21,7 +21,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			var mailingId = api.CreateMailing(userKey, "Integration Testing", null, MailingType.Standard, null, null, null, clientId);
 			Console.WriteLine("New mailing created. Id: {0}", mailingId);
 
-			var list = api.GetLists(userKey, ListStatus.Active, null, ListsSortBy.Name, SortDirection.Descending, 1, 0, clientId).First();
+			var list = api.Lists.GetLists(userKey, ListStatus.Active, null, ListsSortBy.Name, SortDirection.Descending, 1, 0, clientId).First();
 			var updated = api.UpdateMailing(userKey, mailingId, name: "UPDATED Integration Test", listId: list.Id, htmlContent: "<html><body>Hello World in HTML.  <a href=\"http://cakemail.com\">CakeMail web site</a></body></html>", textContent: "Hello World in text", subject: "This is a test", clientId: clientId);
 			Console.WriteLine("Mailing updated: {0}", updated ? "success" : "failed");
 

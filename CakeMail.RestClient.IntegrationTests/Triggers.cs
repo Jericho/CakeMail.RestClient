@@ -13,8 +13,8 @@ namespace CakeMail.RestClient.IntegrationTests
 			Console.WriteLine(new string('-', 25));
 			Console.WriteLine("Executing TRIGGERS methods...");
 
-			var listId = api.CreateList(userKey, "INTEGRATION TESTING list for trigger", "Bob Smith", "bobsmith@fictitiouscomapny.com", true, clientId);
-			var listMemberId = api.Subscribe(userKey, listId, "recipient@destination.com", true, true, null, clientId);
+			var listId = api.Lists.Create(userKey, "INTEGRATION TESTING list for trigger", "Bob Smith", "bobsmith@fictitiouscomapny.com", true, clientId);
+			var listMemberId = api.Lists.Subscribe(userKey, listId, "recipient@destination.com", true, true, null, clientId);
 
 			var campaigns = api.Campaigns.GetList(userKey, CampaignStatus.Ongoing, null, CampaignsSortBy.Name, SortDirection.Ascending, 1, 0, clientId);
 			var campaign = campaigns.First();
@@ -71,7 +71,7 @@ namespace CakeMail.RestClient.IntegrationTests
 				//Console.WriteLine("Trigger link retrieved. URI = {0}", link.Uri);
 			}
 
-			var deleted = api.DeleteList(userKey, listId, clientId);
+			var deleted = api.Lists.Delete(userKey, listId, clientId);
 			Console.WriteLine("List deleted: {0}", deleted ? "success" : "failed");
 
 			Console.WriteLine(new string('-', 25));
