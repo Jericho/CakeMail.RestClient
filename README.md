@@ -136,11 +136,11 @@ var importResult = cakeMail.Import(userKey, listId, new[] { member1, member2 });
 A mailing is an email campaign. It can be used to send standard email campaigns, A/B split campaigns or recurring campaigns.
 
 ```
-var invitationMailingId = cakeMail.CreateMailing(userKey, "2015 User Conference invitation", campaignId);
-cakeMail.UpdateMailing(userKey, invitationMailingId, listId: listId, htmlContent: "<html><body>You are invited to attend our annual user conference</body></html>", textContent: "You are invited to attend our annual user conference", subject: "Invitation to our 2015 user conference");
-cakeMail.ScheduleMailing(userKey, invitationMailingId);
+var invitationMailingId = cakeMail.Mailings.Create(userKey, "2015 User Conference invitation", campaignId);
+cakeMail.Mailings.Update(userKey, invitationMailingId, listId: listId, htmlContent: "<html><body>You are invited to attend our annual user conference</body></html>", textContent: "You are invited to attend our annual user conference", subject: "Invitation to our 2015 user conference");
+cakeMail.Mailings.Shedule(userKey, invitationMailingId);
 
-var reminderMailingId = cakeMail.CreateMailing(userKey, "2015 User Conference reminder", campaignId);
-cakeMail.UpdateMailing(userKey, reminderMailingId, listId: listId, htmlContent: "<html><body>Don't forget our upcoming annual user conference</body></html>", textContent: "Don't forget our upcoming annual user conference", subject: "Reminder about our 2015 user conference");
-cakeMail.ScheduleMailing(userKey, reminderMailingId, DateTime.UtcNow.AddDays(2));
+var reminderMailingId = cakeMail.Mailings.Create(userKey, "2015 User Conference reminder", campaignId);
+cakeMail.Mailings.Update(userKey, reminderMailingId, listId: listId, htmlContent: "<html><body>Don't forget our upcoming annual user conference</body></html>", textContent: "Don't forget our upcoming annual user conference", subject: "Reminder about our 2015 user conference");
+cakeMail.Mailings.Shedule(userKey, reminderMailingId, DateTime.UtcNow.AddDays(2));
 ```

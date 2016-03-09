@@ -108,6 +108,7 @@
     <Compile Include="Resources\Clients.cs" />
     <Compile Include="Resources\Countries.cs" />
     <Compile Include="Resources\Lists.cs" />
+    <Compile Include="Resources\Mailings.cs" />
     <Compile Include="Resources\Permissions.cs" />
     <Compile Include="Resources\Timezones.cs" />
     <Compile Include="Utilities\CakeMailIntegerBooleanConverter.cs" />
