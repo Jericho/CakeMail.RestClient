@@ -89,7 +89,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -112,7 +112,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -137,7 +137,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -162,7 +162,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -187,7 +187,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -212,7 +212,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -236,7 +236,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -260,7 +260,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -285,7 +285,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -310,7 +310,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]

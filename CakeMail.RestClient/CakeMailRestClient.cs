@@ -68,6 +68,7 @@ namespace CakeMail.RestClient
 
 		public Campaigns Campaigns { get; private set; }
 		public Clients Clients { get; private set; }
+		public Countries Countries { get; private set; }
 
 		#endregion
 
@@ -156,38 +157,6 @@ namespace CakeMail.RestClient
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return ExecuteRequest<bool>(path, parameters);
-		}
-
-		#endregion
-
-		#region Methods related to COUNTRIES
-
-		/// <summary>
-		/// Get the list of countries
-		/// </summary>
-		/// <returns>An enumeration of <see cref="Country">countries</see></returns>
-		public IEnumerable<Country> GetCountries()
-		{
-			var path = "/Country/GetList/";
-
-			return ExecuteArrayRequest<Country>(path, null, "countries");
-		}
-
-		/// <summary>
-		/// Get the list of state/provinces for a given country
-		/// </summary>
-		/// <param name="countryId">ID of the country.</param>
-		/// <returns>An enumeration of <see cref="Province">privinces</see></returns>
-		public IEnumerable<Province> GetProvinces(string countryId)
-		{
-			var path = "/Country/GetProvinces/";
-
-			var parameters = new List<KeyValuePair<string, object>>()
-			{
-				new KeyValuePair<string, object>("country_id", countryId)
-			};
-
-			return ExecuteArrayRequest<Province>(path, parameters, "provinces");
 		}
 
 		#endregion
@@ -3223,6 +3192,7 @@ namespace CakeMail.RestClient
 		{
 			this.Campaigns = new Campaigns(this);
 			this.Clients = new Clients(this);
+			this.Countries = new Countries(this);
 		}
 
 		private static string GetVersion()
