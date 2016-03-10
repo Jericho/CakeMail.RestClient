@@ -58,7 +58,7 @@ var password = "yourpassword";
 
 var cakeMail = new CakeMailRestClient(apiKey);
 
-var loginInfo = cakeMail.Login(userName, password);
+var loginInfo = cakeMail.Users.Login(userName, password);
 var userKey = loginInfo.UserKey;
 ```
 

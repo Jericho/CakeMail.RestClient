@@ -12,7 +12,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			Console.WriteLine(new string('-', 25));
 			Console.WriteLine("Executing PERMISSIONS methods...");
 
-			var users = api.GetUsers(userKey, UserStatus.Active, null, null, clientId);
+			var users = api.Users.GetUsers(userKey, UserStatus.Active, null, null, clientId);
 			Console.WriteLine("All users retrieved");
 
 			var user = users.First();

@@ -38,7 +38,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			var overrideClientId = ConfigurationManager.AppSettings["OverrideClientId"];
 
 			var api = new CakeMailRestClient(apiKey);
-			var loginInfo = api.Login(userName, password);
+			var loginInfo = api.Users.Login(userName, password);
 			var clientId = string.IsNullOrEmpty(overrideClientId) ? loginInfo.ClientId : long.Parse(overrideClientId);
 			var userKey = loginInfo.UserKey;
 
