@@ -21,13 +21,26 @@ CakeMailRestAPI is available as a Nuget package.
 
 ## Release Notes
 
++ **3.0.0**
+    - Methods are now logically grouped in separate resources. For instance, all methods related to users are grouped in a resource called 'Users', all methods related to campaigns are grouped in a resource called 'Campaigns', and so on.
+    - Methods have been renamed to avoid repetition. For example, GetCampaignsCount has been renamed GetCount off of the new 'Campaigns' resource.
+
+This means, for example, that the following v2.0 call:
+
+```var count = cakeMail.GetCampaignsCount(userKey, MailingStatus.Ongoing);```
+
+Has been replaced with the following v3.0 call :
+
+```var count = cakeMail.Campaigns.GetCount(userKey, MailingStatus.Ongoing);```
+
+
 + **2.0.0**
     - Unique identifiers changed to 'long' instead of 'int'.
     - "Magic strings" replaced with enums. For example, instead of specifying sort direction with 'asc' and 'desc', you can now use SortDirection.Ascending and SortDirection.Descending.
     - Fix bug in CreateTemplateCategory which prevents creating new categories
     - Fix bug in DeleteTemplateCategory which causes an exception to be thrown despite the fact the category was successfuly deleted
     - Fix bug in GetListMembers which causes exception: 'Json does not contain property members'
-	- Fix GetTriggerLinksLogs
+    - Fix GetTriggerLinksLogs
     - Added XML comments file for convenient intellisense in Visual Studio
 
 + **1.0.0**
@@ -70,12 +83,12 @@ A campaign is simply a way to logically group mailings toghether. You can think 
 A word of caution: the word 'Campaign' is used in the CakeMail UI to refer to mailings which is really confusing!
 
 ```csharp
-var campaigns = cakeMail.GetCampaigns(userKey, status: MailingStatus.Ongoing, sortBy: MailingSortBy.Name, sortDirection: SortDirection.Ascending, limit: 50, offset: 0);
-var campaignsCount = cakeMail.GetCampaignsCount(userKey, MailingStatus.Ongoing);
+var campaigns = cakeMail.Campaigns.GetCampaigns(userKey, status: MailingStatus.Ongoing, sortBy: MailingSortBy.Name, sortDirection: SortDirection.Ascending, limit: 50, offset: 0);
+var campaignsCount = cakeMail.Campaigns.GetCount(userKey, MailingStatus.Ongoing);
 
-var campaignId = cakeMail.CreateCampaign(userKey, "2015 User Conference");
-var campaign = cakeMail.GetCampaign(userKey, campaignId);
-var deleted = cakeMail.DeleteCampaign(userKey, campaignId);
+var campaignId = cakeMail.Campaigns.Create(userKey, "2015 User Conference");
+var campaign = cakeMail.Campaigns.Get(userKey, campaignId);
+var deleted = cakeMail.Campaigns.Delete(userKey, campaignId);
 
 ```
 
@@ -84,23 +97,23 @@ var deleted = cakeMail.DeleteCampaign(userKey, campaignId);
 A List is a collection of subscribers (or List Members, or Records). Each subscriber or List Member is uniquely identified by their email address, and may include an limited amount of Fields containing demographic information associated to each email address.
 
 ```csharp
-var lists = cakeMail.GetLists(userKey, sortBy: ListSortBy.Name, sortDirection: SortDirection.Descending, limit: 50, offset: 0);
-var listsCount = cakeMail.GetListsCount(userKey);
+var lists = cakeMail.Lists.GetLists(userKey, sortBy: ListSortBy.Name, sortDirection: SortDirection.Descending, limit: 50, offset: 0);
+var listsCount = cakeMail.Lists.GetCount(userKey);
 
-var listId = cakeMail.CreateList(userKey, "Customers and Prospects", "The XYZ Marketing Group", "marketing@yourcompany.com", true);
-cakeMail.AddListField(userKey, listId, "first_name", "text");
-cakeMail.AddListField(userKey, listId, "last_name", "text");
-cakeMail.AddListField(userKey, listId, "customer_since", "datetime");
+var listId = cakeMail.Lists.Create(userKey, "Customers and Prospects", "The XYZ Marketing Group", "marketing@yourcompany.com", true);
+cakeMail.Lists.AddField(userKey, listId, "first_name", "text");
+cakeMail.Lists.AddField(userKey, listId, "last_name", "text");
+cakeMail.Lists.AddField(userKey, listId, "customer_since", "datetime");
 ```
 
 You can add members to your list like so:
 ```
-cakeMail.Subscribe(userKey, listId, "bob_the_customer@hotmail.com", true, true, new[] {
+cakeMail.Lists.Subscribe(userKey, listId, "bob_the_customer@hotmail.com", true, true, new[] {
     new KeyValuePair<string, object>("first_name", "Bob"), 
     new KeyValuePair<string, object>("last_name", "Smith"), 
     new KeyValuePair<string, object>("customer_since", DateTime.UtcNow) 
 });
-cakeMail.Subscribe(userKey, listId, "jane_the_prospect@hotmail.com", true, true, new[] {
+cakeMail.Lists.Subscribe(userKey, listId, "jane_the_prospect@hotmail.com", true, true, new[] {
     new KeyValuePair<string, object>("first_name", "Jane"), 
     new KeyValuePair<string, object>("last_name", "Doe")
 });
@@ -128,7 +141,7 @@ var member2 = new ListMember()
     }
 };
 
-var importResult = cakeMail.Import(userKey, listId, new[] { member1, member2 });
+var importResult = cakeMail.Lists.Import(userKey, listId, new[] { member1, member2 });
 ```
 
 ### Mailings
