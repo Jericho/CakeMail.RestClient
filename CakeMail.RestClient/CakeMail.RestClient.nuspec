@@ -12,19 +12,14 @@
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
 	<description>$description$</description>
 	<releaseNotes>
-		- Unique identifiers changed to 'long' instead of 'int'.
-		- "Magic strings" replaced with enums. For example, instead of specifying sort direction with 'asc' and 'desc', you can now use SortDirection.Ascending and SortDirection.Descending.
-		- Fix bug in CreateTemplateCategory which prevents creating new categories
-		- Fix bug in DeleteTemplateCategory which causes an exception to be thrown despite the fact the category was successfuly deleted
-		- Fix bug in GetListMembers which causes exception: 'Json does not contain property members'
-		- Fix GetTriggerLinksLogs
-		- Added XML comments file for convenient intellisense in Visual Studio
+		- Methods are now logically grouped in separate resources. For instance, all methods related to users are grouped in a resource called 'Users', all methods related to campaigns are grouped in a resource called 'Campaigns', and so on.
+		- Methods have been renamed to avoid repetition. For example, GetCampaignsCount has been renamed GetCount off of the new 'Campaigns' resource.
 	</releaseNotes>
-	<copyright>Copyright 2015</copyright>
+	<copyright>Copyright 2016</copyright>
 	<tags>CakeMail API REST</tags>
 	<dependencies>
-	  <dependency id="Newtonsoft.Json" version="6.0.8" />
-	  <dependency id="RestSharp" version="105.0.1" />
+	  <dependency id="Newtonsoft.Json" version="8.0.2" />
+	  <dependency id="RestSharp" version="105.2.3" />
 	</dependencies>
   </metadata>
 </package>
