@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CakeMail.RestClient.IntegrationTests.Console")]
+[assembly: AssemblyTitle("CakeMail.RestClient.IntegrationTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("IBM")]
-[assembly: AssemblyProduct("CakeMail.RestClient.IntegrationTests.Console")]
-[assembly: AssemblyCopyright("Copyright © IBM 2015")]
+[assembly: AssemblyCompany("Jeremie Desautels")]
+[assembly: AssemblyProduct("CakeMail.RestClient.IntegrationTests")]
+[assembly: AssemblyCopyright("Copyright Jeremie Desautels © 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

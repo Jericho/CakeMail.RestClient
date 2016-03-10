@@ -43,7 +43,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SetUserPermissions(USER_KEY, userId, permissions, null);
+			var result = apiClient.Permissions.SetUserPermissions(USER_KEY, userId, permissions, null);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -79,7 +79,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SetUserPermissions(USER_KEY, userId, permissions, CLIENT_ID);
+			var result = apiClient.Permissions.SetUserPermissions(USER_KEY, userId, permissions, CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -110,7 +110,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetUserPermissions(USER_KEY, userId);
+			var result = apiClient.Permissions.GetUserPermissions(USER_KEY, userId);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -143,7 +143,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetUserPermissions(USER_KEY, userId, CLIENT_ID);
+			var result = apiClient.Permissions.GetUserPermissions(USER_KEY, userId, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);

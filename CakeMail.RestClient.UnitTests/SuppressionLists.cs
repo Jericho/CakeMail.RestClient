@@ -41,7 +41,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.AddEmailAddressesToSuppressionList(USER_KEY, emailAddresses);
+			var result = apiClient.SuppressionLists.AddEmailAddresses(USER_KEY, emailAddresses);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -70,7 +70,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.AddEmailAddressesToSuppressionList(USER_KEY, null);
+			var result = apiClient.SuppressionLists.AddEmailAddresses(USER_KEY, null);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -105,7 +105,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.AddEmailAddressesToSuppressionList(USER_KEY, emailAddresses, CLIENT_ID);
+			var result = apiClient.SuppressionLists.AddEmailAddresses(USER_KEY, emailAddresses, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -139,7 +139,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.AddDomainsToSuppressionList(USER_KEY, domains);
+			var result = apiClient.SuppressionLists.AddDomains(USER_KEY, domains);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -168,7 +168,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.AddDomainsToSuppressionList(USER_KEY, null);
+			var result = apiClient.SuppressionLists.AddDomains(USER_KEY, null);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -203,7 +203,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.AddDomainsToSuppressionList(USER_KEY, domains, CLIENT_ID);
+			var result = apiClient.SuppressionLists.AddDomains(USER_KEY, domains, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -237,7 +237,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.AddLocalPartsToSuppressionList(USER_KEY, localParts);
+			var result = apiClient.SuppressionLists.AddLocalParts(USER_KEY, localParts);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -266,7 +266,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.AddLocalPartsToSuppressionList(USER_KEY, null);
+			var result = apiClient.SuppressionLists.AddLocalParts(USER_KEY, null);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -301,7 +301,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.AddLocalPartsToSuppressionList(USER_KEY, localParts, CLIENT_ID);
+			var result = apiClient.SuppressionLists.AddLocalParts(USER_KEY, localParts, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -335,7 +335,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.RemoveEmailAddressesFromSuppressionList(USER_KEY, emailAddresses);
+			var result = apiClient.SuppressionLists.RemoveEmailAddresses(USER_KEY, emailAddresses);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -363,7 +363,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.RemoveEmailAddressesFromSuppressionList(USER_KEY, null);
+			var result = apiClient.SuppressionLists.RemoveEmailAddresses(USER_KEY, null);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -398,7 +398,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.RemoveEmailAddressesFromSuppressionList(USER_KEY, emailAddresses, CLIENT_ID);
+			var result = apiClient.SuppressionLists.RemoveEmailAddresses(USER_KEY, emailAddresses, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -432,7 +432,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.RemoveDomainsFromSuppressionList(USER_KEY, domains);
+			var result = apiClient.SuppressionLists.RemoveDomains(USER_KEY, domains);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -461,7 +461,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.RemoveDomainsFromSuppressionList(USER_KEY, null);
+			var result = apiClient.SuppressionLists.RemoveDomains(USER_KEY, null);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -496,7 +496,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.RemoveDomainsFromSuppressionList(USER_KEY, domains, CLIENT_ID);
+			var result = apiClient.SuppressionLists.RemoveDomains(USER_KEY, domains, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -530,7 +530,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.RemoveLocalPartsFromSuppressionList(USER_KEY, localParts);
+			var result = apiClient.SuppressionLists.RemoveLocalParts(USER_KEY, localParts);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -559,7 +559,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.RemoveLocalPartsFromSuppressionList(USER_KEY, null);
+			var result = apiClient.SuppressionLists.RemoveLocalParts(USER_KEY, null);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -594,7 +594,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.RemoveLocalPartsFromSuppressionList(USER_KEY, localParts, CLIENT_ID);
+			var result = apiClient.SuppressionLists.RemoveLocalParts(USER_KEY, localParts, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -624,7 +624,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedEmailAddresses(USER_KEY);
+			var result = apiClient.SuppressionLists.GetEmailAddresses(USER_KEY);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -657,7 +657,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedEmailAddresses(USER_KEY, limit: limit);
+			var result = apiClient.SuppressionLists.GetEmailAddresses(USER_KEY, limit: limit);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -690,7 +690,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedEmailAddresses(USER_KEY, offset: offset);
+			var result = apiClient.SuppressionLists.GetEmailAddresses(USER_KEY, offset: offset);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -721,7 +721,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedEmailAddresses(USER_KEY, clientId: CLIENT_ID);
+			var result = apiClient.SuppressionLists.GetEmailAddresses(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -751,7 +751,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedDomains(USER_KEY);
+			var result = apiClient.SuppressionLists.GetDomains(USER_KEY);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -784,7 +784,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedDomains(USER_KEY, limit: limit);
+			var result = apiClient.SuppressionLists.GetDomains(USER_KEY, limit: limit);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -817,7 +817,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedDomains(USER_KEY, offset: offset);
+			var result = apiClient.SuppressionLists.GetDomains(USER_KEY, offset: offset);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -848,7 +848,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedDomains(USER_KEY, clientId: CLIENT_ID);
+			var result = apiClient.SuppressionLists.GetDomains(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -878,7 +878,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedLocalParts(USER_KEY);
+			var result = apiClient.SuppressionLists.GetLocalParts(USER_KEY);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -911,7 +911,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedLocalParts(USER_KEY, limit: limit);
+			var result = apiClient.SuppressionLists.GetLocalParts(USER_KEY, limit: limit);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -944,7 +944,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedLocalParts(USER_KEY, offset: offset);
+			var result = apiClient.SuppressionLists.GetLocalParts(USER_KEY, offset: offset);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -975,7 +975,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedLocalParts(USER_KEY, clientId: CLIENT_ID);
+			var result = apiClient.SuppressionLists.GetLocalParts(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1005,7 +1005,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedEmailAddressesCount(USER_KEY);
+			var result = apiClient.SuppressionLists.GetEmailAddressesCount(USER_KEY);
 
 			// Assert
 			Assert.AreEqual(2, result);
@@ -1035,7 +1035,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedEmailAddressesCount(USER_KEY, clientId: CLIENT_ID);
+			var result = apiClient.SuppressionLists.GetEmailAddressesCount(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(2, result);
@@ -1064,7 +1064,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedDomainsCount(USER_KEY);
+			var result = apiClient.SuppressionLists.GetDomainsCount(USER_KEY);
 
 			// Assert
 			Assert.AreEqual(2, result);
@@ -1094,7 +1094,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedDomainsCount(USER_KEY, clientId: CLIENT_ID);
+			var result = apiClient.SuppressionLists.GetDomainsCount(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(2, result);
@@ -1123,7 +1123,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedLocalPartsCount(USER_KEY);
+			var result = apiClient.SuppressionLists.GetLocalPartsCount(USER_KEY);
 
 			// Assert
 			Assert.AreEqual(2, result);
@@ -1153,7 +1153,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSuppressedLocalPartsCount(USER_KEY, clientId: CLIENT_ID);
+			var result = apiClient.SuppressionLists.GetLocalPartsCount(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(2, result);

@@ -44,7 +44,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateSegment(USER_KEY, listId, name, query, null);
+			var result = apiClient.Segments.Create(USER_KEY, listId, name, query, null);
 
 			// Assert
 			Assert.AreEqual(segmentId, result);
@@ -79,7 +79,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateSegment(USER_KEY, listId, name, null, CLIENT_ID);
+			var result = apiClient.Segments.Create(USER_KEY, listId, name, null, CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(segmentId, result);
@@ -114,7 +114,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateSegment(USER_KEY, segmentId, listId, name: name);
+			var result = apiClient.Segments.Update(USER_KEY, segmentId, listId, name: name);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -149,7 +149,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateSegment(USER_KEY, segmentId, listId, query: query);
+			var result = apiClient.Segments.Update(USER_KEY, segmentId, listId, query: query);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -183,7 +183,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateSegment(USER_KEY, segmentId, listId, clientId: CLIENT_ID);
+			var result = apiClient.Segments.Update(USER_KEY, segmentId, listId, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -214,7 +214,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.DeleteSegment(USER_KEY, segmentId);
+			var result = apiClient.Segments.Delete(USER_KEY, segmentId);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -246,7 +246,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.DeleteSegment(USER_KEY, segmentId, CLIENT_ID);
+			var result = apiClient.Segments.Delete(USER_KEY, segmentId, CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -279,7 +279,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSegment(USER_KEY, segmentId);
+			var result = apiClient.Segments.Get(USER_KEY, segmentId);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -313,7 +313,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSegment(USER_KEY, segmentId, includeStatistics: true);
+			var result = apiClient.Segments.Get(USER_KEY, segmentId, includeStatistics: true);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -347,7 +347,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSegment(USER_KEY, segmentId, includeStatistics: false);
+			var result = apiClient.Segments.Get(USER_KEY, segmentId, includeStatistics: false);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -381,7 +381,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSegment(USER_KEY, segmentId, calculateEngagement: true);
+			var result = apiClient.Segments.Get(USER_KEY, segmentId, calculateEngagement: true);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -415,7 +415,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSegment(USER_KEY, segmentId, calculateEngagement: false);
+			var result = apiClient.Segments.Get(USER_KEY, segmentId, calculateEngagement: false);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -450,7 +450,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSegment(USER_KEY, segmentId, clientId: CLIENT_ID);
+			var result = apiClient.Segments.Get(USER_KEY, segmentId, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -487,7 +487,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSegments(USER_KEY, listId, includeDetails: false);
+			var result = apiClient.Segments.GetSegments(USER_KEY, listId, includeDetails: false);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -526,7 +526,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSegments(USER_KEY, listId, limit: limit);
+			var result = apiClient.Segments.GetSegments(USER_KEY, listId, limit: limit);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -565,7 +565,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSegments(USER_KEY, listId, offset: offset);
+			var result = apiClient.Segments.GetSegments(USER_KEY, listId, offset: offset);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -603,7 +603,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSegments(USER_KEY, listId, clientId: CLIENT_ID);
+			var result = apiClient.Segments.GetSegments(USER_KEY, listId, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -636,7 +636,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSegmentsCount(USER_KEY, listId);
+			var result = apiClient.Segments.GetCount(USER_KEY, listId);
 
 			// Assert
 			Assert.AreEqual(2, result);
@@ -669,7 +669,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetSegmentsCount(USER_KEY, listId, CLIENT_ID);
+			var result = apiClient.Segments.GetCount(USER_KEY, listId, CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(2, result);

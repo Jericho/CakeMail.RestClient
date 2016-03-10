@@ -32,11 +32,13 @@
     <DocumentationFile>bin\Release\CakeMail.RestClient.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="RestSharp">
-      <HintPath>..\packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -105,6 +107,19 @@
     <Compile Include="Models\RawEmailMessage.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Campaigns.cs" />
+    <Compile Include="Resources\Clients.cs" />
+    <Compile Include="Resources\Countries.cs" />
+    <Compile Include="Resources\Lists.cs" />
+    <Compile Include="Resources\Mailings.cs" />
+    <Compile Include="Resources\Permissions.cs" />
+    <Compile Include="Resources\Relays.cs" />
+    <Compile Include="Resources\Segments.cs" />
+    <Compile Include="Resources\SuppressionLists.cs" />
+    <Compile Include="Resources\Templates.cs" />
+    <Compile Include="Resources\Timezones.cs" />
+    <Compile Include="Resources\Triggers.cs" />
+    <Compile Include="Resources\Users.cs" />
     <Compile Include="Utilities\CakeMailIntegerBooleanConverter.cs" />
     <Compile Include="Utilities\Constants.cs" />
     <Compile Include="Utilities\ExtensionMethods.cs" />

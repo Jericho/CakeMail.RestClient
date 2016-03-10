@@ -6,7 +6,7 @@ mkdir "CodeCoverageData"
 mkdir "CodeCoverageReport"
 
 
-packages\OpenCover.4.5.3723\OpenCover.Console.exe^
+packages\OpenCover.4.6.519\tools\OpenCover.Console.exe^
  -register:user^
  -target:"C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"^
  -targetargs:"""CakeMail.RestClient.UnitTests\bin\Debug\CakeMail.RestClient.UnitTests.dll"""^
@@ -16,7 +16,7 @@ packages\OpenCover.4.5.3723\OpenCover.Console.exe^
  -output:.\CodecoverageData\CakeMail.RestClient_coverage.xml
 
 
-packages\ReportGenerator.2.1.4.0\ReportGenerator.exe^
+packages\ReportGenerator.2.4.4.0\tools\ReportGenerator.exe^
  -reports:.\CodeCoverageData\*.xml^
  -targetdir:.\CodeCoverageReport^
  -reporttypes:Html^

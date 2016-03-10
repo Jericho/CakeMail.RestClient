@@ -33,7 +33,7 @@ namespace CakeMail.RestClient.UnitTests
 			var proxy = apiClient.Proxy;
 
 			// Assert
-			Assert.AreEqual("CakeMail .NET REST Client 2.0.0.0", userAgent);
+			Assert.AreEqual("CakeMail .NET REST Client 3.0.0.0", userAgent);
 			Assert.AreEqual(new Uri(string.Format("https://{0}", mockHost)), baseUrl);
 			Assert.AreEqual(mockTimeout, timeout);
 			Assert.AreEqual(new Uri(string.Format("http://{0}:{1}", mockProxyHost, mockProxyPort)), ((WebProxy)proxy).Address);
@@ -89,7 +89,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -112,7 +112,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -137,7 +137,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -162,7 +162,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -187,7 +187,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -212,7 +212,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -236,7 +236,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -260,7 +260,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -285,7 +285,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -310,7 +310,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 		}
 
 		[TestMethod]
@@ -337,7 +337,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.DeleteCampaign(USER_KEY, campaignId, CLIENT_ID);
+			var result = apiClient.Campaigns.Delete(USER_KEY, campaignId, CLIENT_ID);
 		}
 
 		[TestMethod]
@@ -364,7 +364,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.DeleteCampaign(USER_KEY, campaignId, CLIENT_ID);
+			var result = apiClient.Campaigns.Delete(USER_KEY, campaignId, CLIENT_ID);
 		}
 
 		[TestMethod]
@@ -400,7 +400,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateTemplateCategory(USER_KEY, labels);
+			var result = apiClient.Templates.CreateCategory(USER_KEY, labels);
 		}
 	}
 }

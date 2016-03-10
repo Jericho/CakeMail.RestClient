@@ -33,7 +33,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetCountries();
+			var result = apiClient.Countries.GetList();
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -66,7 +66,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetProvinces(countryId);
+			var result = apiClient.Countries.GetProvinces(countryId);
 
 			// Assert
 			Assert.IsNotNull(result);
