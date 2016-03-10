@@ -400,7 +400,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateTemplateCategory(USER_KEY, labels);
+			var result = apiClient.Templates.CreateCategory(USER_KEY, labels);
 		}
 	}
 }

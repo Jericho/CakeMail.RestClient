@@ -50,7 +50,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateTemplateCategory(USER_KEY, labels);
+			var result = apiClient.Templates.CreateCategory(USER_KEY, labels);
 
 			// Assert
 			Assert.AreEqual(categoryId, result);
@@ -82,7 +82,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateTemplateCategory(USER_KEY, null);
+			var result = apiClient.Templates.CreateCategory(USER_KEY, null);
 
 			// Assert
 			Assert.AreEqual(categoryId, result);
@@ -123,7 +123,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateTemplateCategory(USER_KEY, labels, isVisibleByDefault: false);
+			var result = apiClient.Templates.CreateCategory(USER_KEY, labels, isVisibleByDefault: false);
 
 			// Assert
 			Assert.AreEqual(categoryId, result);
@@ -164,7 +164,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateTemplateCategory(USER_KEY, labels, templatesCanBeCopied: false);
+			var result = apiClient.Templates.CreateCategory(USER_KEY, labels, templatesCanBeCopied: false);
 
 			// Assert
 			Assert.AreEqual(categoryId, result);
@@ -206,7 +206,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateTemplateCategory(USER_KEY, labels, clientId: CLIENT_ID);
+			var result = apiClient.Templates.CreateCategory(USER_KEY, labels, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(categoryId, result);
@@ -237,7 +237,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.DeleteTemplateCategory(USER_KEY, categoryId);
+			var result = apiClient.Templates.DeleteCategory(USER_KEY, categoryId);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -269,7 +269,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.DeleteTemplateCategory(USER_KEY, categoryId, CLIENT_ID);
+			var result = apiClient.Templates.DeleteCategory(USER_KEY, categoryId, CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -300,7 +300,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplateCategory(USER_KEY, categoryId);
+			var result = apiClient.Templates.GetCategory(USER_KEY, categoryId);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -333,7 +333,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplateCategory(USER_KEY, categoryId, CLIENT_ID);
+			var result = apiClient.Templates.GetCategory(USER_KEY, categoryId, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -366,7 +366,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplateCategories(USER_KEY);
+			var result = apiClient.Templates.GetCategories(USER_KEY);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -403,7 +403,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplateCategories(USER_KEY, limit: limit);
+			var result = apiClient.Templates.GetCategories(USER_KEY, limit: limit);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -440,7 +440,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplateCategories(USER_KEY, offset: offset);
+			var result = apiClient.Templates.GetCategories(USER_KEY, offset: offset);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -476,7 +476,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplateCategories(USER_KEY, clientId: CLIENT_ID);
+			var result = apiClient.Templates.GetCategories(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -508,7 +508,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplateCategoriesCount(USER_KEY);
+			var result = apiClient.Templates.GetCategoriesCount(USER_KEY);
 
 			// Assert
 			Assert.AreEqual(2, result);
@@ -538,7 +538,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplateCategoriesCount(USER_KEY, clientId: CLIENT_ID);
+			var result = apiClient.Templates.GetCategoriesCount(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(2, result);
@@ -571,7 +571,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateTemplateCategory(USER_KEY, categoryId, null);
+			var result = apiClient.Templates.UpdateCategory(USER_KEY, categoryId, null);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -611,7 +611,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateTemplateCategory(USER_KEY, categoryId, labels);
+			var result = apiClient.Templates.UpdateCategory(USER_KEY, categoryId, labels);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -644,7 +644,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateTemplateCategory(USER_KEY, categoryId, null, isVisibleByDefault: true);
+			var result = apiClient.Templates.UpdateCategory(USER_KEY, categoryId, null, isVisibleByDefault: true);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -677,7 +677,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateTemplateCategory(USER_KEY, categoryId, null, isVisibleByDefault: false);
+			var result = apiClient.Templates.UpdateCategory(USER_KEY, categoryId, null, isVisibleByDefault: false);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -710,7 +710,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateTemplateCategory(USER_KEY, categoryId, null, templatesCanBeCopied: true);
+			var result = apiClient.Templates.UpdateCategory(USER_KEY, categoryId, null, templatesCanBeCopied: true);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -743,7 +743,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateTemplateCategory(USER_KEY, categoryId, null, templatesCanBeCopied: false);
+			var result = apiClient.Templates.UpdateCategory(USER_KEY, categoryId, null, templatesCanBeCopied: false);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -777,7 +777,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateTemplateCategory(USER_KEY, categoryId, null, clientId: CLIENT_ID);
+			var result = apiClient.Templates.UpdateCategory(USER_KEY, categoryId, null, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -812,7 +812,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplateCategoryVisibility(USER_KEY, categoryId);
+			var result = apiClient.Templates.GetCategoryVisibility(USER_KEY, categoryId);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -852,7 +852,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplateCategoryVisibility(USER_KEY, categoryId, limit: limit);
+			var result = apiClient.Templates.GetCategoryVisibility(USER_KEY, categoryId, limit: limit);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -890,7 +890,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplateCategoryVisibility(USER_KEY, categoryId, offset: offset);
+			var result = apiClient.Templates.GetCategoryVisibility(USER_KEY, categoryId, offset: offset);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -927,7 +927,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplateCategoryVisibility(USER_KEY, categoryId, clientId: CLIENT_ID);
+			var result = apiClient.Templates.GetCategoryVisibility(USER_KEY, categoryId, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -960,7 +960,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplateCategoryVisibilityCount(USER_KEY, categoryId);
+			var result = apiClient.Templates.GetCategoryVisibilityCount(USER_KEY, categoryId);
 
 			// Assert
 			Assert.AreEqual(2, result);
@@ -993,7 +993,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplateCategoryVisibilityCount(USER_KEY, categoryId, clientId: CLIENT_ID);
+			var result = apiClient.Templates.GetCategoryVisibilityCount(USER_KEY, categoryId, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(2, result);
@@ -1033,7 +1033,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SetTemplateCategoryVisibility(USER_KEY, categoryId, clientVisibility);
+			var result = apiClient.Templates.SetCategoryVisibility(USER_KEY, categoryId, clientVisibility);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1065,7 +1065,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SetTemplateCategoryVisibility(USER_KEY, categoryId, clientVisibility);
+			var result = apiClient.Templates.SetCategoryVisibility(USER_KEY, categoryId, clientVisibility);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1106,7 +1106,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SetTemplateCategoryVisibility(USER_KEY, categoryId, clientVisibility, CLIENT_ID);
+			var result = apiClient.Templates.SetCategoryVisibility(USER_KEY, categoryId, clientVisibility, CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1149,7 +1149,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateTemplate(USER_KEY, labels, content, categoryId);
+			var result = apiClient.Templates.Create(USER_KEY, labels, content, categoryId);
 
 			// Assert
 			Assert.AreEqual(templateId, result);
@@ -1188,7 +1188,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateTemplate(USER_KEY, null, content, categoryId);
+			var result = apiClient.Templates.Create(USER_KEY, null, content, categoryId);
 
 			// Assert
 			Assert.AreEqual(templateId, result);
@@ -1232,7 +1232,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.CreateTemplate(USER_KEY, labels, content, categoryId, clientId: CLIENT_ID);
+			var result = apiClient.Templates.Create(USER_KEY, labels, content, categoryId, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(templateId, result);
@@ -1263,7 +1263,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.DeleteTemplate(USER_KEY, templateId);
+			var result = apiClient.Templates.Delete(USER_KEY, templateId);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1295,7 +1295,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.DeleteTemplate(USER_KEY, templateId, CLIENT_ID);
+			var result = apiClient.Templates.Delete(USER_KEY, templateId, CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1326,7 +1326,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplate(USER_KEY, templateId);
+			var result = apiClient.Templates.Get(USER_KEY, templateId);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1359,7 +1359,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplate(USER_KEY, templateId, CLIENT_ID);
+			var result = apiClient.Templates.Get(USER_KEY, templateId, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1392,7 +1392,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplates(USER_KEY);
+			var result = apiClient.Templates.GetTemplates(USER_KEY);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1429,7 +1429,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplates(USER_KEY, categoryId: categoryId);
+			var result = apiClient.Templates.GetTemplates(USER_KEY, categoryId: categoryId);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1466,7 +1466,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplates(USER_KEY, limit: limit);
+			var result = apiClient.Templates.GetTemplates(USER_KEY, limit: limit);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1503,7 +1503,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplates(USER_KEY, offset: offset);
+			var result = apiClient.Templates.GetTemplates(USER_KEY, offset: offset);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1539,7 +1539,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplates(USER_KEY, clientId: CLIENT_ID);
+			var result = apiClient.Templates.GetTemplates(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1571,7 +1571,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplatesCount(USER_KEY);
+			var result = apiClient.Templates.GetCount(USER_KEY);
 
 			// Assert
 			Assert.AreEqual(2, result);
@@ -1603,7 +1603,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplatesCount(USER_KEY, categoryId: categoryId);
+			var result = apiClient.Templates.GetCount(USER_KEY, categoryId: categoryId);
 
 			// Assert
 			Assert.AreEqual(2, result);
@@ -1633,7 +1633,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.GetTemplatesCount(USER_KEY, clientId: CLIENT_ID);
+			var result = apiClient.Templates.GetCount(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(2, result);
@@ -1664,7 +1664,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateTemplate(USER_KEY, templateId, null);
+			var result = apiClient.Templates.Update(USER_KEY, templateId, null);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1702,7 +1702,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateTemplate(USER_KEY, templateId, labels);
+			var result = apiClient.Templates.Update(USER_KEY, templateId, labels);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1735,7 +1735,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateTemplate(USER_KEY, templateId, null, content: content);
+			var result = apiClient.Templates.Update(USER_KEY, templateId, null, content: content);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1768,7 +1768,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateTemplate(USER_KEY, templateId, null, categoryId: categoryId);
+			var result = apiClient.Templates.Update(USER_KEY, templateId, null, categoryId: categoryId);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -1800,7 +1800,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.UpdateTemplate(USER_KEY, templateId, null, clientId: CLIENT_ID);
+			var result = apiClient.Templates.Update(USER_KEY, templateId, null, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);

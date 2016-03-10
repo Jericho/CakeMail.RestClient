@@ -113,6 +113,7 @@
     <Compile Include="Resources\Relays.cs" />
     <Compile Include="Resources\Segments.cs" />
     <Compile Include="Resources\SuppressionLists.cs" />
+    <Compile Include="Resources\Templates.cs" />
     <Compile Include="Resources\Timezones.cs" />
     <Compile Include="Resources\Users.cs" />
     <Compile Include="Utilities\CakeMailIntegerBooleanConverter.cs" />
