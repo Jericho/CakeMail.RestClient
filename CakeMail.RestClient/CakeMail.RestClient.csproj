@@ -115,6 +115,7 @@
     <Compile Include="Resources\SuppressionLists.cs" />
     <Compile Include="Resources\Templates.cs" />
     <Compile Include="Resources\Timezones.cs" />
+    <Compile Include="Resources\Triggers.cs" />
     <Compile Include="Resources\Users.cs" />
     <Compile Include="Utilities\CakeMailIntegerBooleanConverter.cs" />
     <Compile Include="Utilities\Constants.cs" />
