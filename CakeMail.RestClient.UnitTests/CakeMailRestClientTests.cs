@@ -33,7 +33,7 @@ namespace CakeMail.RestClient.UnitTests
 			var proxy = apiClient.Proxy;
 
 			// Assert
-			Assert.AreEqual("CakeMail .NET REST Client 2.0.0.0", userAgent);
+			Assert.AreEqual("CakeMail .NET REST Client 3.0.0.0", userAgent);
 			Assert.AreEqual(new Uri(string.Format("https://{0}", mockHost)), baseUrl);
 			Assert.AreEqual(mockTimeout, timeout);
 			Assert.AreEqual(new Uri(string.Format("http://{0}:{1}", mockProxyHost, mockProxyPort)), ((WebProxy)proxy).Address);
