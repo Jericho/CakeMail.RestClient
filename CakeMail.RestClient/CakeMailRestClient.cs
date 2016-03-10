@@ -15,7 +15,7 @@ namespace CakeMail.RestClient
 	/// <summary>
 	/// Core class for using the CakeMail Api
 	/// </summary>
-	public class CakeMailRestClient
+	public class CakeMailRestClient : ICakeMailRestClient
 	{
 		#region Fields
 

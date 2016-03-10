@@ -53,6 +53,7 @@
     <Compile Include="CakeMailRestClient.cs" />
     <Compile Include="Exceptions\CakeMailPostException.cs" />
     <Compile Include="Exceptions\CakeMailException.cs" />
+    <Compile Include="ICakeMailRestClient.cs" />
     <Compile Include="Models\LinkStats.cs" />
     <Compile Include="Models\TriggerAction.cs" />
     <Compile Include="Models\FieldType.cs" />
