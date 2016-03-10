@@ -67,7 +67,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			if (links.Any())
 			{
 				// As of May 2015, CakeMail has not implemented despite documenting in on their web site
-				//var link = api.GetTriggerLink(userKey, links.First().Id, clientId);
+				//var link = api.Triggers.GetLink(userKey, links.First().Id, clientId);
 				//Console.WriteLine("Trigger link retrieved. URI = {0}", link.Uri);
 			}
 

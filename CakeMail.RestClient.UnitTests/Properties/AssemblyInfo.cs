@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jeremie Desautels")]
 [assembly: AssemblyProduct("CakeMail.RestClient.UnitTests")]
-[assembly: AssemblyCopyright("Copyright Jeremie Desautels © 2015")]
+[assembly: AssemblyCopyright("Copyright Jeremie Desautels © 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
