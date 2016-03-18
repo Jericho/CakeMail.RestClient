@@ -1,5 +1,6 @@
 ﻿using CakeMail.RestClient.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
@@ -38,7 +39,7 @@ namespace CakeMail.RestClient.Resources
 		///		3) The percent sign is the wilcard
 		///		Here's an example: (`email` LIKE "a%")
 		///	</remarks>
-		public long Create(string userKey, long listId, string name, string query = null, long? clientId = null)
+		public async Task<long> CreateAsync(string userKey, long listId, string name, string query = null, long? clientId = null)
 		{
 			string path = "/List/CreateSublist/";
 
@@ -51,7 +52,7 @@ namespace CakeMail.RestClient.Resources
 			if (query != null) parameters.Add(new KeyValuePair<string, object>("query", query));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<long>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<long>(path, parameters).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -63,7 +64,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="calculateEngagement">True if you want the engagement information to be calculated</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>The <see cref="Segment">segment</see></returns>
-		public Segment Get(string userKey, long segmentId, bool includeStatistics = true, bool calculateEngagement = false, long? clientId = null)
+		public async Task<Segment> GetAsync(string userKey, long segmentId, bool includeStatistics = true, bool calculateEngagement = false, long? clientId = null)
 		{
 			var path = "/List/GetInfo/";
 
@@ -76,7 +77,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<Segment>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<Segment>(path, parameters).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -90,7 +91,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>True if the segment was updated</returns>
 		/// <remarks>A segment is sometimes referred to as a 'sub-list'</remarks>
-		public bool Update(string userKey, long segmentId, long listId, string name = null, string query = null, long? clientId = null)
+		public async Task<bool> UpdateAsync(string userKey, long segmentId, long listId, string name = null, string query = null, long? clientId = null)
 		{
 			string path = "/List/SetInfo/";
 
@@ -104,7 +105,7 @@ namespace CakeMail.RestClient.Resources
 			if (query != null) parameters.Add(new KeyValuePair<string, object>("query", query));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<bool>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -114,7 +115,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="segmentId">ID of the segment</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>True if the segment was deleted</returns>
-		public bool Delete(string userKey, long segmentId, long? clientId = null)
+		public async Task<bool> DeleteAsync(string userKey, long segmentId, long? clientId = null)
 		{
 			string path = "/List/DeleteSublist/";
 
@@ -125,7 +126,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<bool>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -138,7 +139,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="includeDetails">Retrieve all the stats for the segment</param>
 		/// <param name="clientId">ID of the client</param>
 		/// <returns>Enumeration of <see cref="Segment">segments</see> matching the filtering criteria</returns>
-		public IEnumerable<Segment> GetSegments(string userKey, long listId, int? limit = 0, int? offset = 0, bool includeDetails = true, long? clientId = null)
+		public async Task<IEnumerable<Segment>> GetSegmentsAsync(string userKey, long listId, int? limit = 0, int? offset = 0, bool includeDetails = true, long? clientId = null)
 		{
 			var path = "/List/GetSublists/";
 
@@ -153,7 +154,7 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequest<Segment>(path, parameters, "sublists");
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<Segment>(path, parameters, "sublists").ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -163,7 +164,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="listId">ID of the list</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>The count of campaigns matching the filtering criteria</returns>
-		public long GetCount(string userKey, long listId, long? clientId = null)
+		public async Task<long> GetCountAsync(string userKey, long listId, long? clientId = null)
 		{
 			var path = "/List/GetList/";
 
@@ -175,7 +176,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteCountRequest(path, parameters);
+			return await _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters).ConfigureAwait(false);
 		}
 
 		#endregion

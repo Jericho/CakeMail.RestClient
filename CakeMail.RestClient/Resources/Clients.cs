@@ -1,10 +1,8 @@
 ﻿using CakeMail.RestClient.Models;
+using CakeMail.RestClient.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using CakeMail.RestClient.Utilities;
 
 namespace CakeMail.RestClient.Resources
 {
@@ -61,7 +59,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="primaryContactTimezoneId">ID of the timezone of the primary contact</param>
 		/// <param name="primaryContactPassword">Password of the primary contact</param>
 		/// <returns>A confirmation code which must be used subsequently to 'activate' the client</returns>
-		public string Create(long parentId, string name, string address1 = null, string address2 = null, string city = null, string provinceId = null, string postalCode = null, string countryId = null, string website = null, string phone = null, string fax = null, string adminEmail = null, string adminFirstName = null, string adminLastName = null, string adminTitle = null, string adminOfficePhone = null, string adminMobilePhone = null, string adminLanguage = null, long? adminTimezoneId = null, string adminPassword = null, bool primaryContactSameAsAdmin = true, string primaryContactEmail = null, string primaryContactFirstName = null, string primaryContactLastName = null, string primaryContactTitle = null, string primaryContactOfficePhone = null, string primaryContactMobilePhone = null, string primaryContactLanguage = null, long? primaryContactTimezoneId = null, string primaryContactPassword = null)
+		public async Task<string> CreateAsync(long parentId, string name, string address1 = null, string address2 = null, string city = null, string provinceId = null, string postalCode = null, string countryId = null, string website = null, string phone = null, string fax = null, string adminEmail = null, string adminFirstName = null, string adminLastName = null, string adminTitle = null, string adminOfficePhone = null, string adminMobilePhone = null, string adminLanguage = null, long? adminTimezoneId = null, string adminPassword = null, bool primaryContactSameAsAdmin = true, string primaryContactEmail = null, string primaryContactFirstName = null, string primaryContactLastName = null, string primaryContactTitle = null, string primaryContactOfficePhone = null, string primaryContactMobilePhone = null, string primaryContactLanguage = null, long? primaryContactTimezoneId = null, string primaryContactPassword = null)
 		{
 			string path = "/Client/Create/";
 
@@ -116,7 +114,7 @@ namespace CakeMail.RestClient.Resources
 				if (primaryContactMobilePhone != null) parameters.Add(new KeyValuePair<string, object>("contact_mobile_phone", primaryContactMobilePhone));
 			}
 
-			return _cakeMailRestClient.ExecuteRequest<string>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<string>(path, parameters).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -124,7 +122,7 @@ namespace CakeMail.RestClient.Resources
 		/// </summary>
 		/// <param name="confirmationCode">Confirmation code returned by the Create method.</param>
 		/// <returns><see cref="ClientRegistrationInfo">Information</see> about the activated client</returns>
-		public ClientRegistrationInfo Confirm(string confirmationCode)
+		public async Task<ClientRegistrationInfo> ConfirmAsync(string confirmationCode)
 		{
 			string path = "/Client/Activate/";
 
@@ -133,7 +131,7 @@ namespace CakeMail.RestClient.Resources
 				new KeyValuePair<string, object>("confirmation", confirmationCode)
 			};
 
-			return _cakeMailRestClient.ExecuteRequest<ClientRegistrationInfo>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<ClientRegistrationInfo>(path, parameters).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -144,7 +142,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="startDate">Start date to return stats about the client.</param>
 		/// <param name="endDate">End date to return stats about the client.</param>
 		/// <returns>The <see cref="Client">client</see></returns>
-		public Client Get(string userKey, long clientId, DateTime? startDate = null, DateTime? endDate = null)
+		public async Task<Client> GetAsync(string userKey, long clientId, DateTime? startDate = null, DateTime? endDate = null)
 		{
 			var path = "/Client/GetInfo/";
 
@@ -156,7 +154,7 @@ namespace CakeMail.RestClient.Resources
 			if (startDate.HasValue) parameters.Add(new KeyValuePair<string, object>("start_date", startDate.Value.ToCakeMailString()));
 			if (endDate.HasValue) parameters.Add(new KeyValuePair<string, object>("end_date", endDate.Value.ToCakeMailString()));
 
-			return _cakeMailRestClient.ExecuteRequest<Client>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<Client>(path, parameters).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -166,7 +164,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="confirmationCode">Confirmation code to get the information of a pending client.</param>
 		/// <returns>The <see cref="UnConfirmedClient">client</see></returns>
 		/// <remarks>Pending clients must be activated before they can start using the CakeMail service.</remarks>
-		public UnConfirmedClient Get(string userKey, string confirmationCode)
+		public async Task<UnConfirmedClient> GetAsync(string userKey, string confirmationCode)
 		{
 			var path = "/Client/GetInfo/";
 
@@ -176,7 +174,7 @@ namespace CakeMail.RestClient.Resources
 				new KeyValuePair<string, object>("confirmation", confirmationCode)
 			};
 
-			return _cakeMailRestClient.ExecuteRequest<UnConfirmedClient>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<UnConfirmedClient>(path, parameters).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -191,7 +189,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="offset">Offset the beginning of resulting clients.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>Enumeration of <see cref="Client">clients</see> matching the filtering criteria</returns>
-		public IEnumerable<Client> GetList(string userKey, ClientStatus? status = null, string name = null, ClientsSortBy? sortBy = null, SortDirection? sortDirection = null, int? limit = 0, int? offset = 0, long? clientId = null)
+		public async Task<IEnumerable<Client>> GetListAsync(string userKey, ClientStatus? status = null, string name = null, ClientsSortBy? sortBy = null, SortDirection? sortDirection = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
 			var path = "/Client/GetList/";
 
@@ -208,7 +206,7 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequest<Client>(path, parameters, "clients");
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<Client>(path, parameters, "clients").ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -219,7 +217,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="name">Filter using the client name.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>The number of clients matching the filtering criteria</returns>
-		public long GetCount(string userKey, ClientStatus? status = null, string name = null, long? clientId = null)
+		public async Task<long> GetCountAsync(string userKey, ClientStatus? status = null, string name = null, long? clientId = null)
 		{
 			var path = "/Client/GetList/";
 			var parameters = new List<KeyValuePair<string, object>>()
@@ -231,7 +229,7 @@ namespace CakeMail.RestClient.Resources
 			if (name != null) parameters.Add(new KeyValuePair<string, object>("company_name", name));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteCountRequest(path, parameters);
+			return await _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -269,7 +267,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="defaultMonthLimit"></param>
 		/// <param name="defaultContactLimit"></param>
 		/// <returns>True if the record was updated.</returns>
-		public bool Update(string userKey, long clientId, string name = null, ClientStatus? status = null, long? parentId = null, string address1 = null, string address2 = null, string city = null, string provinceId = null, string postalCode = null, string countryId = null, string website = null, string phone = null, string fax = null, string authDomain = null, string bounceDomain = null, string dkimDomain = null, string doptinIp = null, string forwardDomain = null, string forwardIp = null, string ipPool = null, string mdDomain = null, bool? isReseller = null, string currency = null, string planType = null, int? mailingLimit = null, int? monthLimit = null, int? contactLimit = null, int? defaultMailingLimit = null, int? defaultMonthLimit = null, int? defaultContactLimit = null)
+		public async Task<bool> UpdateAsync(string userKey, long clientId, string name = null, ClientStatus? status = null, long? parentId = null, string address1 = null, string address2 = null, string city = null, string provinceId = null, string postalCode = null, string countryId = null, string website = null, string phone = null, string fax = null, string authDomain = null, string bounceDomain = null, string dkimDomain = null, string doptinIp = null, string forwardDomain = null, string forwardIp = null, string ipPool = null, string mdDomain = null, bool? isReseller = null, string currency = null, string planType = null, int? mailingLimit = null, int? monthLimit = null, int? contactLimit = null, int? defaultMailingLimit = null, int? defaultMonthLimit = null, int? defaultContactLimit = null)
 		{
 			string path = "/Client/SetInfo/";
 
@@ -308,7 +306,7 @@ namespace CakeMail.RestClient.Resources
 			if (defaultMonthLimit.HasValue) parameters.Add(new KeyValuePair<string, object>("default_month_limit", defaultMonthLimit.Value));
 			if (defaultContactLimit.HasValue) parameters.Add(new KeyValuePair<string, object>("default_contact_limit", defaultContactLimit.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<bool>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -318,9 +316,9 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>True if the client was activated</returns>
 		/// <remarks>This method is simply a shortcut for: UpdateClient(userKey, clientId, status: "active")</remarks>
-		public bool Activate(string userKey, long clientId)
+		public async Task<bool> ActivateAsync(string userKey, long clientId)
 		{
-			return Update(userKey, clientId, status: ClientStatus.Active);
+			return await UpdateAsync(userKey, clientId, status: ClientStatus.Active).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -330,9 +328,9 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>True if the client was suspended</returns>
 		/// <remarks>This method is simply a shortcut for: UpdateClient(userKey, clientId, status: "suspended_by_reseller")</remarks>
-		public bool Suspend(string userKey, long clientId)
+		public async Task<bool> SuspendAsync(string userKey, long clientId)
 		{
-			return Update(userKey, clientId, status: ClientStatus.SuspendedByReseller);
+			return await UpdateAsync(userKey, clientId, status: ClientStatus.SuspendedByReseller).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -342,9 +340,9 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>True if the client was deleted</returns>
 		/// <remarks>This method is simply a shortcut for: UpdateClient(userKey, clientId, status: "deleted")</remarks>
-		public bool Delete(string userKey, long clientId)
+		public async Task<bool> DeleteAsync(string userKey, long clientId)
 		{
-			return Update(userKey, clientId, status: ClientStatus.Deleted);
+			return await UpdateAsync(userKey, clientId, status: ClientStatus.Deleted).ConfigureAwait(false);
 		}
 
 		#endregion

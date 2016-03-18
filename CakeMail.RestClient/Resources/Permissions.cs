@@ -1,10 +1,6 @@
-﻿using CakeMail.RestClient.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using CakeMail.RestClient.Utilities;
 
 namespace CakeMail.RestClient.Resources
 {
@@ -34,7 +30,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="userId">ID of the user.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>An enumeration of permissions</returns>
-		public IEnumerable<string> GetUserPermissions(string userKey, long userId, long? clientId = null)
+		public async Task<IEnumerable<string>> GetUserPermissionsAsync(string userKey, long userId, long? clientId = null)
 		{
 			var path = "/Permission/GetPermissions/";
 
@@ -45,7 +41,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequest<string>(path, parameters, "permissions");
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<string>(path, parameters, "permissions").ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -56,7 +52,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="permissions">Enumeration of permissions</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>True if the operation succeeded</returns>
-		public bool SetUserPermissions(string userKey, long userId, IEnumerable<string> permissions, long? clientId = null)
+		public async Task<bool> SetUserPermissionsAsync(string userKey, long userId, IEnumerable<string> permissions, long? clientId = null)
 		{
 			var path = "/Permission/SetPermissions/";
 
@@ -71,7 +67,7 @@ namespace CakeMail.RestClient.Resources
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<bool>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
 		}
 
 		#endregion

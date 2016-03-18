@@ -2,6 +2,7 @@
 using CakeMail.RestClient.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
@@ -37,7 +38,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="encoding">Encoding to be used for the relay. Possible values: 'utf-8', 'iso-8859-x'</param>
 		/// <param name="clientId">Client ID of the client in which the relay is located.</param>
 		/// <returns>True if the email is sent</returns>
-		public bool SendWithoutTracking(string userKey, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, MessageEncoding? encoding = null, long? clientId = null)
+		public async Task<bool> SendWithoutTrackingAsync(string userKey, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, MessageEncoding? encoding = null, long? clientId = null)
 		{
 			string path = "/Relay/Send/";
 
@@ -57,7 +58,7 @@ namespace CakeMail.RestClient.Resources
 			if (encoding.HasValue) parameters.Add(new KeyValuePair<string, object>("encoding", encoding.Value.GetEnumMemberValue()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<bool>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -74,7 +75,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="encoding">Encoding to be used for the relay. Possible values: 'utf-8', 'iso-8859-x'</param>
 		/// <param name="clientId">Client ID of the client in which the relay is located.</param>
 		/// <returns>True if the email is sent</returns>
-		public bool SendWithTracking(string userKey, long trackingId, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, MessageEncoding? encoding = null, long? clientId = null)
+		public async Task<bool> SendWithTrackingAsync(string userKey, long trackingId, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, MessageEncoding? encoding = null, long? clientId = null)
 		{
 			string path = "/Relay/Send/";
 
@@ -95,7 +96,7 @@ namespace CakeMail.RestClient.Resources
 			if (encoding.HasValue) parameters.Add(new KeyValuePair<string, object>("encoding", encoding.Value.GetEnumMemberValue()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<bool>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -109,9 +110,9 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="RelayLog">log items</see> matching the filter criteria</returns>
-		public IEnumerable<RelayLog> GetSentLogs(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
+		public async Task<IEnumerable<RelayLog>> GetSentLogsAsync(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
-			return GetLogs<RelayLog>(userKey, "sent", "sent_logs", trackingId, start, end, limit, offset, clientId);
+			return await GetLogsAsync<RelayLog>(userKey, "sent", "sent_logs", trackingId, start, end, limit, offset, clientId).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -125,9 +126,9 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="RelayOpenLog">log items</see> matching the filter criteria</returns>
-		public IEnumerable<RelayOpenLog> GetOpenLogs(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
+		public async Task<IEnumerable<RelayOpenLog>> GetOpenLogsAsync(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
-			return GetLogs<RelayOpenLog>(userKey, "open", "open_logs", trackingId, start, end, limit, offset, clientId);
+			return await GetLogsAsync<RelayOpenLog>(userKey, "open", "open_logs", trackingId, start, end, limit, offset, clientId).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -141,9 +142,9 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="RelayClickLog">log items</see> matching the filter criteria</returns>
-		public IEnumerable<RelayClickLog> GetClickLogs(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
+		public async Task<IEnumerable<RelayClickLog>> GetClickLogsAsync(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
-			return GetLogs<RelayClickLog>(userKey, "clickthru", "clickthru_logs", trackingId, start, end, limit, offset, clientId);
+			return await GetLogsAsync<RelayClickLog>(userKey, "clickthru", "clickthru_logs", trackingId, start, end, limit, offset, clientId).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -157,16 +158,16 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="RelayBounceLog">log items</see> matching the filter criteria</returns>
-		public IEnumerable<RelayBounceLog> GetBounceLogs(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
+		public async Task<IEnumerable<RelayBounceLog>> GetBounceLogsAsync(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
 		{
-			return GetLogs<RelayBounceLog>(userKey, "bounce", "bounce_logs", trackingId, start, end, limit, offset, clientId);
+			return await GetLogsAsync<RelayBounceLog>(userKey, "bounce", "bounce_logs", trackingId, start, end, limit, offset, clientId).ConfigureAwait(false);
 		}
 
 		#endregion
 
 		#region PRIVATE METHODS
 
-		private IEnumerable<T> GetLogs<T>(string userKey, string logType, string arrayPropertyName, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null) where T : RelayLog, new()
+		private async Task<IEnumerable<T>> GetLogsAsync<T>(string userKey, string logType, string arrayPropertyName, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null) where T : RelayLog, new()
 		{
 			string path = "/Relay/GetLogs/";
 
@@ -182,7 +183,7 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequest<T>(path, parameters, arrayPropertyName);
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<T>(path, parameters, arrayPropertyName).ConfigureAwait(false);
 		}
 
 		#endregion
