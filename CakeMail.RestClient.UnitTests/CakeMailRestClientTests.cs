@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.UnitTests
 {
@@ -71,64 +72,64 @@ namespace CakeMail.RestClient.UnitTests
 
 		[TestMethod]
 		[ExpectedException(typeof(HttpException))]
-		public void RestClient_Throws_exception_when_responsestatus_is_error()
+		public async Task RestClient_Throws_exception_when_responsestatus_is_error()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Error
 			});
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Countries.GetList();
+			var result = await apiClient.Countries.GetListAsync();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(HttpException))]
-		public void RestClient_Throws_exception_when_responsestatus_is_timeout()
+		public async Task RestClient_Throws_exception_when_responsestatus_is_timeout()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				ResponseStatus = RestSharp.ResponseStatus.TimedOut
 			});
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Countries.GetList();
+			var result = await apiClient.Countries.GetListAsync();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(HttpException))]
-		public void RestClient_Throws_exception_when_request_is_successful_but_response_content_is_empty()
+		public async Task RestClient_Throws_exception_when_request_is_successful_but_response_content_is_empty()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Completed,
 				StatusCode = HttpStatusCode.OK,
@@ -137,23 +138,23 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Countries.GetList();
+			var result = await apiClient.Countries.GetListAsync();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(CakeMailException))]
-		public void RestClient_Throws_exception_when_request_is_successful_but_response_contenttype_is_not_specified()
+		public async Task RestClient_Throws_exception_when_request_is_successful_but_response_contenttype_is_not_specified()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Completed,
 				StatusCode = HttpStatusCode.OK,
@@ -162,23 +163,23 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Countries.GetList();
+			var result = await apiClient.Countries.GetListAsync();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(HttpException))]
-		public void RestClient_Throws_exception_when_responsescode_is_between_400_and_499_and_content_is_empty()
+		public async Task RestClient_Throws_exception_when_responsescode_is_between_400_and_499_and_content_is_empty()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Completed,
 				StatusCode = HttpStatusCode.Forbidden,
@@ -187,23 +188,23 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Countries.GetList();
+			var result = await apiClient.Countries.GetListAsync();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(HttpException))]
-		public void RestClient_Throws_exception_when_responsescode_is_between_400_and_499_and_content_is_not_empty()
+		public async Task RestClient_Throws_exception_when_responsescode_is_between_400_and_499_and_content_is_not_empty()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Completed,
 				StatusCode = HttpStatusCode.Forbidden,
@@ -212,23 +213,23 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Countries.GetList();
+			var result = await apiClient.Countries.GetListAsync();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(HttpException))]
-		public void RestClient_Throws_exception_when_responsescode_is_between_500_and_599()
+		public async Task RestClient_Throws_exception_when_responsescode_is_between_500_and_599()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Completed,
 				StatusCode = HttpStatusCode.InternalServerError
@@ -236,23 +237,23 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Countries.GetList();
+			var result = await apiClient.Countries.GetListAsync();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(HttpException))]
-		public void RestClient_Throws_exception_when_responsescode_is_greater_than_599()
+		public async Task RestClient_Throws_exception_when_responsescode_is_greater_than_599()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Completed,
 				StatusCode = (HttpStatusCode)600
@@ -260,23 +261,23 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Countries.GetList();
+			var result = await apiClient.Countries.GetListAsync();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(HttpException))]
-		public void RestClient_Throws_exception_when_responsecode_is_greater_than_599_and_custom_errormessage()
+		public async Task RestClient_Throws_exception_when_responsecode_is_greater_than_599_and_custom_errormessage()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Completed,
 				StatusCode = (HttpStatusCode)600,
@@ -285,23 +286,23 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Countries.GetList();
+			var result = await apiClient.Countries.GetListAsync();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(CakeMailException))]
-		public void RestClient_Throws_exception_when_cakemail_api_returns_failure()
+		public async Task RestClient_Throws_exception_when_cakemail_api_returns_failure()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Country/GetList/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -310,25 +311,25 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Countries.GetList();
+			var result = await apiClient.Countries.GetListAsync().ConfigureAwait(false);
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(CakeMailPostException))]
-		public void RestClient_Throws_exception_when_cakemail_api_returns_failure_with_post_details()
+		public async Task RestClient_Throws_exception_when_cakemail_api_returns_failure_with_post_details()
 		{
 			// Arrange
 			var campaignId = 123;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Campaign/Delete/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -337,25 +338,25 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Campaigns.Delete(USER_KEY, campaignId, CLIENT_ID);
+			var result = await apiClient.Campaigns.DeleteAsync(USER_KEY, campaignId, CLIENT_ID);
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(CakeMailException))]
-		public void RestClient_Throws_exception_when_reponse_contains_invalid_json()
+		public async Task RestClient_Throws_exception_when_reponse_contains_invalid_json()
 		{
 			// Arrange
 			var campaignId = 123;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Campaign/Delete/" &&
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -364,12 +365,12 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Campaigns.Delete(USER_KEY, campaignId, CLIENT_ID);
+			var result = await apiClient.Campaigns.DeleteAsync(USER_KEY, campaignId, CLIENT_ID);
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(CakeMailException))]
-		public void RestClient_Throws_exception_when_reponse_does_not_contain_expected_property()
+		public async Task RestClient_Throws_exception_when_reponse_does_not_contain_expected_property()
 		{
 			// Arrange
 			var categoryId = 123;
@@ -380,7 +381,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/CreateCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -391,7 +392,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "label[0][language]" && (string)p.Value == "en_US" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "label[0][name]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -400,7 +401,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.CreateCategory(USER_KEY, labels);
+			var result = await apiClient.Templates.CreateCategoryAsync(USER_KEY, labels);
 		}
 	}
 }

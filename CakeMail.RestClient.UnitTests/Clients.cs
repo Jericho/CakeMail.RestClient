@@ -6,6 +6,7 @@ using RestSharp;
 using System;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.UnitTests
 {
@@ -17,7 +18,7 @@ namespace CakeMail.RestClient.UnitTests
 		private const long CLIENT_ID = 999;
 
 		[TestMethod]
-		public void CreateClient_with_minimal_parameters()
+		public async Task CreateClient_with_minimal_parameters()
 		{
 			// Arrange
 			string name = "Fictitious Inc";
@@ -26,7 +27,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/Create/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -35,7 +36,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "parent_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "company_name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "contact_same_as_admin" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -44,14 +45,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Create(CLIENT_ID, name);
+			var result = await apiClient.Clients.CreateAsync(CLIENT_ID, name);
 
 			// Assert
 			Assert.AreEqual(confirmationCode, result);
 		}
 
 		[TestMethod]
-		public void CreateClient_with_minimal_parameters_and_contactsameasadmin_false()
+		public async Task CreateClient_with_minimal_parameters_and_contactsameasadmin_false()
 		{
 			// Arrange
 			string name = "Fictitious Inc";
@@ -60,7 +61,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/Create/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -69,7 +70,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "parent_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "company_name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "contact_same_as_admin" && (string)p.Value == "0" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -78,14 +79,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Create(CLIENT_ID, name, primaryContactSameAsAdmin: false);
+			var result = await apiClient.Clients.CreateAsync(CLIENT_ID, name, primaryContactSameAsAdmin: false);
 
 			// Assert
 			Assert.AreEqual(confirmationCode, result);
 		}
 
 		[TestMethod]
-		public void CreateClient_with_all_parameters()
+		public async Task CreateClient_with_all_parameters()
 		{
 			// Arrange
 			string name = "Fictitious Inc";
@@ -121,7 +122,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/Create/" &&
 
@@ -166,7 +167,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "contact_language" && (string)p.Value == primaryContactLanguage && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "contact_timezone_id" && (long)p.Value == primaryContactTimezoneId && p.Type == ParameterType.GetOrPost) == 1
 
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -175,14 +176,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Create(CLIENT_ID, name, address1, address2, city, provinceId, postalCode, countryId, website, phone, fax, adminEmail, adminFirstName, adminLastName, adminTitle, adminOfficePhone, adminMobilePhone, adminLanguage, adminTimezoneId, adminPassword, false, primaryContactEmail, primaryContactFirstName, primaryContactLastName, primaryContactTitle, primaryContactOfficePhone, primaryContactMobilePhone, primaryContactLanguage, primaryContactTimezoneId, primaryContactPassword);
+			var result = await apiClient.Clients.CreateAsync(CLIENT_ID, name, address1, address2, city, provinceId, postalCode, countryId, website, phone, fax, adminEmail, adminFirstName, adminLastName, adminTitle, adminOfficePhone, adminMobilePhone, adminLanguage, adminTimezoneId, adminPassword, false, primaryContactEmail, primaryContactFirstName, primaryContactLastName, primaryContactTitle, primaryContactOfficePhone, primaryContactMobilePhone, primaryContactLanguage, primaryContactTimezoneId, primaryContactPassword);
 
 			// Assert
 			Assert.AreEqual(confirmationCode, result);
 		}
 
 		[TestMethod]
-		public void CreateClient_admin_same_as_contact()
+		public async Task CreateClient_admin_same_as_contact()
 		{
 			// Arrange
 			string name = "Fictitious Inc";
@@ -218,7 +219,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/Create/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -251,7 +252,7 @@ namespace CakeMail.RestClient.UnitTests
 
 				r.Parameters.Count(p => p.Name == "contact_same_as_admin" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1
 
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -260,14 +261,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Create(CLIENT_ID, name, address1, address2, city, provinceId, postalCode, countryId, website, phone, fax, adminEmail, adminFirstName, adminLastName, adminTitle, adminOfficePhone, adminMobilePhone, adminLanguage, adminTimezoneId, adminPassword, true, primaryContactEmail, primaryContactFirstName, primaryContactLastName, primaryContactTitle, primaryContactOfficePhone, primaryContactMobilePhone, primaryContactLanguage, primaryContactTimezoneId, primaryContactPassword);
+			var result = await apiClient.Clients.CreateAsync(CLIENT_ID, name, address1, address2, city, provinceId, postalCode, countryId, website, phone, fax, adminEmail, adminFirstName, adminLastName, adminTitle, adminOfficePhone, adminMobilePhone, adminLanguage, adminTimezoneId, adminPassword, true, primaryContactEmail, primaryContactFirstName, primaryContactLastName, primaryContactTitle, primaryContactOfficePhone, primaryContactMobilePhone, primaryContactLanguage, primaryContactTimezoneId, primaryContactPassword);
 
 			// Assert
 			Assert.AreEqual(confirmationCode, result);
 		}
 
 		[TestMethod]
-		public void ConfirmClient()
+		public async Task ConfirmClient()
 		{
 			// Arrange
 			var confirmationId = "... dummy confirmation id ...";
@@ -275,14 +276,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/Activate/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "confirmation" && (string)p.Value == confirmationId && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -291,7 +292,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Confirm(confirmationId);
+			var result = await apiClient.Clients.ConfirmAsync(confirmationId);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -299,14 +300,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetClient_by_confirmationcode()
+		public async Task GetClient_by_confirmationcode()
 		{
 			// Arrange
 			var confirmationCode = "...dummy confirmation code...";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/GetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -314,7 +315,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "confirmation" && (string)p.Value == confirmationCode && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -323,7 +324,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Get(USER_KEY, confirmationCode);
+			var result = await apiClient.Clients.GetAsync(USER_KEY, confirmationCode);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -331,12 +332,12 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetClient_with_minimal_parameters()
+		public async Task GetClient_with_minimal_parameters()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/GetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -344,7 +345,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -353,7 +354,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Get(USER_KEY, CLIENT_ID);
+			var result = await apiClient.Clients.GetAsync(USER_KEY, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -361,7 +362,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetClient_with_startdate()
+		public async Task GetClient_with_startdate()
 		{
 			// Arrange
 			var startDate = new DateTime(2014, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
@@ -369,7 +370,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/GetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -378,7 +379,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "start_date" && (string)p.Value == startDate.ToCakeMailString() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -387,7 +388,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Get(USER_KEY, CLIENT_ID, startDate, endDate);
+			var result = await apiClient.Clients.GetAsync(USER_KEY, CLIENT_ID, startDate, endDate);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -395,7 +396,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetClient_with_enddate()
+		public async Task GetClient_with_enddate()
 		{
 			// Arrange
 			var startDate = (DateTime?)null;
@@ -403,7 +404,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/GetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -412,7 +413,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "end_date" && (string)p.Value == endDate.ToCakeMailString() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -421,7 +422,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Get(USER_KEY, CLIENT_ID, startDate, endDate);
+			var result = await apiClient.Clients.GetAsync(USER_KEY, CLIENT_ID, startDate, endDate);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -429,7 +430,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetClients_with_status()
+		public async Task GetClients_with_status()
 		{
 			// Arrange
 			var status = ClientStatus.Active;
@@ -439,7 +440,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/GetList/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -448,7 +449,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -457,7 +458,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.GetList(USER_KEY, status: status);
+			var result = await apiClient.Clients.GetListAsync(USER_KEY, status: status);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -465,7 +466,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetClients_with_name()
+		public async Task GetClients_with_name()
 		{
 			// Arrange
 			var name = "Dummy Client";
@@ -475,7 +476,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/GetList/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -484,7 +485,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "company_name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -493,7 +494,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.GetList(USER_KEY, name: name);
+			var result = await apiClient.Clients.GetListAsync(USER_KEY, name: name);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -501,7 +502,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetClients_with_sortBy()
+		public async Task GetClients_with_sortBy()
 		{
 			// Arrange
 			var sortBy = ClientsSortBy.CompanyName;
@@ -511,7 +512,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/GetList/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -520,7 +521,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sort_by" && (string)p.Value == sortBy.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -529,7 +530,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.GetList(USER_KEY, sortBy: sortBy);
+			var result = await apiClient.Clients.GetListAsync(USER_KEY, sortBy: sortBy);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -537,7 +538,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetClients_with_sortdirection()
+		public async Task GetClients_with_sortdirection()
 		{
 			// Arrange
 			var sortDirection = SortDirection.Ascending;
@@ -547,7 +548,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/GetList/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -556,7 +557,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "direction" && (string)p.Value == sortDirection.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -565,7 +566,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.GetList(USER_KEY, sortDirection: sortDirection);
+			var result = await apiClient.Clients.GetListAsync(USER_KEY, sortDirection: sortDirection);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -573,7 +574,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetClients_with_limit()
+		public async Task GetClients_with_limit()
 		{
 			// Arrange
 			var limit = 11;
@@ -583,7 +584,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/GetList/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -592,7 +593,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "limit" && (int)p.Value == limit && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -601,7 +602,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.GetList(USER_KEY, limit: limit);
+			var result = await apiClient.Clients.GetListAsync(USER_KEY, limit: limit);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -609,7 +610,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetClients_with_offset()
+		public async Task GetClients_with_offset()
 		{
 			// Arrange
 			var offset = 33;
@@ -619,7 +620,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/GetList/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -628,7 +629,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "offset" && (int)p.Value == offset && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -637,7 +638,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.GetList(USER_KEY, offset: offset);
+			var result = await apiClient.Clients.GetListAsync(USER_KEY, offset: offset);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -645,7 +646,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetClients_with_clientid()
+		public async Task GetClients_with_clientid()
 		{
 			// Arrange
 			var jsonClient1 = "{\"company_name\":\"Dummy Client #1\",\"contact_id\":\"123\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"111\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-09 14:34:48\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
@@ -653,7 +654,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/GetList/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -662,7 +663,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -671,7 +672,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.GetList(USER_KEY, clientId: CLIENT_ID);
+			var result = await apiClient.Clients.GetListAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -679,14 +680,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetClientsCount_with_status()
+		public async Task GetClientsCount_with_status()
 		{
 			// Arrange
 			var status = ClientStatus.Active;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/GetList/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -695,7 +696,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -704,7 +705,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.GetCount(USER_KEY, status: status);
+			var result = await apiClient.Clients.GetCountAsync(USER_KEY, status: status);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -712,14 +713,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetClientsCount_with_name()
+		public async Task GetClientsCount_with_name()
 		{
 			// Arrange
 			var name = "Dummy Client";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/GetList/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -728,7 +729,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "company_name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -737,7 +738,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.GetCount(USER_KEY, name: name);
+			var result = await apiClient.Clients.GetCountAsync(USER_KEY, name: name);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -745,12 +746,12 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetClientsCount_with_clientid()
+		public async Task GetClientsCount_with_clientid()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/GetList/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -759,7 +760,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -768,7 +769,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.GetCount(USER_KEY, clientId: CLIENT_ID);
+			var result = await apiClient.Clients.GetCountAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -776,14 +777,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void UpdateClient_name()
+		public async Task UpdateClient_name()
 		{
 			// Arrange
 			var name = "Fictitious Inc";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -792,7 +793,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "company_name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -801,21 +802,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, name: name);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, name: name);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_status()
+		public async Task UpdateClient_status()
 		{
 			// Arrange
 			var status = ClientStatus.Active;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -824,7 +825,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -833,21 +834,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, status: status);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, status: status);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_parentid()
+		public async Task UpdateClient_parentid()
 		{
 			// Arrange
 			var parentId = 1;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -856,7 +857,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "parent_id" && (long)p.Value == parentId && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -865,21 +866,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, parentId: parentId);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, parentId: parentId);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_address1()
+		public async Task UpdateClient_address1()
 		{
 			// Arrange
 			var address1 = "123 1st Avenue";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -888,7 +889,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "address1" && (string)p.Value == address1 && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -897,21 +898,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, address1: address1);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, address1: address1);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_address2()
+		public async Task UpdateClient_address2()
 		{
 			// Arrange
 			var address2 = "Suite 1000";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -920,7 +921,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "address2" && (string)p.Value == address2 && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -929,21 +930,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, address2: address2);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, address2: address2);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_city()
+		public async Task UpdateClient_city()
 		{
 			// Arrange
 			var city = "Mock City";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -952,7 +953,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "city" && (string)p.Value == city && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -961,21 +962,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, city: city);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, city: city);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_provinceid()
+		public async Task UpdateClient_provinceid()
 		{
 			// Arrange
 			var provinceId = "FL";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -984,7 +985,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "province_id" && (string)p.Value == provinceId && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -993,21 +994,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, provinceId: provinceId);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, provinceId: provinceId);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_postalcode()
+		public async Task UpdateClient_postalcode()
 		{
 			// Arrange
 			var postalCode = "12345";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1016,7 +1017,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "postal_code" && (string)p.Value == postalCode && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1025,21 +1026,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, postalCode: postalCode);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, postalCode: postalCode);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_countryid()
+		public async Task UpdateClient_countryid()
 		{
 			// Arrange
 			var countryId = "us";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1048,7 +1049,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "country_id" && (string)p.Value == countryId && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1057,21 +1058,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, countryId: countryId);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, countryId: countryId);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_website()
+		public async Task UpdateClient_website()
 		{
 			// Arrange
 			var website = "www.fictitiouscompany.com";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1080,7 +1081,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "website" && (string)p.Value == website && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1089,21 +1090,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, website: website);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, website: website);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_phone()
+		public async Task UpdateClient_phone()
 		{
 			// Arrange
 			var phone = "111-111-1111";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1113,7 +1114,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "phone" && (string)p.Value == phone && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1122,21 +1123,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, phone: phone);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, phone: phone);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_fax()
+		public async Task UpdateClient_fax()
 		{
 			// Arrange
 			var fax = "222-222-2222";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1145,7 +1146,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "fax" && (string)p.Value == fax && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1154,21 +1155,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, fax: fax);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, fax: fax);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_autdomain()
+		public async Task UpdateClient_autdomain()
 		{
 			// Arrange
 			var authDomain = "md02.com";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1177,7 +1178,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "auth_domain" && (string)p.Value == authDomain && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1186,21 +1187,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, authDomain: authDomain);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, authDomain: authDomain);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_bouncedomain()
+		public async Task UpdateClient_bouncedomain()
 		{
 			// Arrange
 			var bounceDomain = "bounce.fictitiouscompany.com";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1209,7 +1210,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "bounce_domain" && (string)p.Value == bounceDomain && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1218,21 +1219,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, bounceDomain: bounceDomain);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, bounceDomain: bounceDomain);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_dkimdomain()
+		public async Task UpdateClient_dkimdomain()
 		{
 			// Arrange
 			var dkimDomain = "md02.com";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1241,7 +1242,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "dkim_domain" && (string)p.Value == dkimDomain && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1250,21 +1251,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, dkimDomain: dkimDomain);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, dkimDomain: dkimDomain);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_doptinip()
+		public async Task UpdateClient_doptinip()
 		{
 			// Arrange
 			var doptinIp = "192.168.77.1";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1273,7 +1274,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "doptin_ip" && (string)p.Value == doptinIp && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1282,21 +1283,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, doptinIp: doptinIp);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, doptinIp: doptinIp);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_forwarddomain()
+		public async Task UpdateClient_forwarddomain()
 		{
 			// Arrange
 			var forwardDomain = "http://forward.fictitiouscompany.com/";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1305,7 +1306,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "forward_domain" && (string)p.Value == forwardDomain && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1314,21 +1315,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, forwardDomain: forwardDomain);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, forwardDomain: forwardDomain);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_forwardip()
+		public async Task UpdateClient_forwardip()
 		{
 			// Arrange
 			var forwardIp = "192.168.77.2";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1337,7 +1338,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "forward_ip" && (string)p.Value == forwardIp && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1346,21 +1347,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, forwardIp: forwardIp);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, forwardIp: forwardIp);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_ippool()
+		public async Task UpdateClient_ippool()
 		{
 			// Arrange
 			var ipPool = "dummy";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1369,7 +1370,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "ip_pool" && (string)p.Value == ipPool && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1378,21 +1379,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, ipPool: ipPool);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, ipPool: ipPool);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_mddomain()
+		public async Task UpdateClient_mddomain()
 		{
 			// Arrange
 			var mdDomain = "http://link.fictitiouscompany.com/";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1401,7 +1402,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "md_domain" && (string)p.Value == mdDomain && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1410,21 +1411,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, mdDomain: mdDomain);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, mdDomain: mdDomain);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_isreseller_true()
+		public async Task UpdateClient_isreseller_true()
 		{
 			// Arrange
 			var isReseller = true;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1433,7 +1434,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "reseller" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1442,21 +1443,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, isReseller: isReseller);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, isReseller: isReseller);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_isreseller_false()
+		public async Task UpdateClient_isreseller_false()
 		{
 			// Arrange
 			var isReseller = false;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1465,7 +1466,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "reseller" && (string)p.Value == "0" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1474,21 +1475,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, isReseller: isReseller);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, isReseller: isReseller);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_currency()
+		public async Task UpdateClient_currency()
 		{
 			// Arrange
 			var currency = "USD";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1497,7 +1498,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "currency" && (string)p.Value == currency && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1506,21 +1507,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, currency: currency);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, currency: currency);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_plantype()
+		public async Task UpdateClient_plantype()
 		{
 			// Arrange
 			var planType = "dummy plan";
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1529,7 +1530,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "plan_type" && (string)p.Value == planType && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1538,21 +1539,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, planType: planType);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, planType: planType);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_mailinglimit()
+		public async Task UpdateClient_mailinglimit()
 		{
 			// Arrange
 			var mailingLimit = 10;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1561,7 +1562,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "mailing_limit" && (int)p.Value == mailingLimit && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1570,21 +1571,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, mailingLimit: mailingLimit);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, mailingLimit: mailingLimit);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_monthlimit()
+		public async Task UpdateClient_monthlimit()
 		{
 			// Arrange
 			var monthLimit = 100;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1593,7 +1594,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "month_limit" && (int)p.Value == monthLimit && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1602,21 +1603,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, monthLimit: monthLimit);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, monthLimit: monthLimit);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_contactlimit()
+		public async Task UpdateClient_contactlimit()
 		{
 			// Arrange
 			var contactLimit = 1000;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1625,7 +1626,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "contact_limit" && (int)p.Value == contactLimit && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1634,21 +1635,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, contactLimit: contactLimit);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, contactLimit: contactLimit);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_defaultmailinglimit()
+		public async Task UpdateClient_defaultmailinglimit()
 		{
 			// Arrange
 			var defaultMailingLimit = 10;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1657,7 +1658,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default_mailing_limit" && (int)p.Value == defaultMailingLimit && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1666,21 +1667,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, defaultMailingLimit: defaultMailingLimit);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, defaultMailingLimit: defaultMailingLimit);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_defaultmonthlimit()
+		public async Task UpdateClient_defaultmonthlimit()
 		{
 			// Arrange
 			var defaultMonthLimit = 100;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1689,7 +1690,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default_month_limit" && (int)p.Value == defaultMonthLimit && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1698,21 +1699,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, defaultMonthLimit: defaultMonthLimit);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, defaultMonthLimit: defaultMonthLimit);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateClient_defaultcontactlimit()
+		public async Task UpdateClient_defaultcontactlimit()
 		{
 			// Arrange
 			var defaultContactLimit = 1000;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1721,7 +1722,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default_contact_limit" && (int)p.Value == defaultContactLimit && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1730,19 +1731,19 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Update(USER_KEY, CLIENT_ID, defaultContactLimit: defaultContactLimit);
+			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, defaultContactLimit: defaultContactLimit);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void ActivateClient()
+		public async Task ActivateClient()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1751,7 +1752,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == "active" && p.Type == ParameterType.GetOrPost) == 1
-				))).Returns(new RestResponse()
+				))).ReturnsAsync(new RestResponse()
 				{
 					StatusCode = HttpStatusCode.OK,
 					ContentType = "json",
@@ -1760,19 +1761,19 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Activate(USER_KEY, CLIENT_ID);
+			var result = await apiClient.Clients.ActivateAsync(USER_KEY, CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void SuspendClient()
+		public async Task SuspendClient()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1781,7 +1782,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == "suspended_by_reseller" && p.Type == ParameterType.GetOrPost) == 1
-				))).Returns(new RestResponse()
+				))).ReturnsAsync(new RestResponse()
 				{
 					StatusCode = HttpStatusCode.OK,
 					ContentType = "json",
@@ -1790,19 +1791,19 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Suspend(USER_KEY, CLIENT_ID);
+			var result = await apiClient.Clients.SuspendAsync(USER_KEY, CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void DeleteClient()
+		public async Task DeleteClient()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/Client/SetInfo/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1811,7 +1812,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == "deleted" && p.Type == ParameterType.GetOrPost) == 1
-				))).Returns(new RestResponse()
+				))).ReturnsAsync(new RestResponse()
 				{
 					StatusCode = HttpStatusCode.OK,
 					ContentType = "json",
@@ -1820,7 +1821,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Clients.Delete(USER_KEY, CLIENT_ID);
+			var result = await apiClient.Clients.DeleteAsync(USER_KEY, CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);

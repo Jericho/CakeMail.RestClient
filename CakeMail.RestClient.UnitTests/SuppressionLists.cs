@@ -4,6 +4,7 @@ using RestSharp;
 using System;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.UnitTests
 {
@@ -15,14 +16,14 @@ namespace CakeMail.RestClient.UnitTests
 		private const long CLIENT_ID = 999;
 
 		[TestMethod]
-		public void AddEmailAddressesToSuppressionList_with_minimal_parameters()
+		public async Task AddEmailAddressesToSuppressionList_with_minimal_parameters()
 		{
 			// Arrange
 			var emailAddresses = new[] { "aaa@aaa.com", "bbb@bbb.com", "ccc@ccc.com" };
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ImportEmails/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -32,7 +33,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "email[0]" && (string)p.Value == emailAddresses[0] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email[1]" && (string)p.Value == emailAddresses[1] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email[2]" && (string)p.Value == emailAddresses[2] && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -41,7 +42,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.AddEmailAddresses(USER_KEY, emailAddresses);
+			var result = await apiClient.SuppressionLists.AddEmailAddressesAsync(USER_KEY, emailAddresses);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -49,19 +50,19 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void AddEmailAddressesToSuppressionList_with_null_array()
+		public async Task AddEmailAddressesToSuppressionList_with_null_array()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ImportEmails/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -70,7 +71,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.AddEmailAddresses(USER_KEY, null);
+			var result = await apiClient.SuppressionLists.AddEmailAddressesAsync(USER_KEY, null);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -78,14 +79,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void AddEmailAddressesToSuppressionList_with_clientid()
+		public async Task AddEmailAddressesToSuppressionList_with_clientid()
 		{
 			// Arrange
 			var emailAddresses = new[] { "aaa@aaa.com", "bbb@bbb.com", "ccc@ccc.com" };
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ImportEmails/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -96,7 +97,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "email[1]" && (string)p.Value == emailAddresses[1] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email[2]" && (string)p.Value == emailAddresses[2] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -105,7 +106,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.AddEmailAddresses(USER_KEY, emailAddresses, CLIENT_ID);
+			var result = await apiClient.SuppressionLists.AddEmailAddressesAsync(USER_KEY, emailAddresses, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -113,14 +114,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void AddDomainsToSuppressionList_with_minimal_parameters()
+		public async Task AddDomainsToSuppressionList_with_minimal_parameters()
 		{
 			// Arrange
 			var domains = new[] { "aaa.com", "bbb.com", "ccc.com" };
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ImportDomains/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -130,7 +131,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "domain[0]" && (string)p.Value == domains[0] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "domain[1]" && (string)p.Value == domains[1] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "domain[2]" && (string)p.Value == domains[2] && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -139,7 +140,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.AddDomains(USER_KEY, domains);
+			var result = await apiClient.SuppressionLists.AddDomainsAsync(USER_KEY, domains);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -147,19 +148,19 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void AddDomainsToSuppressionList_with_null_array()
+		public async Task AddDomainsToSuppressionList_with_null_array()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ImportDomains/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -168,7 +169,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.AddDomains(USER_KEY, null);
+			var result = await apiClient.SuppressionLists.AddDomainsAsync(USER_KEY, null);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -176,14 +177,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void AddDomainsToSuppressionList_with_clientid()
+		public async Task AddDomainsToSuppressionList_with_clientid()
 		{
 			// Arrange
 			var domains = new[] { "aaa.com", "bbb.com", "ccc.com" };
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ImportDomains/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -194,7 +195,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "domain[1]" && (string)p.Value == domains[1] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "domain[2]" && (string)p.Value == domains[2] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -203,7 +204,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.AddDomains(USER_KEY, domains, CLIENT_ID);
+			var result = await apiClient.SuppressionLists.AddDomainsAsync(USER_KEY, domains, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -211,14 +212,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void AddLocalPartsToSuppressionList_with_minimal_parameters()
+		public async Task AddLocalPartsToSuppressionList_with_minimal_parameters()
 		{
 			// Arrange
 			var localParts = new[] { "administrator", "manager", "info" };
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ImportLocalparts/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -228,7 +229,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "localpart[0]" && (string)p.Value == localParts[0] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "localpart[1]" && (string)p.Value == localParts[1] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "localpart[2]" && (string)p.Value == localParts[2] && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -237,7 +238,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.AddLocalParts(USER_KEY, localParts);
+			var result = await apiClient.SuppressionLists.AddLocalPartsAsync(USER_KEY, localParts);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -245,19 +246,19 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void AddLocalPartsToSuppressionList_with_null_array()
+		public async Task AddLocalPartsToSuppressionList_with_null_array()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ImportLocalparts/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -266,7 +267,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.AddLocalParts(USER_KEY, null);
+			var result = await apiClient.SuppressionLists.AddLocalPartsAsync(USER_KEY, null);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -274,14 +275,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void AddLocalPartsToSuppressionList_with_clientid()
+		public async Task AddLocalPartsToSuppressionList_with_clientid()
 		{
 			// Arrange
 			var localParts = new[] { "administrator", "manager", "info" };
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ImportLocalparts/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -292,7 +293,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "localpart[1]" && (string)p.Value == localParts[1] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "localpart[2]" && (string)p.Value == localParts[2] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -301,7 +302,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.AddLocalParts(USER_KEY, localParts, CLIENT_ID);
+			var result = await apiClient.SuppressionLists.AddLocalPartsAsync(USER_KEY, localParts, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -309,14 +310,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void RemoveEmailAddressesFromSuppressionList_with_minimal_parameters()
+		public async Task RemoveEmailAddressesFromSuppressionList_with_minimal_parameters()
 		{
 			// Arrange
 			var emailAddresses = new[] { "aaa@aaa.com", "bbb@bbb.com", "ccc@ccc.com" };
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/DeleteEmails/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -326,7 +327,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "email[0]" && (string)p.Value == emailAddresses[0] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email[1]" && (string)p.Value == emailAddresses[1] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email[2]" && (string)p.Value == emailAddresses[2] && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -335,7 +336,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.RemoveEmailAddresses(USER_KEY, emailAddresses);
+			var result = await apiClient.SuppressionLists.RemoveEmailAddressesAsync(USER_KEY, emailAddresses);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -343,18 +344,18 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void RemoveEmailAddressesFromSuppressionList_with_null_array()
+		public async Task RemoveEmailAddressesFromSuppressionList_with_null_array()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -363,7 +364,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.RemoveEmailAddresses(USER_KEY, null);
+			var result = await apiClient.SuppressionLists.RemoveEmailAddressesAsync(USER_KEY, null);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -371,14 +372,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void RemoveEmailAddressesFromSuppressionList_with_clientid()
+		public async Task RemoveEmailAddressesFromSuppressionList_with_clientid()
 		{
 			// Arrange
 			var emailAddresses = new[] { "aaa@aaa.com", "bbb@bbb.com", "ccc@ccc.com" };
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/DeleteEmails/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -389,7 +390,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "email[1]" && (string)p.Value == emailAddresses[1] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email[2]" && (string)p.Value == emailAddresses[2] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -398,7 +399,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.RemoveEmailAddresses(USER_KEY, emailAddresses, CLIENT_ID);
+			var result = await apiClient.SuppressionLists.RemoveEmailAddressesAsync(USER_KEY, emailAddresses, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -406,14 +407,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void RemoveDomainsFromSuppressionList_with_minimal_parameters()
+		public async Task RemoveDomainsFromSuppressionList_with_minimal_parameters()
 		{
 			// Arrange
 			var domains = new[] { "aaa.com", "bbb.com", "ccc.com" };
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/DeleteDomains/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -423,7 +424,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "domain[0]" && (string)p.Value == domains[0] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "domain[1]" && (string)p.Value == domains[1] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "domain[2]" && (string)p.Value == domains[2] && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -432,7 +433,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.RemoveDomains(USER_KEY, domains);
+			var result = await apiClient.SuppressionLists.RemoveDomainsAsync(USER_KEY, domains);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -440,19 +441,19 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void RemoveDomainsFromSuppressionList_with_null_array()
+		public async Task RemoveDomainsFromSuppressionList_with_null_array()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/DeleteDomains/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -461,7 +462,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.RemoveDomains(USER_KEY, null);
+			var result = await apiClient.SuppressionLists.RemoveDomainsAsync(USER_KEY, null);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -469,14 +470,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void RemoveDomainsFromSuppressionList_with_clientid()
+		public async Task RemoveDomainsFromSuppressionList_with_clientid()
 		{
 			// Arrange
 			var domains = new[] { "aaa.com", "bbb.com", "ccc.com" };
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/DeleteDomains/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -487,7 +488,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "domain[1]" && (string)p.Value == domains[1] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "domain[2]" && (string)p.Value == domains[2] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -496,7 +497,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.RemoveDomains(USER_KEY, domains, CLIENT_ID);
+			var result = await apiClient.SuppressionLists.RemoveDomainsAsync(USER_KEY, domains, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -504,14 +505,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void RemoveLocalPartsFromSuppressionList_with_minimal_parameters()
+		public async Task RemoveLocalPartsFromSuppressionList_with_minimal_parameters()
 		{
 			// Arrange
 			var localParts = new[] { "administrator", "manager", "info" };
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/DeleteLocalparts/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -521,7 +522,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "localpart[0]" && (string)p.Value == localParts[0] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "localpart[1]" && (string)p.Value == localParts[1] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "localpart[2]" && (string)p.Value == localParts[2] && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -530,7 +531,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.RemoveLocalParts(USER_KEY, localParts);
+			var result = await apiClient.SuppressionLists.RemoveLocalPartsAsync(USER_KEY, localParts);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -538,19 +539,19 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void RemoveLocalPartsFromSuppressionList_with_null_array()
+		public async Task RemoveLocalPartsFromSuppressionList_with_null_array()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/DeleteLocalparts/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -559,7 +560,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.RemoveLocalParts(USER_KEY, null);
+			var result = await apiClient.SuppressionLists.RemoveLocalPartsAsync(USER_KEY, null);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -567,14 +568,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void RemoveLocalPartsFromSuppressionList_with_clientid()
+		public async Task RemoveLocalPartsFromSuppressionList_with_clientid()
 		{
 			// Arrange
 			var localParts = new[] { "administrator", "manager", "info" };
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/DeleteLocalparts/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -585,7 +586,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "localpart[1]" && (string)p.Value == localParts[1] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "localpart[2]" && (string)p.Value == localParts[2] && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -594,7 +595,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.RemoveLocalParts(USER_KEY, localParts, CLIENT_ID);
+			var result = await apiClient.SuppressionLists.RemoveLocalPartsAsync(USER_KEY, localParts, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -602,12 +603,12 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetSuppressedEmailAddresses_with_minimal_parameters()
+		public async Task GetSuppressedEmailAddresses_with_minimal_parameters()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportEmails/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -615,7 +616,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -624,7 +625,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetEmailAddresses(USER_KEY);
+			var result = await apiClient.SuppressionLists.GetEmailAddressesAsync(USER_KEY);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -632,14 +633,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetSuppressedEmailAddresses_with_limit()
+		public async Task GetSuppressedEmailAddresses_with_limit()
 		{
 			// Arrange
 			var limit = 5;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportEmails/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -648,7 +649,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "limit" && (int)p.Value == limit && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -657,7 +658,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetEmailAddresses(USER_KEY, limit: limit);
+			var result = await apiClient.SuppressionLists.GetEmailAddressesAsync(USER_KEY, limit: limit);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -665,14 +666,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetSuppressedEmailAddresses_with_offset()
+		public async Task GetSuppressedEmailAddresses_with_offset()
 		{
 			// Arrange
 			var offset = 25;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportEmails/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -681,7 +682,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "offset" && (int)p.Value == offset && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -690,7 +691,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetEmailAddresses(USER_KEY, offset: offset);
+			var result = await apiClient.SuppressionLists.GetEmailAddressesAsync(USER_KEY, offset: offset);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -698,12 +699,12 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetSuppressedEmailAddresses_with_clientid()
+		public async Task GetSuppressedEmailAddresses_with_clientid()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportEmails/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -712,7 +713,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -721,7 +722,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetEmailAddresses(USER_KEY, clientId: CLIENT_ID);
+			var result = await apiClient.SuppressionLists.GetEmailAddressesAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -729,12 +730,12 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetSuppressedDomains_with_minimal_parameters()
+		public async Task GetSuppressedDomains_with_minimal_parameters()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportDomains/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -742,7 +743,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -751,7 +752,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetDomains(USER_KEY);
+			var result = await apiClient.SuppressionLists.GetDomainsAsync(USER_KEY);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -759,14 +760,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetSuppressedDomains_with_limit()
+		public async Task GetSuppressedDomains_with_limit()
 		{
 			// Arrange
 			var limit = 5;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportDomains/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -775,7 +776,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "limit" && (int)p.Value == limit && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -784,7 +785,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetDomains(USER_KEY, limit: limit);
+			var result = await apiClient.SuppressionLists.GetDomainsAsync(USER_KEY, limit: limit);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -792,14 +793,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetSuppressedDomains_with_offset()
+		public async Task GetSuppressedDomains_with_offset()
 		{
 			// Arrange
 			var offset = 25;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportDomains/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -808,7 +809,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "offset" && (int)p.Value == offset && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -817,7 +818,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetDomains(USER_KEY, offset: offset);
+			var result = await apiClient.SuppressionLists.GetDomainsAsync(USER_KEY, offset: offset);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -825,12 +826,12 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetSuppressedDomains_with_clientid()
+		public async Task GetSuppressedDomains_with_clientid()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportDomains/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -839,7 +840,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -848,7 +849,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetDomains(USER_KEY, clientId: CLIENT_ID);
+			var result = await apiClient.SuppressionLists.GetDomainsAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -856,12 +857,12 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetSuppressedLocalParts_with_minimal_parameters()
+		public async Task GetSuppressedLocalParts_with_minimal_parameters()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportLocalparts/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -869,7 +870,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -878,7 +879,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetLocalParts(USER_KEY);
+			var result = await apiClient.SuppressionLists.GetLocalPartsAsync(USER_KEY);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -886,14 +887,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetSuppressedLocalParts_with_limit()
+		public async Task GetSuppressedLocalParts_with_limit()
 		{
 			// Arrange
 			var limit = 5;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportLocalparts/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -902,7 +903,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "limit" && (int)p.Value == limit && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -911,7 +912,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetLocalParts(USER_KEY, limit: limit);
+			var result = await apiClient.SuppressionLists.GetLocalPartsAsync(USER_KEY, limit: limit);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -919,14 +920,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetSuppressedLocalParts_with_offset()
+		public async Task GetSuppressedLocalParts_with_offset()
 		{
 			// Arrange
 			var offset = 25;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportLocalparts/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -935,7 +936,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "offset" && (int)p.Value == offset && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -944,7 +945,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetLocalParts(USER_KEY, offset: offset);
+			var result = await apiClient.SuppressionLists.GetLocalPartsAsync(USER_KEY, offset: offset);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -952,12 +953,12 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetSuppressedLocalParts_with_clientid()
+		public async Task GetSuppressedLocalParts_with_clientid()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportLocalparts/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -966,7 +967,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -975,7 +976,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetLocalParts(USER_KEY, clientId: CLIENT_ID);
+			var result = await apiClient.SuppressionLists.GetLocalPartsAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -983,12 +984,12 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetSuppressedEmailAddressesCount_with_minimal_parameters()
+		public async Task GetSuppressedEmailAddressesCount_with_minimal_parameters()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportEmails/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -996,7 +997,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1005,19 +1006,19 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetEmailAddressesCount(USER_KEY);
+			var result = await apiClient.SuppressionLists.GetEmailAddressesCountAsync(USER_KEY);
 
 			// Assert
 			Assert.AreEqual(2, result);
 		}
 
 		[TestMethod]
-		public void GetSuppressedEmailAddressesCount_with_clientid()
+		public async Task GetSuppressedEmailAddressesCount_with_clientid()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportEmails/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1026,7 +1027,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1035,19 +1036,19 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetEmailAddressesCount(USER_KEY, clientId: CLIENT_ID);
+			var result = await apiClient.SuppressionLists.GetEmailAddressesCountAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(2, result);
 		}
 
 		[TestMethod]
-		public void GetSuppressedDomainsCount_with_minimal_parameters()
+		public async Task GetSuppressedDomainsCount_with_minimal_parameters()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportDomains/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1055,7 +1056,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1064,19 +1065,19 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetDomainsCount(USER_KEY);
+			var result = await apiClient.SuppressionLists.GetDomainsCountAsync(USER_KEY);
 
 			// Assert
 			Assert.AreEqual(2, result);
 		}
 
 		[TestMethod]
-		public void GetSuppressedDomainsCount_with_clientid()
+		public async Task GetSuppressedDomainsCount_with_clientid()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportDomains/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1085,7 +1086,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1094,19 +1095,19 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetDomainsCount(USER_KEY, clientId: CLIENT_ID);
+			var result = await apiClient.SuppressionLists.GetDomainsCountAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(2, result);
 		}
 
 		[TestMethod]
-		public void GetSuppressedLocalPartsCount_with_minimal_parameters()
+		public async Task GetSuppressedLocalPartsCount_with_minimal_parameters()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportLocalparts/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1114,7 +1115,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1123,19 +1124,19 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetLocalPartsCount(USER_KEY);
+			var result = await apiClient.SuppressionLists.GetLocalPartsCountAsync(USER_KEY);
 
 			// Assert
 			Assert.AreEqual(2, result);
 		}
 
 		[TestMethod]
-		public void GetSuppressedLocalPartsCount_with_clientid()
+		public async Task GetSuppressedLocalPartsCount_with_clientid()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/SuppressionList/ExportLocalparts/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1144,7 +1145,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1153,7 +1154,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.SuppressionLists.GetLocalPartsCount(USER_KEY, clientId: CLIENT_ID);
+			var result = await apiClient.SuppressionLists.GetLocalPartsCountAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(2, result);

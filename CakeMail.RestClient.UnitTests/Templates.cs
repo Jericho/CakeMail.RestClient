@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.UnitTests
 {
@@ -16,7 +17,7 @@ namespace CakeMail.RestClient.UnitTests
 		private const long CLIENT_ID = 999;
 
 		[TestMethod]
-		public void CreateTemplateCategory_with_minimal_parameters()
+		public async Task CreateTemplateCategory_with_minimal_parameters()
 		{
 			// Arrange
 			var categoryId = 123;
@@ -28,7 +29,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/CreateCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -41,7 +42,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "label[0][name]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "label[1][language]" && (string)p.Value == "fr_FR" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "label[1][name]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -50,21 +51,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.CreateCategory(USER_KEY, labels);
+			var result = await apiClient.Templates.CreateCategoryAsync(USER_KEY, labels);
 
 			// Assert
 			Assert.AreEqual(categoryId, result);
 		}
 
 		[TestMethod]
-		public void CreateTemplateCategory_with_no_labels()
+		public async Task CreateTemplateCategory_with_no_labels()
 		{
 			// Arrange
 			var categoryId = 123;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/CreateCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -73,7 +74,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -82,14 +83,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.CreateCategory(USER_KEY, null);
+			var result = await apiClient.Templates.CreateCategoryAsync(USER_KEY, null);
 
 			// Assert
 			Assert.AreEqual(categoryId, result);
 		}
 
 		[TestMethod]
-		public void CreateTemplateCategory_with_isvisiblebydefault_false()
+		public async Task CreateTemplateCategory_with_isvisiblebydefault_false()
 		{
 			// Arrange
 			var categoryId = 123;
@@ -101,7 +102,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/CreateCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -114,7 +115,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "label[0][name]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "label[1][language]" && (string)p.Value == "fr_FR" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "label[1][name]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -123,14 +124,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.CreateCategory(USER_KEY, labels, isVisibleByDefault: false);
+			var result = await apiClient.Templates.CreateCategoryAsync(USER_KEY, labels, isVisibleByDefault: false);
 
 			// Assert
 			Assert.AreEqual(categoryId, result);
 		}
 
 		[TestMethod]
-		public void CreateTemplateCategory_with_templatescanbecopied_false()
+		public async Task CreateTemplateCategory_with_templatescanbecopied_false()
 		{
 			// Arrange
 			var categoryId = 123;
@@ -142,7 +143,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/CreateCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -155,7 +156,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "label[0][name]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "label[1][language]" && (string)p.Value == "fr_FR" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "label[1][name]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -164,14 +165,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.CreateCategory(USER_KEY, labels, templatesCanBeCopied: false);
+			var result = await apiClient.Templates.CreateCategoryAsync(USER_KEY, labels, templatesCanBeCopied: false);
 
 			// Assert
 			Assert.AreEqual(categoryId, result);
 		}
 
 		[TestMethod]
-		public void CreateTemplateCategory_with_clientid()
+		public async Task CreateTemplateCategory_with_clientid()
 		{
 			// Arrange
 			var categoryId = 123;
@@ -183,7 +184,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/CreateCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -197,7 +198,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "label[1][language]" && (string)p.Value == "fr_FR" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "label[1][name]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-				))).Returns(new RestResponse()
+				))).ReturnsAsync(new RestResponse()
 				{
 					StatusCode = HttpStatusCode.OK,
 					ContentType = "json",
@@ -206,21 +207,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.CreateCategory(USER_KEY, labels, clientId: CLIENT_ID);
+			var result = await apiClient.Templates.CreateCategoryAsync(USER_KEY, labels, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(categoryId, result);
 		}
 
 		[TestMethod]
-		public void DeleteTemplateCategory_with_minimal_parameters()
+		public async Task DeleteTemplateCategory_with_minimal_parameters()
 		{
 			// Arrange
 			var categoryId = 12345;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/DeleteCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -228,7 +229,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -237,21 +238,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.DeleteCategory(USER_KEY, categoryId);
+			var result = await apiClient.Templates.DeleteCategoryAsync(USER_KEY, categoryId);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void DeleteTemplateCategory_with_clientid()
+		public async Task DeleteTemplateCategory_with_clientid()
 		{
 			// Arrange
 			var categoryId = 12345;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/DeleteCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -260,7 +261,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -269,21 +270,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.DeleteCategory(USER_KEY, categoryId, CLIENT_ID);
+			var result = await apiClient.Templates.DeleteCategoryAsync(USER_KEY, categoryId, CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void GetTemplateCategory_with_minimal_parameters()
+		public async Task GetTemplateCategory_with_minimal_parameters()
 		{
 			// Arrange
 			var categoryId = 12345;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -291,7 +292,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -300,7 +301,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCategory(USER_KEY, categoryId);
+			var result = await apiClient.Templates.GetCategoryAsync(USER_KEY, categoryId);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -308,14 +309,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplateCategory_with_clientid()
+		public async Task GetTemplateCategory_with_clientid()
 		{
 			// Arrange
 			var categoryId = 12345;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -324,7 +325,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -333,7 +334,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCategory(USER_KEY, categoryId, CLIENT_ID);
+			var result = await apiClient.Templates.GetCategoryAsync(USER_KEY, categoryId, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -341,7 +342,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplateCategories_with_minimal_parameters()
+		public async Task GetTemplateCategories_with_minimal_parameters()
 		{
 			// Arrange
 			var jsonCategory1 = string.Format("{{\"id\":\"111\",\"status\":\"active\",\"owner_client_id\":\"{0}\",\"templates_copyable\":\"1\",\"default\":\"0\",\"name\":\"Testing #1\",\"amount_templates\":\"1\",\"amount_clients\":\"0\",\"level\":\"1\"}}", CLIENT_ID);
@@ -349,7 +350,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetCategories/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -357,7 +358,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -366,7 +367,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCategories(USER_KEY);
+			var result = await apiClient.Templates.GetCategoriesAsync(USER_KEY);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -376,7 +377,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplateCategories_with_limit()
+		public async Task GetTemplateCategories_with_limit()
 		{
 			// Arrange
 			var limit = 5;
@@ -385,7 +386,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetCategories/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -394,7 +395,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "limit" && (int)p.Value == limit && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -403,7 +404,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCategories(USER_KEY, limit: limit);
+			var result = await apiClient.Templates.GetCategoriesAsync(USER_KEY, limit: limit);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -413,7 +414,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplateCategories_with_offset()
+		public async Task GetTemplateCategories_with_offset()
 		{
 			// Arrange
 			var offset = 25;
@@ -422,7 +423,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetCategories/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -431,7 +432,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "offset" && (int)p.Value == offset && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -440,7 +441,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCategories(USER_KEY, offset: offset);
+			var result = await apiClient.Templates.GetCategoriesAsync(USER_KEY, offset: offset);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -450,7 +451,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplateCategories_with_clientid()
+		public async Task GetTemplateCategories_with_clientid()
 		{
 			// Arrange
 			var jsonCategory1 = string.Format("{{\"id\":\"111\",\"status\":\"active\",\"owner_client_id\":\"{0}\",\"templates_copyable\":\"1\",\"default\":\"0\",\"name\":\"Testing #1\",\"amount_templates\":\"1\",\"amount_clients\":\"0\",\"level\":\"1\"}}", CLIENT_ID);
@@ -458,7 +459,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetCategories/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -467,7 +468,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -476,7 +477,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCategories(USER_KEY, clientId: CLIENT_ID);
+			var result = await apiClient.Templates.GetCategoriesAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -486,12 +487,12 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplateCategoriesCount_with_minimal_parameters()
+		public async Task GetTemplateCategoriesCount_with_minimal_parameters()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetCategories/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -499,7 +500,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -508,19 +509,19 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCategoriesCount(USER_KEY);
+			var result = await apiClient.Templates.GetCategoriesCountAsync(USER_KEY);
 
 			// Assert
 			Assert.AreEqual(2, result);
 		}
 
 		[TestMethod]
-		public void GetTemplateCategoriesCount_with_clientid()
+		public async Task GetTemplateCategoriesCount_with_clientid()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetCategories/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -529,7 +530,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -538,21 +539,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCategoriesCount(USER_KEY, clientId: CLIENT_ID);
+			var result = await apiClient.Templates.GetCategoriesCountAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(2, result);
 		}
 
 		[TestMethod]
-		public void UpdateTemplateCategory_with_minimal_parameters()
+		public async Task UpdateTemplateCategory_with_minimal_parameters()
 		{
 			// Arrange
 			var categoryId = 123;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/SetCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -562,7 +563,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -571,14 +572,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.UpdateCategory(USER_KEY, categoryId, null);
+			var result = await apiClient.Templates.UpdateCategoryAsync(USER_KEY, categoryId, null);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateTemplateCategory_with_labels()
+		public async Task UpdateTemplateCategory_with_labels()
 		{
 			// Arrange
 			var categoryId = 123;
@@ -590,7 +591,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/SetCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -602,7 +603,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "label[en_US]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "label[fr_FR]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -611,21 +612,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.UpdateCategory(USER_KEY, categoryId, labels);
+			var result = await apiClient.Templates.UpdateCategoryAsync(USER_KEY, categoryId, labels);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateTemplateCategory_with_default_true()
+		public async Task UpdateTemplateCategory_with_default_true()
 		{
 			// Arrange
 			var categoryId = 123;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/SetCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -635,7 +636,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -644,21 +645,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.UpdateCategory(USER_KEY, categoryId, null, isVisibleByDefault: true);
+			var result = await apiClient.Templates.UpdateCategoryAsync(USER_KEY, categoryId, null, isVisibleByDefault: true);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateTemplateCategory_with_default_false()
+		public async Task UpdateTemplateCategory_with_default_false()
 		{
 			// Arrange
 			var categoryId = 123;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/SetCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -668,7 +669,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "0" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -677,21 +678,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.UpdateCategory(USER_KEY, categoryId, null, isVisibleByDefault: false);
+			var result = await apiClient.Templates.UpdateCategoryAsync(USER_KEY, categoryId, null, isVisibleByDefault: false);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateTemplateCategory_with_copyable_true()
+		public async Task UpdateTemplateCategory_with_copyable_true()
 		{
 			// Arrange
 			var categoryId = 123;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/SetCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -701,7 +702,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -710,21 +711,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.UpdateCategory(USER_KEY, categoryId, null, templatesCanBeCopied: true);
+			var result = await apiClient.Templates.UpdateCategoryAsync(USER_KEY, categoryId, null, templatesCanBeCopied: true);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateTemplateCategory_with_copyable_false()
+		public async Task UpdateTemplateCategory_with_copyable_false()
 		{
 			// Arrange
 			var categoryId = 123;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/SetCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -734,7 +735,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "0" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -743,21 +744,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.UpdateCategory(USER_KEY, categoryId, null, templatesCanBeCopied: false);
+			var result = await apiClient.Templates.UpdateCategoryAsync(USER_KEY, categoryId, null, templatesCanBeCopied: false);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateTemplateCategory_with_clientid()
+		public async Task UpdateTemplateCategory_with_clientid()
 		{
 			// Arrange
 			var categoryId = 123;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/SetCategory/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -768,7 +769,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "default" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -777,14 +778,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.UpdateCategory(USER_KEY, categoryId, null, clientId: CLIENT_ID);
+			var result = await apiClient.Templates.UpdateCategoryAsync(USER_KEY, categoryId, null, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void GetTemplateCategoryVisibility_with_minimal_parameters()
+		public async Task GetTemplateCategoryVisibility_with_minimal_parameters()
 		{
 			// Arrange
 			var categoryId = 12345;
@@ -794,7 +795,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetCategoryVisibility/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -803,7 +804,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -812,7 +813,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCategoryVisibility(USER_KEY, categoryId);
+			var result = await apiClient.Templates.GetCategoryVisibilityAsync(USER_KEY, categoryId);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -822,7 +823,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplateCategoryVisibility_with_limit()
+		public async Task GetTemplateCategoryVisibility_with_limit()
 		{
 			// Arrange
 			var categoryId = 12345;
@@ -833,7 +834,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetCategoryVisibility/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -843,7 +844,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "limit" && (int)p.Value == limit && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -852,7 +853,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCategoryVisibility(USER_KEY, categoryId, limit: limit);
+			var result = await apiClient.Templates.GetCategoryVisibilityAsync(USER_KEY, categoryId, limit: limit);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -860,7 +861,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplateCategoryVisibility_with_offset()
+		public async Task GetTemplateCategoryVisibility_with_offset()
 		{
 			// Arrange
 			var categoryId = 12345;
@@ -871,7 +872,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetCategoryVisibility/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -881,7 +882,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "offset" && (int)p.Value == offset && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -890,7 +891,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCategoryVisibility(USER_KEY, categoryId, offset: offset);
+			var result = await apiClient.Templates.GetCategoryVisibilityAsync(USER_KEY, categoryId, offset: offset);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -898,7 +899,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplateCategoryVisibility_with_clientid()
+		public async Task GetTemplateCategoryVisibility_with_clientid()
 		{
 			// Arrange
 			var categoryId = 12345;
@@ -908,7 +909,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetCategoryVisibility/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -918,7 +919,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -927,7 +928,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCategoryVisibility(USER_KEY, categoryId, clientId: CLIENT_ID);
+			var result = await apiClient.Templates.GetCategoryVisibilityAsync(USER_KEY, categoryId, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -935,14 +936,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplateCategoryVisibilityCount_with_minimal_parameters()
+		public async Task GetTemplateCategoryVisibilityCount_with_minimal_parameters()
 		{
 			// Arrange
 			var categoryId = 12345;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetCategoryVisibility/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -951,7 +952,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -960,21 +961,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCategoryVisibilityCount(USER_KEY, categoryId);
+			var result = await apiClient.Templates.GetCategoryVisibilityCountAsync(USER_KEY, categoryId);
 
 			// Assert
 			Assert.AreEqual(2, result);
 		}
 
 		[TestMethod]
-		public void GetTemplateCategoryVisibilityCount_with_clientid()
+		public async Task GetTemplateCategoryVisibilityCount_with_clientid()
 		{
 			// Arrange
 			var categoryId = 12345;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetCategoryVisibility/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -984,7 +985,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -993,14 +994,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCategoryVisibilityCount(USER_KEY, categoryId, clientId: CLIENT_ID);
+			var result = await apiClient.Templates.GetCategoryVisibilityCountAsync(USER_KEY, categoryId, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(2, result);
 		}
 
 		[TestMethod]
-		public void SetTemplateCategoryVisibility_with_minimal_parameters()
+		public async Task SetTemplateCategoryVisibility_with_minimal_parameters()
 		{
 			// Arrange
 			var categoryId = 12345;
@@ -1012,7 +1013,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/SetCategoryVisibility/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1024,7 +1025,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "client[0][visible]" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client[1][client_id]" && (long)p.Value == 222 && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client[1][visible]" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1033,14 +1034,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.SetCategoryVisibility(USER_KEY, categoryId, clientVisibility);
+			var result = await apiClient.Templates.SetCategoryVisibilityAsync(USER_KEY, categoryId, clientVisibility);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void SetTemplateCategoryVisibility_with_empty_array()
+		public async Task SetTemplateCategoryVisibility_with_empty_array()
 		{
 			// Arrange
 			var categoryId = 12345;
@@ -1048,7 +1049,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/SetCategoryVisibility/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1056,7 +1057,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1065,14 +1066,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.SetCategoryVisibility(USER_KEY, categoryId, clientVisibility);
+			var result = await apiClient.Templates.SetCategoryVisibilityAsync(USER_KEY, categoryId, clientVisibility);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void SetTemplateCategoryVisibility_with_clientid()
+		public async Task SetTemplateCategoryVisibility_with_clientid()
 		{
 			// Arrange
 			var categoryId = 12345;
@@ -1084,7 +1085,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/SetCategoryVisibility/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1097,7 +1098,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "client[1][client_id]" && (long)p.Value == 222 && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client[1][visible]" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1106,14 +1107,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.SetCategoryVisibility(USER_KEY, categoryId, clientVisibility, CLIENT_ID);
+			var result = await apiClient.Templates.SetCategoryVisibilityAsync(USER_KEY, categoryId, clientVisibility, CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void CreateTemplate_with_minimal_parameters()
+		public async Task CreateTemplate_with_minimal_parameters()
 		{
 			// Arrange
 			var templateId = 123;
@@ -1127,7 +1128,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/CreateTemplate/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1140,7 +1141,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "label[1][name]" && (string)p.Value == "Mon Modèle" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "content" && (string)p.Value == content && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1
-				))).Returns(new RestResponse()
+				))).ReturnsAsync(new RestResponse()
 				{
 					StatusCode = HttpStatusCode.OK,
 					ContentType = "json",
@@ -1149,14 +1150,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.Create(USER_KEY, labels, content, categoryId);
+			var result = await apiClient.Templates.CreateAsync(USER_KEY, labels, content, categoryId);
 
 			// Assert
 			Assert.AreEqual(templateId, result);
 		}
 
 		[TestMethod]
-		public void CreateTemplate_with_no_labels()
+		public async Task CreateTemplate_with_no_labels()
 		{
 			// Arrange
 			var templateId = 123;
@@ -1170,7 +1171,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/CreateTemplate/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1179,7 +1180,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "content" && (string)p.Value == content && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1
-				))).Returns(new RestResponse()
+				))).ReturnsAsync(new RestResponse()
 				{
 					StatusCode = HttpStatusCode.OK,
 					ContentType = "json",
@@ -1188,14 +1189,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.Create(USER_KEY, null, content, categoryId);
+			var result = await apiClient.Templates.CreateAsync(USER_KEY, null, content, categoryId);
 
 			// Assert
 			Assert.AreEqual(templateId, result);
 		}
 
 		[TestMethod]
-		public void CreateTemplate_with_clientid()
+		public async Task CreateTemplate_with_clientid()
 		{
 			// Arrange
 			var templateId = 123;
@@ -1209,7 +1210,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/CreateTemplate/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1223,7 +1224,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "content" && (string)p.Value == content && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-				))).Returns(new RestResponse()
+				))).ReturnsAsync(new RestResponse()
 				{
 					StatusCode = HttpStatusCode.OK,
 					ContentType = "json",
@@ -1232,21 +1233,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.Create(USER_KEY, labels, content, categoryId, clientId: CLIENT_ID);
+			var result = await apiClient.Templates.CreateAsync(USER_KEY, labels, content, categoryId, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(templateId, result);
 		}
 
 		[TestMethod]
-		public void DeleteTemplate_with_minimal_parameters()
+		public async Task DeleteTemplate_with_minimal_parameters()
 		{
 			// Arrange
 			var templateId = 12345;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/DeleteTemplate/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1254,7 +1255,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "template_id" && (long)p.Value == templateId && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1263,21 +1264,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.Delete(USER_KEY, templateId);
+			var result = await apiClient.Templates.DeleteAsync(USER_KEY, templateId);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void DeleteTemplate_with_clientid()
+		public async Task DeleteTemplate_with_clientid()
 		{
 			// Arrange
 			var templateId = 12345;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/DeleteTemplate/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1286,7 +1287,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "template_id" && (long)p.Value == templateId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1295,21 +1296,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.Delete(USER_KEY, templateId, CLIENT_ID);
+			var result = await apiClient.Templates.DeleteAsync(USER_KEY, templateId, CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void GetTemplate_with_minimal_parameters()
+		public async Task GetTemplate_with_minimal_parameters()
 		{
 			// Arrange
 			var templateId = 12345;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetTemplate/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1317,7 +1318,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "template_id" && (long)p.Value == templateId && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1326,7 +1327,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.Get(USER_KEY, templateId);
+			var result = await apiClient.Templates.GetAsync(USER_KEY, templateId);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1334,14 +1335,14 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplate_with_clientid()
+		public async Task GetTemplate_with_clientid()
 		{
 			// Arrange
 			var templateId = 12345;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetTemplate/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1350,7 +1351,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "template_id" && (long)p.Value == templateId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1359,7 +1360,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.Get(USER_KEY, templateId, CLIENT_ID);
+			var result = await apiClient.Templates.GetAsync(USER_KEY, templateId, CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1367,7 +1368,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplates_with_minimal_parameters()
+		public async Task GetTemplates_with_minimal_parameters()
 		{
 			// Arrange
 			var jsonTemplate1 = "{\"labels\":[],\"id\":\"111\",\"status\":\"active\",\"category_id\":\"123\",\"type\":\"html\",\"content\":\"this is the content\",\"thumbnail\":null,\"last_modified\":\"2012-05-29 14:05:28\",\"editor_version\":\"0\",\"name\":\"aaa\",\"description\":\"aaa\"}";
@@ -1375,7 +1376,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetTemplates/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1383,7 +1384,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1392,7 +1393,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetTemplates(USER_KEY);
+			var result = await apiClient.Templates.GetTemplatesAsync(USER_KEY);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1402,7 +1403,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplates_with_categoryid()
+		public async Task GetTemplates_with_categoryid()
 		{
 			// Arrange
 			var categoryId = 123;
@@ -1411,7 +1412,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetTemplates/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1420,7 +1421,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1429,7 +1430,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetTemplates(USER_KEY, categoryId: categoryId);
+			var result = await apiClient.Templates.GetTemplatesAsync(USER_KEY, categoryId: categoryId);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1439,7 +1440,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplates_with_limit()
+		public async Task GetTemplates_with_limit()
 		{
 			// Arrange
 			var limit = 5;
@@ -1448,7 +1449,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetTemplates/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1457,7 +1458,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "limit" && (int)p.Value == limit && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1466,7 +1467,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetTemplates(USER_KEY, limit: limit);
+			var result = await apiClient.Templates.GetTemplatesAsync(USER_KEY, limit: limit);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1476,7 +1477,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplates_with_offset()
+		public async Task GetTemplates_with_offset()
 		{
 			// Arrange
 			var offset = 25;
@@ -1485,7 +1486,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetTemplates/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1494,7 +1495,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "offset" && (int)p.Value == offset && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1503,7 +1504,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetTemplates(USER_KEY, offset: offset);
+			var result = await apiClient.Templates.GetTemplatesAsync(USER_KEY, offset: offset);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1513,7 +1514,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplates_with_clientid()
+		public async Task GetTemplates_with_clientid()
 		{
 			// Arrange
 			var jsonTemplate1 = "{\"labels\":[],\"id\":\"111\",\"status\":\"active\",\"category_id\":\"123\",\"type\":\"html\",\"content\":\"this is the content\",\"thumbnail\":null,\"last_modified\":\"2012-05-29 14:05:28\",\"editor_version\":\"0\",\"name\":\"aaa\",\"description\":\"aaa\"}";
@@ -1521,7 +1522,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetTemplates/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1530,7 +1531,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1539,7 +1540,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetTemplates(USER_KEY, clientId: CLIENT_ID);
+			var result = await apiClient.Templates.GetTemplatesAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -1549,12 +1550,12 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public void GetTemplatesCount_with_minimal_parameters()
+		public async Task GetTemplatesCount_with_minimal_parameters()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetTemplates/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1562,7 +1563,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1571,21 +1572,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCount(USER_KEY);
+			var result = await apiClient.Templates.GetCountAsync(USER_KEY);
 
 			// Assert
 			Assert.AreEqual(2, result);
 		}
 
 		[TestMethod]
-		public void GetTemplatesCount_with_categoryid()
+		public async Task GetTemplatesCount_with_categoryid()
 		{
 			// Arrange
 			var categoryId = 123;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetTemplates/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1594,7 +1595,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1603,19 +1604,19 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCount(USER_KEY, categoryId: categoryId);
+			var result = await apiClient.Templates.GetCountAsync(USER_KEY, categoryId: categoryId);
 
 			// Assert
 			Assert.AreEqual(2, result);
 		}
 
 		[TestMethod]
-		public void GetTemplatesCount_with_clientid()
+		public async Task GetTemplatesCount_with_clientid()
 		{
 			// Arrange
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/GetTemplates/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1624,7 +1625,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1633,21 +1634,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.GetCount(USER_KEY, clientId: CLIENT_ID);
+			var result = await apiClient.Templates.GetCountAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.AreEqual(2, result);
 		}
 
 		[TestMethod]
-		public void UpdateTemplate_with_minimal_parameters()
+		public async Task UpdateTemplate_with_minimal_parameters()
 		{
 			// Arrange
 			var templateId = 123;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/SetTemplate/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1655,7 +1656,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "template_id" && (long)p.Value == templateId && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1664,14 +1665,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.Update(USER_KEY, templateId, null);
+			var result = await apiClient.Templates.UpdateAsync(USER_KEY, templateId, null);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateTemplate_with_labels()
+		public async Task UpdateTemplate_with_labels()
 		{
 			// Arrange
 			var templateId = 123;
@@ -1683,7 +1684,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/SetTemplate/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1693,7 +1694,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "template_id" && (long)p.Value == templateId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "label[en_US]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "label[fr_FR]" && (string)p.Value == "Ma Catégorie" && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1702,14 +1703,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.Update(USER_KEY, templateId, labels);
+			var result = await apiClient.Templates.UpdateAsync(USER_KEY, templateId, labels);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateTemplate_with_content()
+		public async Task UpdateTemplate_with_content()
 		{
 			// Arrange
 			var templateId = 123;
@@ -1717,7 +1718,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/SetTemplate/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1726,7 +1727,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "template_id" && (long)p.Value == templateId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "content" && (string)p.Value == content && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1735,14 +1736,14 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.Update(USER_KEY, templateId, null, content: content);
+			var result = await apiClient.Templates.UpdateAsync(USER_KEY, templateId, null, content: content);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateTemplate_with_categoryid()
+		public async Task UpdateTemplate_with_categoryid()
 		{
 			// Arrange
 			var templateId = 123;
@@ -1750,7 +1751,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/SetTemplate/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1759,7 +1760,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "template_id" && (long)p.Value == templateId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "category_id" && (long)p.Value == categoryId && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1768,21 +1769,21 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.Update(USER_KEY, templateId, null, categoryId: categoryId);
+			var result = await apiClient.Templates.UpdateAsync(USER_KEY, templateId, null, categoryId: categoryId);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UpdateTemplate_with_clientid()
+		public async Task UpdateTemplate_with_clientid()
 		{
 			// Arrange
 			var templateId = 123;
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.Execute(It.Is<IRestRequest>(r =>
+			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
 				r.Method == Method.POST &&
 				r.Resource == "/TemplateV2/SetTemplate/" &&
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
@@ -1791,7 +1792,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "template_id" && (long)p.Value == templateId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			))).Returns(new RestResponse()
+			))).ReturnsAsync(new RestResponse()
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1800,7 +1801,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = apiClient.Templates.Update(USER_KEY, templateId, null, clientId: CLIENT_ID);
+			var result = await apiClient.Templates.UpdateAsync(USER_KEY, templateId, null, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
