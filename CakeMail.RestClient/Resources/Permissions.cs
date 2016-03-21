@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
@@ -30,7 +31,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="userId">ID of the user.</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>An enumeration of permissions</returns>
-		public async Task<IEnumerable<string>> GetUserPermissionsAsync(string userKey, long userId, long? clientId = null)
+		public async Task<IEnumerable<string>> GetUserPermissionsAsync(string userKey, long userId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Permission/GetPermissions/";
 
@@ -41,7 +42,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteArrayRequestAsync<string>(path, parameters, "permissions").ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<string>(path, parameters, "permissions", cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -52,7 +53,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="permissions">Enumeration of permissions</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>True if the operation succeeded</returns>
-		public async Task<bool> SetUserPermissionsAsync(string userKey, long userId, IEnumerable<string> permissions, long? clientId = null)
+		public async Task<bool> SetUserPermissionsAsync(string userKey, long userId, IEnumerable<string> permissions, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Permission/SetPermissions/";
 
@@ -67,7 +68,7 @@ namespace CakeMail.RestClient.Resources
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		#endregion

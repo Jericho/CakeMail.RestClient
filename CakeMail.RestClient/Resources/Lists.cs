@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
@@ -37,7 +38,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="spamPolicyAccepted">Indicates if the anti-spam policy has been accepted</param>
 		/// <param name="clientId">Client ID of the client in which the list is created.</param>
 		/// <returns>ID of the new list</returns>
-		public async Task<long> CreateAsync(string userKey, string name, string defaultSenderName, string defaultSenderEmailAddress, bool spamPolicyAccepted = false, long? clientId = null)
+		public async Task<long> CreateAsync(string userKey, string name, string defaultSenderName, string defaultSenderEmailAddress, bool spamPolicyAccepted = false, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/Create/";
 
@@ -51,7 +52,7 @@ namespace CakeMail.RestClient.Resources
 			if (spamPolicyAccepted) parameters.Add(new KeyValuePair<string, object>("list_policy", "accepted"));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<long>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<long>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -61,7 +62,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="listId">ID of the list</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>True if the list is deleted</returns>
-		public async Task<bool> DeleteAsync(string userKey, long listId, long? clientId = null)
+		public async Task<bool> DeleteAsync(string userKey, long listId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/Delete/";
 
@@ -72,7 +73,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -84,7 +85,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="calculateEngagement">True if you want the engagement information to be calculated</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>The <see cref="List">list</see></returns>
-		public async Task<List> GetAsync(string userKey, long listId, bool includeStatistics = true, bool calculateEngagement = false, long? clientId = null)
+		public async Task<List> GetAsync(string userKey, long listId, bool includeStatistics = true, bool calculateEngagement = false, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/List/GetInfo/";
 
@@ -97,7 +98,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<List>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<List>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -112,7 +113,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="offset">Offset the beginning of resulting lists.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>Enumeration of <see cref="List">lists</see> matching the filtering criteria</returns>
-		public async Task<IEnumerable<List>> GetListsAsync(string userKey, ListStatus? status = null, string name = null, ListsSortBy? sortBy = null, SortDirection? sortDirection = null, int? limit = 0, int? offset = 0, long? clientId = null)
+		public async Task<IEnumerable<List>> GetListsAsync(string userKey, ListStatus? status = null, string name = null, ListsSortBy? sortBy = null, SortDirection? sortDirection = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/List/GetList/";
 
@@ -129,7 +130,7 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteArrayRequestAsync<List>(path, parameters, "lists").ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<List>(path, parameters, "lists", cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -140,7 +141,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="name">Filter using the list name.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>The count of lists matching the filtering criteria</returns>
-		public async Task<long> GetCountAsync(string userKey, ListStatus? status = null, string name = null, long? clientId = null)
+		public async Task<long> GetCountAsync(string userKey, ListStatus? status = null, string name = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/List/GetList/";
 			var parameters = new List<KeyValuePair<string, object>>()
@@ -152,7 +153,7 @@ namespace CakeMail.RestClient.Resources
 			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -172,7 +173,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="webhook">Webhook URL for the list.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>True if the list was updated</returns>
-		public async Task<bool> UpdateAsync(string userKey, long listId, string name = null, string language = null, bool? spamPolicyAccepted = null, ListStatus? status = null, string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, long? clientId = null)
+		public async Task<bool> UpdateAsync(string userKey, long listId, string name = null, string language = null, bool? spamPolicyAccepted = null, ListStatus? status = null, string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/SetInfo/";
 
@@ -193,7 +194,7 @@ namespace CakeMail.RestClient.Resources
 			if (webhook != null) parameters.Add(new KeyValuePair<string, object>("webhook", webhook));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -205,7 +206,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="type">Type of the field. Possible values: 'text', 'integer', 'datetime' or 'mediumtext'</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>True if the field was added to the list</returns>
-		public async Task<bool> AddFieldAsync(string userKey, long listId, string name, FieldType type, long? clientId = null)
+		public async Task<bool> AddFieldAsync(string userKey, long listId, string name, FieldType type, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/EditStructure/";
 
@@ -219,7 +220,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -230,7 +231,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="name">Name of the field.</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>True if the field was removed from the list</returns>
-		public async Task<bool> DeleteFieldAsync(string userKey, long listId, string name, long? clientId = null)
+		public async Task<bool> DeleteFieldAsync(string userKey, long listId, string name, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/EditStructure/";
 
@@ -243,7 +244,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -253,7 +254,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="listId">ID of the list.</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>An enumeration of <see cref="ListField">fields</see></returns>
-		public async Task<IEnumerable<ListField>> GetFieldsAsync(string userKey, long listId, long? clientId = null)
+		public async Task<IEnumerable<ListField>> GetFieldsAsync(string userKey, long listId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/List/GetFields/";
 
@@ -264,7 +265,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			var fieldsStructure = await _cakeMailRestClient.ExecuteRequestAsync<ExpandoObject>(path, parameters).ConfigureAwait(false);
+			var fieldsStructure = await _cakeMailRestClient.ExecuteRequestAsync<ExpandoObject>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 			if (fieldsStructure == null) return Enumerable.Empty<ListField>();
 
 			var fields = fieldsStructure.Select(x => new ListField() { Name = x.Key, Type = x.Value.ToString().GetValueFromEnumMember<FieldType>() });
@@ -279,7 +280,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="email">The email address</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>True if the email address was added</returns>
-		public async Task<bool> AddTestEmailAsync(string userKey, long listId, string email, long? clientId = null)
+		public async Task<bool> AddTestEmailAsync(string userKey, long listId, string email, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/AddTestEmail/";
 
@@ -291,7 +292,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -302,7 +303,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="email">The email address</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <returns>True if the email address was deleted</returns>
-		public async Task<bool> DeleteTestEmailAsync(string userKey, long listId, string email, long? clientId = null)
+		public async Task<bool> DeleteTestEmailAsync(string userKey, long listId, string email, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/DeleteTestEmail/";
 
@@ -314,7 +315,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -324,7 +325,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="listId">ID of the list.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>Enumeration of <see cref="string">test email addresses</see></returns>
-		public async Task<IEnumerable<string>> GetTestEmailsAsync(string userKey, long listId, long? clientId = null)
+		public async Task<IEnumerable<string>> GetTestEmailsAsync(string userKey, long listId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/List/GetTestEmails/";
 
@@ -335,7 +336,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteArrayRequestAsync<string>(path, parameters, "testemails").ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<string>(path, parameters, "testemails", cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -349,7 +350,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="customFields">Additional data for the subscriber.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>ID of the new subscriber</returns>
-		public async Task<long> SubscribeAsync(string userKey, long listId, string email, bool autoResponders = true, bool triggers = true, IEnumerable<KeyValuePair<string, object>> customFields = null, long? clientId = null)
+		public async Task<long> SubscribeAsync(string userKey, long listId, string email, bool autoResponders = true, bool triggers = true, IEnumerable<KeyValuePair<string, object>> customFields = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/SubscribeEmail/";
 
@@ -371,7 +372,7 @@ namespace CakeMail.RestClient.Resources
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<long>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<long>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -384,7 +385,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="listMembers">Subscribers.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>An enumeration of <see cref="ImportResult">results</see></returns>
-		public async Task<IEnumerable<ImportResult>> ImportAsync(string userKey, long listId, IEnumerable<ListMember> listMembers, bool autoResponders = true, bool triggers = true, long? clientId = null)
+		public async Task<IEnumerable<ImportResult>> ImportAsync(string userKey, long listId, IEnumerable<ListMember> listMembers, bool autoResponders = true, bool triggers = true, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/Import/";
 
@@ -413,7 +414,7 @@ namespace CakeMail.RestClient.Resources
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteArrayRequestAsync<ImportResult>(path, parameters, null).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<ImportResult>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -424,7 +425,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="email">Email address of the member.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>True if the member was unsubscribed</returns>
-		public async Task<bool> UnsubscribeAsync(string userKey, long listId, string email, long? clientId = null)
+		public async Task<bool> UnsubscribeAsync(string userKey, long listId, string email, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/UnsubscribeEmail/";
 
@@ -436,7 +437,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -447,7 +448,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="listMemberId">ID of the member.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>True if the member was unsubscribed</returns>
-		public async Task<bool> UnsubscribeAsync(string userKey, long listId, long listMemberId, long? clientId = null)
+		public async Task<bool> UnsubscribeAsync(string userKey, long listId, long listMemberId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/UnsubscribeEmail/";
 
@@ -459,7 +460,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -470,7 +471,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="listMemberId">ID of the member.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>True if the member was deleted</returns>
-		public async Task<bool> DeleteMemberAsync(string userKey, long listId, long listMemberId, long? clientId = null)
+		public async Task<bool> DeleteMemberAsync(string userKey, long listId, long listMemberId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/DeleteRecord/";
 
@@ -482,7 +483,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -493,7 +494,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="listMemberId">ID of the member.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>The <see cref=" ListMember">list mamber</see></returns>
-		public async Task<ListMember> GetMemberAsync(string userKey, long listId, long listMemberId, long? clientId = null)
+		public async Task<ListMember> GetMemberAsync(string userKey, long listId, long listMemberId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/List/GetRecord/";
 
@@ -505,7 +506,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			var listMember = await _cakeMailRestClient.ExecuteRequestAsync<ListMember>(path, parameters).ConfigureAwait(false);
+			var listMember = await _cakeMailRestClient.ExecuteRequestAsync<ListMember>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 			return listMember;
 		}
 
@@ -522,7 +523,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="offset">Offset the beginning of resulting members.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>Enumeration of <see cref="List">lists</see> matching the filtering criteria</returns>
-		public async Task<IEnumerable<ListMember>> GetMembersAsync(string userKey, long listId, ListMemberStatus? status = null, string query = null, ListMembersSortBy? sortBy = null, SortDirection? sortDirection = null, int? limit = 0, int? offset = 0, long? clientId = null)
+		public async Task<IEnumerable<ListMember>> GetMembersAsync(string userKey, long listId, ListMemberStatus? status = null, string query = null, ListMembersSortBy? sortBy = null, SortDirection? sortDirection = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/List/Show/";
 
@@ -540,7 +541,7 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteArrayRequestAsync<ListMember>(path, parameters, "records").ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<ListMember>(path, parameters, "records", cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -551,7 +552,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="status">Filter using the member status. Possible values: 'active', 'unsubscribed', 'deleted', 'inactive_bounced', 'spam'</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>The number of list members matching the filtering criteria</returns>
-		public async Task<long> GetMembersCountAsync(string userKey, long listId, ListMemberStatus? status = null, long? clientId = null)
+		public async Task<long> GetMembersCountAsync(string userKey, long listId, ListMemberStatus? status = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/List/Show/";
 
@@ -564,7 +565,7 @@ namespace CakeMail.RestClient.Resources
 			if (status.HasValue) parameters.Add(new KeyValuePair<string, object>("status", status.Value.GetEnumMemberValue()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -576,7 +577,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="customFields">Additional data for the member</param>
 		/// <param name="clientId">ID of the client.</param>
 		/// <returns>True if the member was updated</returns>
-		public async Task<bool> UpdateMemberAsync(string userKey, long listId, long listMemberId, IEnumerable<KeyValuePair<string, object>> customFields = null, long? clientId = null)
+		public async Task<bool> UpdateMemberAsync(string userKey, long listId, long listMemberId, IEnumerable<KeyValuePair<string, object>> customFields = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/UpdateRecord/";
 
@@ -596,7 +597,7 @@ namespace CakeMail.RestClient.Resources
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -613,7 +614,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>An enumeration of <see cref="LogItem">log items</see> matching the filter criteria</returns>
-		public async Task<IEnumerable<LogItem>> GetLogsAsync(string userKey, long listId, LogType? logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
+		public async Task<IEnumerable<LogItem>> GetLogsAsync(string userKey, long listId, LogType? logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/GetLog/";
 
@@ -632,7 +633,7 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteArrayRequestAsync<LogItem>(path, parameters, "logs").ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<LogItem>(path, parameters, "logs", cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -647,7 +648,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="end">Filter using an end date</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <returns>The number of log items matching the filtering criteria</returns>
-		public async Task<long> GetLogsCountAsync(string userKey, long listId, LogType? logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, long? clientId = null)
+		public async Task<long> GetLogsCountAsync(string userKey, long listId, LogType? logType = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/GetLog/";
 
@@ -664,7 +665,7 @@ namespace CakeMail.RestClient.Resources
 			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value.ToCakeMailString()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken).ConfigureAwait(false);
 		}
 
 		#endregion

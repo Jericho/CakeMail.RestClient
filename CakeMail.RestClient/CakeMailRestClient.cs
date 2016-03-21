@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient
@@ -120,20 +121,20 @@ namespace CakeMail.RestClient
 
 		#region Internal Methods
 
-		internal async Task<long> ExecuteCountRequestAsync(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters)
+		internal async Task<long> ExecuteCountRequestAsync(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			return await ExecuteRequestAsync<long>(urlPath, parameters, "count").ConfigureAwait(false);
+			return await ExecuteRequestAsync<long>(urlPath, parameters, "count", cancellationToken).ConfigureAwait(false);
 		}
 
-		internal async Task<T[]> ExecuteArrayRequestAsync<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string propertyName = null)
+		internal async Task<T[]> ExecuteArrayRequestAsync<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string propertyName = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			return await ExecuteRequestAsync<T[]>(urlPath, parameters, propertyName).ConfigureAwait(false);
+			return await ExecuteRequestAsync<T[]>(urlPath, parameters, propertyName, cancellationToken).ConfigureAwait(false);
 		}
 
-		internal async Task<T> ExecuteRequestAsync<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string propertyName = null)
+		internal async Task<T> ExecuteRequestAsync<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string propertyName = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			// Execute the API call
-			var response = await ExecuteRequestAsync(urlPath, parameters).ConfigureAwait(false);
+			var response = await ExecuteRequestAsync(urlPath, parameters, cancellationToken).ConfigureAwait(false);
 
 			// Parse the response
 			var data = ParseCakeMailResponse(response);
@@ -156,7 +157,7 @@ namespace CakeMail.RestClient
 			return (property.Value as JObject).ToObject<T>();
 		}
 
-		internal async Task<IRestResponse> ExecuteRequestAsync(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters)
+		internal async Task<IRestResponse> ExecuteRequestAsync(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var request = new RestRequest(urlPath, Method.POST) { RequestFormat = DataFormat.Json };
 
@@ -170,7 +171,7 @@ namespace CakeMail.RestClient
 				}
 			}
 
-			var response = await _client.ExecuteTaskAsync(request).ConfigureAwait(false);
+			var response = await _client.ExecuteTaskAsync(request, cancellationToken).ConfigureAwait(false);
 			var responseUri = response.ResponseUri ?? new Uri(string.Format("{0}/{1}", _client.BaseUrl.ToString().TrimEnd('/'), request.Resource.TrimStart('/')));
 
 			if (response.ResponseStatus == ResponseStatus.Error)

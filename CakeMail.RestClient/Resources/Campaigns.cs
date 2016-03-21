@@ -1,6 +1,7 @@
 ﻿using CakeMail.RestClient.Models;
 using CakeMail.RestClient.Utilities;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
@@ -31,7 +32,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="name">Name of the campaign.</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is created.</param>
 		/// <returns>ID of the new campaign</returns>
-		public async Task<long> CreateAsync(string userKey, string name, long? clientId = null)
+		public async Task<long> CreateAsync(string userKey, string name, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/Campaign/Create/";
 
@@ -42,7 +43,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<long>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<long>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -52,7 +53,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="campaignId">ID of the campaign to delete.</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <returns>True if the campaign is deleted</returns>
-		public async Task<bool> DeleteAsync(string userKey, long campaignId, long? clientId = null)
+		public async Task<bool> DeleteAsync(string userKey, long campaignId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/Campaign/Delete/";
 
@@ -63,7 +64,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -73,7 +74,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="campaignId">ID of the campaign.</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <returns>The <see cref="Campaign">campaign</see></returns>
-		public async Task<Campaign> GetAsync(string userKey, long campaignId, long? clientId = null)
+		public async Task<Campaign> GetAsync(string userKey, long campaignId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Campaign/GetInfo/";
 
@@ -84,7 +85,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<Campaign>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<Campaign>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -99,7 +100,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="offset">Offset the beginning of resulting campaigns.</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <returns>Enumeration of <see cref="Campaign">campaigns</see> matching the filtering criteria</returns>
-		public async Task<IEnumerable<Campaign>> GetListAsync(string userKey, CampaignStatus? status = null, string name = null, CampaignsSortBy? sortBy = null, SortDirection? sortDirection = null, int? limit = 0, int? offset = 0, long? clientId = null)
+		public async Task<IEnumerable<Campaign>> GetListAsync(string userKey, CampaignStatus? status = null, string name = null, CampaignsSortBy? sortBy = null, SortDirection? sortDirection = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Campaign/GetList/";
 
@@ -116,7 +117,7 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<Campaign[]>(path, parameters, "campaigns").ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<Campaign[]>(path, parameters, "campaigns", cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -127,7 +128,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="name">Filter using the campaign name.</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <returns>The count of campaigns matching the filtering criteria</returns>
-		public async Task<long> GetCountAsync(string userKey, CampaignStatus? status = null, string name = null, long? clientId = null)
+		public async Task<long> GetCountAsync(string userKey, CampaignStatus? status = null, string name = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Campaign/GetList/";
 			var parameters = new List<KeyValuePair<string, object>>()
@@ -139,7 +140,7 @@ namespace CakeMail.RestClient.Resources
 			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -150,7 +151,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="name">The name of the campaign</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <returns>True if the record was updated.</returns>
-		public async Task<bool> UpdateAsync(string userKey, long campaignId, string name, long? clientId = null)
+		public async Task<bool> UpdateAsync(string userKey, long campaignId, string name, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/Campaign/SetInfo/";
 
@@ -162,7 +163,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters).ConfigureAwait(false);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		#endregion
