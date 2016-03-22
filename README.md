@@ -21,6 +21,9 @@ CakeMailRestAPI is available as a Nuget package.
 
 ## Release Notes
 
++ **4.0.0**
+    - You can pass a cancellation token when invoking an async method.
+
 + **3.0.0**
     - Methods are now logically grouped in separate resources. For instance, all methods related to users are grouped in a resource called 'Users', all methods related to campaigns are grouped in a resource called 'Campaigns', and so on.
     - Methods have been renamed to avoid repetition. For example, GetCampaignsCount has been renamed GetCount off of the new 'Campaigns' resource.

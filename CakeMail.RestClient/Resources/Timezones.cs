@@ -1,5 +1,7 @@
 ﻿using CakeMail.RestClient.Models;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
@@ -26,11 +28,11 @@ namespace CakeMail.RestClient.Resources
 		/// Retrieve the list of all timezones known to the CakeMail system
 		/// </summary>
 		/// <returns>An enumeration of all <see cref="Timezone">timezones</see>.</returns>
-		public IEnumerable<Timezone> GetAll()
+		public async Task<IEnumerable<Timezone>> GetAllAsync(CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Client/GetTimezones/";
 
-			return _cakeMailRestClient.ExecuteArrayRequest<Timezone>(path, null, "timezones");
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<Timezone>(path, null, "timezones", cancellationToken).ConfigureAwait(false);
 		}
 
 		#endregion

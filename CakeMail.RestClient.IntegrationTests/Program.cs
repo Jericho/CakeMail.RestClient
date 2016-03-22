@@ -38,22 +38,22 @@ namespace CakeMail.RestClient.IntegrationTests
 			var overrideClientId = ConfigurationManager.AppSettings["OverrideClientId"];
 
 			var api = new CakeMailRestClient(apiKey);
-			var loginInfo = api.Users.Login(userName, password);
+			var loginInfo = api.Users.LoginAsync(userName, password).Result;
 			var clientId = string.IsNullOrEmpty(overrideClientId) ? loginInfo.ClientId : long.Parse(overrideClientId);
 			var userKey = loginInfo.UserKey;
 
-			TimezonesTests.ExecuteAllMethods(api);
-			CountriesTests.ExecuteAllMethods(api);
-			ClientsTests.ExecuteAllMethods(api, userKey, clientId);
-			UsersTests.ExecuteAllMethods(api, userKey, clientId);
-			PermissionsTests.ExecuteAllMethods(api, userKey, clientId);
-			CampaignsTests.ExecuteAllMethods(api, userKey, clientId);
-			ListsTests.ExecuteAllMethods(api, userKey, clientId);
-			TemplatesTests.ExecuteAllMethods(api, userKey, clientId);
-			SuppressionListsTests.ExecuteAllMethods(api, userKey, clientId);
-			RelaysTests.ExecuteAllMethods(api, userKey, clientId);
-			TriggersTests.ExecuteAllMethods(api, userKey, clientId);
-			MailingsTests.ExecuteAllMethods(api, userKey, clientId);
+			TimezonesTests.ExecuteAllMethods(api).Wait();
+			CountriesTests.ExecuteAllMethods(api).Wait();
+			ClientsTests.ExecuteAllMethods(api, userKey, clientId).Wait();
+			UsersTests.ExecuteAllMethods(api, userKey, clientId).Wait();
+			PermissionsTests.ExecuteAllMethods(api, userKey, clientId).Wait();
+			CampaignsTests.ExecuteAllMethods(api, userKey, clientId).Wait();
+			ListsTests.ExecuteAllMethods(api, userKey, clientId).Wait();
+			TemplatesTests.ExecuteAllMethods(api, userKey, clientId).Wait();
+			SuppressionListsTests.ExecuteAllMethods(api, userKey, clientId).Wait();
+			RelaysTests.ExecuteAllMethods(api, userKey, clientId).Wait();
+			TriggersTests.ExecuteAllMethods(api, userKey, clientId).Wait();
+			MailingsTests.ExecuteAllMethods(api, userKey, clientId).Wait();
 		}
 	}
 }

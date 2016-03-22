@@ -1,10 +1,9 @@
 ﻿using CakeMail.RestClient.Models;
+using CakeMail.RestClient.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using CakeMail.RestClient.Utilities;
 
 namespace CakeMail.RestClient.Resources
 {
@@ -39,7 +38,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="transferEncoding">Transfer encoding to be used for the mailing. Possible values: 'quoted-printable', 'base64'</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is created.</param>
 		/// <returns>ID of the new mailing</returns>
-		public long Create(string userKey, string name, long? campaignId = null, MailingType? type = MailingType.Standard, long? recurringId = null, MessageEncoding? encoding = null, TransferEncoding? transferEncoding = null, long? clientId = null)
+		public async Task<long> CreateAsync(string userKey, string name, long? campaignId = null, MailingType? type = MailingType.Standard, long? recurringId = null, MessageEncoding? encoding = null, TransferEncoding? transferEncoding = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/Mailing/Create/";
 
@@ -55,7 +54,7 @@ namespace CakeMail.RestClient.Resources
 			if (transferEncoding.HasValue) parameters.Add(new KeyValuePair<string, object>("transfer_encoding", transferEncoding.Value.GetEnumMemberValue()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<long>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<long>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -65,7 +64,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="mailingId">ID of the mailing</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>True if the mailing is deleted</returns>
-		public bool Delete(string userKey, long mailingId, long? clientId = null)
+		public async Task<bool> DeleteAsync(string userKey, long mailingId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/Mailing/Delete/";
 
@@ -76,7 +75,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<bool>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -86,7 +85,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="mailingId">ID of the mailing</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>The <see cref="Mailing">mailing</see></returns>
-		public Mailing Get(string userKey, long mailingId, long? clientId = null)
+		public async Task<Mailing> GetAsync(string userKey, long mailingId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Mailing/GetInfo/";
 
@@ -97,7 +96,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<Mailing>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<Mailing>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -118,7 +117,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="offset">Offset the beginning of resulting mailings.</param>
 		/// <param name="clientId">Client ID of the client in which the mailings are located.</param>
 		/// <returns>Enumeration of <see cref="Mailing">mailings</see> matching the filtering criteria</returns>
-		public IEnumerable<Mailing> GetMailings(string userKey, MailingStatus? status = null, MailingType? type = null, string name = null, long? listId = null, long? campaignId = null, long? recurringId = null, DateTime? start = null, DateTime? end = null, MailingsSortBy? sortBy = null, SortDirection? sortDirection = null, int? limit = 0, int? offset = 0, long? clientId = null)
+		public async Task<IEnumerable<Mailing>> GetMailingsAsync(string userKey, MailingStatus? status = null, MailingType? type = null, string name = null, long? listId = null, long? campaignId = null, long? recurringId = null, DateTime? start = null, DateTime? end = null, MailingsSortBy? sortBy = null, SortDirection? sortDirection = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Mailing/GetList/";
 
@@ -141,7 +140,7 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequest<Mailing>(path, parameters, "mailings");
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<Mailing>(path, parameters, "mailings", cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -158,7 +157,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="end">Filter using a end date.</param>
 		/// <param name="clientId">Client ID of the client in which the mailings are located.</param>
 		/// <returns>The count of mailings matching the filtering criteria</returns>
-		public long GetCount(string userKey, MailingStatus? status = null, MailingType? type = null, string name = null, long? listId = null, long? campaignId = null, long? recurringId = null, DateTime? start = null, DateTime? end = null, long? clientId = null)
+		public async Task<long> GetCountAsync(string userKey, MailingStatus? status = null, MailingType? type = null, string name = null, long? listId = null, long? campaignId = null, long? recurringId = null, DateTime? start = null, DateTime? end = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Mailing/GetList/";
 			var parameters = new List<KeyValuePair<string, object>>()
@@ -176,7 +175,7 @@ namespace CakeMail.RestClient.Resources
 			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_date", end.Value.ToCakeMailString()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteCountRequest(path, parameters);
+			return await _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -206,7 +205,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="recurringConditions">The recurring conditions for a 'recurring' mailing.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>True if the mailing was updated</returns>
-		public bool Update(string userKey, long mailingId, long? campaignId = null, long? listId = null, long? sublistId = null, string name = null, MailingType? type = null, MessageEncoding? encoding = null, TransferEncoding? transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClicksInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, DateTime? endingOn = null, int? maxRecurrences = null, string recurringConditions = null, long? clientId = null)
+		public async Task<bool> UpdateAsync(string userKey, long mailingId, long? campaignId = null, long? listId = null, long? sublistId = null, string name = null, MailingType? type = null, MessageEncoding? encoding = null, TransferEncoding? transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClicksInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, DateTime? endingOn = null, int? maxRecurrences = null, string recurringConditions = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Mailing/SetInfo/";
 
@@ -237,7 +236,7 @@ namespace CakeMail.RestClient.Resources
 			if (recurringConditions != null) parameters.Add(new KeyValuePair<string, object>("recurring_conditions", recurringConditions));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<bool>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -249,7 +248,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="separated">True if you want the HTML and the text to be sent seperatly, false if you want to combine the HTML and the text in a multi-part email.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>True if the test email was sent</returns>
-		public bool SendTestEmail(string userKey, long mailingId, string recipientEmail, bool separated = false, long? clientId = null)
+		public async Task<bool> SendTestEmailAsync(string userKey, long mailingId, string recipientEmail, bool separated = false, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Mailing/SendTestEmail/";
 
@@ -262,7 +261,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<bool>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -272,7 +271,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="mailingId">ID of the mailing</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>The <see cref="RawEmailMessage">multi-part message</see></returns>
-		public RawEmailMessage GetRawEmailMessage(string userKey, long mailingId, long? clientId = null)
+		public async Task<RawEmailMessage> GetRawEmailMessageAsync(string userKey, long mailingId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Mailing/GetEmailMessage/";
 
@@ -283,7 +282,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<RawEmailMessage>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<RawEmailMessage>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -293,7 +292,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="mailingId">ID of the mailing</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>The rendered HTML</returns>
-		public string GetRawHtml(string userKey, long mailingId, long? clientId = null)
+		public async Task<string> GetRawHtmlAsync(string userKey, long mailingId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Mailing/GetHtmlMessage/";
 
@@ -304,7 +303,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<string>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<string>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -314,7 +313,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="mailingId">ID of the mailing</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>The rendered text</returns>
-		public string GetRawText(string userKey, long mailingId, long? clientId = null)
+		public async Task<string> GetRawTextAsync(string userKey, long mailingId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Mailing/GetTextMessage/";
 
@@ -325,7 +324,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<string>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<string>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -336,7 +335,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="date">Date when the mailing is scheduled. If not provided, the mailing will be sent right away.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>True if the mailing is scheduled</returns>
-		public bool Schedule(string userKey, long mailingId, DateTime? date = null, long? clientId = null)
+		public async Task<bool> ScheduleAsync(string userKey, long mailingId, DateTime? date = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Mailing/Schedule/";
 
@@ -348,7 +347,7 @@ namespace CakeMail.RestClient.Resources
 			if (date.HasValue) parameters.Add(new KeyValuePair<string, object>("date", date.Value.ToCakeMailString()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<bool>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -358,7 +357,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="mailingId">ID of the mailing</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>True if the mailing is unscheduled</returns>
-		public bool Unschedule(string userKey, long mailingId, long? clientId = null)
+		public async Task<bool> UnscheduleAsync(string userKey, long mailingId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Mailing/Unschedule/";
 
@@ -369,7 +368,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<bool>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -379,7 +378,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="mailingId">ID of the mailing</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>True if the mailing is suspended</returns>
-		public bool Suspend(string userKey, long mailingId, long? clientId = null)
+		public async Task<bool> SuspendAsync(string userKey, long mailingId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Mailing/Suspend/";
 
@@ -390,7 +389,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<bool>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -400,7 +399,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="mailingId">ID of the mailing</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>True if the mailing is resumed</returns>
-		public bool Resume(string userKey, long mailingId, long? clientId = null)
+		public async Task<bool> ResumeAsync(string userKey, long mailingId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Mailing/Resume/";
 
@@ -411,7 +410,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<bool>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -434,7 +433,7 @@ namespace CakeMail.RestClient.Resources
 		/// The current error message is cryptic: Table 'api_cake_logs.mailing_xxxxxxx_big' doesn't exist.
 		/// I was assured in May 2015 that they will improve this message to make it more informative.
 		/// </remarks>
-		public IEnumerable<LogItem> GetLogs(string userKey, long mailingId, LogType? logType = null, long? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
+		public async Task<IEnumerable<LogItem>> GetLogsAsync(string userKey, long mailingId, LogType? logType = null, long? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/Mailing/GetLog/";
 
@@ -454,7 +453,7 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequest<LogItem>(path, parameters, "logs");
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<LogItem>(path, parameters, "logs", cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -470,7 +469,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="end">Filter using an end date</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>The number of log items matching the filtering criteria</returns>
-		public long GetLogsCount(string userKey, long mailingId, LogType? logType = null, long? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, long? clientId = null)
+		public async Task<long> GetLogsCountAsync(string userKey, long mailingId, LogType? logType = null, long? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/Mailing/GetLog/";
 
@@ -488,7 +487,7 @@ namespace CakeMail.RestClient.Resources
 			if (listMemberId.HasValue) parameters.Add(new KeyValuePair<string, object>("record_id", listMemberId.Value));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteCountRequest(path, parameters);
+			return await _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -503,7 +502,7 @@ namespace CakeMail.RestClient.Resources
 		/// <remarks>
 		/// The CakeMail API returns an empty array if you attempt to get the links in a mailing that has not been sent, even if the HTML contains multiple links.
 		/// </remarks>
-		public IEnumerable<Link> GetLinks(string userKey, long mailingId, int? limit = 0, int? offset = 0, long? clientId = null)
+		public async Task<IEnumerable<Link>> GetLinksAsync(string userKey, long mailingId, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/Mailing/GetLinks/";
 
@@ -517,7 +516,7 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequest<Link>(path, parameters, "links");
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<Link>(path, parameters, "links", cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -527,7 +526,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="mailingId">ID of the mailing.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>The number of links matching the filtering criteria</returns>
-		public long GetLinksCount(string userKey, long mailingId, long? clientId = null)
+		public async Task<long> GetLinksCountAsync(string userKey, long mailingId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/Mailing/GetLinks/";
 
@@ -539,7 +538,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteCountRequest(path, parameters);
+			return await _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -549,7 +548,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="linkId">ID of the link.</param>
 		/// <param name="clientId">Client ID of the client in which the link is located.</param>
 		/// <returns>The <see cref="Link">link</see></returns>
-		public Link GetLink(string userKey, long linkId, long? clientId = null)
+		public async Task<Link> GetLinkAsync(string userKey, long linkId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/Mailing/GetLinkInfo/";
 
@@ -560,7 +559,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequest<Link>(path, parameters);
+			return await _cakeMailRestClient.ExecuteRequestAsync<Link>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -574,7 +573,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="offset">Offset the beginning of resulting links.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>An enumeration of <see cref="LinkStats">links with their statistics</see> matching the filter criteria</returns>
-		public IEnumerable<LinkStats> GetLinksWithStats(string userKey, long mailingId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
+		public async Task<IEnumerable<LinkStats>> GetLinksWithStatsAsync(string userKey, long mailingId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/Mailing/GetLinksLog/";
 
@@ -590,7 +589,7 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequest<LinkStats>(path, parameters, "links");
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<LinkStats>(path, parameters, "links", cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -604,7 +603,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="offset">Offset the beginning of resulting links.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <returns>The number of links matching the filter criteria</returns>
-		public long GetLinksWithStatsCount(string userKey, long mailingId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null)
+		public async Task<long> GetLinksWithStatsCountAsync(string userKey, long mailingId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/Mailing/GetLinksLog/";
 
@@ -620,7 +619,7 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteCountRequest(path, parameters);
+			return await _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken).ConfigureAwait(false);
 		}
 
 		#endregion

@@ -1,5 +1,7 @@
 ﻿using CakeMail.RestClient.Models;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
@@ -26,11 +28,11 @@ namespace CakeMail.RestClient.Resources
 		/// Get the list of countries
 		/// </summary>
 		/// <returns>An enumeration of <see cref="Country">countries</see></returns>
-		public IEnumerable<Country> GetList()
+		public async Task<IEnumerable<Country>> GetListAsync(CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Country/GetList/";
 
-			return _cakeMailRestClient.ExecuteArrayRequest<Country>(path, null, "countries");
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<Country>(path, null, "countries", cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -38,7 +40,7 @@ namespace CakeMail.RestClient.Resources
 		/// </summary>
 		/// <param name="countryId">ID of the country.</param>
 		/// <returns>An enumeration of <see cref="Province">privinces</see></returns>
-		public IEnumerable<Province> GetProvinces(string countryId)
+		public async Task<IEnumerable<Province>> GetProvincesAsync(string countryId, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Country/GetProvinces/";
 
@@ -47,7 +49,7 @@ namespace CakeMail.RestClient.Resources
 				new KeyValuePair<string, object>("country_id", countryId)
 			};
 
-			return _cakeMailRestClient.ExecuteArrayRequest<Province>(path, parameters, "provinces");
+			return await _cakeMailRestClient.ExecuteArrayRequestAsync<Province>(path, parameters, "provinces", cancellationToken).ConfigureAwait(false);
 		}
 
 		#endregion
