@@ -22,6 +22,7 @@ CakeMailRestAPI is available as a Nuget package.
 ## Release Notes
 
 + **4.0.0**
+    - All methods are now async.
     - You can pass a cancellation token when invoking an async method.
 
 + **3.0.0**
