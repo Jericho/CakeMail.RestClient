@@ -12,6 +12,7 @@
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
 	<description>$description$</description>
 	<releaseNotes>
+		- All methods are async.
 		- You can pass a cancellation token when invoking an async method.
 	</releaseNotes>
 	<copyright>Copyright 2016</copyright>

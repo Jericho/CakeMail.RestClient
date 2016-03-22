@@ -9,7 +9,7 @@
 #---------------------------------#
 
 # version format
-version: 3.1.{build}-{branch}
+version: 4.0.{build}-{branch}
 
 # Do not build on tags (GitHub only)
 skip_tags: true
