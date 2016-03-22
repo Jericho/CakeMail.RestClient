@@ -8,16 +8,12 @@
 
 CakeMail.RestClient is a C# client for the CakeMail service through its RESTful API.
 
-## Contact
-
-You can contact me on Twitter [@NorthernNomad](https://twitter.com/northernnomad).
-
 ## Nuget
 
 CakeMailRestAPI is available as a Nuget package.
 
 [![NuGet Version](http://img.shields.io/nuget/v/CakeMail.RestClient.svg)](https://www.nuget.org/packages/CakeMail.RestClient/)
-[![NuGet Downloads](http://img.shields.io/nuget/dt/CakeMail.RestClient.svg)](https://www.nuget.org/packages/CakeMail.RestClient/)
+[![AppVeyor](https://img.shields.io/appveyor/ci/Jericho/cakemail-restclient.svg)](https://ci.appveyor.com/project/Jericho/cakemail-restclient)
 
 ## Release Notes
 
