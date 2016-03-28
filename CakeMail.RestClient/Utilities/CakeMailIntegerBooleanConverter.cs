@@ -1,11 +1,13 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Runtime.InteropServices;
 
 namespace CakeMail.RestClient.Utilities
 {
 	/// <summary>
 	/// Converter class used in conjuction with JSON.NET to convert a Boolean into a string format acceptable to CakeMail
 	/// </summary>
+	[ComVisible(false)]
 	public class CakeMailIntegerBooleanConverter : JsonConverter
 	{
 		/// <summary>

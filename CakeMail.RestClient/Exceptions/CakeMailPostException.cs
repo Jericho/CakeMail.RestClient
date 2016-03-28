@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
 
 namespace CakeMail.RestClient.Exceptions
 {
 	/// <summary>
 	/// This class represents an exception thrown by the CakeMail API when the posted data is determined to be invalid.
 	/// </summary>
+	[Serializable]
 	public class CakeMailPostException : CakeMailException
 	{
 		/// <summary>
@@ -33,6 +36,25 @@ namespace CakeMail.RestClient.Exceptions
 			: base(message, innerException)
 		{
 			this.PostData = postData;
+		}
+
+		[SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
+		// Constructor should be protected for unsealed classes, private for sealed classes.
+		// (The Serializer invokes this constructor through reflection, so it can be private)
+		protected CakeMailPostException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+			PostData = info.GetString("PostData");
+		}
+
+		[SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
+		public override void GetObjectData(SerializationInfo info, StreamingContext context)
+		{
+			if (info == null) throw new ArgumentNullException("info");
+
+			info.AddValue("PostData", this.PostData);
+
+			base.GetObjectData(info, context);
 		}
 	}
 }

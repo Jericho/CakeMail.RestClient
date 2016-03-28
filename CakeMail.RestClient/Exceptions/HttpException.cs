@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
 
 namespace CakeMail.RestClient.Exceptions
 {
@@ -8,6 +11,7 @@ namespace CakeMail.RestClient.Exceptions
 	/// This class represents an HTTP transport error. This is not an error returned
 	/// by the web service itself. As such, it is a IOException.
 	/// </summary>
+	[Serializable]
 	public class HttpException : IOException
 	{
 		/// <summary>
@@ -45,6 +49,27 @@ namespace CakeMail.RestClient.Exceptions
 		{
 			HttpStatus = httpStatus;
 			Uri = uri;
+		}
+
+		[SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
+		// Constructor should be protected for unsealed classes, private for sealed classes.
+		// (The Serializer invokes this constructor through reflection, so it can be private)
+		protected HttpException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+			HttpStatus = (HttpStatusCode)info.GetInt32("HttpStatus");
+			Uri = new Uri(info.GetString("Uri"));
+		}
+
+		[SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
+		public override void GetObjectData(SerializationInfo info, StreamingContext context)
+		{
+			if (info == null) throw new ArgumentNullException("info");
+
+			info.AddValue("HttpStatus", ((int)this.HttpStatus).ToString(CultureInfo.InvariantCulture));
+			info.AddValue("Uri", this.Uri.PathAndQuery);
+
+			base.GetObjectData(info, context);
 		}
 	}
 }

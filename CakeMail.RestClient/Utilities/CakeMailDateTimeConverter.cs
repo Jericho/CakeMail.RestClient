@@ -1,12 +1,14 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
+using System.Runtime.InteropServices;
 
 namespace CakeMail.RestClient.Utilities
 {
 	/// <summary>
 	/// Converter class used in conjuction with JSON.NET to convert a DateTime into a string format acceptable to CakeMail
 	/// </summary>
+	[ComVisible(false)]
 	public class CakeMailDateTimeConverter : DateTimeConverterBase
 	{
 		/// <summary>
