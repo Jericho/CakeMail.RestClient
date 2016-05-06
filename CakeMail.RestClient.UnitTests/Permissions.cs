@@ -21,8 +21,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var userId = 1234;
-			var permissions = new string[] { "FirstPermission", "SecondPermission", "ThirdPermission" }; ;
-
+			var permissions = new string[] { "FirstPermission", "SecondPermission", "ThirdPermission" }; 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
 			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
@@ -56,8 +55,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var userId = 1234;
-			var permissions = new string[] { "FirstPermission", "SecondPermission", "ThirdPermission" }; ;
-
+			var permissions = new string[] { "FirstPermission", "SecondPermission", "ThirdPermission" }; 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
 			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
 			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
