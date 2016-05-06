@@ -84,7 +84,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Error
 			});
@@ -107,7 +107,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				ResponseStatus = RestSharp.ResponseStatus.TimedOut
 			});
@@ -130,7 +130,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Completed,
 				StatusCode = HttpStatusCode.OK,
@@ -155,7 +155,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Completed,
 				StatusCode = HttpStatusCode.OK,
@@ -180,7 +180,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Completed,
 				StatusCode = HttpStatusCode.Forbidden,
@@ -205,7 +205,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Completed,
 				StatusCode = HttpStatusCode.Forbidden,
@@ -230,7 +230,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Completed,
 				StatusCode = HttpStatusCode.InternalServerError
@@ -254,7 +254,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Completed,
 				StatusCode = (HttpStatusCode)600
@@ -278,7 +278,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				ResponseStatus = RestSharp.ResponseStatus.Completed,
 				StatusCode = (HttpStatusCode)600,
@@ -303,7 +303,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -330,7 +330,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -357,7 +357,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Any(p => p.Name == "apikey" && p.Value.ToString() == API_KEY) &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -375,7 +375,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var categoryId = 123;
-			var labels = new Dictionary<string, string>()
+			var labels = new Dictionary<string, string>
 			{
 				{ "en_US", "My Category" }
 			};
@@ -393,7 +393,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "templates_copyable" && (string)p.Value == "1" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "label[0][language]" && (string)p.Value == "en_US" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "label[0][name]" && (string)p.Value == "My Category" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",

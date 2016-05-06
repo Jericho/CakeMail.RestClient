@@ -38,7 +38,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/TemplateV2/CreateCategory/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("default", isVisibleByDefault ? "1" : "0"),
@@ -71,7 +71,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/TemplateV2/DeleteCategory/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("category_id", categoryId),
@@ -96,7 +96,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/TemplateV2/GetCategory/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("category_id", categoryId)
@@ -118,7 +118,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/TemplateV2/GetCategories/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "false")
@@ -140,7 +140,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/TemplateV2/GetCategories/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "true")
@@ -164,7 +164,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/TemplateV2/SetCategory/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("category_id", categoryId),
@@ -196,7 +196,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/TemplateV2/GetCategoryVisibility/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("category_id", categoryId),
@@ -220,7 +220,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/TemplateV2/GetCategoryVisibility/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("category_id", categoryId),
@@ -243,7 +243,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/TemplateV2/SetCategoryVisibility/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("category_id", categoryId),
@@ -274,7 +274,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/TemplateV2/CreateTemplate/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("content", content),
@@ -307,7 +307,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/TemplateV2/DeleteTemplate/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("template_id", templateId),
@@ -332,7 +332,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/TemplateV2/GetTemplate/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("template_id", templateId)
@@ -355,7 +355,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/TemplateV2/GetTemplates/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "false")
@@ -379,7 +379,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/TemplateV2/GetTemplates/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "true")
@@ -404,7 +404,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/TemplateV2/SetTemplate/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("template_id", templateId)

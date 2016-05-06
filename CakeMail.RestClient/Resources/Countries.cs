@@ -44,7 +44,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/Country/GetProvinces/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("country_id", countryId)
 			};

@@ -42,7 +42,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/Create/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("name", name),
@@ -66,7 +66,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/Delete/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -89,7 +89,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/List/GetInfo/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -117,7 +117,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/List/GetList/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "false")
@@ -144,7 +144,7 @@ namespace CakeMail.RestClient.Resources
 		public async Task<long> GetCountAsync(string userKey, ListStatus? status = null, string name = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/List/GetList/";
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "true")
@@ -177,7 +177,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/SetInfo/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId)
@@ -210,7 +210,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/EditStructure/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -235,7 +235,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/EditStructure/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -258,7 +258,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/List/GetFields/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId)
@@ -268,7 +268,7 @@ namespace CakeMail.RestClient.Resources
 			var fieldsStructure = await _cakeMailRestClient.ExecuteRequestAsync<ExpandoObject>(path, parameters, null, cancellationToken).ConfigureAwait(false);
 			if (fieldsStructure == null) return Enumerable.Empty<ListField>();
 
-			var fields = fieldsStructure.Select(x => new ListField() { Name = x.Key, Type = x.Value.ToString().GetValueFromEnumMember<FieldType>() });
+			var fields = fieldsStructure.Select(x => new ListField { Name = x.Key, Type = x.Value.ToString().GetValueFromEnumMember<FieldType>() });
 			return fields;
 		}
 
@@ -284,7 +284,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/AddTestEmail/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -307,7 +307,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/DeleteTestEmail/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -329,7 +329,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/List/GetTestEmails/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId)
@@ -354,7 +354,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/SubscribeEmail/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -389,7 +389,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/Import/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -429,7 +429,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/UnsubscribeEmail/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -452,7 +452,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/UnsubscribeEmail/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -475,7 +475,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/DeleteRecord/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -498,7 +498,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/List/GetRecord/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -527,7 +527,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/List/Show/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -556,7 +556,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/List/Show/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -581,7 +581,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/UpdateRecord/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -618,7 +618,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/GetLog/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -652,7 +652,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/GetLog/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),

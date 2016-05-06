@@ -35,7 +35,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/Permission/GetPermissions/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("user_id", userId)
@@ -57,7 +57,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/Permission/SetPermissions/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("user_id", userId)

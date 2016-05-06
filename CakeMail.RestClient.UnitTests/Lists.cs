@@ -40,7 +40,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sender_name" && (string)p.Value == defaultSenderName && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sender_email" && (string)p.Value == defaultSenderAddress && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -76,7 +76,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sender_name" && (string)p.Value == defaultSenderName && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sender_email" && (string)p.Value == defaultSenderAddress && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -113,7 +113,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "sender_name" && (string)p.Value == defaultSenderName && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sender_email" && (string)p.Value == defaultSenderAddress && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_policy" && (string)p.Value == "accepted" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -150,7 +150,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "sender_name" && (string)p.Value == defaultSenderName && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sender_email" && (string)p.Value == defaultSenderAddress && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -181,7 +181,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -213,7 +213,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -246,7 +246,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -280,7 +280,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -314,7 +314,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -348,7 +348,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -382,7 +382,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -417,7 +417,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "no_details" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "with_engagement" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -453,7 +453,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -491,7 +491,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -529,7 +529,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sort_by" && (string)p.Value == sortBy.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -567,7 +567,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "direction" && (string)p.Value == sortDirection.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -605,7 +605,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "limit" && (int)p.Value == limit && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -643,7 +643,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "offset" && (int)p.Value == offset && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -679,7 +679,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -714,7 +714,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -746,7 +746,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -776,7 +776,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -809,7 +809,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -842,7 +842,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "language" && (string)p.Value == language && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -874,7 +874,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_policy" && (string)p.Value == "accepted" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -906,7 +906,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_policy" && (string)p.Value == "declined" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -939,7 +939,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -972,7 +972,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sender_name" && (string)p.Value == senderName && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1005,7 +1005,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sender_email" && (string)p.Value == senderEmail && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1038,7 +1038,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "goto_oi" && (string)p.Value == goto_oi && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1071,7 +1071,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "goto_di" && (string)p.Value == goto_di && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1104,7 +1104,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "goto_oo" && (string)p.Value == goto_oo && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1137,7 +1137,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "webhook" && (string)p.Value == webhook && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1169,7 +1169,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1205,7 +1205,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "field" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "type" && (string)p.Value == fieldType.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == "add" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1242,7 +1242,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "type" && (string)p.Value == fieldType.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == "add" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1276,7 +1276,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "field" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == "delete" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1311,7 +1311,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "field" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == "delete" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1342,7 +1342,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1375,7 +1375,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1407,7 +1407,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1441,7 +1441,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1475,7 +1475,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1508,7 +1508,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1542,7 +1542,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1576,7 +1576,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1614,7 +1614,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1653,7 +1653,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1689,7 +1689,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1725,7 +1725,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1761,7 +1761,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1809,7 +1809,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "data[firstname]" && (string)p.Value == firstName && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "data[lastname]" && (string)p.Value == lastName && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "data[birthday]" && (string)p.Value == "1973-01-01 00:00:00" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1854,7 +1854,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1876,8 +1876,8 @@ namespace CakeMail.RestClient.UnitTests
 			var listId = 123;
 			var listMembers = new[]
 			{
-				new ListMember() { Email = "aaa@aaa.com" },
-				new ListMember() { Email = "bbb@bbb.com" },
+				new ListMember { Email = "aaa@aaa.com" },
+				new ListMember { Email = "bbb@bbb.com" },
 			};
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
@@ -1895,7 +1895,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record[0][email]" && (string)p.Value == "aaa@aaa.com" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record[1][email]" && (string)p.Value == "bbb@bbb.com" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1918,8 +1918,8 @@ namespace CakeMail.RestClient.UnitTests
 			var listId = 123;
 			var listMembers = new[]
 			{
-				new ListMember() { Email = "aaa@aaa.com" },
-				new ListMember() { Email = "bbb@bbb.com" },
+				new ListMember { Email = "aaa@aaa.com" },
+				new ListMember { Email = "bbb@bbb.com" },
 			};
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
@@ -1937,7 +1937,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record[0][email]" && (string)p.Value == "aaa@aaa.com" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record[1][email]" && (string)p.Value == "bbb@bbb.com" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -1960,8 +1960,8 @@ namespace CakeMail.RestClient.UnitTests
 			var listId = 123;
 			var listMembers = new[]
 			{
-				new ListMember() { Email = "aaa@aaa.com" },
-				new ListMember() { Email = "bbb@bbb.com" },
+				new ListMember { Email = "aaa@aaa.com" },
+				new ListMember { Email = "bbb@bbb.com" },
 			};
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
@@ -1979,7 +1979,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record[0][email]" && (string)p.Value == "aaa@aaa.com" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record[1][email]" && (string)p.Value == "bbb@bbb.com" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2002,8 +2002,8 @@ namespace CakeMail.RestClient.UnitTests
 			var listId = 123;
 			var listMembers = new[]
 			{
-				new ListMember() { Email = "aaa@aaa.com" },
-				new ListMember() { Email = "bbb@bbb.com" },
+				new ListMember { Email = "aaa@aaa.com" },
+				new ListMember { Email = "bbb@bbb.com" },
 			};
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
@@ -2021,7 +2021,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record[0][email]" && (string)p.Value == "aaa@aaa.com" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record[1][email]" && (string)p.Value == "bbb@bbb.com" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2044,8 +2044,8 @@ namespace CakeMail.RestClient.UnitTests
 			var listId = 123;
 			var listMembers = new[]
 			{
-				new ListMember() { Email = "aaa@aaa.com", CustomFields = new Dictionary<string, object>() { { "firstname", "Bob" }, { "lastname", "Smith" }, { "age", 41 }, { "birthday", new DateTime(1973, 1, 1) } } },
-				new ListMember() { Email = "bbb@bbb.com", CustomFields = new Dictionary<string, object>() { { "firstname", "Jane" }, { "lastname", "Doe" }, { "age", 50 }, { "birthday", new DateTime(1964, 1, 1) } } }
+				new ListMember { Email = "aaa@aaa.com", CustomFields = new Dictionary<string, object> { { "firstname", "Bob" }, { "lastname", "Smith" }, { "age", 41 }, { "birthday", new DateTime(1973, 1, 1) } } },
+				new ListMember { Email = "bbb@bbb.com", CustomFields = new Dictionary<string, object> { { "firstname", "Jane" }, { "lastname", "Doe" }, { "age", 50 }, { "birthday", new DateTime(1964, 1, 1) } } }
 			};
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
@@ -2071,7 +2071,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "record[1][lastname]" && (string)p.Value == "Doe" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record[1][age]" && (int)p.Value == 50 && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record[1][birthday]" && (string)p.Value == "1964-01-01 00:00:00" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2094,8 +2094,8 @@ namespace CakeMail.RestClient.UnitTests
 			var listId = 123;
 			var listMembers = new[]
 			{
-				new ListMember() { Email = "aaa@aaa.com" },
-				new ListMember() { Email = "bbb@bbb.com" },
+				new ListMember { Email = "aaa@aaa.com" },
+				new ListMember { Email = "bbb@bbb.com" },
 			};
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
@@ -2114,7 +2114,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "record[0][email]" && (string)p.Value == "aaa@aaa.com" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record[1][email]" && (string)p.Value == "bbb@bbb.com" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2150,7 +2150,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "import_to" && (string)p.Value == "active" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "autoresponders" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "triggers" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2184,7 +2184,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2218,7 +2218,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "email" && (string)p.Value == email && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2251,7 +2251,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2285,7 +2285,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2318,7 +2318,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2352,7 +2352,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2385,7 +2385,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2420,7 +2420,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2456,7 +2456,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2496,7 +2496,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2536,7 +2536,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "query" && (string)p.Value == query && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2576,7 +2576,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "sort_by" && (string)p.Value == sortBy.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2616,7 +2616,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "direction" && (string)p.Value == sortDirection.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2656,7 +2656,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "limit" && (int)p.Value == limit && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2696,7 +2696,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "offset" && (int)p.Value == offset && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2735,7 +2735,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2770,7 +2770,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2805,7 +2805,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2839,7 +2839,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2873,7 +2873,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2913,7 +2913,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "data[fullname]" && (string)p.Value == "Bob Smith" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "data[birthday]" && (string)p.Value == "1973-01-01 00:00:00" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2947,7 +2947,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "record_id" && (long)p.Value == memberId && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -2984,7 +2984,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -3023,7 +3023,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -3063,7 +3063,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -3103,7 +3103,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -3143,7 +3143,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -3183,7 +3183,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -3222,7 +3222,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -3260,7 +3260,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -3298,7 +3298,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -3333,7 +3333,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -3369,7 +3369,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -3405,7 +3405,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -3441,7 +3441,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -3476,7 +3476,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -3510,7 +3510,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",
@@ -3544,7 +3544,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "uniques" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "totals" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1 &&
 				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",

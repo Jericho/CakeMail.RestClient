@@ -53,20 +53,20 @@ namespace CakeMail.RestClient.IntegrationTests
 			var subscriber = await api.Lists.GetMemberAsync(userKey, listId, listMemberId, clientId).ConfigureAwait(false);
 			Console.WriteLine("Subscriber retrieved: {0}", subscriber.Email);
 
-			var member1 = new ListMember()
+			var member1 = new ListMember
 			{
 				Email = "aa@aa.com",
-				CustomFields = new Dictionary<string, object>()
+				CustomFields = new Dictionary<string, object>
 				{
 					{ "MyCustomField1", 12345 },
 					{ "MyCustomField2", DateTime.UtcNow },
 					{ "MyCustomField3", "qwerty" }
 				}
 			};
-			var member2 = new ListMember()
+			var member2 = new ListMember
 			{
 				Email = "bbb@bbb.com",
-				CustomFields = new Dictionary<string, object>()
+				CustomFields = new Dictionary<string, object>
 				{
 					{ "MyCustomField1", 98765},
 					{ "MyCustomField2", DateTime.MinValue },

@@ -26,7 +26,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
 				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
 			{
 				StatusCode = HttpStatusCode.OK,
 				ContentType = "json",

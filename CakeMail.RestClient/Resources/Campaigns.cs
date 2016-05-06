@@ -36,7 +36,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/Campaign/Create/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("name", name)
@@ -57,7 +57,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/Campaign/Delete/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("campaign_id", campaignId),
@@ -78,7 +78,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/Campaign/GetInfo/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("campaign_id", campaignId)
@@ -104,7 +104,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/Campaign/GetList/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "false")
@@ -131,7 +131,7 @@ namespace CakeMail.RestClient.Resources
 		public async Task<long> GetCountAsync(string userKey, CampaignStatus? status = null, string name = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Campaign/GetList/";
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "true")
@@ -155,7 +155,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/Campaign/SetInfo/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("campaign_id", campaignId),

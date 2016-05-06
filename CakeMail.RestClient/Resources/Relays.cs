@@ -43,7 +43,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/Relay/Send/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("email", recipientEmailAddress),
@@ -80,7 +80,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/Relay/Send/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("tracking_id", trackingId),
@@ -172,7 +172,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/Relay/GetLogs/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("log_type", logType)

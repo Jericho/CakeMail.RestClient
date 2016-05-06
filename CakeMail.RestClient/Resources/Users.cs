@@ -44,7 +44,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/User/Create/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("email", email),
@@ -99,7 +99,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/User/GetInfo/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("user_id", userId)
@@ -122,7 +122,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/User/GetList/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "false")
@@ -146,7 +146,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/User/GetList/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "true")
@@ -178,7 +178,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/User/SetInfo/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("user_id", userId)
@@ -213,7 +213,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/User/Login/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("email", email),
 				new KeyValuePair<string, object>("password", password)

@@ -41,7 +41,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/Trigger/Create/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("name", name),
@@ -80,7 +80,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/Trigger/GetInfo/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("trigger_id", triggerId)
@@ -119,7 +119,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/Trigger/SetInfo/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("trigger_id", triggerId)
@@ -163,7 +163,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/Trigger/GetList/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "false")
@@ -192,7 +192,7 @@ namespace CakeMail.RestClient.Resources
 		public async Task<long> GetCountAsync(string userKey, TriggerStatus? status = null, TriggerAction? action = null, long? listId = null, long? campaignId = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Trigger/GetList/";
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "true")
@@ -219,7 +219,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/Trigger/SendTestEmail/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("trigger_id", triggerId),
@@ -242,7 +242,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/Trigger/GetEmailMessage/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("trigger_id", triggerId)
@@ -263,7 +263,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/Trigger/GetHtmlMessage/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("trigger_id", triggerId)
@@ -284,7 +284,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/Trigger/GetTextMessage/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("trigger_id", triggerId)
@@ -306,7 +306,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/Trigger/Unleash/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("trigger_id", triggerId),
@@ -336,7 +336,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/Trigger/GetLog/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("trigger_id", triggerId),
@@ -372,7 +372,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/Trigger/GetLog/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("trigger_id", triggerId),
@@ -402,7 +402,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/Trigger/GetLinks/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("trigger_id", triggerId),
@@ -426,7 +426,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/Trigger/GetLinks/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("trigger_id", triggerId),
@@ -452,7 +452,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/Trigger/GetLinkInfo/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("link_id", linkId)
@@ -477,7 +477,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/Trigger/GetLinksLog/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("trigger_id", triggerId),
@@ -505,7 +505,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/Trigger/GetLinksLog/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("trigger_id", triggerId),

@@ -44,7 +44,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/CreateSublist/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -69,7 +69,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/List/GetInfo/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("sublist_id", segmentId),
@@ -96,7 +96,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/SetInfo/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("sublist_id", segmentId),
@@ -120,7 +120,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/List/DeleteSublist/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("sublist_id", segmentId)
@@ -144,7 +144,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/List/GetSublists/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -169,7 +169,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/List/GetList/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),

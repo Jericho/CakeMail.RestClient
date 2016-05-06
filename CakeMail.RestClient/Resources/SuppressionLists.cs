@@ -37,7 +37,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/SuppressionList/ImportEmails/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey)
 			};
@@ -64,7 +64,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/SuppressionList/ImportDomains/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey)
 			};
@@ -91,7 +91,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/SuppressionList/ImportLocalparts/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey)
 			};
@@ -118,7 +118,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/SuppressionList/DeleteEmails/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey)
 			};
@@ -145,7 +145,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/SuppressionList/DeleteDomains/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey)
 			};
@@ -172,7 +172,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			string path = "/SuppressionList/DeleteLocalparts/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey)
 			};
@@ -200,7 +200,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/SuppressionList/ExportEmails/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "false")
@@ -224,7 +224,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/SuppressionList/ExportDomains/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "false")
@@ -251,7 +251,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/SuppressionList/ExportLocalparts/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "false")
@@ -276,7 +276,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/SuppressionList/ExportEmails/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "true")
@@ -296,7 +296,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/SuppressionList/ExportDomains/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "true")
@@ -316,7 +316,7 @@ namespace CakeMail.RestClient.Resources
 		{
 			var path = "/SuppressionList/ExportLocalparts/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "true")
