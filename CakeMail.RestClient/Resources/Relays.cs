@@ -38,6 +38,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="senderName">Name of the sender of the relay.</param>
 		/// <param name="encoding">Encoding to be used for the relay. Possible values: 'utf-8', 'iso-8859-x'</param>
 		/// <param name="clientId">Client ID of the client in which the relay is located.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the email is sent</returns>
 		public async Task<bool> SendWithoutTrackingAsync(string userKey, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, MessageEncoding? encoding = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
@@ -75,6 +76,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="senderName">Name of the sender of the relay.</param>
 		/// <param name="encoding">Encoding to be used for the relay. Possible values: 'utf-8', 'iso-8859-x'</param>
 		/// <param name="clientId">Client ID of the client in which the relay is located.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the email is sent</returns>
 		public async Task<bool> SendWithTrackingAsync(string userKey, long trackingId, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, MessageEncoding? encoding = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
@@ -110,6 +112,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="limit">Limit the number of resulting log items.</param>
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="RelayLog">log items</see> matching the filter criteria</returns>
 		public async Task<IEnumerable<RelayLog>> GetSentLogsAsync(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
@@ -126,6 +129,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="limit">Limit the number of resulting log items.</param>
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="RelayOpenLog">log items</see> matching the filter criteria</returns>
 		public async Task<IEnumerable<RelayOpenLog>> GetOpenLogsAsync(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
@@ -142,6 +146,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="limit">Limit the number of resulting log items.</param>
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="RelayClickLog">log items</see> matching the filter criteria</returns>
 		public async Task<IEnumerable<RelayClickLog>> GetClickLogsAsync(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
@@ -158,6 +163,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="limit">Limit the number of resulting log items.</param>
 		/// <param name="offset">Offset the beginning of resulting log items.</param>
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="RelayBounceLog">log items</see> matching the filter criteria</returns>
 		public async Task<IEnumerable<RelayBounceLog>> GetBounceLogsAsync(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{

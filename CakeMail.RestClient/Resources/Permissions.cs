@@ -30,6 +30,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="userId">ID of the user.</param>
 		/// <param name="clientId">ID of the client.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of permissions</returns>
 		public async Task<IEnumerable<string>> GetUserPermissionsAsync(string userKey, long userId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
@@ -52,6 +53,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="userId">ID of the user.</param>
 		/// <param name="permissions">Enumeration of permissions</param>
 		/// <param name="clientId">ID of the client.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the operation succeeded</returns>
 		public async Task<bool> SetUserPermissionsAsync(string userKey, long userId, IEnumerable<string> permissions, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
