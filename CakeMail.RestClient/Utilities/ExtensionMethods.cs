@@ -37,7 +37,7 @@ namespace CakeMail.RestClient.Utilities
 		}
 
 		/// <summary>
-		/// Get the enum value associated with the 'EnumMember' attribite string value
+		/// Get the enum value associated with the 'EnumMember' attribute string value
 		/// </summary>
 		/// <typeparam name="T">The Enum type</typeparam>
 		/// <param name="enumMember">The value of the 'EnumMember' attribute</param>
@@ -58,7 +58,7 @@ namespace CakeMail.RestClient.Utilities
 					if (field.Name == enumMember) return (T)field.GetValue(null);
 				}
 			}
-			throw new ArgumentException("Not found.", "description");
+			throw new ArgumentException(string.Format("{0} does not have an element with value {1}", typeof(T), enumMember));
 		}
 	}
 }
