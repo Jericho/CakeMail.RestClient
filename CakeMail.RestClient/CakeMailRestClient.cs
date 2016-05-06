@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -178,9 +179,9 @@ namespace CakeMail.RestClient
 			return ExecuteRequestAsync<long>(urlPath, parameters, "count", cancellationToken);
 		}
 
-		internal Task<T[]> ExecuteArrayRequestAsync<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string propertyName = null, CancellationToken cancellationToken = default(CancellationToken))
+		internal Task<IEnumerable<T>> ExecuteArrayRequestAsync<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string propertyName = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			return ExecuteRequestAsync<T[]>(urlPath, parameters, propertyName, cancellationToken);
+			return ExecuteRequestAsync<IEnumerable<T>>(urlPath, parameters, propertyName, cancellationToken);
 		}
 
 		internal async Task<T> ExecuteRequestAsync<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string propertyName = null, CancellationToken cancellationToken = default(CancellationToken))

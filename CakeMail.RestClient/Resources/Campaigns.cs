@@ -121,7 +121,7 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<Campaign[]>(path, parameters, "campaigns", cancellationToken);
+			return _cakeMailRestClient.ExecuteArrayRequestAsync<Campaign>(path, parameters, "campaigns", cancellationToken);
 		}
 
 		/// <summary>
