@@ -48,7 +48,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			Console.WriteLine("Trigger unleashed: {0}", unleashed ? "success" : "failed");
 
 			// Short pause to allow CakeMail to send the trigger
-			Thread.Sleep(2000);
+			await Task.Delay(2000).ConfigureAwait(false);
 
 			var logs = await api.Triggers.GetLogsAsync(userKey, triggerId, null, null, false, false, null, null, null, null, clientId).ConfigureAwait(false);
 			Console.WriteLine("Trigger logs retrieved. Count = {0}", logs.Count());
