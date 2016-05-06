@@ -163,7 +163,7 @@ namespace CakeMail.RestClient
 			_client = new RestSharp.RestClient("https://" + host)
 			{
 				Timeout = timeout,
-				UserAgent = string.Format("CakeMail .NET REST Client {0}", _version),
+				UserAgent = string.Format("CakeMail .NET REST Client;{0}", _version),
 				Proxy = webProxy
 			};
 
@@ -322,13 +322,13 @@ namespace CakeMail.RestClient
 
 				// Here's an alternative suggested by Phil Haack: http://haacked.com/archive/2010/11/04/assembly-location-and-medium-trust.aspx
 				var assemblyVersion = new AssemblyName(typeof(CakeMailRestClient).Assembly.FullName).Version;
-				var version = string.Format("{0}.{1}.{2}.{3}", assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.Build, assemblyVersion.Revision);
+				var version = string.Format("{0}.{1}.{2}", assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.Build);
 
 				return version;
 			}
 			catch
 			{
-				return "0.0.0.0";
+				return "0.0.0";
 			}
 		}
 
