@@ -36,12 +36,7 @@ namespace CakeMail.RestClient.UnitTests
 			var proxy = apiClient.Proxy;
 
 			// Assert
-			Assert.AreEqual(userAgentParts[0], "CakeMail .NET REST Client");
-
-			// Appveyor changes the build number with every commit, therefore we don't know ahead of time what the version will be.
-			// However, we do know that it shouldn't be 0.0.0
-			Assert.AreNotEqual(userAgentParts[1], "0.0.0");
-
+			Assert.AreEqual("CakeMail .NET REST Client", userAgentParts[0]);
 			Assert.AreEqual(new Uri($"https://{mockHost}"), baseUrl);
 			Assert.AreEqual(mockTimeout, timeout);
 			Assert.AreEqual(new Uri(string.Format("http://{0}:{1}", mockProxyHost, mockProxyPort)), ((WebProxy)proxy).Address);
