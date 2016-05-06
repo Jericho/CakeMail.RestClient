@@ -17,7 +17,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			{
 				Console.WriteLine("");
 				Console.WriteLine("");
-				Console.WriteLine("An error has occured: {0}", e.Message);
+				Console.WriteLine("An error has occured: {0}", (e.InnerException ?? e).Message);
 			}
 			finally
 			{
