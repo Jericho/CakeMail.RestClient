@@ -61,7 +61,7 @@ namespace CakeMail.RestClient.Exceptions
 		[SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
-			if (info == null) throw new ArgumentNullException("info");
+			if (info == null) throw new ArgumentNullException(nameof(info));
 
 			info.AddValue("PostData", this.PostData);
 
