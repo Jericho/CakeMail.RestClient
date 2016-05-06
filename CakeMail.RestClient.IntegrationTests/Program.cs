@@ -5,7 +5,9 @@ namespace CakeMail.RestClient.IntegrationTests
 {
 	class Program
 	{
+#pragma warning disable RECS0154 // Parameter is never used
 		static void Main(string[] args)
+#pragma warning restore RECS0154 // Parameter is never used
 		{
 			Console.WriteLine("{0} Executing all CakeMail API methods ... {0}", new string('=', 10));
 
