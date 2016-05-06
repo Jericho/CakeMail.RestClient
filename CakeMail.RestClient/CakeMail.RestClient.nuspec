@@ -12,8 +12,7 @@
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
 	<description>$description$</description>
 	<releaseNotes>
-		- All methods are async.
-		- You can pass a cancellation token when invoking an async method.
+		- Upgrade to .NET 4.5.2
 	</releaseNotes>
 	<copyright>Copyright 2016</copyright>
 	<tags>CakeMail API REST</tags>
