@@ -173,14 +173,14 @@ namespace CakeMail.RestClient
 
 		#region Internal Methods
 
-		internal async Task<long> ExecuteCountRequestAsync(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken = default(CancellationToken))
+		internal Task<long> ExecuteCountRequestAsync(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			return await ExecuteRequestAsync<long>(urlPath, parameters, "count", cancellationToken).ConfigureAwait(false);
+			return ExecuteRequestAsync<long>(urlPath, parameters, "count", cancellationToken);
 		}
 
-		internal async Task<T[]> ExecuteArrayRequestAsync<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string propertyName = null, CancellationToken cancellationToken = default(CancellationToken))
+		internal Task<T[]> ExecuteArrayRequestAsync<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string propertyName = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			return await ExecuteRequestAsync<T[]>(urlPath, parameters, propertyName, cancellationToken).ConfigureAwait(false);
+			return ExecuteRequestAsync<T[]>(urlPath, parameters, propertyName, cancellationToken);
 		}
 
 		internal async Task<T> ExecuteRequestAsync<T>(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, string propertyName = null, CancellationToken cancellationToken = default(CancellationToken))
