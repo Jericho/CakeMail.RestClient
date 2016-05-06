@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package >
-  <metadata>
+	<metadata>
 	<id>$id$</id>
 	<version>$version$</version>
 	<title>$title$</title>
@@ -18,8 +18,8 @@
 	<copyright>Copyright 2016</copyright>
 	<tags>CakeMail API REST</tags>
 	<dependencies>
-	  <dependency id="Newtonsoft.Json" version="8.0.2" />
-	  <dependency id="RestSharp" version="105.2.3" />
+		<dependency id="Newtonsoft.Json" version="8.0.2" />
+		<dependency id="RestSharp" version="105.2.3" />
 	</dependencies>
-  </metadata>
+	</metadata>
 </package>
