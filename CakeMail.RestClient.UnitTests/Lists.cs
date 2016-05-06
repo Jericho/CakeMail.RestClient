@@ -1837,7 +1837,7 @@ namespace CakeMail.RestClient.UnitTests
 			var customFields = new[]
 			{
 				new KeyValuePair<string, object>("firstname", firstName),
-				new KeyValuePair<string, object>("lastname", lastName),
+				new KeyValuePair<string, object>("lastname", lastName)
 			};
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
@@ -1877,7 +1877,7 @@ namespace CakeMail.RestClient.UnitTests
 			var listMembers = new[]
 			{
 				new ListMember { Email = "aaa@aaa.com" },
-				new ListMember { Email = "bbb@bbb.com" },
+				new ListMember { Email = "bbb@bbb.com" }
 			};
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
@@ -1919,7 +1919,7 @@ namespace CakeMail.RestClient.UnitTests
 			var listMembers = new[]
 			{
 				new ListMember { Email = "aaa@aaa.com" },
-				new ListMember { Email = "bbb@bbb.com" },
+				new ListMember { Email = "bbb@bbb.com" }
 			};
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
@@ -1961,7 +1961,7 @@ namespace CakeMail.RestClient.UnitTests
 			var listMembers = new[]
 			{
 				new ListMember { Email = "aaa@aaa.com" },
-				new ListMember { Email = "bbb@bbb.com" },
+				new ListMember { Email = "bbb@bbb.com" }
 			};
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
@@ -2003,7 +2003,7 @@ namespace CakeMail.RestClient.UnitTests
 			var listMembers = new[]
 			{
 				new ListMember { Email = "aaa@aaa.com" },
-				new ListMember { Email = "bbb@bbb.com" },
+				new ListMember { Email = "bbb@bbb.com" }
 			};
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
@@ -2095,7 +2095,7 @@ namespace CakeMail.RestClient.UnitTests
 			var listMembers = new[]
 			{
 				new ListMember { Email = "aaa@aaa.com" },
-				new ListMember { Email = "bbb@bbb.com" },
+				new ListMember { Email = "bbb@bbb.com" }
 			};
 
 			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);

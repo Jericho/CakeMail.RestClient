@@ -76,7 +76,7 @@ namespace CakeMail.RestClient.Resources
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("category_id", categoryId),
+				new KeyValuePair<string, object>("category_id", categoryId)
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
@@ -175,7 +175,7 @@ namespace CakeMail.RestClient.Resources
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("category_id", categoryId),
 				new KeyValuePair<string, object>("default", isVisibleByDefault ? "1" : "0"),
-				new KeyValuePair<string, object>("templates_copyable", templatesCanBeCopied ? "1" : "0"),
+				new KeyValuePair<string, object>("templates_copyable", templatesCanBeCopied ? "1" : "0")
 			};
 			if (labels != null)
 			{
@@ -255,7 +255,7 @@ namespace CakeMail.RestClient.Resources
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("category_id", categoryId),
+				new KeyValuePair<string, object>("category_id", categoryId)
 			};
 			if (clientVisibility != null)
 			{
@@ -321,7 +321,7 @@ namespace CakeMail.RestClient.Resources
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("template_id", templateId),
+				new KeyValuePair<string, object>("template_id", templateId)
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 

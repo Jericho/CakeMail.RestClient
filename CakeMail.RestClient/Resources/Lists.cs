@@ -71,7 +71,7 @@ namespace CakeMail.RestClient.Resources
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("list_id", listId),
+				new KeyValuePair<string, object>("list_id", listId)
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
@@ -606,7 +606,7 @@ namespace CakeMail.RestClient.Resources
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
-				new KeyValuePair<string, object>("record_id", listMemberId),
+				new KeyValuePair<string, object>("record_id", listMemberId)
 			};
 			if (customFields != null)
 			{
