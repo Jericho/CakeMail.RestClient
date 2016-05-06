@@ -38,15 +38,26 @@ namespace CakeMail.RestClient.Exceptions
 			this.PostData = postData;
 		}
 
+		/// <summary>
+		/// Deserialization constructor 
+		/// 
+		/// Constructor should be protected for unsealed classes, private for sealed classes.
+		/// (The Serializer invokes this constructor through reflection, so it can be private)
+		/// </summary>
+		/// <param name="info"></param>
+		/// <param name="context"></param>
 		[SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
-		// Constructor should be protected for unsealed classes, private for sealed classes.
-		// (The Serializer invokes this constructor through reflection, so it can be private)
 		protected CakeMailPostException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 			PostData = info.GetString("PostData");
 		}
 
+		/// <summary>
+		/// Populates a <see cref="SerializationInfo">SerializationInfo</see> with the data needed to serialize the target object.
+		/// </summary>
+		/// <param name="info"></param>
+		/// <param name="context"></param>
 		[SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{

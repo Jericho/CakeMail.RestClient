@@ -65,18 +65,70 @@ namespace CakeMail.RestClient
 			get { return _client.BaseUrl; }
 		}
 
+
+		/// <summary>
+		/// The <see cref="Campaigns">Campaigns</see> resource
+		/// </summary>
 		public Campaigns Campaigns { get; private set; }
+
+		/// <summary>
+		/// The <see cref="Clients">Clients</see> resource
+		/// </summary>
 		public Clients Clients { get; private set; }
+
+		/// <summary>
+		/// The <see cref="Countries">Countries</see> resource
+		/// </summary>
 		public Countries Countries { get; private set; }
+
+		/// <summary>
+		/// The <see cref="Permissions">Permissions</see> resource
+		/// </summary>
 		public Permissions Permissions { get; private set; }
+
+		/// <summary>
+		/// The <see cref="Lists">Lists</see> resource
+		/// </summary>
 		public Lists Lists { get; private set; }
+
+		/// <summary>
+		/// The <see cref="Timezones">Timezones</see> resource
+		/// </summary>
 		public Timezones Timezones { get; private set; }
+
+		/// <summary>
+		/// The <see cref="Mailings">Mailings</see> resource
+		/// </summary>
 		public Mailings Mailings { get; private set; }
+
+		/// <summary>
+		/// The <see cref="Relays">Relays</see> resource
+		/// </summary>
 		public Relays Relays { get; private set; }
+
+		/// <summary>
+		/// The <see cref="Segments">Segments</see> resource
+		/// </summary>
 		public Segments Segments { get; private set; }
+
+		/// <summary>
+		/// The <see cref="Users">Users</see> resource
+		/// </summary>
 		public Users Users { get; private set; }
+
+		/// <summary>
+		/// The <see cref="SuppressionLists">SuppressionLists</see> resource
+		/// </summary>
 		public SuppressionLists SuppressionLists { get; private set; }
+
+		/// <summary>
+		/// The <see cref="Templates">Templates</see> resource
+		/// </summary>
 		public Templates Templates { get; private set; }
+
+		/// <summary>
+		/// The <see cref="Triggers">Triggers</see> resource
+		/// </summary>
 		public Triggers Triggers { get; private set; }
 
 		#endregion
