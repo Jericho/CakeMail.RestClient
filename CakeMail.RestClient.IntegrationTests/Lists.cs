@@ -46,6 +46,10 @@ namespace CakeMail.RestClient.IntegrationTests
 			}, clientId).ConfigureAwait(false);
 			Console.WriteLine("One member added to the list");
 
+			var query = "`email`=\"integration@testing.com\"";
+			var subscribers = await api.Lists.GetMembersAsync(userKey, listId, query: query, clientId: clientId).ConfigureAwait(false);
+			Console.WriteLine("Subscribers retrieved: {0}", subscribers.Count());
+
 			var subscriber = await api.Lists.GetMemberAsync(userKey, listId, listMemberId, clientId).ConfigureAwait(false);
 			Console.WriteLine("Subscriber retrieved: {0}", subscriber.Email);
 
