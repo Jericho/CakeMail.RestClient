@@ -28,11 +28,11 @@ namespace CakeMail.RestClient.Resources
 		/// Retrieve the list of all timezones known to the CakeMail system
 		/// </summary>
 		/// <returns>An enumeration of all <see cref="Timezone">timezones</see>.</returns>
-		public async Task<IEnumerable<Timezone>> GetAllAsync(CancellationToken cancellationToken = default(CancellationToken))
+		public Task<IEnumerable<Timezone>> GetAllAsync(CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Client/GetTimezones/";
 
-			return await _cakeMailRestClient.ExecuteArrayRequestAsync<Timezone>(path, null, "timezones", cancellationToken).ConfigureAwait(false);
+			return _cakeMailRestClient.ExecuteArrayRequestAsync<Timezone>(path, null, "timezones", cancellationToken);
 		}
 
 		#endregion
