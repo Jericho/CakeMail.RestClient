@@ -100,13 +100,15 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var sb = new StringBuilder();
 
 			using (var sw = new StringWriter(sb))
-			using (var jsonWriter = new JsonTextWriter(sw))
 			{
-				// Act
-				converter.WriteJson(jsonWriter, value, null);
+				using (var jsonWriter = new JsonTextWriter(sw))
+				{
+					// Act
+					converter.WriteJson(jsonWriter, value, null);
 
-				// Assert
-				Assert.AreEqual(expected, sb.ToString());
+					// Assert
+					Assert.AreEqual(expected, sb.ToString());
+				}
 			}
 		}
 
@@ -121,13 +123,15 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var sb = new StringBuilder();
 
 			using (var sw = new StringWriter(sb))
-			using (var jsonWriter = new JsonTextWriter(sw))
 			{
-				// Act
-				converter.WriteJson(jsonWriter, value, null);
+				using (var jsonWriter = new JsonTextWriter(sw))
+				{
+					// Act
+					converter.WriteJson(jsonWriter, value, null);
 
-				// Assert
-				Assert.AreEqual(expected, sb.ToString());
+					// Assert
+					Assert.AreEqual(expected, sb.ToString());
+				}
 			}
 		}
 
@@ -142,13 +146,15 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var sb = new StringBuilder();
 
 			using (var sw = new StringWriter(sb))
-			using (var jsonWriter = new JsonTextWriter(sw))
 			{
-				// Act
-				converter.WriteJson(jsonWriter, value, null);
+				using (var jsonWriter = new JsonTextWriter(sw))
+				{
+					// Act
+					converter.WriteJson(jsonWriter, value, null);
 
-				// Assert
-				// Nothing to assert, since 'WriteJson' will throw an exception
+					// Assert
+					// Nothing to assert, since 'WriteJson' will throw an exception
+				}
 			}
 		}
 	}
