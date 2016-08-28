@@ -88,7 +88,7 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>True if the user is deleted</returns>
 		public Task<bool> DeleteAsync(string userKey, long userId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			return UpdateAsync(userKey, userId, status: UserStatus.Deleted, clientId: clientId, cancellationToken:  cancellationToken);
+			return UpdateAsync(userKey, userId, status: UserStatus.Deleted, clientId: clientId, cancellationToken: cancellationToken);
 		}
 
 		/// <summary>
@@ -225,7 +225,6 @@ namespace CakeMail.RestClient.Resources
 			{
 				new KeyValuePair<string, object>("email", email),
 				new KeyValuePair<string, object>("password", password)
-
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 

@@ -171,6 +171,5 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 				}
 			}
 		}
-
 	}
 }

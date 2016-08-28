@@ -5,7 +5,6 @@ using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -65,7 +64,6 @@ namespace CakeMail.RestClient
 		{
 			get { return _client.BaseUrl; }
 		}
-
 
 		/// <summary>
 		/// The <see cref="Campaigns">Campaigns</see> resource
@@ -251,7 +249,6 @@ namespace CakeMail.RestClient
 					throw new CakeMailException(unsupportedContentTypeMessage);
 				}
 
-				#region DEBUGGING
 #if DEBUG
 				var debugRequestMsg = string.Format("Request sent to CakeMail: {0}/{1}", _client.BaseUrl.ToString().TrimEnd('/'), urlPath.TrimStart('/'));
 				var debugHeadersMsg = string.Format("Request headers: {0}", string.Join("&", request.Parameters.Where(p => p.Type == ParameterType.HttpHeader).Select(p => string.Concat(p.Name, "=", p.Value))));
@@ -259,7 +256,6 @@ namespace CakeMail.RestClient
 				var debugResponseMsg = string.Format("Response received from CakeMail: {0}", response.Content);
 				Debug.WriteLine("{0}\r\n{1}\r\n{2}\r\n{3}\r\n{4}\r\n{0}", new string('=', 25), debugRequestMsg, debugHeadersMsg, debugParametersMsg, debugResponseMsg);
 #endif
-				#endregion
 
 				// Request was successful
 				return response;

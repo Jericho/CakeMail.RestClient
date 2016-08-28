@@ -24,7 +24,10 @@ namespace CakeMail.RestClient.IntegrationTests
 			finally
 			{
 				// Clear the keyboard buffer
-				while (Console.KeyAvailable) { Console.ReadKey(); }
+				while (Console.KeyAvailable)
+				{
+					Console.ReadKey();
+				}
 
 				Console.WriteLine("");
 				Console.WriteLine("Press any key...");

@@ -33,7 +33,7 @@ namespace CakeMail.RestClient.Utilities
 				.GetCustomAttributes(false)
 				.OfType<EnumMemberAttribute>()
 				.SingleOrDefault();
-			return (attrib == null ? "" : attrib.Value);
+			return attrib == null ? "" : attrib.Value;
 		}
 
 		/// <summary>

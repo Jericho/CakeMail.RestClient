@@ -38,12 +38,13 @@ namespace CakeMail.RestClient.IntegrationTests
 			var fields = await api.Lists.GetFieldsAsync(userKey, listId, clientId).ConfigureAwait(false);
 			Console.WriteLine("List contains the following fields: {0}", string.Join(", ", fields.Select(f => f.Name)));
 
-			var listMemberId = await api.Lists.SubscribeAsync(userKey, listId, "integration@testing.com", true, true, new[]
+			var subscriberCustomFields = new[]
 			{
-				new KeyValuePair<string, object>("MyCustomField1", 12345), 
-				new KeyValuePair<string, object>("MyCustomField2", DateTime.UtcNow), 
-				new KeyValuePair<string, object>("MyCustomField3", "qwerty") 
-			}, clientId).ConfigureAwait(false);
+				new KeyValuePair<string, object>("MyCustomField1", 12345),
+				new KeyValuePair<string, object>("MyCustomField2", DateTime.UtcNow),
+				new KeyValuePair<string, object>("MyCustomField3", "qwerty")
+			};
+			var listMemberId = await api.Lists.SubscribeAsync(userKey, listId, "integration@testing.com", true, true, subscriberCustomFields, clientId).ConfigureAwait(false);
 			Console.WriteLine("One member added to the list");
 
 			var query = "`email`=\"integration@testing.com\"";
@@ -68,7 +69,7 @@ namespace CakeMail.RestClient.IntegrationTests
 				Email = "bbb@bbb.com",
 				CustomFields = new Dictionary<string, object>
 				{
-					{ "MyCustomField1", 98765},
+					{ "MyCustomField1", 98765 },
 					{ "MyCustomField2", DateTime.MinValue },
 					{ "MyCustomField3", "azerty" }
 				}
@@ -84,7 +85,7 @@ namespace CakeMail.RestClient.IntegrationTests
 
 			var customFieldsToUpdate = new[]
 			{
-				new KeyValuePair<string, object>("MyCustomField1", 555555), 
+				new KeyValuePair<string, object>("MyCustomField1", 555555),
 				new KeyValuePair<string, object>("MyCustomField3", "zzzzzzzzzzzzzzzzzzzzzzzzzz")
 			};
 			var memberUpdated = await api.Lists.UpdateMemberAsync(userKey, listId, 1, customFieldsToUpdate, clientId).ConfigureAwait(false);
