@@ -370,27 +370,15 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var sortBy = ListsSortBy.Name;
-
 			var jsonList1 = "{\"id\":\"123\",\"name\":\"Dummy list 1\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
 			var jsonList2 = "{\"id\":\"456\",\"name\":\"Dummy list 2\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/GetList/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "sort_by" && (string)p.Value == sortBy.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"lists\":[{0},{1}]}}}}", jsonList1, jsonList2)
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "sort_by", Value = sortBy.GetEnumMemberValue() },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "count", Value = "false" }
+			};
+			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"lists\":[{0},{1}]}}}}", jsonList1, jsonList2);
+			var mockRestClient = new MockRestClient("/List/GetList/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -409,27 +397,15 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var sortDirection = SortDirection.Ascending;
-
 			var jsonList1 = "{\"id\":\"123\",\"name\":\"Dummy list 1\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
 			var jsonList2 = "{\"id\":\"456\",\"name\":\"Dummy list 2\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/GetList/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "direction" && (string)p.Value == sortDirection.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"lists\":[{0},{1}]}}}}", jsonList1, jsonList2)
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "direction", Value = sortDirection.GetEnumMemberValue() },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "count", Value = "false" }
+			};
+			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"lists\":[{0},{1}]}}}}", jsonList1, jsonList2);
+			var mockRestClient = new MockRestClient("/List/GetList/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -448,27 +424,15 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var limit = 5;
-
 			var jsonList1 = "{\"id\":\"123\",\"name\":\"Dummy list 1\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
 			var jsonList2 = "{\"id\":\"456\",\"name\":\"Dummy list 2\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/GetList/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "limit" && (int)p.Value == limit && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"lists\":[{0},{1}]}}}}", jsonList1, jsonList2)
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "limit", Value = limit },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "count", Value = "false" }
+			};
+			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"lists\":[{0},{1}]}}}}", jsonList1, jsonList2);
+			var mockRestClient = new MockRestClient("/List/GetList/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -487,27 +451,15 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var offset = 25;
-
 			var jsonList1 = "{\"id\":\"123\",\"name\":\"Dummy list 1\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
 			var jsonList2 = "{\"id\":\"456\",\"name\":\"Dummy list 2\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/GetList/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "offset" && (int)p.Value == offset && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"lists\":[{0},{1}]}}}}", jsonList1, jsonList2)
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "offset", Value = offset },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "count", Value = "false" }
+			};
+			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"lists\":[{0},{1}]}}}}", jsonList1, jsonList2);
+			var mockRestClient = new MockRestClient("/List/GetList/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -527,24 +479,13 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var jsonList1 = "{\"id\":\"123\",\"name\":\"Dummy list 1\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
 			var jsonList2 = "{\"id\":\"456\",\"name\":\"Dummy list 2\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/GetList/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "false" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = string.Format("{{\"status\":\"success\",\"data\":{{\"lists\":[{0},{1}]}}}}", jsonList1, jsonList2)
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "client_id", Value = CLIENT_ID },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "count", Value = "false" }
+			};
+			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"lists\":[{0},{1}]}}}}", jsonList1, jsonList2);
+			var mockRestClient = new MockRestClient("/List/GetList/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -563,24 +504,13 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var status = ListStatus.Active;
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/GetList/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":{\"count\":\"2\"}}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "status", Value = status.GetEnumMemberValue() },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "count", Value = "true" }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":{\"count\":\"2\"}}";
+			var mockRestClient = new MockRestClient("/List/GetList/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -596,24 +526,13 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var name = "Dummy List";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/GetList/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":{\"count\":\"2\"}}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "name", Value = name },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "count", Value = "true" }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":{\"count\":\"2\"}}";
+			var mockRestClient = new MockRestClient("/List/GetList/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -628,23 +547,13 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task GetListsCount_with_clientid()
 		{
 			// Arrange
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/GetList/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "count" && (string)p.Value == "true" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":{\"count\":\"2\"}}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "client_id", Value = CLIENT_ID },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "count", Value = "true" }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":{\"count\":\"2\"}}";
+			var mockRestClient = new MockRestClient("/List/GetList/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -661,24 +570,13 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var listId = 12345L;
 			var name = "My list";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/SetInfo/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "name" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "name", Value = name }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
+			var mockRestClient = new MockRestClient("/List/SetInfo/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -695,24 +593,13 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var listId = 12345L;
 			var language = "fr-FR";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/SetInfo/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "language" && (string)p.Value == language && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "language", Value = language }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
+			var mockRestClient = new MockRestClient("/List/SetInfo/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -728,24 +615,13 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var listId = 12345L;
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/SetInfo/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_policy" && (string)p.Value == "accepted" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_policy", Value = "accepted" }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
+			var mockRestClient = new MockRestClient("/List/SetInfo/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -761,24 +637,13 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var listId = 12345L;
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/SetInfo/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_policy" && (string)p.Value == "declined" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_policy", Value = "declined" }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
+			var mockRestClient = new MockRestClient("/List/SetInfo/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -795,24 +660,13 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var listId = 12345L;
 			var status = ListStatus.Archived;
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/SetInfo/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "status" && (string)p.Value == status.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "status", Value = status.GetEnumMemberValue() }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
+			var mockRestClient = new MockRestClient("/List/SetInfo/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -829,24 +683,13 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var listId = 12345L;
 			var senderName = "Bob Smith";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/SetInfo/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "sender_name" && (string)p.Value == senderName && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_name", Value = senderName }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
+			var mockRestClient = new MockRestClient("/List/SetInfo/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -863,24 +706,13 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var listId = 12345L;
 			var senderEmail = "bobsmith@fictitiouscompany.com";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/SetInfo/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "sender_email" && (string)p.Value == senderEmail && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = senderEmail }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
+			var mockRestClient = new MockRestClient("/List/SetInfo/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -897,24 +729,13 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var listId = 12345L;
 			var goto_oi = "???";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/SetInfo/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "goto_oi" && (string)p.Value == goto_oi && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "goto_oi", Value = goto_oi }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
+			var mockRestClient = new MockRestClient("/List/SetInfo/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -931,24 +752,13 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var listId = 12345L;
 			var goto_di = "???";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/SetInfo/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "goto_di" && (string)p.Value == goto_di && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "goto_di", Value = goto_di }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
+			var mockRestClient = new MockRestClient("/List/SetInfo/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -965,24 +775,13 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var listId = 12345L;
 			var goto_oo = "???";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/SetInfo/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "goto_oo" && (string)p.Value == goto_oo && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "goto_oo", Value = goto_oo }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
+			var mockRestClient = new MockRestClient("/List/SetInfo/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -999,24 +798,13 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var listId = 12345L;
 			var webhook = "???";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/SetInfo/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "webhook" && (string)p.Value == webhook && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "webhook", Value = webhook }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
+			var mockRestClient = new MockRestClient("/List/SetInfo/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -1032,24 +820,13 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var listId = 12345L;
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/SetInfo/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "client_id", Value = CLIENT_ID }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
+			var mockRestClient = new MockRestClient("/List/SetInfo/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -1067,26 +844,15 @@ namespace CakeMail.RestClient.UnitTests
 			var listId = 12345L;
 			var name = "My field";
 			var fieldType = FieldType.Text;
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/EditStructure/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "field" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "type" && (string)p.Value == fieldType.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == "add" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "field", Value = name },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "type", Value = fieldType.GetEnumMemberValue() },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "action", Value = "add" }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
+			var mockRestClient = new MockRestClient("/List/EditStructure/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -1104,27 +870,16 @@ namespace CakeMail.RestClient.UnitTests
 			var listId = 12345L;
 			var name = "My field";
 			var fieldType = FieldType.Integer;
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/EditStructure/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 6 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "field" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "type" && (string)p.Value == fieldType.GetEnumMemberValue() && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == "add" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "field", Value = name },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "type", Value = fieldType.GetEnumMemberValue() },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "action", Value = "add" },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "client_id", Value = CLIENT_ID }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
+			var mockRestClient = new MockRestClient("/List/EditStructure/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -1141,25 +896,14 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var listId = 12345L;
 			var name = "My field";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/EditStructure/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 4 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "field" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == "delete" && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "field", Value = name },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "action", Value = "delete" }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
+			var mockRestClient = new MockRestClient("/List/EditStructure/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -1176,26 +920,15 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var listId = 12345L;
 			var name = "My field";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/EditStructure/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 5 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "field" && (string)p.Value == name && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "action" && (string)p.Value == "delete" && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":\"true\"}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "field", Value = name },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "action", Value = "delete" },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "client_id", Value = CLIENT_ID }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
+			var mockRestClient = new MockRestClient("/List/EditStructure/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -1211,23 +944,12 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var listId = 12345L;
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/GetFields/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":{\"id\":\"integer\",\"email\":\"text\",\"registered\":\"timestamp\"}}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":{\"id\":\"integer\",\"email\":\"text\",\"registered\":\"timestamp\"}}";
+			var mockRestClient = new MockRestClient("/List/GetFields/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -1244,24 +966,13 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var listId = 12345L;
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/GetFields/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 3 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "client_id" && (long)p.Value == CLIENT_ID && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":{\"id\":\"integer\",\"email\":\"text\",\"registered\":\"timestamp\"}}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "client_id", Value = CLIENT_ID }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":{\"id\":\"integer\",\"email\":\"text\",\"registered\":\"timestamp\"}}";
+			var mockRestClient = new MockRestClient("/List/GetFields/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
@@ -1278,23 +989,12 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var listId = 12345L;
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/List/GetFields/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == MockRestClient.API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 2 &&
-				r.Parameters.Count(p => p.Name == "user_key" && (string)p.Value == MockRestClient.USER_KEY && p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "list_id" && (long)p.Value == listId && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":null}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":null}";
+			var mockRestClient = new MockRestClient("/List/GetFields/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
