@@ -71,6 +71,7 @@
     <Compile Include="Exceptions\HttpException.cs" />
     <Compile Include="Exceptions\CakeMailPostException.cs" />
     <Compile Include="CakeMailRestClientTests.cs" />
+    <Compile Include="MockRestClient.cs" />
     <Compile Include="Lists.cs" />
     <Compile Include="Mailings.cs" />
     <Compile Include="Permissions.cs" />
