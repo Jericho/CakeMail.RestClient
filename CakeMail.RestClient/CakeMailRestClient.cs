@@ -223,69 +223,17 @@ namespace CakeMail.RestClient
 			}
 
 			var response = await _client.ExecuteTaskAsync(request, cancellationToken).ConfigureAwait(false);
-			var responseUri = response.ResponseUri ?? new Uri(string.Format("{0}/{1}", _client.BaseUrl.ToString().TrimEnd('/'), request.Resource.TrimStart('/')));
-
-			if (response.ResponseStatus == ResponseStatus.Error)
-			{
-				var errorMessage = string.Format("Error received while making request: {0}", response.ErrorMessage);
-				throw new HttpException(errorMessage, response.StatusCode, responseUri);
-			}
-			else if (response.ResponseStatus == ResponseStatus.TimedOut)
-			{
-				throw new HttpException("Request timed out", response.StatusCode, responseUri, response.ErrorException);
-			}
-
-			var statusCode = (int)response.StatusCode;
-			if (statusCode == 200)
-			{
-				if (string.IsNullOrEmpty(response.Content))
-				{
-					var missingBodyMessage = string.Format("Received a 200 response from {0} but there was no message body.", request.Resource);
-					throw new HttpException(missingBodyMessage, response.StatusCode, responseUri);
-				}
-				else if (response.ContentType == null || !response.ContentType.Contains("json"))
-				{
-					var unsupportedContentTypeMessage = string.Format("Received a 200 response from {0} but the content type is not JSON: {1}", request.Resource, response.ContentType ?? "NULL");
-					throw new CakeMailException(unsupportedContentTypeMessage);
-				}
+			ValidateResponse(request, response);
 
 #if DEBUG
-				var debugRequestMsg = string.Format("Request sent to CakeMail: {0}/{1}", _client.BaseUrl.ToString().TrimEnd('/'), urlPath.TrimStart('/'));
-				var debugHeadersMsg = string.Format("Request headers: {0}", string.Join("&", request.Parameters.Where(p => p.Type == ParameterType.HttpHeader).Select(p => string.Concat(p.Name, "=", p.Value))));
-				var debugParametersMsg = string.Format("Request parameters: {0}", string.Join("&", request.Parameters.Where(p => p.Type != ParameterType.HttpHeader).Select(p => string.Concat(p.Name, "=", p.Value))));
-				var debugResponseMsg = string.Format("Response received from CakeMail: {0}", response.Content);
-				Debug.WriteLine("{0}\r\n{1}\r\n{2}\r\n{3}\r\n{4}\r\n{0}", new string('=', 25), debugRequestMsg, debugHeadersMsg, debugParametersMsg, debugResponseMsg);
+			var debugRequestMsg = string.Format("Request sent to CakeMail: {0}/{1}", _client.BaseUrl.ToString().TrimEnd('/'), urlPath.TrimStart('/'));
+			var debugHeadersMsg = string.Format("Request headers: {0}", string.Join("&", request.Parameters.Where(p => p.Type == ParameterType.HttpHeader).Select(p => string.Concat(p.Name, "=", p.Value))));
+			var debugParametersMsg = string.Format("Request parameters: {0}", string.Join("&", request.Parameters.Where(p => p.Type != ParameterType.HttpHeader).Select(p => string.Concat(p.Name, "=", p.Value))));
+			var debugResponseMsg = string.Format("Response received from CakeMail: {0}", response.Content);
+			Debug.WriteLine("{0}\r\n{1}\r\n{2}\r\n{3}\r\n{4}\r\n{0}", new string('=', 25), debugRequestMsg, debugHeadersMsg, debugParametersMsg, debugResponseMsg);
 #endif
 
-				// Request was successful
-				return response;
-			}
-			else if (statusCode >= 400 && statusCode < 500)
-			{
-				if (string.IsNullOrEmpty(response.Content))
-				{
-					var missingBodyMessage = string.Format("Received a {0} error from {1} with no body", response.StatusCode, request.Resource);
-					throw new HttpException(missingBodyMessage, response.StatusCode, responseUri);
-				}
-
-				var errorMessage = string.Format("Received a {0} error from {1} with the following content: {2}", response.StatusCode, request.Resource, response.Content);
-				throw new HttpException(errorMessage, response.StatusCode, responseUri);
-			}
-			else if (statusCode >= 500 && statusCode < 600)
-			{
-				var errorMessage = string.Format("Received a server ({0}) error from {1}", (int)response.StatusCode, request.Resource);
-				throw new HttpException(errorMessage, response.StatusCode, responseUri);
-			}
-			else if (!string.IsNullOrEmpty(response.ErrorMessage))
-			{
-				var errorMessage = string.Format("Received an error message from {0} (status code: {1}) (error message: {2})", request.Resource, (int)response.StatusCode, response.ErrorMessage);
-				throw new HttpException(errorMessage, response.StatusCode, responseUri);
-			}
-			else
-			{
-				var errorMessage = string.Format("Received an unexpected response from {0} (status code: {1})", request.Resource, (int)response.StatusCode);
-				throw new HttpException(errorMessage, response.StatusCode, responseUri);
-			}
+			return response;
 		}
 
 		#endregion
@@ -361,6 +309,85 @@ namespace CakeMail.RestClient
 			{
 				throw new CakeMailException(string.Format("Unable to decode response from CakeMail as JSON: {0}", response.Content), ex);
 			}
+		}
+
+		private void ValidateResponse(IRestRequest request, IRestResponse response)
+		{
+			var responseUri = GetResponseUri(request, response);
+			if (response.ResponseStatus == ResponseStatus.Error)
+			{
+				var errorMessage = string.Format("Error received while making request: {0}", response.ErrorMessage);
+				throw new HttpException(errorMessage, response.StatusCode, responseUri);
+			}
+			else if (response.ResponseStatus == ResponseStatus.TimedOut)
+			{
+				throw new HttpException("Request timed out", response.StatusCode, responseUri, response.ErrorException);
+			}
+
+			var statusCode = (int)response.StatusCode;
+			if (statusCode == 200)
+			{
+				Validate200Response(request, response);
+			}
+			else if (statusCode >= 400 && statusCode < 500)
+			{
+				Validate400Response(request, response);
+			}
+			else if (statusCode >= 500 && statusCode < 600)
+			{
+				Validate500Response(request, response);
+			}
+			else if (!string.IsNullOrEmpty(response.ErrorMessage))
+			{
+				var errorMessage = string.Format("Received an error message from {0} (status code: {1}) (error message: {2})", request.Resource, (int)response.StatusCode, response.ErrorMessage);
+				throw new HttpException(errorMessage, response.StatusCode, responseUri);
+			}
+			else
+			{
+				var errorMessage = string.Format("Received an unexpected response from {0} (status code: {1})", request.Resource, (int)response.StatusCode);
+				throw new HttpException(errorMessage, response.StatusCode, responseUri);
+			}
+		}
+
+		private void Validate200Response(IRestRequest request, IRestResponse response)
+		{
+			var responseUri = GetResponseUri(request, response);
+			if (string.IsNullOrEmpty(response.Content))
+			{
+				var missingBodyMessage = string.Format("Received a 200 response from {0} but there was no message body.", request.Resource);
+				throw new HttpException(missingBodyMessage, response.StatusCode, responseUri);
+			}
+			else if (response.ContentType == null || !response.ContentType.Contains("json"))
+			{
+				var unsupportedContentTypeMessage = string.Format("Received a 200 response from {0} but the content type is not JSON: {1}", request.Resource, response.ContentType ?? "NULL");
+				throw new CakeMailException(unsupportedContentTypeMessage);
+			}
+		}
+
+		private void Validate400Response(IRestRequest request, IRestResponse response)
+		{
+			var responseUri = GetResponseUri(request, response);
+			if (string.IsNullOrEmpty(response.Content))
+			{
+				var missingBodyMessage = string.Format("Received a {0} error from {1} with no body", response.StatusCode, request.Resource);
+				throw new HttpException(missingBodyMessage, response.StatusCode, responseUri);
+			}
+
+			var errorMessage = string.Format("Received a {0} error from {1} with the following content: {2}", response.StatusCode, request.Resource, response.Content);
+			throw new HttpException(errorMessage, response.StatusCode, responseUri);
+		}
+
+		private void Validate500Response(IRestRequest request, IRestResponse response)
+		{
+			var responseUri = GetResponseUri(request, response);
+			var errorMessage = string.Format("Received a server ({0}) error from {1}", (int)response.StatusCode, request.Resource);
+			throw new HttpException(errorMessage, response.StatusCode, responseUri);
+		}
+
+		private Uri GetResponseUri(IRestRequest request, IRestResponse response)
+		{
+			var responseUri = response.ResponseUri ?? new Uri(string.Format("{0}/{1}", _client.BaseUrl.ToString().TrimEnd('/'), request.Resource.TrimStart('/')));
+			return responseUri;
 		}
 
 		#endregion
