@@ -48,9 +48,9 @@ namespace CakeMail.RestClient.UnitTests
 			// It helps determine why the sequences are not equal
 			foreach (var expectedParam in expectedParameters)
 			{
-				var actualParam = actualParameters.Where(a => a.Name == expectedParam.Name);
-				if (!actualParameters.Any()) return false;
-				if (actualParam.Single() != expectedParam) return false;
+				var actualParam = actualParameters.SingleOrDefault(a => a.Name == expectedParam.Name);
+				if (actualParam == null) return false;
+				if (actualParam != expectedParam) return false;
 			}
 
 			return true;
