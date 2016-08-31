@@ -13,14 +13,13 @@ namespace CakeMail.RestClient.UnitTests
 		public const string API_KEY = "...dummy API key...";
 		public const string USER_KEY = "...dummy USER key...";
 
-		public MockRestClient(string resource, IEnumerable<Parameter> parameters, string jsonResponse) : base(MockBehavior.Strict)
+		public MockRestClient(string resource, IEnumerable<Parameter> parameters, string jsonResponse, bool includeUserKeyParam = true) : base(MockBehavior.Strict)
 		{
-			var standardParams = new[]
-			{
-				new Parameter { Type = ParameterType.HttpHeader, Name = "apikey", Value = API_KEY },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "user_key", Value = USER_KEY }
-			};
-			var expectedParameters = parameters.Union(standardParams);
+			var standardParameters = new List<Parameter>();
+			standardParameters.Add(new Parameter { Type = ParameterType.HttpHeader, Name = "apikey", Value = API_KEY });
+			if (includeUserKeyParam) standardParameters.Add(new Parameter { Type = ParameterType.GetOrPost, Name = "user_key", Value = USER_KEY });
+
+			var expectedParameters = parameters.Union(standardParameters.ToArray()).ToArray();
 
 			Setup(m => m.BaseUrl).Returns(new Uri("http://localhost")).Verifiable();
 			Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
@@ -39,18 +38,15 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			if (actualParameters.Count() != expectedParameters.Count()) return false;
 
-			// We only care about Name, Value and Type. Note: ordering is important for SequenceEqual
-			var p1 = expectedParameters.Select(e => new { e.Name, e.Value, e.Type }).OrderBy(p => p.Name).ToArray();
-			var p2 = actualParameters.Select(e => new { e.Name, e.Value, e.Type }).OrderBy(p => p.Name).ToArray();
-			if (p1.SequenceEqual(p2)) return true;
+			var p1 = expectedParameters.Select(e => new { e.Name, e.Value, e.Type }).ToArray();
+			var p2 = actualParameters.Select(e => new { e.Name, e.Value, e.Type }).ToArray();
 
-			// The following is mostly for debugging 
-			// It helps determine why the sequences are not equal
-			foreach (var expectedParam in expectedParameters)
+			// We only care about Name, Value and Type
+			foreach (var expectedParam in p1)
 			{
-				var actualParam = actualParameters.SingleOrDefault(a => a.Name == expectedParam.Name);
+				var actualParam = p2.SingleOrDefault(a => a.Name == expectedParam.Name);
 				if (actualParam == null) return false;
-				if (actualParam != expectedParam) return false;
+				if (!actualParam.Equals(expectedParam)) return false;
 			}
 
 			return true;
