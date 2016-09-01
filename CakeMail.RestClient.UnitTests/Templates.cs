@@ -748,7 +748,7 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task CreateTemplate_with_minimal_parameters()
 		{
 			// Arrange
-			var content = "this is the content";
+			var content = "Sample content 1";
 			var labels = new Dictionary<string, string>
 			{
 				{ "en_US", "My Template" },
@@ -778,7 +778,7 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task CreateTemplate_with_no_labels()
 		{
 			// Arrange
-			var content = "this is the content";
+			var content = "Sample content 2";
 			var labels = new Dictionary<string, string>
 			{
 				{ "en_US", "My Template" },
@@ -804,7 +804,7 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task CreateTemplate_with_clientid()
 		{
 			// Arrange
-			var content = "this is the content";
+			var content = "Sample content 3";
 			var labels = new Dictionary<string, string>
 			{
 				{ "en_US", "My Template" },
@@ -1145,7 +1145,7 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task UpdateTemplate_with_content()
 		{
 			// Arrange
-			var content = "this is the content";
+			var content = "Sample content 4";
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "template_id", Value = TEMPLATE_ID },
