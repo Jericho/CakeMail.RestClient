@@ -1,13 +1,10 @@
 ﻿using CakeMail.RestClient.Models;
 using CakeMail.RestClient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.UnitTests
@@ -1156,41 +1153,26 @@ namespace CakeMail.RestClient.UnitTests
 		[TestMethod]
 		public async Task Subscribe_with_autoresponders_true()
 		{
-			// Arrange
-			var listId = 12345L;
-			var email = "aaa@aaa.com";
-			var subscriberId = 777;
-			var parameters = new[]
-			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = email },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "autoresponders", Value = "true" },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "triggers", Value = "true" }
-			};
-			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{0}}}", subscriberId);
-			var mockRestClient = new MockRestClient("/List/SubscribeEmail/", parameters, jsonResponse);
-
-			// Act
-			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
-			var result = await apiClient.Lists.SubscribeAsync(MockRestClient.USER_KEY, listId, email, autoResponders: true);
-
-			// Assert
-			mockRestClient.Verify();
-			Assert.AreEqual(subscriberId, result);
+			await Subscribe_with_autoresponders(true).ConfigureAwait(false);
 		}
 
 		[TestMethod]
 		public async Task Subscribe_with_autoresponders_false()
 		{
+			await Subscribe_with_autoresponders(false).ConfigureAwait(false);
+		}
+
+		private async Task Subscribe_with_autoresponders(bool autoResponder)
+		{
 			// Arrange
 			var listId = 12345L;
 			var email = "aaa@aaa.com";
-			var subscriberId = 777;
+			var subscriberId = 777L;
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = email },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "autoresponders", Value = "false" },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "autoresponders", Value = autoResponder ? "true" : "false" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "triggers", Value = "true" }
 			};
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{0}}}", subscriberId);
@@ -1198,7 +1180,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
-			var result = await apiClient.Lists.SubscribeAsync(MockRestClient.USER_KEY, listId, email, autoResponders: false);
+			var result = await apiClient.Lists.SubscribeAsync(MockRestClient.USER_KEY, listId, email, autoResponders: autoResponder);
 
 			// Assert
 			mockRestClient.Verify();
@@ -1324,37 +1306,16 @@ namespace CakeMail.RestClient.UnitTests
 		[TestMethod]
 		public async Task Import_with_autoresponders_true()
 		{
-			// Arrange
-			var listId = 12345L;
-			var listMembers = new[]
-			{
-				new ListMember { Email = "aaa@aaa.com" },
-				new ListMember { Email = "bbb@bbb.com" }
-			};
-			var parameters = new[]
-			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "import_to", Value = "active" },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "autoresponders", Value = "true" },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "triggers", Value = "true" },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "record[0][email]", Value = "aaa@aaa.com" },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "record[1][email]", Value = "bbb@bbb.com" }
-			};
-			var jsonResponse = "{\"status\":\"success\",\"data\":[{\"email\":\"aaa@aaa.com\",\"id\":\"1\"},{\"email\":\"bbb@bbb.com\",\"id\":\"2\"}]}";
-			var mockRestClient = new MockRestClient("/List/Import/", parameters, jsonResponse);
-
-			// Act
-			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
-			var result = await apiClient.Lists.ImportAsync(MockRestClient.USER_KEY, listId, listMembers, autoResponders: true);
-
-			// Assert
-			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			await Import_with_autoresponders(true).ConfigureAwait(false);
 		}
 
 		[TestMethod]
 		public async Task Import_with_autoresponders_false()
+		{
+			await Import_with_autoresponders(false).ConfigureAwait(false);
+		}
+
+		private async Task Import_with_autoresponders(bool autoResponder)
 		{
 			// Arrange
 			var listId = 12345L;
@@ -1367,7 +1328,7 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "import_to", Value = "active" },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "autoresponders", Value = "false" },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "autoresponders", Value = autoResponder ? "true" : "false" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "triggers", Value = "true" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "record[0][email]", Value = "aaa@aaa.com" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "record[1][email]", Value = "bbb@bbb.com" }
@@ -1377,7 +1338,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
-			var result = await apiClient.Lists.ImportAsync(MockRestClient.USER_KEY, listId, listMembers, autoResponders: false);
+			var result = await apiClient.Lists.ImportAsync(MockRestClient.USER_KEY, listId, listMembers, autoResponders: autoResponder);
 
 			// Assert
 			mockRestClient.Verify();
