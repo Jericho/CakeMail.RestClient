@@ -1349,37 +1349,16 @@ namespace CakeMail.RestClient.UnitTests
 		[TestMethod]
 		public async Task Import_with_triggers_true()
 		{
-			// Arrange
-			var listId = 12345L;
-			var listMembers = new[]
-			{
-				new ListMember { Email = "aaa@aaa.com" },
-				new ListMember { Email = "bbb@bbb.com" }
-			};
-			var parameters = new[]
-			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "import_to", Value = "active" },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "autoresponders", Value = "true" },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "triggers", Value = "true" },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "record[0][email]", Value = "aaa@aaa.com" },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "record[1][email]", Value = "bbb@bbb.com" }
-			};
-			var jsonResponse = "{\"status\":\"success\",\"data\":[{\"email\":\"aaa@aaa.com\",\"id\":\"1\"},{\"email\":\"bbb@bbb.com\",\"id\":\"2\"}]}";
-			var mockRestClient = new MockRestClient("/List/Import/", parameters, jsonResponse);
-
-			// Act
-			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
-			var result = await apiClient.Lists.ImportAsync(MockRestClient.USER_KEY, listId, listMembers, triggers: true);
-
-			// Assert
-			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			await Import_with_triggers(true).ConfigureAwait(false);
 		}
 
 		[TestMethod]
 		public async Task Import_with_triggers_false()
+		{
+			await Import_with_triggers(false).ConfigureAwait(false);
+		}
+
+		private async Task Import_with_triggers(bool triggers)
 		{
 			// Arrange
 			var listId = 12345L;
@@ -1393,7 +1372,7 @@ namespace CakeMail.RestClient.UnitTests
 				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "import_to", Value = "active" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "autoresponders", Value = "true" },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "triggers", Value = "false" },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "triggers", Value = triggers ? "true" : "false" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "record[0][email]", Value = "aaa@aaa.com" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "record[1][email]", Value = "bbb@bbb.com" }
 			};
@@ -1402,7 +1381,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
-			var result = await apiClient.Lists.ImportAsync(MockRestClient.USER_KEY, listId, listMembers, triggers: false);
+			var result = await apiClient.Lists.ImportAsync(MockRestClient.USER_KEY, listId, listMembers, triggers: triggers);
 
 			// Assert
 			mockRestClient.Verify();
