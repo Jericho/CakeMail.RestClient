@@ -14,23 +14,25 @@ namespace CakeMail.RestClient.UnitTests
 		private const string API_KEY = "...dummy API key...";
 		private const string USER_KEY = "...dummy USER key...";
 		private const long CLIENT_ID = 999;
+		private const long TRACKING_ID = 123;
+		private const string RECIPIENT_EMAIL = "bobsmith@fictitiouscompany.com";
+		private const string SENDER_EMAIL = "marketing@marketingcompany.com";
+		private const string SENDER_NAME = "The Marketing Group";
+		private const string HTML_CONTENT = "<HTML><body>Hello World</body></HTML>";
+		private const string TEXT_CONTENT = "Hello Wolrd";
+		private const string SUBJECT = "Hello!";
 
 		[TestMethod]
 		public async Task SendRelay_with_minimal_parameters()
 		{
 			// Arrange
-			var recipientEmailAddress = "bobsmith@fictitiouscompany.com";
-			var senderEmail = "marketing@marketingcompany.com";
-			var html = "<html><body>Hello World</body></html>";
-			var text = "Hello Wolrd";
-			var subject = "Hello!";
 			var parameters = new[]
 			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = recipientEmailAddress },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "subject", Value = subject },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "html_message", Value = html },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "text_message", Value = text },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = senderEmail },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = RECIPIENT_EMAIL },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "subject", Value = SUBJECT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "html_message", Value = HTML_CONTENT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "text_message", Value = TEXT_CONTENT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = SENDER_EMAIL },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_opening", Value = "false" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_clicks_in_html", Value = "false" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_clicks_in_text", Value = "false" }
@@ -40,30 +42,24 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = await apiClient.Relays.SendWithoutTrackingAsync(USER_KEY, recipientEmailAddress, subject, html, text, senderEmail);
+			var result = await apiClient.Relays.SendWithoutTrackingAsync(USER_KEY, RECIPIENT_EMAIL, SUBJECT, HTML_CONTENT, TEXT_CONTENT, SENDER_EMAIL);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public async Task SendRelay_with_sendername()
+		public async Task SendRelay_with_SENDER_NAME()
 		{
 			// Arrange
-			var recipientEmailAddress = "bobsmith@fictitiouscompany.com";
-			var senderEmail = "marketing@marketingcompany.com";
-			var senderName = "The Marketing Group";
-			var html = "<html><body>Hello World</body></html>";
-			var text = "Hello Wolrd";
-			var subject = "Hello!";
 			var parameters = new[]
 			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = recipientEmailAddress },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "subject", Value = subject },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "html_message", Value = html },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "text_message", Value = text },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = senderEmail },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_name", Value = senderName },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = RECIPIENT_EMAIL },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "subject", Value = SUBJECT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "html_message", Value = HTML_CONTENT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "text_message", Value = TEXT_CONTENT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = SENDER_EMAIL },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_name", Value = SENDER_NAME },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_opening", Value = "false" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_clicks_in_html", Value = "false" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_clicks_in_text", Value = "false" }
@@ -73,7 +69,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = await apiClient.Relays.SendWithoutTrackingAsync(USER_KEY, recipientEmailAddress, subject, html, text, senderEmail, senderName: senderName);
+			var result = await apiClient.Relays.SendWithoutTrackingAsync(USER_KEY, RECIPIENT_EMAIL, SUBJECT, HTML_CONTENT, TEXT_CONTENT, SENDER_EMAIL, SENDER_NAME);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -83,19 +79,14 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task SendRelay_with_encoding()
 		{
 			// Arrange
-			var recipientEmailAddress = "bobsmith@fictitiouscompany.com";
-			var senderEmail = "marketing@marketingcompany.com";
-			var html = "<html><body>Hello World</body></html>";
-			var text = "Hello Wolrd";
-			var subject = "Hello!";
 			var encoding = MessageEncoding.Utf8;
 			var parameters = new[]
 			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = recipientEmailAddress },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "subject", Value = subject },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "html_message", Value = html },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "text_message", Value = text },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = senderEmail },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = RECIPIENT_EMAIL },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "subject", Value = SUBJECT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "html_message", Value = HTML_CONTENT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "text_message", Value = TEXT_CONTENT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = SENDER_EMAIL },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "encoding", Value = encoding.GetEnumMemberValue() },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_opening", Value = "false" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_clicks_in_html", Value = "false" },
@@ -106,7 +97,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = await apiClient.Relays.SendWithoutTrackingAsync(USER_KEY, recipientEmailAddress, subject, html, text, senderEmail, encoding: encoding);
+			var result = await apiClient.Relays.SendWithoutTrackingAsync(USER_KEY, RECIPIENT_EMAIL, SUBJECT, HTML_CONTENT, TEXT_CONTENT, SENDER_EMAIL, encoding: encoding);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -116,18 +107,13 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task SendRelay_with_clientid()
 		{
 			// Arrange
-			var recipientEmailAddress = "bobsmith@fictitiouscompany.com";
-			var senderEmail = "marketing@marketingcompany.com";
-			var html = "<html><body>Hello World</body></html>";
-			var text = "Hello Wolrd";
-			var subject = "Hello!";
 			var parameters = new[]
 			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = recipientEmailAddress },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "subject", Value = subject },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "html_message", Value = html },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "text_message", Value = text },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = senderEmail },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = RECIPIENT_EMAIL },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "subject", Value = SUBJECT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "html_message", Value = HTML_CONTENT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "text_message", Value = TEXT_CONTENT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = SENDER_EMAIL },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "client_id", Value = CLIENT_ID },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_opening", Value = "false" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_clicks_in_html", Value = "false" },
@@ -138,7 +124,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = await apiClient.Relays.SendWithoutTrackingAsync(USER_KEY, recipientEmailAddress, subject, html, text, senderEmail, clientId: CLIENT_ID);
+			var result = await apiClient.Relays.SendWithoutTrackingAsync(USER_KEY, RECIPIENT_EMAIL, SUBJECT, HTML_CONTENT, TEXT_CONTENT, SENDER_EMAIL, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -148,20 +134,14 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task SendTrackedRelay_with_minimal_parameters()
 		{
 			// Arrange
-			var trackingId = 123L;
-			var recipientEmailAddress = "bobsmith@fictitiouscompany.com";
-			var senderEmail = "marketing@marketingcompany.com";
-			var html = "<html><body>Hello World</body></html>";
-			var text = "Hello Wolrd";
-			var subject = "Hello!";
 			var parameters = new[]
 			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "tracking_id", Value = trackingId },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = recipientEmailAddress },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "subject", Value = subject },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "html_message", Value = html },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "text_message", Value = text },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = senderEmail },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "tracking_id", Value = TRACKING_ID },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = RECIPIENT_EMAIL },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "subject", Value = SUBJECT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "html_message", Value = HTML_CONTENT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "text_message", Value = TEXT_CONTENT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = SENDER_EMAIL },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_opening", Value = "true" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_clicks_in_html", Value = "true" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_clicks_in_text", Value = "true" }
@@ -171,32 +151,25 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = await apiClient.Relays.SendWithTrackingAsync(USER_KEY, trackingId, recipientEmailAddress, subject, html, text, senderEmail);
+			var result = await apiClient.Relays.SendWithTrackingAsync(USER_KEY, TRACKING_ID, RECIPIENT_EMAIL, SUBJECT, HTML_CONTENT, TEXT_CONTENT, SENDER_EMAIL);
 
 			// Assert
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public async Task SendTrackedRelay_with_sendername()
+		public async Task SendTrackedRelay_with_SENDER_NAME()
 		{
 			// Arrange
-			var trackingId = 123L;
-			var recipientEmailAddress = "bobsmith@fictitiouscompany.com";
-			var senderEmail = "marketing@marketingcompany.com";
-			var senderName = "The Marketing Group";
-			var html = "<html><body>Hello World</body></html>";
-			var text = "Hello Wolrd";
-			var subject = "Hello!";
 			var parameters = new[]
 			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "tracking_id", Value = trackingId },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = recipientEmailAddress },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "subject", Value = subject },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "html_message", Value = html },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "text_message", Value = text },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = senderEmail },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_name", Value = senderName },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "tracking_id", Value = TRACKING_ID },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = RECIPIENT_EMAIL },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "subject", Value = SUBJECT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "html_message", Value = HTML_CONTENT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "text_message", Value = TEXT_CONTENT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = SENDER_EMAIL },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_name", Value = SENDER_NAME },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_opening", Value = "true" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_clicks_in_html", Value = "true" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_clicks_in_text", Value = "true" }
@@ -206,7 +179,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = await apiClient.Relays.SendWithTrackingAsync(USER_KEY, trackingId, recipientEmailAddress, subject, html, text, senderEmail, senderName: senderName);
+			var result = await apiClient.Relays.SendWithTrackingAsync(USER_KEY, TRACKING_ID, RECIPIENT_EMAIL, SUBJECT, HTML_CONTENT, TEXT_CONTENT, SENDER_EMAIL, SENDER_NAME);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -216,21 +189,15 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task SendTrackedRelay_with_encoding()
 		{
 			// Arrange
-			var trackingId = 123L;
-			var recipientEmailAddress = "bobsmith@fictitiouscompany.com";
-			var senderEmail = "marketing@marketingcompany.com";
-			var html = "<html><body>Hello World</body></html>";
-			var text = "Hello Wolrd";
-			var subject = "Hello!";
 			var encoding = MessageEncoding.Utf8;
 			var parameters = new[]
 			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "tracking_id", Value = trackingId },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = recipientEmailAddress },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "subject", Value = subject },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "html_message", Value = html },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "text_message", Value = text },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = senderEmail },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "tracking_id", Value = TRACKING_ID },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = RECIPIENT_EMAIL },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "subject", Value = SUBJECT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "html_message", Value = HTML_CONTENT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "text_message", Value = TEXT_CONTENT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = SENDER_EMAIL },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "encoding", Value = encoding.GetEnumMemberValue() },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_opening", Value = "true" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_clicks_in_html", Value = "true" },
@@ -241,7 +208,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = await apiClient.Relays.SendWithTrackingAsync(USER_KEY, trackingId, recipientEmailAddress, subject, html, text, senderEmail, encoding: encoding);
+			var result = await apiClient.Relays.SendWithTrackingAsync(USER_KEY, TRACKING_ID, RECIPIENT_EMAIL, SUBJECT, HTML_CONTENT, TEXT_CONTENT, SENDER_EMAIL, encoding: encoding);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -251,20 +218,14 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task SendTrackedRelay_with_clientid()
 		{
 			// Arrange
-			var trackingId = 123L;
-			var recipientEmailAddress = "bobsmith@fictitiouscompany.com";
-			var senderEmail = "marketing@marketingcompany.com";
-			var html = "<html><body>Hello World</body></html>";
-			var text = "Hello Wolrd";
-			var subject = "Hello!";
 			var parameters = new[]
 			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "tracking_id", Value = trackingId },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = recipientEmailAddress },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "subject", Value = subject },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "html_message", Value = html },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "text_message", Value = text },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = senderEmail },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "tracking_id", Value = TRACKING_ID },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = RECIPIENT_EMAIL },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "subject", Value = SUBJECT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "html_message", Value = HTML_CONTENT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "text_message", Value = TEXT_CONTENT },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = SENDER_EMAIL },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "client_id", Value = CLIENT_ID },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_opening", Value = "true" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "track_clicks_in_html", Value = "true" },
@@ -275,7 +236,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = await apiClient.Relays.SendWithTrackingAsync(USER_KEY, trackingId, recipientEmailAddress, subject, html, text, senderEmail, clientId: CLIENT_ID);
+			var result = await apiClient.Relays.SendWithTrackingAsync(USER_KEY, TRACKING_ID, RECIPIENT_EMAIL, SUBJECT, HTML_CONTENT, TEXT_CONTENT, SENDER_EMAIL, clientId: CLIENT_ID);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -374,16 +335,15 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public async Task GetRelayLogs_with_trackingid()
+		public async Task GetRelayLogs_with_TRACKING_ID()
 		{
 			// Arrange
-			var trackingId = 123L;
 			var logType = "sent";
 			var jsonSentLog1 = "{\"email\":\"aaa@aaa.com\",\"relay_id\":\"88934439\",\"sent_id\":\"8398053\",\"time\":\"2015-04-06 08:02:10\",\"tracking_id\":\"1912196542\"}";
 			var jsonSentLog2 = "{\"email\":\"bbb@bbb.com\",\"relay_id\":\"88934440\",\"sent_id\":\"8398054\",\"time\":\"2015-04-06 08:02:10\",\"tracking_id\":\"1289082963\"}";
 			var parameters = new[]
 			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "tracking_id", Value = trackingId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "tracking_id", Value = TRACKING_ID },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "log_type", Value = logType }
 			};
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"sent_logs\":[{0},{1}]}}}}", jsonSentLog1, jsonSentLog2);
@@ -391,7 +351,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = await apiClient.Relays.GetSentLogsAsync(USER_KEY, trackingId: trackingId);
+			var result = await apiClient.Relays.GetSentLogsAsync(USER_KEY, TRACKING_ID);
 
 			// Assert
 			Assert.IsNotNull(result);
