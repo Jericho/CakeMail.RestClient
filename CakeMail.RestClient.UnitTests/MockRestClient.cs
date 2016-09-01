@@ -13,7 +13,33 @@ namespace CakeMail.RestClient.UnitTests
 		public const string API_KEY = "...dummy API key...";
 		public const string USER_KEY = "...dummy USER key...";
 
+
+		public MockRestClient(string resource, IEnumerable<Parameter> parameters, RestResponse response, bool includeUserKeyParam = true) : base(MockBehavior.Strict)
+		{
+			ConfigureMock(resource, parameters, response, includeUserKeyParam);
+		}
+
+		public MockRestClient(string resource, IEnumerable<Parameter> parameters, ResponseStatus responseStatus, bool includeUserKeyParam = true) : base(MockBehavior.Strict)
+		{
+			var response = new RestResponse
+			{
+				ResponseStatus = responseStatus
+			};
+			ConfigureMock(resource, parameters, response, includeUserKeyParam);
+		}
+
 		public MockRestClient(string resource, IEnumerable<Parameter> parameters, string jsonResponse, bool includeUserKeyParam = true) : base(MockBehavior.Strict)
+		{
+			var response = new RestResponse
+			{
+				StatusCode = HttpStatusCode.OK,
+				ContentType = "json",
+				Content = jsonResponse
+			};
+			ConfigureMock(resource, parameters, response, includeUserKeyParam);
+		}
+
+		private void ConfigureMock(string resource, IEnumerable<Parameter> parameters, RestResponse response, bool includeUserKeyParam = true)
 		{
 			var standardParameters = new List<Parameter>();
 			standardParameters.Add(new Parameter { Type = ParameterType.HttpHeader, Name = "apikey", Value = API_KEY });
@@ -26,12 +52,7 @@ namespace CakeMail.RestClient.UnitTests
 				r.Method == Method.POST &&
 				r.Resource == resource &&
 				ValidateParameters(expectedParameters, r.Parameters)
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse
-			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = jsonResponse
-			}).Verifiable();
+			), It.IsAny<CancellationToken>())).ReturnsAsync(response).Verifiable();
 		}
 
 		private bool ValidateParameters(IEnumerable<Parameter> expectedParameters, IEnumerable<Parameter> actualParameters)
