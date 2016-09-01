@@ -38,13 +38,13 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			if (actualParameters.Count() != expectedParameters.Count()) return false;
 
-			var p1 = expectedParameters.Select(e => new { e.Name, e.Value, e.Type }).ToArray();
-			var p2 = actualParameters.Select(e => new { e.Name, e.Value, e.Type }).ToArray();
-
 			// We only care about Name, Value and Type
-			foreach (var expectedParam in p1)
+			var expected = expectedParameters.Select(e => new { e.Name, e.Value, e.Type }).ToArray();
+			var actual = actualParameters.Select(e => new { e.Name, e.Value, e.Type }).ToArray();
+
+			foreach (var expectedParam in expected)
 			{
-				var actualParam = p2.SingleOrDefault(a => a.Name == expectedParam.Name);
+				var actualParam = actual.SingleOrDefault(a => a.Name == expectedParam.Name);
 				if (actualParam == null) return false;
 				if (!actualParam.Equals(expectedParam)) return false;
 			}
