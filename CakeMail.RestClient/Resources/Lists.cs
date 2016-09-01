@@ -413,7 +413,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (listMembers != null)
 			{
-				foreach (var item in listMembers.Select((member, i) => new { Index = i, Email = member.Email, CustomFields = member.CustomFields }))
+				foreach (var item in listMembers.Select((member, i) => new { Index = i, member.Email, member.CustomFields }))
 				{
 					parameters.Add(new KeyValuePair<string, object>(string.Format("record[{0}][email]", item.Index), item.Email));
 					if (item.CustomFields != null)

@@ -13,7 +13,6 @@ namespace CakeMail.RestClient.UnitTests
 		public const string API_KEY = "...dummy API key...";
 		public const string USER_KEY = "...dummy USER key...";
 
-
 		public MockRestClient(string resource, IEnumerable<Parameter> parameters, RestResponse response, bool includeUserKeyParam = true) : base(MockBehavior.Strict)
 		{
 			ConfigureMock(resource, parameters, response, includeUserKeyParam);
