@@ -41,33 +41,7 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[TestMethod]
-		public async Task CreateList_with_spampolicyaccepted_false()
-		{
-			// Arrange
-			var name = "My new list";
-			var defaultSenderName = "Bob Smith";
-			var defaultSenderAddress = "bobsmith@fictitiouscompany.com";
-			var listId = 12345L;
-			var parameters = new[]
-			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "name", Value = name },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_name", Value = defaultSenderName },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "sender_email", Value = defaultSenderAddress }
-			};
-			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", listId);
-			var mockRestClient = new MockRestClient("/List/Create/", parameters, jsonResponse);
-
-			// Act
-			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
-			var result = await apiClient.Lists.CreateAsync(MockRestClient.USER_KEY, name, defaultSenderName, defaultSenderAddress, spamPolicyAccepted: false);
-
-			// Assert
-			mockRestClient.Verify();
-			Assert.AreEqual(listId, result);
-		}
-
-		[TestMethod]
-		public async Task CreateList_with_spampolicyaccepted_true()
+		public async Task CreateList_with_spampolicyaccepted()
 		{
 			// Arrange
 			var name = "My new list";
