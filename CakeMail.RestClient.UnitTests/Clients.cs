@@ -14,6 +14,35 @@ namespace CakeMail.RestClient.UnitTests
 		private const string API_KEY = "...dummy API key...";
 		private const string USER_KEY = "...dummy USER key...";
 		private const long CLIENT_ID = 999;
+		private const string NAME = "Fictitious Inc";
+		private const string ADDRESS1 = "123 1st Avenue";
+		private const string ADDRESS2 = "Suite 1000";
+		private const string CITY = "Mock City";
+		private const string PROVINCE = "FL";
+		private const string POSTALCODE = "12345";
+		private const string COUNTRY_ID = "us";
+		private const string WEBSITE = "www.fictitiouscompany.com";
+		private const string PHONE = "111-111-1111";
+		private const string FAX = "222-222-2222";
+		private const string ADMIN_EMAIL = "bobsmith@fictitiouscompany.com";
+		private const string ADMIN_FIRST_NAME = "Bob";
+		private const string ADMIN_LAST_NAME = "Smith";
+		private const string ADMIN_TITLE = "Administrator";
+		private const string ADMIN_OFFICE_PHONE = "333-333-3333";
+		private const string ADMIN_MOBILE_PHONE = "444-444-4444";
+		private const string ADMIN_LANGUAGE = "en";
+		private const long ADMIN_TIMEZONE_ID = 542;
+		private const string ADMIN_PASSWORD = "MySecretPassword";
+		private const string PRIMARY_CONTACT_EMAIL = "janedoe@fictitiouscompany.com";
+		private const string PRIMARY_CONTACT_FIRST_NAME = "Jane";
+		private const string PRIMARE_CONTACT_LAST_NAME = "Doe";
+		private const string PRIMARY_CONTACT_TITLE = "CEO";
+		private const string PRIMARY_CONTACT_OFFICE_PHONE = "555-555-5555";
+		private const string PRIMARY_CONTACT_MOBILE_PHONE = "666-666-6666";
+		private const string PRIMARY_CONTACT_LANGUAGE = "en";
+		private const long PRIMARY_CONTACT_TIMEZONE_ID = 542;
+		private const string PRIMARY_CONTACT_PASSOWRD = "SuperSecretPassword";
+		private const string CONFIRMATION_CODE = "... dummy confirmation code ...";
 
 		[TestMethod]
 		public async Task CreateClient_with_minimal_parameters()
@@ -65,155 +94,97 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task CreateClient_with_all_parameters()
 		{
 			// Arrange
-			string name = "Fictitious Inc";
-			string address1 = "123 1st Avenue";
-			string address2 = "Suite 1000";
-			string city = "Mock City";
-			string provinceId = "FL";
-			string postalCode = "12345";
-			string countryId = "us";
-			string website = "www.fictitiouscompany.com";
-			string phone = "111-111-1111";
-			string fax = "222-222-2222";
-			string adminEmail = "bobsmith@fictitiouscompany.com";
-			string adminFirstName = "Bob";
-			string adminLastName = "Smith";
-			string adminTitle = "Administrator";
-			string adminOfficePhone = "333-333-3333";
-			string adminMobilePhone = "444-444-4444";
-			string adminLanguage = "en";
-			long? adminTimezoneId = 542;
-			string adminPassword = "MySecretPassword";
-			string primaryContactEmail = "janedoe@fictitiouscompany.com";
-			string primaryContactFirstName = "Jane";
-			string primaryContactLastName = "Doe";
-			string primaryContactTitle = "CEO";
-			string primaryContactOfficePhone = "555-555-5555";
-			string primaryContactMobilePhone = "666-666-6666";
-			string primaryContactLanguage = "en";
-			long? primaryContactTimezoneId = 542;
-			string primaryContactPassword = "SuperSecretPassword";
-			string confirmationCode = "... dummy confirmation code ...";
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "parent_id", Value = CLIENT_ID },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "company_name", Value = name },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "company_name", Value = NAME },
 
-				new Parameter { Type = ParameterType.GetOrPost, Name = "address1", Value = address1 },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "address2", Value = address2 },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "city", Value = city },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "province_id", Value = provinceId },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "postal_code", Value = postalCode },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "country_id", Value = countryId },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "website", Value = website },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "phone", Value = phone },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "fax", Value = fax },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "address1", Value = ADDRESS1 },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "address2", Value = ADDRESS2 },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "city", Value = CITY },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "province_id", Value = PROVINCE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "postal_code", Value = POSTALCODE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "country_id", Value = COUNTRY_ID },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "website", Value = WEBSITE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "phone", Value = PHONE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "fax", Value = FAX },
 
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_email", Value = adminEmail },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_first_name", Value = adminFirstName },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_last_name", Value = adminLastName },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_password", Value = adminPassword },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_password_confirmation", Value = adminPassword },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_title", Value = adminTitle },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_office_phone", Value = adminOfficePhone },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_mobile_phone", Value = adminMobilePhone },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_language", Value = adminLanguage },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_timezone_id", Value = adminTimezoneId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_email", Value = ADMIN_EMAIL },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_first_name", Value = ADMIN_FIRST_NAME },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_last_name", Value = ADMIN_LAST_NAME },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_password", Value = ADMIN_PASSWORD },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_password_confirmation", Value = ADMIN_PASSWORD },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_title", Value = ADMIN_TITLE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_office_phone", Value = ADMIN_OFFICE_PHONE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_mobile_phone", Value = ADMIN_MOBILE_PHONE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_language", Value = ADMIN_LANGUAGE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_timezone_id", Value = ADMIN_TIMEZONE_ID },
 
 				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_same_as_admin", Value = "0" },
 
-				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_email", Value = primaryContactEmail },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_first_name", Value = primaryContactFirstName },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_last_name", Value = primaryContactLastName },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_password", Value = primaryContactPassword },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_password_confirmation", Value = primaryContactPassword },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_title", Value = primaryContactTitle },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_office_phone", Value = primaryContactOfficePhone },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_mobile_phone", Value = primaryContactMobilePhone },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_language", Value = primaryContactLanguage },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_timezone_id", Value = primaryContactTimezoneId }
+				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_email", Value = PRIMARY_CONTACT_EMAIL },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_first_name", Value = PRIMARY_CONTACT_FIRST_NAME },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_last_name", Value = PRIMARE_CONTACT_LAST_NAME },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_password", Value = PRIMARY_CONTACT_PASSOWRD },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_password_confirmation", Value = PRIMARY_CONTACT_PASSOWRD },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_title", Value = PRIMARY_CONTACT_TITLE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_office_phone", Value = PRIMARY_CONTACT_OFFICE_PHONE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_mobile_phone", Value = PRIMARY_CONTACT_MOBILE_PHONE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_language", Value = PRIMARY_CONTACT_LANGUAGE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_timezone_id", Value = PRIMARY_CONTACT_TIMEZONE_ID }
 			};
-			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", confirmationCode);
+			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", CONFIRMATION_CODE);
 			var mockRestClient = new MockRestClient("/Client/Create/", parameters, jsonResponse, false);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = await apiClient.Clients.CreateAsync(CLIENT_ID, name, address1, address2, city, provinceId, postalCode, countryId, website, phone, fax, adminEmail, adminFirstName, adminLastName, adminTitle, adminOfficePhone, adminMobilePhone, adminLanguage, adminTimezoneId, adminPassword, false, primaryContactEmail, primaryContactFirstName, primaryContactLastName, primaryContactTitle, primaryContactOfficePhone, primaryContactMobilePhone, primaryContactLanguage, primaryContactTimezoneId, primaryContactPassword);
+			var result = await apiClient.Clients.CreateAsync(CLIENT_ID, NAME, ADDRESS1, ADDRESS2, CITY, PROVINCE, POSTALCODE, COUNTRY_ID, WEBSITE, PHONE, FAX, ADMIN_EMAIL, ADMIN_FIRST_NAME, ADMIN_LAST_NAME, ADMIN_TITLE, ADMIN_OFFICE_PHONE, ADMIN_MOBILE_PHONE, ADMIN_LANGUAGE, ADMIN_TIMEZONE_ID, ADMIN_PASSWORD, false, PRIMARY_CONTACT_EMAIL, PRIMARY_CONTACT_FIRST_NAME, PRIMARE_CONTACT_LAST_NAME, PRIMARY_CONTACT_TITLE, PRIMARY_CONTACT_OFFICE_PHONE, PRIMARY_CONTACT_MOBILE_PHONE, PRIMARY_CONTACT_LANGUAGE, PRIMARY_CONTACT_TIMEZONE_ID, PRIMARY_CONTACT_PASSOWRD);
 
 			// Assert
-			Assert.AreEqual(confirmationCode, result);
+			Assert.AreEqual(CONFIRMATION_CODE, result);
 		}
 
 		[TestMethod]
 		public async Task CreateClient_admin_same_as_contact()
 		{
 			// Arrange
-			string name = "Fictitious Inc";
-			string address1 = "123 1st Avenue";
-			string address2 = "Suite 1000";
-			string city = "Mock City";
-			string provinceId = "FL";
-			string postalCode = "12345";
-			string countryId = "us";
-			string website = "www.fictitiouscompany.com";
-			string phone = "111-111-1111";
-			string fax = "222-222-2222";
-			string adminEmail = "bobsmith@fictitiouscompany.com";
-			string adminFirstName = "Bob";
-			string adminLastName = "Smith";
-			string adminTitle = "Administrator";
-			string adminOfficePhone = "333-333-3333";
-			string adminMobilePhone = "444-444-4444";
-			string adminLanguage = "en";
-			long? adminTimezoneId = 542;
-			string adminPassword = "MySecretPassword";
-			string primaryContactEmail = "janedoe@fictitiouscompany.com";
-			string primaryContactFirstName = "Jane";
-			string primaryContactLastName = "Doe";
-			string primaryContactTitle = "CEO";
-			string primaryContactOfficePhone = "555-555-5555";
-			string primaryContactMobilePhone = "666-666-6666";
-			string primaryContactLanguage = "en";
-			long? primaryContactTimezoneId = 542;
-			string primaryContactPassword = "SuperSecretPassword";
-			string confirmationCode = "... dummy confirmation code ...";
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "parent_id", Value = CLIENT_ID },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "company_name", Value = name },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "company_name", Value = NAME },
 
-				new Parameter { Type = ParameterType.GetOrPost, Name = "address1", Value = address1 },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "address2", Value = address2 },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "city", Value = city },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "province_id", Value = provinceId },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "postal_code", Value = postalCode },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "country_id", Value = countryId },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "website", Value = website },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "phone", Value = phone },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "fax", Value = fax },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "address1", Value = ADDRESS1 },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "address2", Value = ADDRESS2 },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "city", Value = CITY },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "province_id", Value = PROVINCE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "postal_code", Value = POSTALCODE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "country_id", Value = COUNTRY_ID },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "website", Value = WEBSITE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "phone", Value = PHONE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "fax", Value = FAX },
 
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_email", Value = adminEmail },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_first_name", Value = adminFirstName },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_last_name", Value = adminLastName },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_password", Value = adminPassword },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_password_confirmation", Value = adminPassword },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_title", Value = adminTitle },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_office_phone", Value = adminOfficePhone },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_mobile_phone", Value = adminMobilePhone },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_language", Value = adminLanguage },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_timezone_id", Value = adminTimezoneId },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_email", Value = ADMIN_EMAIL },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_first_name", Value = ADMIN_FIRST_NAME },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_last_name", Value = ADMIN_LAST_NAME },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_password", Value = ADMIN_PASSWORD },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_password_confirmation", Value = ADMIN_PASSWORD },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_title", Value = ADMIN_TITLE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_office_phone", Value = ADMIN_OFFICE_PHONE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_mobile_phone", Value = ADMIN_MOBILE_PHONE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_language", Value = ADMIN_LANGUAGE },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "admin_timezone_id", Value = ADMIN_TIMEZONE_ID },
 
 				new Parameter { Type = ParameterType.GetOrPost, Name = "contact_same_as_admin", Value = "1" }
 			};
-			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", confirmationCode);
+			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", CONFIRMATION_CODE);
 			var mockRestClient = new MockRestClient("/Client/Create/", parameters, jsonResponse, false);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
-			var result = await apiClient.Clients.CreateAsync(CLIENT_ID, name, address1, address2, city, provinceId, postalCode, countryId, website, phone, fax, adminEmail, adminFirstName, adminLastName, adminTitle, adminOfficePhone, adminMobilePhone, adminLanguage, adminTimezoneId, adminPassword, true, primaryContactEmail, primaryContactFirstName, primaryContactLastName, primaryContactTitle, primaryContactOfficePhone, primaryContactMobilePhone, primaryContactLanguage, primaryContactTimezoneId, primaryContactPassword);
+			var result = await apiClient.Clients.CreateAsync(CLIENT_ID, NAME, ADDRESS1, ADDRESS2, CITY, PROVINCE, POSTALCODE, COUNTRY_ID, WEBSITE, PHONE, FAX, ADMIN_EMAIL, ADMIN_FIRST_NAME, ADMIN_LAST_NAME, ADMIN_TITLE, ADMIN_OFFICE_PHONE, ADMIN_MOBILE_PHONE, ADMIN_LANGUAGE, ADMIN_TIMEZONE_ID, ADMIN_PASSWORD, true, PRIMARY_CONTACT_EMAIL, PRIMARY_CONTACT_FIRST_NAME, PRIMARE_CONTACT_LAST_NAME, PRIMARY_CONTACT_TITLE, PRIMARY_CONTACT_OFFICE_PHONE, PRIMARY_CONTACT_MOBILE_PHONE, PRIMARY_CONTACT_LANGUAGE, PRIMARY_CONTACT_TIMEZONE_ID, PRIMARY_CONTACT_PASSOWRD);
 
 			// Assert
-			Assert.AreEqual(confirmationCode, result);
+			Assert.AreEqual(CONFIRMATION_CODE, result);
 		}
 
 		[TestMethod]
