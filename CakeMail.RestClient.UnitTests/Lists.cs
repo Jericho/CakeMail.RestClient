@@ -190,36 +190,23 @@ namespace CakeMail.RestClient.UnitTests
 		[TestMethod]
 		public async Task GetList_with_includestatistics_true()
 		{
-			// Arrange
-			var listId = 12345L;
-			var parameters = new[]
-			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "no_details", Value = "false" },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "with_engagement", Value = "false" }
-			};
-			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"name\":\"Dummy list\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}}}}", listId);
-			var mockRestClient = new MockRestClient("/List/GetInfo/", parameters, jsonResponse);
-
-			// Act
-			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
-			var result = await apiClient.Lists.GetAsync(MockRestClient.USER_KEY, listId, includeStatistics: true);
-
-			// Assert
-			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(listId, result.Id);
+			await GetList_with_includestatistics(true).ConfigureAwait(false);
 		}
 
 		[TestMethod]
 		public async Task GetList_with_includestatistics_false()
+		{
+			await GetList_with_includestatistics(false).ConfigureAwait(false);
+		}
+
+		private async Task GetList_with_includestatistics(bool includeStatistics)
 		{
 			// Arrange
 			var listId = 12345L;
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "no_details", Value = "true" },
+				new Parameter { Type = ParameterType.GetOrPost, Name = "no_details", Value = includeStatistics ? "false" : "true" },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "with_engagement", Value = "false" }
 			};
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"name\":\"Dummy list\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}}}}", listId);
@@ -227,7 +214,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
-			var result = await apiClient.Lists.GetAsync(MockRestClient.USER_KEY, listId, includeStatistics: false);
+			var result = await apiClient.Lists.GetAsync(MockRestClient.USER_KEY, listId, includeStatistics: includeStatistics);
 
 			// Assert
 			mockRestClient.Verify();
@@ -238,29 +225,16 @@ namespace CakeMail.RestClient.UnitTests
 		[TestMethod]
 		public async Task GetList_with_calculateengagement_true()
 		{
-			// Arrange
-			var listId = 12345L;
-			var parameters = new[]
-			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "no_details", Value = "false" },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "with_engagement", Value = "true" }
-			};
-			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"name\":\"Dummy list\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}}}}", listId);
-			var mockRestClient = new MockRestClient("/List/GetInfo/", parameters, jsonResponse);
-
-			// Act
-			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
-			var result = await apiClient.Lists.GetAsync(MockRestClient.USER_KEY, listId, calculateEngagement: true);
-
-			// Assert
-			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(listId, result.Id);
+			await GetList_with_calculateengagement(true).ConfigureAwait(false);
 		}
 
 		[TestMethod]
 		public async Task GetList_with_calculateengagement_false()
+		{
+			await GetList_with_calculateengagement(false).ConfigureAwait(false);
+		}
+
+		private async Task GetList_with_calculateengagement(bool calculateEngagement)
 		{
 			// Arrange
 			var listId = 12345L;
@@ -268,14 +242,14 @@ namespace CakeMail.RestClient.UnitTests
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "no_details", Value = "false" },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "with_engagement", Value = "false" }
+				new Parameter { Type = ParameterType.GetOrPost, Name = "with_engagement", Value = calculateEngagement ? "true" : "false" }
 			};
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\",\"name\":\"Dummy list\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}}}}", listId);
 			var mockRestClient = new MockRestClient("/List/GetInfo/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
-			var result = await apiClient.Lists.GetAsync(MockRestClient.USER_KEY, listId, calculateEngagement: false);
+			var result = await apiClient.Lists.GetAsync(MockRestClient.USER_KEY, listId, calculateEngagement: calculateEngagement);
 
 			// Assert
 			mockRestClient.Verify();
@@ -1190,31 +1164,16 @@ namespace CakeMail.RestClient.UnitTests
 		[TestMethod]
 		public async Task Subscribe_with_triggers_true()
 		{
-			// Arrange
-			var listId = 12345L;
-			var email = "aaa@aaa.com";
-			var subscriberId = 777;
-			var parameters = new[]
-			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = email },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "autoresponders", Value = "true" },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "triggers", Value = "true" }
-			};
-			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{0}}}", subscriberId);
-			var mockRestClient = new MockRestClient("/List/SubscribeEmail/", parameters, jsonResponse);
-
-			// Act
-			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
-			var result = await apiClient.Lists.SubscribeAsync(MockRestClient.USER_KEY, listId, email, autoResponders: true);
-
-			// Assert
-			mockRestClient.Verify();
-			Assert.AreEqual(subscriberId, result);
+			await Subscribe_with_triggers(true).ConfigureAwait(false);
 		}
 
 		[TestMethod]
 		public async Task Subscribe_with_triggers_false()
+		{
+			await Subscribe_with_triggers(false).ConfigureAwait(false);
+		}
+
+		private async Task Subscribe_with_triggers(bool triggers)
 		{
 			// Arrange
 			var listId = 12345L;
@@ -1225,14 +1184,14 @@ namespace CakeMail.RestClient.UnitTests
 				new Parameter { Type = ParameterType.GetOrPost, Name = "list_id", Value = listId },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "email", Value = email },
 				new Parameter { Type = ParameterType.GetOrPost, Name = "autoresponders", Value = "true" },
-				new Parameter { Type = ParameterType.GetOrPost, Name = "triggers", Value = "false" }
+				new Parameter { Type = ParameterType.GetOrPost, Name = "triggers", Value = triggers ? "true" : "false" }
 			};
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{0}}}", subscriberId);
 			var mockRestClient = new MockRestClient("/List/SubscribeEmail/", parameters, jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(MockRestClient.API_KEY, mockRestClient.Object);
-			var result = await apiClient.Lists.SubscribeAsync(MockRestClient.USER_KEY, listId, email, triggers: false);
+			var result = await apiClient.Lists.SubscribeAsync(MockRestClient.USER_KEY, listId, email, triggers: triggers);
 
 			// Assert
 			mockRestClient.Verify();
