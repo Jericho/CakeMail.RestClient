@@ -156,7 +156,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task DeleteTemplateCategory_with_minimal_parameters()
 		{
 			// Arrange
-			var CATEGORY_ID = 12345L;
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "category_id", Value = CATEGORY_ID }
@@ -176,7 +175,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task DeleteTemplateCategory_with_clientid()
 		{
 			// Arrange
-			var CATEGORY_ID = 12345L;
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "category_id", Value = CATEGORY_ID },
@@ -197,7 +195,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task GetTemplateCategory_with_minimal_parameters()
 		{
 			// Arrange
-			var CATEGORY_ID = 12345L;
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "category_id", Value = CATEGORY_ID }
@@ -218,7 +215,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task GetTemplateCategory_with_clientid()
 		{
 			// Arrange
-			var CATEGORY_ID = 12345L;
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "category_id", Value = CATEGORY_ID },
@@ -535,7 +531,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task GetTemplateCategoryVisibility_with_minimal_parameters()
 		{
 			// Arrange
-			var CATEGORY_ID = 12345L;
 			var jsonVisibility1 = "{\"client_id\":\"111\",\"company_name\":\"Fictitious Company #1\",\"visible\":\"1\"}";
 			var jsonVisibility2 = "{\"client_id\":\"111\",\"company_name\":\"Fictitious Company #2\",\"visible\":\"0\"}";
 			var parameters = new[]
@@ -561,7 +556,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task GetTemplateCategoryVisibility_with_limit()
 		{
 			// Arrange
-			var CATEGORY_ID = 12345L;
 			var limit = 5;
 			var jsonVisibility1 = "{\"client_id\":\"111\",\"company_name\":\"Fictitious Company #1\",\"visible\":\"1\"}";
 			var jsonVisibility2 = "{\"client_id\":\"111\",\"company_name\":\"Fictitious Company #2\",\"visible\":\"0\"}";
@@ -587,7 +581,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task GetTemplateCategoryVisibility_with_offset()
 		{
 			// Arrange
-			var CATEGORY_ID = 12345L;
 			var offset = 25;
 			var jsonVisibility1 = "{\"client_id\":\"111\",\"company_name\":\"Fictitious Company #1\",\"visible\":\"1\"}";
 			var jsonVisibility2 = "{\"client_id\":\"111\",\"company_name\":\"Fictitious Company #2\",\"visible\":\"0\"}";
@@ -613,7 +606,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task GetTemplateCategoryVisibility_with_clientid()
 		{
 			// Arrange
-			var CATEGORY_ID = 12345L;
 			var jsonVisibility1 = "{\"client_id\":\"111\",\"company_name\":\"Fictitious Company #1\",\"visible\":\"1\"}";
 			var jsonVisibility2 = "{\"client_id\":\"111\",\"company_name\":\"Fictitious Company #2\",\"visible\":\"0\"}";
 			var parameters = new[]
@@ -638,7 +630,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task GetTemplateCategoryVisibilityCount_with_minimal_parameters()
 		{
 			// Arrange
-			var CATEGORY_ID = 12345L;
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "category_id", Value = CATEGORY_ID },
@@ -659,7 +650,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task GetTemplateCategoryVisibilityCount_with_clientid()
 		{
 			// Arrange
-			var CATEGORY_ID = 12345L;
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "category_id", Value = CATEGORY_ID },
@@ -681,7 +671,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task SetTemplateCategoryVisibility_with_minimal_parameters()
 		{
 			// Arrange
-			var CATEGORY_ID = 12345L;
 			var clientVisibility = new Dictionary<long, bool>
 			{
 				{ 111L, true },
@@ -710,7 +699,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task SetTemplateCategoryVisibility_with_empty_array()
 		{
 			// Arrange
-			var CATEGORY_ID = 12345L;
 			var clientVisibility = (IDictionary<long, bool>)null;
 			var parameters = new[]
 			{
@@ -731,7 +719,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task SetTemplateCategoryVisibility_with_clientid()
 		{
 			// Arrange
-			var CATEGORY_ID = 12345L;
 			var clientVisibility = new Dictionary<long, bool>
 			{
 				{ 111L, true },
@@ -848,7 +835,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task DeleteTemplate_with_minimal_parameters()
 		{
 			// Arrange
-			var TEMPLATE_ID = 12345L;
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "template_id", Value = TEMPLATE_ID }
@@ -868,7 +854,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task DeleteTemplate_with_clientid()
 		{
 			// Arrange
-			var TEMPLATE_ID = 12345L;
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "template_id", Value = TEMPLATE_ID },
@@ -889,7 +874,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task GetTemplate_with_minimal_parameters()
 		{
 			// Arrange
-			var TEMPLATE_ID = 12345L;
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "template_id", Value = TEMPLATE_ID }
@@ -910,7 +894,6 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task GetTemplate_with_clientid()
 		{
 			// Arrange
-			var TEMPLATE_ID = 12345L;
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "template_id", Value = TEMPLATE_ID },
