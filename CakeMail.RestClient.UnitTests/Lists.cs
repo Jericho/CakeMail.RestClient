@@ -2,6 +2,7 @@
 using CakeMail.RestClient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(listId, result);
+			result.ShouldBe(listId);
 		}
 
 		[TestMethod]
@@ -64,7 +65,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(listId, result);
+			result.ShouldBe(listId);
 		}
 
 		[TestMethod]
@@ -91,7 +92,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(listId, result);
+			result.ShouldBe(listId);
 		}
 
 		[TestMethod]
@@ -112,7 +113,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -134,7 +135,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -157,8 +158,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(listId, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(listId);
 		}
 
 		[TestMethod]
@@ -192,8 +193,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(listId, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(listId);
 		}
 
 		[TestMethod]
@@ -227,8 +228,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(listId, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(listId);
 		}
 
 		[TestMethod]
@@ -252,8 +253,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(listId, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(listId);
 		}
 
 		[TestMethod]
@@ -277,10 +278,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(123, result.ToArray()[0].Id);
-			Assert.AreEqual(456, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(123);
+			result.ToArray()[1].Id.ShouldBe(456);
 		}
 
 		[TestMethod]
@@ -304,10 +305,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(123, result.ToArray()[0].Id);
-			Assert.AreEqual(456, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(123);
+			result.ToArray()[1].Id.ShouldBe(456);
 		}
 
 		[TestMethod]
@@ -331,10 +332,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(123, result.ToArray()[0].Id);
-			Assert.AreEqual(456, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(123);
+			result.ToArray()[1].Id.ShouldBe(456);
 		}
 
 		[TestMethod]
@@ -358,10 +359,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(123, result.ToArray()[0].Id);
-			Assert.AreEqual(456, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(123);
+			result.ToArray()[1].Id.ShouldBe(456);
 		}
 
 		[TestMethod]
@@ -385,10 +386,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(123, result.ToArray()[0].Id);
-			Assert.AreEqual(456, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(123);
+			result.ToArray()[1].Id.ShouldBe(456);
 		}
 
 		[TestMethod]
@@ -412,10 +413,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(123, result.ToArray()[0].Id);
-			Assert.AreEqual(456, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(123);
+			result.ToArray()[1].Id.ShouldBe(456);
 		}
 
 		[TestMethod]
@@ -438,10 +439,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(123, result.ToArray()[0].Id);
-			Assert.AreEqual(456, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(123);
+			result.ToArray()[1].Id.ShouldBe(456);
 		}
 
 		[TestMethod]
@@ -463,7 +464,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -485,7 +486,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -506,7 +507,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -529,7 +530,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -552,7 +553,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -574,7 +575,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -596,7 +597,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -619,7 +620,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -642,7 +643,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -665,7 +666,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -688,7 +689,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -711,7 +712,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -734,7 +735,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -757,7 +758,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -779,7 +780,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -805,7 +806,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -832,7 +833,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -856,7 +857,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -881,7 +882,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -902,8 +903,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 
 		[TestMethod]
@@ -925,8 +926,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 
 		[TestMethod]
@@ -947,8 +948,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(0, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(0);
 		}
 
 		[TestMethod]
@@ -971,7 +972,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -995,7 +996,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1018,7 +1019,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1042,7 +1043,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1065,10 +1066,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(testEmail1, result.ToArray()[0]);
-			Assert.AreEqual(testEmail2, result.ToArray()[1]);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].ShouldBe(testEmail1);
+			result.ToArray()[1].ShouldBe(testEmail2);
 		}
 
 		[TestMethod]
@@ -1092,10 +1093,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(testEmail1, result.ToArray()[0]);
-			Assert.AreEqual(testEmail2, result.ToArray()[1]);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].ShouldBe(testEmail1);
+			result.ToArray()[1].ShouldBe(testEmail2);
 		}
 
 		[TestMethod]
@@ -1132,7 +1133,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(subscriberId, result);
+			result.ShouldBe(subscriberId);
 		}
 
 		[TestMethod]
@@ -1169,7 +1170,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(subscriberId, result);
+			result.ShouldBe(subscriberId);
 		}
 
 		[TestMethod]
@@ -1206,7 +1207,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(subscriberId, result);
+			result.ShouldBe(subscriberId);
 		}
 
 		[TestMethod]
@@ -1233,7 +1234,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(subscriberId, result);
+			result.ShouldBe(subscriberId);
 		}
 
 		[TestMethod]
@@ -1275,8 +1276,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1318,8 +1319,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1358,8 +1359,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1391,8 +1392,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1417,8 +1418,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1441,7 +1442,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1465,7 +1466,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1488,7 +1489,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1512,7 +1513,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1535,7 +1536,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1559,7 +1560,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1582,8 +1583,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(memberId, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(memberId);
 		}
 
 		[TestMethod]
@@ -1607,8 +1608,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(memberId, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(memberId);
 		}
 
 		[TestMethod]
@@ -1632,10 +1633,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(1, result.ToArray()[0].Id);
-			Assert.AreEqual(2, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(1);
+			result.ToArray()[1].Id.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1661,10 +1662,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(1, result.ToArray()[0].Id);
-			Assert.AreEqual(2, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(1);
+			result.ToArray()[1].Id.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1690,10 +1691,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(1, result.ToArray()[0].Id);
-			Assert.AreEqual(2, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(1);
+			result.ToArray()[1].Id.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1719,10 +1720,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(1, result.ToArray()[0].Id);
-			Assert.AreEqual(2, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(1);
+			result.ToArray()[1].Id.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1748,10 +1749,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(1, result.ToArray()[0].Id);
-			Assert.AreEqual(2, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(1);
+			result.ToArray()[1].Id.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1777,10 +1778,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(1, result.ToArray()[0].Id);
-			Assert.AreEqual(2, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(1);
+			result.ToArray()[1].Id.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1806,10 +1807,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(1, result.ToArray()[0].Id);
-			Assert.AreEqual(2, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(1);
+			result.ToArray()[1].Id.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1834,10 +1835,10 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(1, result.ToArray()[0].Id);
-			Assert.AreEqual(2, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(1);
+			result.ToArray()[1].Id.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1859,8 +1860,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1884,8 +1885,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1908,8 +1909,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1932,7 +1933,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1962,7 +1963,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1986,7 +1987,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -2013,8 +2014,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2041,8 +2042,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(1, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(1);
 		}
 
 		[TestMethod]
@@ -2070,8 +2071,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2099,8 +2100,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2128,8 +2129,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2157,8 +2158,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2185,8 +2186,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2212,8 +2213,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2239,8 +2240,8 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2264,7 +2265,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2290,7 +2291,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2316,7 +2317,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2342,7 +2343,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2367,7 +2368,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2391,7 +2392,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2415,7 +2416,7 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Assert
 			mockRestClient.Verify();
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 	}
 }

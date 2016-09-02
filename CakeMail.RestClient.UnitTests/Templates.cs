@@ -3,6 +3,7 @@ using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Shouldly;
 
 namespace CakeMail.RestClient.UnitTests
 {
@@ -41,7 +42,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.CreateCategoryAsync(USER_KEY, labels);
 
 			// Assert
-			Assert.AreEqual(CATEGORY_ID, result);
+			result.ShouldBe(CATEGORY_ID);
 		}
 
 		[TestMethod]
@@ -61,7 +62,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.CreateCategoryAsync(USER_KEY, null);
 
 			// Assert
-			Assert.AreEqual(CATEGORY_ID, result);
+			result.ShouldBe(CATEGORY_ID);
 		}
 
 		[TestMethod]
@@ -90,7 +91,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.CreateCategoryAsync(USER_KEY, labels, isVisibleByDefault: false);
 
 			// Assert
-			Assert.AreEqual(CATEGORY_ID, result);
+			result.ShouldBe(CATEGORY_ID);
 		}
 
 		[TestMethod]
@@ -119,7 +120,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.CreateCategoryAsync(USER_KEY, labels, templatesCanBeCopied: false);
 
 			// Assert
-			Assert.AreEqual(CATEGORY_ID, result);
+			result.ShouldBe(CATEGORY_ID);
 		}
 
 		[TestMethod]
@@ -149,7 +150,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.CreateCategoryAsync(USER_KEY, labels, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.AreEqual(CATEGORY_ID, result);
+			result.ShouldBe(CATEGORY_ID);
 		}
 
 		[TestMethod]
@@ -168,7 +169,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.DeleteCategoryAsync(USER_KEY, CATEGORY_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -188,7 +189,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.DeleteCategoryAsync(USER_KEY, CATEGORY_ID, CLIENT_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -207,8 +208,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCategoryAsync(USER_KEY, CATEGORY_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(CATEGORY_ID, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(CATEGORY_ID);
 		}
 
 		[TestMethod]
@@ -228,8 +229,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCategoryAsync(USER_KEY, CATEGORY_ID, CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(CATEGORY_ID, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(CATEGORY_ID);
 		}
 
 		[TestMethod]
@@ -250,10 +251,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCategoriesAsync(USER_KEY);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(111, result.ToArray()[0].Id);
-			Assert.AreEqual(222, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(111);
+			result.ToArray()[1].Id.ShouldBe(222);
 		}
 
 		[TestMethod]
@@ -276,10 +277,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCategoriesAsync(USER_KEY, limit: limit);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(111, result.ToArray()[0].Id);
-			Assert.AreEqual(222, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(111);
+			result.ToArray()[1].Id.ShouldBe(222);
 		}
 
 		[TestMethod]
@@ -302,10 +303,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCategoriesAsync(USER_KEY, offset: offset);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(111, result.ToArray()[0].Id);
-			Assert.AreEqual(222, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(111);
+			result.ToArray()[1].Id.ShouldBe(222);
 		}
 
 		[TestMethod]
@@ -327,10 +328,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCategoriesAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(111, result.ToArray()[0].Id);
-			Assert.AreEqual(222, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(111);
+			result.ToArray()[1].Id.ShouldBe(222);
 		}
 
 		[TestMethod]
@@ -349,7 +350,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCategoriesCountAsync(USER_KEY);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -369,7 +370,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCategoriesCountAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -390,7 +391,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.UpdateCategoryAsync(USER_KEY, CATEGORY_ID, null);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -418,7 +419,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.UpdateCategoryAsync(USER_KEY, CATEGORY_ID, labels);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -439,7 +440,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.UpdateCategoryAsync(USER_KEY, CATEGORY_ID, null, isVisibleByDefault: true);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -460,7 +461,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.UpdateCategoryAsync(USER_KEY, CATEGORY_ID, null, isVisibleByDefault: false);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -481,7 +482,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.UpdateCategoryAsync(USER_KEY, CATEGORY_ID, null, templatesCanBeCopied: true);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -502,7 +503,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.UpdateCategoryAsync(USER_KEY, CATEGORY_ID, null, templatesCanBeCopied: false);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -524,7 +525,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.UpdateCategoryAsync(USER_KEY, CATEGORY_ID, null, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -546,10 +547,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCategoryVisibilityAsync(USER_KEY, CATEGORY_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.IsTrue(result.ToArray()[0].Visible);
-			Assert.IsFalse(result.ToArray()[1].Visible);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Visible.ShouldBeTrue();
+			result.ToArray()[1].Visible.ShouldBeFalse();
 		}
 
 		[TestMethod]
@@ -573,8 +574,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCategoryVisibilityAsync(USER_KEY, CATEGORY_ID, limit: limit);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -598,8 +599,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCategoryVisibilityAsync(USER_KEY, CATEGORY_ID, offset: offset);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -622,8 +623,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCategoryVisibilityAsync(USER_KEY, CATEGORY_ID, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -643,7 +644,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCategoryVisibilityCountAsync(USER_KEY, CATEGORY_ID);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -664,7 +665,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCategoryVisibilityCountAsync(USER_KEY, CATEGORY_ID, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -692,7 +693,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.SetCategoryVisibilityAsync(USER_KEY, CATEGORY_ID, clientVisibility);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -712,7 +713,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.SetCategoryVisibilityAsync(USER_KEY, CATEGORY_ID, clientVisibility);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -741,7 +742,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.SetCategoryVisibilityAsync(USER_KEY, CATEGORY_ID, clientVisibility, CLIENT_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -771,7 +772,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.CreateAsync(USER_KEY, labels, content, CATEGORY_ID);
 
 			// Assert
-			Assert.AreEqual(TEMPLATE_ID, result);
+			result.ShouldBe(TEMPLATE_ID);
 		}
 
 		[TestMethod]
@@ -797,7 +798,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.CreateAsync(USER_KEY, null, content, CATEGORY_ID);
 
 			// Assert
-			Assert.AreEqual(TEMPLATE_ID, result);
+			result.ShouldBe(TEMPLATE_ID);
 		}
 
 		[TestMethod]
@@ -828,7 +829,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.CreateAsync(USER_KEY, labels, content, CATEGORY_ID, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.AreEqual(TEMPLATE_ID, result);
+			result.ShouldBe(TEMPLATE_ID);
 		}
 
 		[TestMethod]
@@ -847,7 +848,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.DeleteAsync(USER_KEY, TEMPLATE_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -867,7 +868,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.DeleteAsync(USER_KEY, TEMPLATE_ID, CLIENT_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -886,8 +887,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetAsync(USER_KEY, TEMPLATE_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(TEMPLATE_ID, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(TEMPLATE_ID);
 		}
 
 		[TestMethod]
@@ -907,8 +908,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetAsync(USER_KEY, TEMPLATE_ID, CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(TEMPLATE_ID, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(TEMPLATE_ID);
 		}
 
 		[TestMethod]
@@ -929,10 +930,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetTemplatesAsync(USER_KEY);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(111, result.ToArray()[0].Id);
-			Assert.AreEqual(222, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(111);
+			result.ToArray()[1].Id.ShouldBe(222);
 		}
 
 		[TestMethod]
@@ -954,10 +955,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetTemplatesAsync(USER_KEY, categoryId: CATEGORY_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(111, result.ToArray()[0].Id);
-			Assert.AreEqual(222, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(111);
+			result.ToArray()[1].Id.ShouldBe(222);
 		}
 
 		[TestMethod]
@@ -980,10 +981,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetTemplatesAsync(USER_KEY, limit: limit);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(111, result.ToArray()[0].Id);
-			Assert.AreEqual(222, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(111);
+			result.ToArray()[1].Id.ShouldBe(222);
 		}
 
 		[TestMethod]
@@ -1006,10 +1007,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetTemplatesAsync(USER_KEY, offset: offset);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(111, result.ToArray()[0].Id);
-			Assert.AreEqual(222, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(111);
+			result.ToArray()[1].Id.ShouldBe(222);
 		}
 
 		[TestMethod]
@@ -1031,10 +1032,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetTemplatesAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(111, result.ToArray()[0].Id);
-			Assert.AreEqual(222, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(111);
+			result.ToArray()[1].Id.ShouldBe(222);
 		}
 
 		[TestMethod]
@@ -1053,7 +1054,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCountAsync(USER_KEY);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1073,7 +1074,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCountAsync(USER_KEY, categoryId: CATEGORY_ID);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1093,7 +1094,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.GetCountAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1112,7 +1113,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.UpdateAsync(USER_KEY, TEMPLATE_ID, null);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1138,7 +1139,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.UpdateAsync(USER_KEY, TEMPLATE_ID, labels);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1159,7 +1160,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.UpdateAsync(USER_KEY, TEMPLATE_ID, null, content: content);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1179,7 +1180,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.UpdateAsync(USER_KEY, TEMPLATE_ID, null, categoryId: CATEGORY_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1199,7 +1200,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Templates.UpdateAsync(USER_KEY, TEMPLATE_ID, null, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 	}
 }

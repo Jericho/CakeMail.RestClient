@@ -2,6 +2,7 @@
 using CakeMail.RestClient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
+using Shouldly;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -64,7 +65,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.CreateAsync(CLIENT_ID, name);
 
 			// Assert
-			Assert.AreEqual(confirmationCode, result);
+			result.ShouldBe(confirmationCode);
 		}
 
 		[TestMethod]
@@ -87,7 +88,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.CreateAsync(CLIENT_ID, name, primaryContactSameAsAdmin: false);
 
 			// Assert
-			Assert.AreEqual(confirmationCode, result);
+			result.ShouldBe(confirmationCode);
 		}
 
 		[TestMethod]
@@ -141,7 +142,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.CreateAsync(CLIENT_ID, NAME, ADDRESS1, ADDRESS2, CITY, PROVINCE, POSTALCODE, COUNTRY_ID, WEBSITE, PHONE, FAX, ADMIN_EMAIL, ADMIN_FIRST_NAME, ADMIN_LAST_NAME, ADMIN_TITLE, ADMIN_OFFICE_PHONE, ADMIN_MOBILE_PHONE, ADMIN_LANGUAGE, ADMIN_TIMEZONE_ID, ADMIN_PASSWORD, false, PRIMARY_CONTACT_EMAIL, PRIMARY_CONTACT_FIRST_NAME, PRIMARE_CONTACT_LAST_NAME, PRIMARY_CONTACT_TITLE, PRIMARY_CONTACT_OFFICE_PHONE, PRIMARY_CONTACT_MOBILE_PHONE, PRIMARY_CONTACT_LANGUAGE, PRIMARY_CONTACT_TIMEZONE_ID, PRIMARY_CONTACT_PASSOWRD);
 
 			// Assert
-			Assert.AreEqual(CONFIRMATION_CODE, result);
+			result.ShouldBe(CONFIRMATION_CODE);
 		}
 
 		[TestMethod]
@@ -184,7 +185,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.CreateAsync(CLIENT_ID, NAME, ADDRESS1, ADDRESS2, CITY, PROVINCE, POSTALCODE, COUNTRY_ID, WEBSITE, PHONE, FAX, ADMIN_EMAIL, ADMIN_FIRST_NAME, ADMIN_LAST_NAME, ADMIN_TITLE, ADMIN_OFFICE_PHONE, ADMIN_MOBILE_PHONE, ADMIN_LANGUAGE, ADMIN_TIMEZONE_ID, ADMIN_PASSWORD, true, PRIMARY_CONTACT_EMAIL, PRIMARY_CONTACT_FIRST_NAME, PRIMARE_CONTACT_LAST_NAME, PRIMARY_CONTACT_TITLE, PRIMARY_CONTACT_OFFICE_PHONE, PRIMARY_CONTACT_MOBILE_PHONE, PRIMARY_CONTACT_LANGUAGE, PRIMARY_CONTACT_TIMEZONE_ID, PRIMARY_CONTACT_PASSOWRD);
 
 			// Assert
-			Assert.AreEqual(CONFIRMATION_CODE, result);
+			result.ShouldBe(CONFIRMATION_CODE);
 		}
 
 		[TestMethod]
@@ -204,8 +205,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.ConfirmAsync(confirmationId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(CLIENT_ID, result.ClientId);
+			result.ShouldNotBeNull();
+			result.ClientId.ShouldBe(CLIENT_ID);
 		}
 
 		[TestMethod]
@@ -225,8 +226,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.GetAsync(USER_KEY, confirmationCode);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(confirmationCode, result.ConfirmationCode);
+			result.ShouldNotBeNull();
+			result.ConfirmationCode.ShouldBe(confirmationCode);
 		}
 
 		[TestMethod]
@@ -245,8 +246,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.GetAsync(USER_KEY, CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(CLIENT_ID, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(CLIENT_ID);
 		}
 
 		[TestMethod]
@@ -268,8 +269,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.GetAsync(USER_KEY, CLIENT_ID, startDate, endDate);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(CLIENT_ID, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(CLIENT_ID);
 		}
 
 		[TestMethod]
@@ -291,8 +292,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.GetAsync(USER_KEY, CLIENT_ID, startDate, endDate);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(CLIENT_ID, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(CLIENT_ID);
 		}
 
 		[TestMethod]
@@ -315,8 +316,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.GetListAsync(USER_KEY, status: status);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -339,8 +340,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.GetListAsync(USER_KEY, name: name);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -363,8 +364,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.GetListAsync(USER_KEY, sortBy: sortBy);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -387,8 +388,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.GetListAsync(USER_KEY, sortDirection: sortDirection);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -411,8 +412,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.GetListAsync(USER_KEY, limit: limit);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -435,8 +436,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.GetListAsync(USER_KEY, offset: offset);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -458,8 +459,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.GetListAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -480,8 +481,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.GetCountAsync(USER_KEY, status: status);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -502,8 +503,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.GetCountAsync(USER_KEY, name: name);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -523,8 +524,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.GetCountAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -545,7 +546,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, name: name);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -566,7 +567,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, status: status);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -587,7 +588,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, parentId: parentId);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -608,7 +609,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, address1: address1);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -629,7 +630,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, address2: address2);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -650,7 +651,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, city: city);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -671,7 +672,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, provinceId: provinceId);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -692,7 +693,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, postalCode: postalCode);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -713,7 +714,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, countryId: countryId);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -734,7 +735,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, website: website);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -755,7 +756,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, phone: phone);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -776,7 +777,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, fax: fax);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -797,7 +798,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, authDomain: authDomain);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -818,7 +819,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, bounceDomain: bounceDomain);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -839,7 +840,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, dkimDomain: dkimDomain);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -860,7 +861,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, doptinIp: doptinIp);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -881,7 +882,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, forwardDomain: forwardDomain);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -902,7 +903,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, forwardIp: forwardIp);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -923,7 +924,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, ipPool: ipPool);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -944,7 +945,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, mdDomain: mdDomain);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -965,7 +966,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, isReseller: isReseller);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -986,7 +987,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, isReseller: isReseller);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1007,7 +1008,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, currency: currency);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1028,7 +1029,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, planType: planType);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1049,7 +1050,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, mailingLimit: mailingLimit);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1070,7 +1071,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, monthLimit: monthLimit);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1091,7 +1092,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, contactLimit: contactLimit);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1112,7 +1113,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, defaultMailingLimit: defaultMailingLimit);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1133,7 +1134,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, defaultMonthLimit: defaultMonthLimit);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1154,7 +1155,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.UpdateAsync(USER_KEY, CLIENT_ID, defaultContactLimit: defaultContactLimit);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1174,7 +1175,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.ActivateAsync(USER_KEY, CLIENT_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1194,7 +1195,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.SuspendAsync(USER_KEY, CLIENT_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1214,7 +1215,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Clients.DeleteAsync(USER_KEY, CLIENT_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 	}
 }

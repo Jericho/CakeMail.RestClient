@@ -1,6 +1,7 @@
 ﻿using CakeMail.RestClient.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Shouldly;
 
 namespace CakeMail.RestClient.UnitTests.Utilities
 {
@@ -17,8 +18,8 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var exception = new CakeMailException(message);
 
 			// Assert
-			Assert.AreEqual(message, exception.Message);
-			Assert.IsNull(exception.InnerException);
+			exception.Message.ShouldBe(message);
+			exception.InnerException.ShouldBeNull();
 		}
 
 		[TestMethod]
@@ -32,9 +33,9 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var exception = new CakeMailException(message, innerException);
 
 			// Assert
-			Assert.AreEqual(message, exception.Message);
-			Assert.IsNotNull(exception.InnerException);
-			Assert.AreEqual(innerException.Message, exception.InnerException.Message);
+			exception.Message.ShouldBe(message);
+			exception.InnerException.ShouldNotBeNull();
+			exception.InnerException.Message.ShouldBe(innerException.Message);
 		}
 	}
 }

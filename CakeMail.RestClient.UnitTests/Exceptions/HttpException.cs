@@ -1,5 +1,6 @@
 ﻿using CakeMail.RestClient.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shouldly;
 using System;
 using System.Net;
 
@@ -20,10 +21,10 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var exception = new HttpException(message, httpStatus, uri);
 
 			// Assert
-			Assert.AreEqual(message, exception.Message);
-			Assert.AreEqual(httpStatus, exception.HttpStatus);
-			Assert.AreEqual(uri, exception.Uri);
-			Assert.IsNull(exception.InnerException);
+			exception.Message.ShouldBe(message);
+			exception.HttpStatus.ShouldBe(httpStatus);
+			exception.Uri.ShouldBe(uri);
+			exception.InnerException.ShouldBeNull();
 		}
 
 		[TestMethod]
@@ -39,11 +40,11 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var exception = new HttpException(message, httpStatus, uri, innerException);
 
 			// Assert
-			Assert.AreEqual(message, exception.Message);
-			Assert.AreEqual(httpStatus, exception.HttpStatus);
-			Assert.AreEqual(uri, exception.Uri);
-			Assert.IsNotNull(exception.InnerException);
-			Assert.AreEqual(innerException.Message, exception.InnerException.Message);
+			exception.Message.ShouldBe(message);
+			exception.HttpStatus.ShouldBe(httpStatus);
+			exception.Uri.ShouldBe(uri);
+			exception.InnerException.ShouldNotBeNull();
+			exception.InnerException.Message.ShouldBe(innerException.Message);
 		}
 	}
 }

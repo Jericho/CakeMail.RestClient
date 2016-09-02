@@ -1,6 +1,7 @@
 ﻿using CakeMail.RestClient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Shouldly;
 using System;
 using System.IO;
 using System.Text;
@@ -24,12 +25,12 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var result = (DateTime)converter.ReadJson(reader, typeof(DateTime), null, null);
 
 			// Assert
-			Assert.AreEqual(2015, result.Year);
-			Assert.AreEqual(3, result.Month);
-			Assert.AreEqual(11, result.Day);
-			Assert.AreEqual(15, result.Hour);
-			Assert.AreEqual(21, result.Minute);
-			Assert.AreEqual(0, result.Second);
+			result.Year.ShouldBe(2015);
+			result.Month.ShouldBe(3);
+			result.Day.ShouldBe(11);
+			result.Hour.ShouldBe(15);
+			result.Minute.ShouldBe(21);
+			result.Second.ShouldBe(0);
 		}
 
 		[TestMethod]
@@ -46,7 +47,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var result = (DateTime)converter.ReadJson(reader, typeof(DateTime), null, null);
 
 			// Assert
-			Assert.AreEqual(DateTime.MinValue, result);
+			result.ShouldBe(DateTime.MinValue);
 		}
 
 		[TestMethod]
@@ -63,7 +64,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var result = (DateTime?)converter.ReadJson(reader, typeof(DateTime), null, null);
 
 			// Assert
-			Assert.IsNull(result);
+			result.ShouldBeNull();
 		}
 
 		[TestMethod]
@@ -93,7 +94,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var result = converter.CanConvert(type);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -108,7 +109,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var result = converter.CanConvert(type);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -123,7 +124,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var result = converter.CanConvert(type);
 
 			// Assert
-			Assert.IsFalse(result);
+			result.ShouldBeFalse();
 		}
 
 		[TestMethod]
@@ -144,7 +145,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 					converter.WriteJson(jsonWriter, value, null);
 
 					// Assert
-					Assert.AreEqual(expected, sb.ToString());
+					sb.ToString().ShouldBe(expected);
 				}
 			}
 		}

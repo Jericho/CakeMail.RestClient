@@ -1,10 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using RestSharp;
-using System;
+using Shouldly;
 using System.Linq;
-using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.UnitTests
@@ -35,8 +32,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.AddEmailAddressesAsync(USER_KEY, emailAddresses);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 
 		[TestMethod]
@@ -55,8 +52,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.AddEmailAddressesAsync(USER_KEY, null);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 
 		[TestMethod]
@@ -79,8 +76,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.AddEmailAddressesAsync(USER_KEY, emailAddresses, CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 
 		[TestMethod]
@@ -102,8 +99,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.AddDomainsAsync(USER_KEY, domains);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 
 		[TestMethod]
@@ -122,8 +119,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.AddDomainsAsync(USER_KEY, null);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(0, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(0);
 		}
 
 		[TestMethod]
@@ -146,8 +143,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.AddDomainsAsync(USER_KEY, domains, CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 
 		[TestMethod]
@@ -169,8 +166,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.AddLocalPartsAsync(USER_KEY, localParts);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 
 		[TestMethod]
@@ -189,8 +186,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.AddLocalPartsAsync(USER_KEY, null);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(0, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(0);
 		}
 
 		[TestMethod]
@@ -213,8 +210,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.AddLocalPartsAsync(USER_KEY, localParts, CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 
 		[TestMethod]
@@ -236,8 +233,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.RemoveEmailAddressesAsync(USER_KEY, emailAddresses);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 
 		[TestMethod]
@@ -256,8 +253,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.RemoveEmailAddressesAsync(USER_KEY, null);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(0, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(0);
 		}
 
 		[TestMethod]
@@ -280,8 +277,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.RemoveEmailAddressesAsync(USER_KEY, emailAddresses, CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 
 		[TestMethod]
@@ -303,8 +300,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.RemoveDomainsAsync(USER_KEY, domains);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 
 		[TestMethod]
@@ -323,8 +320,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.RemoveDomainsAsync(USER_KEY, null);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(0, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(0);
 		}
 
 		[TestMethod]
@@ -347,8 +344,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.RemoveDomainsAsync(USER_KEY, domains, CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 
 		[TestMethod]
@@ -370,8 +367,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.RemoveLocalPartsAsync(USER_KEY, localParts);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 
 		[TestMethod]
@@ -390,8 +387,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.RemoveLocalPartsAsync(USER_KEY, null);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(0, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(0);
 		}
 
 		[TestMethod]
@@ -414,8 +411,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.RemoveLocalPartsAsync(USER_KEY, localParts, CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 
 		[TestMethod]
@@ -434,8 +431,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetEmailAddressesAsync(USER_KEY);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -456,8 +453,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetEmailAddressesAsync(USER_KEY, limit: limit);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -478,8 +475,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetEmailAddressesAsync(USER_KEY, offset: offset);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -499,8 +496,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetEmailAddressesAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -519,8 +516,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetDomainsAsync(USER_KEY);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -541,8 +538,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetDomainsAsync(USER_KEY, limit: limit);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -563,8 +560,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetDomainsAsync(USER_KEY, offset: offset);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -584,8 +581,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetDomainsAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -604,8 +601,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetLocalPartsAsync(USER_KEY);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -626,8 +623,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetLocalPartsAsync(USER_KEY, limit: limit);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -648,8 +645,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetLocalPartsAsync(USER_KEY, offset: offset);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -669,8 +666,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetLocalPartsAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -689,7 +686,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetEmailAddressesCountAsync(USER_KEY);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -709,7 +706,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetEmailAddressesCountAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -728,7 +725,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetDomainsCountAsync(USER_KEY);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -748,7 +745,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetDomainsCountAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -767,7 +764,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetLocalPartsCountAsync(USER_KEY);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -787,7 +784,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.SuppressionLists.GetLocalPartsCountAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
+using Shouldly;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,7 +34,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Permissions.SetUserPermissionsAsync(USER_KEY, userId, permissions, null);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -58,7 +59,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Permissions.SetUserPermissionsAsync(USER_KEY, userId, permissions, CLIENT_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -78,8 +79,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Permissions.GetUserPermissionsAsync(USER_KEY, userId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 
 		[TestMethod]
@@ -100,8 +101,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Permissions.GetUserPermissionsAsync(USER_KEY, userId, CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
 		}
 	}
 }

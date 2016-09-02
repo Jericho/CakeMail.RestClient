@@ -1,12 +1,10 @@
 ﻿using CakeMail.RestClient.Models;
 using CakeMail.RestClient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using RestSharp;
+using Shouldly;
 using System;
 using System.Linq;
-using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.UnitTests
@@ -39,7 +37,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.CreateAsync(USER_KEY, name, listId);
 
 			// Assert
-			Assert.AreEqual(triggerId, result);
+			result.ShouldBe(triggerId);
 		}
 
 		[TestMethod]
@@ -65,7 +63,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.CreateAsync(USER_KEY, name, listId, campaignId: campaignId);
 
 			// Assert
-			Assert.AreEqual(triggerId, result);
+			result.ShouldBe(triggerId);
 		}
 
 		[TestMethod]
@@ -91,7 +89,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.CreateAsync(USER_KEY, name, listId, encoding: encoding);
 
 			// Assert
-			Assert.AreEqual(triggerId, result);
+			result.ShouldBe(triggerId);
 		}
 
 		[TestMethod]
@@ -117,7 +115,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.CreateAsync(USER_KEY, name, listId, transferEncoding: transferEncoding);
 
 			// Assert
-			Assert.AreEqual(triggerId, result);
+			result.ShouldBe(triggerId);
 		}
 
 		[TestMethod]
@@ -142,7 +140,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.CreateAsync(USER_KEY, name, listId, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.AreEqual(triggerId, result);
+			result.ShouldBe(triggerId);
 		}
 
 		[TestMethod]
@@ -163,8 +161,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetAsync(USER_KEY, triggerId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(triggerId, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(triggerId);
 		}
 
 		[TestMethod]
@@ -186,8 +184,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetAsync(USER_KEY, triggerId, CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(triggerId, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(triggerId);
 		}
 
 		[TestMethod]
@@ -208,7 +206,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -231,7 +229,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, campaignId: campaignId);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -254,7 +252,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, name: name);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -277,7 +275,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, action: action);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -300,7 +298,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, encoding: encoding);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -323,7 +321,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, transferEncoding: transferEncoding);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -346,7 +344,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, subject: subject);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -369,7 +367,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, senderEmail: senderEmail);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -392,7 +390,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, senderName: senderName);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -415,7 +413,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, replyTo: replyTo);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -438,7 +436,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, htmlContent: htmlContent);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -461,7 +459,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, textContent: textContent);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -483,7 +481,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, trackOpens: true);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -505,7 +503,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, trackOpens: false);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -527,7 +525,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, trackClicksInHtml: true);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -549,7 +547,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, trackClicksInHtml: false);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -571,7 +569,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, trackClicksInText: true);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -593,7 +591,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, trackClicksInText: false);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -616,7 +614,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, trackingParameters: trackingParameters);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -639,7 +637,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, delay: delay);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -662,7 +660,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, status: status);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -685,7 +683,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, date: date);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -707,7 +705,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -729,10 +727,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetTriggersAsync(USER_KEY);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(123, result.ToArray()[0].Id);
-			Assert.AreEqual(456, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(123);
+			result.ToArray()[1].Id.ShouldBe(456);
 		}
 
 		[TestMethod]
@@ -756,10 +754,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetTriggersAsync(USER_KEY, status: status);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(123, result.ToArray()[0].Id);
-			Assert.AreEqual(456, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(123);
+			result.ToArray()[1].Id.ShouldBe(456);
 		}
 
 		[TestMethod]
@@ -783,10 +781,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetTriggersAsync(USER_KEY, action: action);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(123, result.ToArray()[0].Id);
-			Assert.AreEqual(456, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(123);
+			result.ToArray()[1].Id.ShouldBe(456);
 		}
 
 		[TestMethod]
@@ -810,10 +808,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetTriggersAsync(USER_KEY, listId: listId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(123, result.ToArray()[0].Id);
-			Assert.AreEqual(456, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(123);
+			result.ToArray()[1].Id.ShouldBe(456);
 		}
 
 		[TestMethod]
@@ -837,10 +835,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetTriggersAsync(USER_KEY, campaignId: campaignId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(123, result.ToArray()[0].Id);
-			Assert.AreEqual(456, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(123);
+			result.ToArray()[1].Id.ShouldBe(456);
 		}
 
 		[TestMethod]
@@ -864,10 +862,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetTriggersAsync(USER_KEY, limit: limit);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(123, result.ToArray()[0].Id);
-			Assert.AreEqual(456, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(123);
+			result.ToArray()[1].Id.ShouldBe(456);
 		}
 
 		[TestMethod]
@@ -891,10 +889,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetTriggersAsync(USER_KEY, offset: offset);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(123, result.ToArray()[0].Id);
-			Assert.AreEqual(456, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(123);
+			result.ToArray()[1].Id.ShouldBe(456);
 		}
 
 		[TestMethod]
@@ -917,10 +915,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetTriggersAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.AreEqual(123, result.ToArray()[0].Id);
-			Assert.AreEqual(456, result.ToArray()[1].Id);
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.ToArray()[0].Id.ShouldBe(123);
+			result.ToArray()[1].Id.ShouldBe(456);
 		}
 
 		[TestMethod]
@@ -939,7 +937,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetCountAsync(USER_KEY);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -961,7 +959,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetCountAsync(USER_KEY, status: status);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -983,7 +981,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetCountAsync(USER_KEY, action: action);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1005,7 +1003,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetCountAsync(USER_KEY, listId: listId);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1027,7 +1025,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetCountAsync(USER_KEY, campaignId: campaignId);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1047,7 +1045,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetCountAsync(USER_KEY, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1071,7 +1069,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.SendTestEmailAsync(USER_KEY, triggerId, recipientEmail);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1095,7 +1093,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.SendTestEmailAsync(USER_KEY, triggerId, recipientEmail, separated: true);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1120,7 +1118,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.SendTestEmailAsync(USER_KEY, triggerId, recipientEmail, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1141,8 +1139,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetRawEmailMessageAsync(USER_KEY, triggerId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual("This is a simple message", result.Subject);
+			result.ShouldNotBeNull();
+			result.Subject.ShouldBe("This is a simple message");
 		}
 
 		[TestMethod]
@@ -1164,8 +1162,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetRawEmailMessageAsync(USER_KEY, triggerId, CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual("This is a simple message", result.Subject);
+			result.ShouldNotBeNull();
+			result.Subject.ShouldBe("This is a simple message");
 		}
 
 		[TestMethod]
@@ -1186,7 +1184,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetRawHtmlAsync(USER_KEY, triggerId);
 
 			// Assert
-			Assert.AreEqual("<html><body>...dummy content...</body></html>", result);
+			result.ShouldBe("<html><body>...dummy content...</body></html>");
 		}
 
 		[TestMethod]
@@ -1208,7 +1206,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetRawHtmlAsync(USER_KEY, triggerId, CLIENT_ID);
 
 			// Assert
-			Assert.AreEqual("<html><body>...dummy content...</body></html>", result);
+			result.ShouldBe("<html><body>...dummy content...</body></html>");
 		}
 
 		[TestMethod]
@@ -1229,7 +1227,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetRawTextAsync(USER_KEY, triggerId);
 
 			// Assert
-			Assert.AreEqual("...dummy content...", result);
+			result.ShouldBe("...dummy content...");
 		}
 
 		[TestMethod]
@@ -1251,7 +1249,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetRawTextAsync(USER_KEY, triggerId, CLIENT_ID);
 
 			// Assert
-			Assert.AreEqual("...dummy content...", result);
+			result.ShouldBe("...dummy content...");
 		}
 
 		[TestMethod]
@@ -1259,7 +1257,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var triggerId = 123L;
-			var listMemberId = 111L; 
+			var listMemberId = 111L;
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "trigger_id", Value = triggerId },
@@ -1273,7 +1271,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UnleashAsync(USER_KEY, triggerId, listMemberId);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1281,7 +1279,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var triggerId = 123L;
-			var listMemberId = 111L; 
+			var listMemberId = 111L;
 			var parameters = new[]
 			{
 				new Parameter { Type = ParameterType.GetOrPost, Name = "trigger_id", Value = triggerId },
@@ -1296,7 +1294,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.UnleashAsync(USER_KEY, triggerId, listMemberId, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -1323,8 +1321,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsAsync(USER_KEY, triggerId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1352,8 +1350,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsAsync(USER_KEY, triggerId, logType: logType);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(1, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(1);
 		}
 
 		[TestMethod]
@@ -1381,8 +1379,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsAsync(USER_KEY, triggerId, listMemberId: listMemberId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(1, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(1);
 		}
 
 		[TestMethod]
@@ -1411,8 +1409,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsAsync(USER_KEY, triggerId, start: start);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1441,8 +1439,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsAsync(USER_KEY, triggerId, uniques: false, totals: false, end: end);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1471,8 +1469,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsAsync(USER_KEY, triggerId, uniques: false, totals: false, limit: limit);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1501,8 +1499,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsAsync(USER_KEY, triggerId, uniques: false, totals: false, offset: offset);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1530,8 +1528,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsAsync(USER_KEY, triggerId, uniques: false, totals: false, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1558,8 +1556,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsAsync(USER_KEY, triggerId, uniques: true, totals: false);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1586,8 +1584,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsAsync(USER_KEY, triggerId, uniques: false, totals: true);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1611,8 +1609,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsCountAsync(USER_KEY, triggerId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1638,8 +1636,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsCountAsync(USER_KEY, triggerId, logType: logType);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1665,8 +1663,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsCountAsync(USER_KEY, triggerId, listMemberId: listMemberId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1690,8 +1688,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsCountAsync(USER_KEY, triggerId, uniques: true);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1715,8 +1713,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsCountAsync(USER_KEY, triggerId, totals: true);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1742,8 +1740,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsCountAsync(USER_KEY, triggerId, start: start);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1769,8 +1767,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsCountAsync(USER_KEY, triggerId, end: end);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1795,8 +1793,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLogsCountAsync(USER_KEY, triggerId, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1821,8 +1819,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinksAsync(USER_KEY, triggerId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1849,8 +1847,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinksAsync(USER_KEY, triggerId, limit: limit);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1877,8 +1875,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinksAsync(USER_KEY, triggerId, offset: offset);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1904,8 +1902,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinksAsync(USER_KEY, triggerId, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1927,7 +1925,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinksCountAsync(USER_KEY, triggerId);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1950,7 +1948,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinksCountAsync(USER_KEY, triggerId, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -1971,8 +1969,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinkAsync(USER_KEY, linkId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(linkId, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(linkId);
 		}
 
 		[TestMethod]
@@ -1994,8 +1992,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinkAsync(USER_KEY, linkId, CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(linkId, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(linkId);
 		}
 
 		[TestMethod]
@@ -2020,8 +2018,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinksWithStatsAsync(USER_KEY, triggerId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2048,8 +2046,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinksWithStatsAsync(USER_KEY, triggerId, start: start);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2076,8 +2074,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinksWithStatsAsync(USER_KEY, triggerId, end: end);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2104,8 +2102,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinksWithStatsAsync(USER_KEY, triggerId, limit: limit);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2132,8 +2130,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinksWithStatsAsync(USER_KEY, triggerId, offset: offset);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2159,10 +2157,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinksWithStatsAsync(USER_KEY, triggerId, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
-		
+
 		[TestMethod]
 		public async Task GetTriggerLinksWithStatsCount_with_minimal_parameters()
 		{
@@ -2182,8 +2180,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinksWithStatsCountAsync(USER_KEY, triggerId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2207,8 +2205,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinksWithStatsCountAsync(USER_KEY, triggerId, start: start);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2232,8 +2230,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinksWithStatsCountAsync(USER_KEY, triggerId, end: end);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -2256,8 +2254,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Triggers.GetLinksWithStatsCountAsync(USER_KEY, triggerId, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result);
+			result.ShouldNotBeNull();
+			result.ShouldBe(2);
 		}
 	}
 }

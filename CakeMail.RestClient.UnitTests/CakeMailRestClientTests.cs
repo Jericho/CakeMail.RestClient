@@ -2,11 +2,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RestSharp;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.UnitTests
@@ -36,10 +36,10 @@ namespace CakeMail.RestClient.UnitTests
 			var proxy = apiClient.Proxy;
 
 			// Assert
-			Assert.AreEqual("CakeMail .NET REST Client", userAgentParts[0]);
-			Assert.AreEqual(new Uri($"https://{mockHost}"), baseUrl);
-			Assert.AreEqual(mockTimeout, timeout);
-			Assert.AreEqual(new Uri(string.Format("http://{0}:{1}", mockProxyHost, mockProxyPort)), ((WebProxy)proxy).Address);
+			userAgentParts[0].ShouldBe("CakeMail .NET REST Client");
+			baseUrl.ShouldBe(new Uri($"https://{mockHost}"));
+			timeout.ShouldBe(mockTimeout);
+			((WebProxy)proxy).Address.ShouldBe(new Uri(string.Format("http://{0}:{1}", mockProxyHost, mockProxyPort)));
 		}
 
 		[TestMethod]
@@ -66,10 +66,10 @@ namespace CakeMail.RestClient.UnitTests
 			var proxy = apiClient.Proxy;
 
 			// Assert
-			Assert.AreEqual(mockUserAgent, userAgent);
-			Assert.AreEqual(mockBaseUrl, baseUrl);
-			Assert.AreEqual(mockTimeout, timeout);
-			Assert.AreEqual(new Uri(string.Format("http://{0}:{1}", mockProxyHost, mockProxyPort)), ((WebProxy)proxy).Address);
+			userAgent.ShouldBe(mockUserAgent);
+			baseUrl.ShouldBe(mockBaseUrl);
+			timeout.ShouldBe(mockTimeout);
+			((WebProxy)proxy).Address.ShouldBe(new Uri(string.Format("http://{0}:{1}", mockProxyHost, mockProxyPort)));
 		}
 
 		[TestMethod]

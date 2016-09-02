@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
+using Shouldly;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,7 +35,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.CreateAsync(USER_KEY, listId, name, query, null);
 
 			// Assert
-			Assert.AreEqual(segmentId, result);
+			result.ShouldBe(segmentId);
 		}
 
 		[TestMethod]
@@ -58,7 +59,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.CreateAsync(USER_KEY, listId, name, null, CLIENT_ID);
 
 			// Assert
-			Assert.AreEqual(segmentId, result);
+			result.ShouldBe(segmentId);
 		}
 
 		[TestMethod]
@@ -82,7 +83,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.UpdateAsync(USER_KEY, segmentId, listId, name: name);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -106,7 +107,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.UpdateAsync(USER_KEY, segmentId, listId, query: query);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -129,7 +130,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.UpdateAsync(USER_KEY, segmentId, listId, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -149,7 +150,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.DeleteAsync(USER_KEY, segmentId);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -170,7 +171,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.DeleteAsync(USER_KEY, segmentId, CLIENT_ID);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -192,8 +193,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.GetAsync(USER_KEY, segmentId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(segmentId, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(segmentId);
 		}
 
 		[TestMethod]
@@ -215,8 +216,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.GetAsync(USER_KEY, segmentId, includeStatistics: true);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(segmentId, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(segmentId);
 		}
 
 		[TestMethod]
@@ -238,8 +239,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.GetAsync(USER_KEY, segmentId, includeStatistics: false);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(segmentId, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(segmentId);
 		}
 
 		[TestMethod]
@@ -261,8 +262,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.GetAsync(USER_KEY, segmentId, calculateEngagement: true);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(segmentId, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(segmentId);
 		}
 
 		[TestMethod]
@@ -284,8 +285,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.GetAsync(USER_KEY, segmentId, calculateEngagement: false);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(segmentId, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(segmentId);
 		}
 
 		[TestMethod]
@@ -308,8 +309,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.GetAsync(USER_KEY, segmentId, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(segmentId, result.Id);
+			result.ShouldNotBeNull();
+			result.Id.ShouldBe(segmentId);
 		}
 
 		[TestMethod]
@@ -333,8 +334,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.GetSegmentsAsync(USER_KEY, listId, includeDetails: false);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -360,8 +361,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.GetSegmentsAsync(USER_KEY, listId, limit: limit);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -387,8 +388,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.GetSegmentsAsync(USER_KEY, listId, offset: offset);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -413,8 +414,8 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.GetSegmentsAsync(USER_KEY, listId, clientId: CLIENT_ID);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -435,7 +436,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.GetCountAsync(USER_KEY, listId);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 
 		[TestMethod]
@@ -457,7 +458,7 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Segments.GetCountAsync(USER_KEY, listId, CLIENT_ID);
 
 			// Assert
-			Assert.AreEqual(2, result);
+			result.ShouldBe(2);
 		}
 	}
 }

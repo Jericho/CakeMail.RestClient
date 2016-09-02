@@ -1,10 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using RestSharp;
-using System;
+using Shouldly;
 using System.Linq;
-using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.UnitTests
@@ -30,10 +27,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Countries.GetListAsync();
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.IsTrue(result.Any(tz => tz.Id == "f1" && tz.EnglishName.Equals("Fictitious Country 1")));
-			Assert.IsTrue(result.Any(tz => tz.Id == "f2" && tz.EnglishName.Equals("Fictitious Country 2")));
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.Any(tz => tz.Id == "f1" && tz.EnglishName.Equals("Fictitious Country 1")).ShouldBeTrue();
+			result.Any(tz => tz.Id == "f2" && tz.EnglishName.Equals("Fictitious Country 2")).ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -53,10 +50,10 @@ namespace CakeMail.RestClient.UnitTests
 			var result = await apiClient.Countries.GetProvincesAsync(countryId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.IsTrue(result.Any(tz => tz.Id == "p1" && tz.EnglishName.Equals("Fictitious Province 1")));
-			Assert.IsTrue(result.Any(tz => tz.Id == "p2" && tz.EnglishName.Equals("Fictitious Province 2")));
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.Any(tz => tz.Id == "p1" && tz.EnglishName.Equals("Fictitious Province 1")).ShouldBeTrue();
+			result.Any(tz => tz.Id == "p2" && tz.EnglishName.Equals("Fictitious Province 2")).ShouldBeTrue();
 		}
 	}
 }
