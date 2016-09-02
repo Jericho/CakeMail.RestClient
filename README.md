@@ -3,6 +3,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://jericho.mit-license.org/)
 [![Build status](https://ci.appveyor.com/api/projects/status/m8lsx7snrc5jdrdi?svg=true)](https://ci.appveyor.com/project/Jericho/cakemail-restclient)
 [![Coverage Status](https://coveralls.io/repos/Jericho/CakeMail.RestClient/badge.svg)](https://coveralls.io/r/Jericho/CakeMail.RestClient)
+[![CodeFactor](https://www.codefactor.io/repository/github/jericho/cakemail.restclient/badge)](https://www.codefactor.io/repository/github/jericho/cakemail.restclient)
 
 ## About
 
@@ -17,7 +18,14 @@ CakeMailRestAPI is available as a Nuget package.
 
 ## Release Notes
 
-+ **4.0.0**
+
+
+
+
++ **5.0**
+    - Upgraded to .NET 4.5.2
+
++ **4.0**
     - All methods are now async.
     - You can pass a cancellation token when invoking an async method.
 
@@ -33,7 +41,7 @@ Has been replaced with the following v4.0 call :
 var count = await cakeMail.Campaigns.GetCountAsync(userKey, MailingStatus.Ongoing);
 ```
 
-+ **3.0.0**
++ **3.0**
     - Methods are now logically grouped in separate resources. For instance, all methods related to users are grouped in a resource called 'Users', all methods related to campaigns are grouped in a resource called 'Campaigns', and so on.
     - Methods have been renamed to avoid repetition. For example, GetCampaignsCount has been renamed GetCount off of the new 'Campaigns' resource.
 
@@ -50,7 +58,7 @@ var count = cakeMail.Campaigns.GetCount(userKey, MailingStatus.Ongoing);
 ```
 
 
-+ **2.0.0**
++ **2.0**
     - Unique identifiers changed to 'long' instead of 'int'.
     - "Magic strings" replaced with enums. For example, instead of specifying sort direction with 'asc' and 'desc', you can now use SortDirection.Ascending and SortDirection.Descending.
     - Fix bug in CreateTemplateCategory which prevents creating new categories
@@ -59,7 +67,7 @@ var count = cakeMail.Campaigns.GetCount(userKey, MailingStatus.Ongoing);
     - Fix GetTriggerLinksLogs
     - Added XML comments file for convenient intellisense in Visual Studio
 
-+ **1.0.0**
++ **1.0**
     - Initial release
 
 ## Installation
