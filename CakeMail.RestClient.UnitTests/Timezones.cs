@@ -1,10 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using RestSharp;
-using System;
+using Shouldly;
 using System.Linq;
-using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.UnitTests
@@ -18,31 +15,23 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task GetTimezones()
 		{
 			// Arrange
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/Client/GetTimezones/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			var parameters = new Parameter[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":{\"timezones\":[{\"id\":\"152\",\"name\":\"America/Montreal\"},{\"id\":\"532\",\"name\":\"US/Central\"},{\"id\":\"542\",\"name\":\"UTC\"}]}}"
-			});
+				// There are no parameters
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":{\"timezones\":[{\"id\":\"152\",\"name\":\"America/Montreal\"},{\"id\":\"532\",\"name\":\"US/Central\"},{\"id\":\"542\",\"name\":\"UTC\"}]}}";
+			var mockRestClient = new MockRestClient("/Client/GetTimezones/", parameters, jsonResponse, false);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
 			var result = await apiClient.Timezones.GetAllAsync();
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(3, result.Count());
-			Assert.IsTrue(result.Any(tz => tz.Id == 152 && tz.Name.Contains("Montreal")));
-			Assert.IsTrue(result.Any(tz => tz.Id == 532 && tz.Name.Contains("Central")));
-			Assert.IsTrue(result.Any(tz => tz.Id == 542 && tz.Name.Contains("UTC")));
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(3);
+			result.Any(tz => tz.Id == 152 && tz.Name.Contains("Montreal")).ShouldBeTrue();
+			result.Any(tz => tz.Id == 532 && tz.Name.Contains("Central")).ShouldBeTrue();
+			result.Any(tz => tz.Id == 542 && tz.Name.Contains("UTC")).ShouldBeTrue();
 		}
 	}
 }

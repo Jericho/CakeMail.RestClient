@@ -42,7 +42,7 @@ namespace CakeMail.RestClient.Utilities
 			if (reader.TokenType != JsonToken.String) throw new Exception("Wrong Token Type");
 
 			var booleanAsString = (string)reader.Value;
-			var boolean = (booleanAsString == "1");
+			var boolean = booleanAsString == "1";
 
 			return boolean;
 		}

@@ -1,5 +1,4 @@
-﻿
-namespace CakeMail.RestClient.Models
+﻿namespace CakeMail.RestClient.Models
 {
 	public class ListField
 	{

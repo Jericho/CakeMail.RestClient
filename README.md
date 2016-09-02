@@ -127,12 +127,14 @@ You can add members to your list like so:
 
 ```csharp
 
-await cakeMail.Lists.SubscribeAsync(userKey, listId, "bob_the_customer@hotmail.com", true, true, new[] {
+await cakeMail.Lists.SubscribeAsync(userKey, listId, "bob_the_customer@hotmail.com", true, true, new[]
+{
     new KeyValuePair<string, object>("first_name", "Bob"), 
     new KeyValuePair<string, object>("last_name", "Smith"), 
     new KeyValuePair<string, object>("customer_since", DateTime.UtcNow) 
 });
-await cakeMail.Lists.SubscribeAsync(userKey, listId, "jane_the_prospect@hotmail.com", true, true, new[] {
+await cakeMail.Lists.SubscribeAsync(userKey, listId, "jane_the_prospect@hotmail.com", true, true, new[]
+{
     new KeyValuePair<string, object>("first_name", "Jane"), 
     new KeyValuePair<string, object>("last_name", "Doe")
 });

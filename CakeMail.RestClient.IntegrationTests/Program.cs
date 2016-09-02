@@ -5,7 +5,9 @@ namespace CakeMail.RestClient.IntegrationTests
 {
 	class Program
 	{
+#pragma warning disable RECS0154 // Parameter is never used
 		static void Main(string[] args)
+#pragma warning restore RECS0154 // Parameter is never used
 		{
 			Console.WriteLine("{0} Executing all CakeMail API methods ... {0}", new string('=', 10));
 
@@ -17,12 +19,15 @@ namespace CakeMail.RestClient.IntegrationTests
 			{
 				Console.WriteLine("");
 				Console.WriteLine("");
-				Console.WriteLine("An error has occured: {0}", e.Message);
+				Console.WriteLine("An error has occured: {0}", (e.InnerException ?? e).Message);
 			}
 			finally
 			{
 				// Clear the keyboard buffer
-				while (Console.KeyAvailable) { Console.ReadKey(); }
+				while (Console.KeyAvailable)
+				{
+					Console.ReadKey();
+				}
 
 				Console.WriteLine("");
 				Console.WriteLine("Press any key...");

@@ -44,7 +44,7 @@ namespace CakeMail.RestClient.Utilities
 			if (reader.TokenType != JsonToken.String) throw new Exception("Wrong Token Type");
 
 			var dateAsString = (string)reader.Value;
-			var date = (dateAsString == Constants.EMPTY_CAKEMAIL_DATE ? DateTime.MinValue : DateTime.Parse(dateAsString));
+			var date = dateAsString == Constants.EMPTY_CAKEMAIL_DATE ? DateTime.MinValue : DateTime.Parse(dateAsString);
 
 			return date;
 		}
@@ -56,7 +56,7 @@ namespace CakeMail.RestClient.Utilities
 		/// <returns>true if this instance can convert the specified object type; otherwise, false.</returns>
 		public override bool CanConvert(Type objectType)
 		{
-			return (objectType == typeof(DateTime) || objectType == typeof(DateTime?));
+			return objectType == typeof(DateTime) || objectType == typeof(DateTime?);
 		}
 	}
 }

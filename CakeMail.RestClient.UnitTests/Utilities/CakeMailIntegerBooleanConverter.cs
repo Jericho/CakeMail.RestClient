@@ -1,6 +1,7 @@
 ﻿using CakeMail.RestClient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Shouldly;
 using System;
 using System.IO;
 using System.Text;
@@ -24,7 +25,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var result = (bool)converter.ReadJson(reader, typeof(bool), null, null);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -41,7 +42,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var result = (bool)converter.ReadJson(reader, typeof(bool), null, null);
 
 			// Assert
-			Assert.IsFalse(result);
+			result.ShouldBeFalse();
 		}
 
 		[TestMethod]
@@ -71,7 +72,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var result = converter.CanConvert(type);
 
 			// Assert
-			Assert.IsTrue(result);
+			result.ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -86,7 +87,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var result = converter.CanConvert(type);
 
 			// Assert
-			Assert.IsFalse(result);
+			result.ShouldBeFalse();
 		}
 
 		[TestMethod]
@@ -100,13 +101,15 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var sb = new StringBuilder();
 
 			using (var sw = new StringWriter(sb))
-			using (var jsonWriter = new JsonTextWriter(sw))
 			{
-				// Act
-				converter.WriteJson(jsonWriter, value, null);
+				using (var jsonWriter = new JsonTextWriter(sw))
+				{
+					// Act
+					converter.WriteJson(jsonWriter, value, null);
 
-				// Assert
-				Assert.AreEqual(expected, sb.ToString());
+					// Assert
+					sb.ToString().ShouldBe(expected);
+				}
 			}
 		}
 
@@ -121,13 +124,15 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var sb = new StringBuilder();
 
 			using (var sw = new StringWriter(sb))
-			using (var jsonWriter = new JsonTextWriter(sw))
 			{
-				// Act
-				converter.WriteJson(jsonWriter, value, null);
+				using (var jsonWriter = new JsonTextWriter(sw))
+				{
+					// Act
+					converter.WriteJson(jsonWriter, value, null);
 
-				// Assert
-				Assert.AreEqual(expected, sb.ToString());
+					// Assert
+					sb.ToString().ShouldBe(expected);
+				}
 			}
 		}
 
@@ -142,13 +147,15 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var sb = new StringBuilder();
 
 			using (var sw = new StringWriter(sb))
-			using (var jsonWriter = new JsonTextWriter(sw))
 			{
-				// Act
-				converter.WriteJson(jsonWriter, value, null);
+				using (var jsonWriter = new JsonTextWriter(sw))
+				{
+					// Act
+					converter.WriteJson(jsonWriter, value, null);
 
-				// Assert
-				// Nothing to assert, since 'WriteJson' will throw an exception
+					// Assert
+					// Nothing to assert, since 'WriteJson' will throw an exception
+				}
 			}
 		}
 	}

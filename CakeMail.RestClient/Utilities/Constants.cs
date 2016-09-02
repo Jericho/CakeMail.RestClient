@@ -1,5 +1,4 @@
-﻿
-namespace CakeMail.RestClient.Utilities
+﻿namespace CakeMail.RestClient.Utilities
 {
 	/// <summary>
 	/// Various constants used in CakeMail.RestClient

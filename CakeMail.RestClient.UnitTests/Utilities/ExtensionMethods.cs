@@ -1,5 +1,6 @@
 ﻿using CakeMail.RestClient.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shouldly;
 using System;
 using System.Runtime.Serialization;
 
@@ -25,7 +26,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var result = date.ToCakeMailString();
 
 			// Assert
-			Assert.AreEqual(Constants.EMPTY_CAKEMAIL_DATE, result);
+			result.ShouldBe(Constants.EMPTY_CAKEMAIL_DATE);
 		}
 
 		[TestMethod]
@@ -38,7 +39,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var result = date.ToCakeMailString();
 
 			// Assert
-			Assert.AreEqual("2015-03-20 17:41:59", result);
+			result.ShouldBe("2015-03-20 17:41:59");
 		}
 
 		[TestMethod]
@@ -51,7 +52,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var result = value.GetEnumMemberValue();
 
 			// Assert
-			Assert.AreEqual(String.Empty, result);
+			result.ShouldBe(String.Empty);
 		}
 
 		[TestMethod]
@@ -64,7 +65,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var result = value.GetEnumMemberValue();
 
 			// Assert
-			Assert.AreEqual("BBB", result);
+			result.ShouldBe("BBB");
 		}
 
 		[TestMethod]
@@ -75,7 +76,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var enumMember = "BBB";
 
 			// Act
-			var result = ExtensionMethods.GetValueFromEnumMember<int>(enumMember);
+			var result = enumMember.GetValueFromEnumMember<int>();
 
 			// Assert
 			// Nothing to assert, an exception will be thrown
@@ -88,10 +89,10 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var enumMember = "BBB";
 
 			// Act
-			var result = ExtensionMethods.GetValueFromEnumMember<UnitTestingEnum>(enumMember);
+			var result = enumMember.GetValueFromEnumMember<UnitTestingEnum>();
 
 			// Assert
-			Assert.AreEqual(UnitTestingEnum.BBB, result);
+			result.ShouldBe(UnitTestingEnum.BBB);
 		}
 
 		[TestMethod]
@@ -101,10 +102,10 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var enumMember = "AAA";
 
 			// Act
-			var result = ExtensionMethods.GetValueFromEnumMember<UnitTestingEnum>(enumMember);
+			var result = enumMember.GetValueFromEnumMember<UnitTestingEnum>();
 
 			// Assert
-			Assert.AreEqual(UnitTestingEnum.AAA, result);
+			result.ShouldBe(UnitTestingEnum.AAA);
 		}
 
 		[TestMethod]
@@ -115,7 +116,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var enumMember = "CCC";
 
 			// Act
-			var result = ExtensionMethods.GetValueFromEnumMember<UnitTestingEnum>(enumMember);
+			var result = enumMember.GetValueFromEnumMember<UnitTestingEnum>();
 
 			// Assert
 			// Nothing to assert, an exception will be thrown

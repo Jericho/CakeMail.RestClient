@@ -39,12 +39,13 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="language">Language of the user. For example: 'en_US' for English (US)</param>
 		/// <param name="timezoneId">ID of the timezone of the user. UTC (id 542) is the default value</param>
 		/// <param name="clientId">ID of the client.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>ID of the new user</returns>
-		public async Task<long> CreateAsync(string userKey, string email, string password, string firstName = null, string lastName = null, string title = null, string officePhone = null, string mobilePhone = null, string language = null, long timezoneId = 542, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<long> CreateAsync(string userKey, string email, string password, string firstName = null, string lastName = null, string title = null, string officePhone = null, string mobilePhone = null, string language = null, long timezoneId = 542, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/User/Create/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("email", email),
@@ -61,7 +62,7 @@ namespace CakeMail.RestClient.Resources
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			// When a new user is created, the payload contains a json object with two properties: 'id' and 'key'. We only care about the ID.
-			return await _cakeMailRestClient.ExecuteRequestAsync<long>(path, parameters, "id", cancellationToken).ConfigureAwait(false);
+			return _cakeMailRestClient.ExecuteRequestAsync<long>(path, parameters, "id", cancellationToken);
 		}
 
 		/// <summary>
@@ -70,10 +71,11 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="userId">ID of the user.</param>
 		/// <param name="clientId">ID of the client.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the user is suspended</returns>
-		public async Task<bool> DeactivateAsync(string userKey, long userId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<bool> DeactivateAsync(string userKey, long userId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			return await UpdateAsync(userKey, userId, status: UserStatus.Suspended, clientId: clientId, cancellationToken: cancellationToken).ConfigureAwait(false);
+			return UpdateAsync(userKey, userId, status: UserStatus.Suspended, clientId: clientId, cancellationToken: cancellationToken);
 		}
 
 		/// <summary>
@@ -82,10 +84,11 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="userId">ID of the user.</param>
 		/// <param name="clientId">ID of the client.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the user is deleted</returns>
-		public async Task<bool> DeleteAsync(string userKey, long userId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<bool> DeleteAsync(string userKey, long userId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			return await UpdateAsync(userKey, userId, status: UserStatus.Deleted, clientId: clientId, cancellationToken:  cancellationToken).ConfigureAwait(false);
+			return UpdateAsync(userKey, userId, status: UserStatus.Deleted, clientId: clientId, cancellationToken: cancellationToken);
 		}
 
 		/// <summary>
@@ -94,19 +97,20 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="userId">ID of the user</param>
 		/// <param name="clientId">ID of the client</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The <see cref="User">user</see></returns>
-		public async Task<User> GetAsync(string userKey, long userId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<User> GetAsync(string userKey, long userId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/User/GetInfo/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("user_id", userId)
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<User>(path, parameters, null, cancellationToken).ConfigureAwait(false);
+			return _cakeMailRestClient.ExecuteRequestAsync<User>(path, parameters, null, cancellationToken);
 		}
 
 		/// <summary>
@@ -117,12 +121,13 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="limit">Limit the number of resulting users.</param>
 		/// <param name="offset">Offset the beginning of resulting users.</param>
 		/// <param name="clientId">ID of the client.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>Enumeration of <see cref="User">users</see> matching the filtering criteria</returns>
-		public async Task<IEnumerable<User>> GetUsersAsync(string userKey, UserStatus? status = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<IEnumerable<User>> GetUsersAsync(string userKey, UserStatus? status = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/User/GetList/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "false")
@@ -132,7 +137,7 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteArrayRequestAsync<User>(path, parameters, "users", cancellationToken).ConfigureAwait(false);
+			return _cakeMailRestClient.ExecuteArrayRequestAsync<User>(path, parameters, "users", cancellationToken);
 		}
 
 		/// <summary>
@@ -141,12 +146,13 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="status">Filter using the user status. Possible values: 'active', 'suspended'</param>
 		/// <param name="clientId">ID of the client.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The count of users matching the filtering criteria</returns>
-		public async Task<long> GetCountAsync(string userKey, UserStatus? status = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<long> GetCountAsync(string userKey, UserStatus? status = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/User/GetList/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("count", "true")
@@ -154,7 +160,7 @@ namespace CakeMail.RestClient.Resources
 			if (status.HasValue) parameters.Add(new KeyValuePair<string, object>("status", status.Value.GetEnumMemberValue()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken).ConfigureAwait(false);
+			return _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken);
 		}
 
 		/// <summary>
@@ -173,12 +179,13 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="timezoneId">ID of the timezone of the user.</param>
 		/// <param name="status">Status of the user. Possible values: 'active', 'suspended'</param>
 		/// <param name="clientId">ID of the client.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the user was updated</returns>
-		public async Task<bool> UpdateAsync(string userKey, long userId, string email = null, string password = null, string firstName = null, string lastName = null, string title = null, string officePhone = null, string mobilePhone = null, string language = null, long? timezoneId = null, UserStatus? status = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<bool> UpdateAsync(string userKey, long userId, string email = null, string password = null, string firstName = null, string lastName = null, string title = null, string officePhone = null, string mobilePhone = null, string language = null, long? timezoneId = null, UserStatus? status = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/User/SetInfo/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("user_id", userId)
@@ -199,7 +206,7 @@ namespace CakeMail.RestClient.Resources
 			}
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
+			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);
 		}
 
 		/// <summary>
@@ -208,20 +215,20 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="email">Email address of the user.</param>
 		/// <param name="password">Password of the user.</param>
 		/// <param name="clientId">ID of the client</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The <see cref="LoginInfo">login information</see> for the user</returns>
-		public async Task<LoginInfo> LoginAsync(string email, string password, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<LoginInfo> LoginAsync(string email, string password, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/User/Login/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("email", email),
 				new KeyValuePair<string, object>("password", password)
-
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<LoginInfo>(path, parameters, null, cancellationToken).ConfigureAwait(false);
+			return _cakeMailRestClient.ExecuteRequestAsync<LoginInfo>(path, parameters, null, cancellationToken);
 		}
 
 		#endregion

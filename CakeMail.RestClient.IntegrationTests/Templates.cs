@@ -13,7 +13,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			Console.WriteLine(new string('-', 25));
 			Console.WriteLine("Executing TEMPLATES methods...");
 
-			var categoryLabels = new Dictionary<string, string>() 
+			var categoryLabels = new Dictionary<string, string> 
 			{
 				{ "en_US", "My Category" },
 				{ "fr_FR", "Ma Catégorie" }
@@ -40,7 +40,7 @@ namespace CakeMail.RestClient.IntegrationTests
 				Console.WriteLine("Template category permissions revoked: {0}", permissionsRevoked ? "success" : "failed");
 			}
 
-			var templateLabels = new Dictionary<string, string>() 
+			var templateLabels = new Dictionary<string, string> 
 			{
 				{ "en_US", "My Template" },
 				{ "fr_FR", "Mon Modèle" }

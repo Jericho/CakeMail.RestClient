@@ -27,29 +27,31 @@ namespace CakeMail.RestClient.Resources
 		/// <summary>
 		/// Get the list of countries
 		/// </summary>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="Country">countries</see></returns>
-		public async Task<IEnumerable<Country>> GetListAsync(CancellationToken cancellationToken = default(CancellationToken))
+		public Task<IEnumerable<Country>> GetListAsync(CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Country/GetList/";
 
-			return await _cakeMailRestClient.ExecuteArrayRequestAsync<Country>(path, null, "countries", cancellationToken).ConfigureAwait(false);
+			return _cakeMailRestClient.ExecuteArrayRequestAsync<Country>(path, null, "countries", cancellationToken);
 		}
 
 		/// <summary>
 		/// Get the list of state/provinces for a given country
 		/// </summary>
 		/// <param name="countryId">ID of the country.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="Province">privinces</see></returns>
-		public async Task<IEnumerable<Province>> GetProvincesAsync(string countryId, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<IEnumerable<Province>> GetProvincesAsync(string countryId, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/Country/GetProvinces/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("country_id", countryId)
 			};
 
-			return await _cakeMailRestClient.ExecuteArrayRequestAsync<Province>(path, parameters, "provinces", cancellationToken).ConfigureAwait(false);
+			return _cakeMailRestClient.ExecuteArrayRequestAsync<Province>(path, parameters, "provinces", cancellationToken);
 		}
 
 		#endregion

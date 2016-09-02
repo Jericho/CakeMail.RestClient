@@ -38,33 +38,38 @@ namespace CakeMail.RestClient.IntegrationTests
 			var fields = await api.Lists.GetFieldsAsync(userKey, listId, clientId).ConfigureAwait(false);
 			Console.WriteLine("List contains the following fields: {0}", string.Join(", ", fields.Select(f => f.Name)));
 
-			var listMemberId = await api.Lists.SubscribeAsync(userKey, listId, "integration@testing.com", true, true, new[]
+			var subscriberCustomFields = new[]
 			{
-				new KeyValuePair<string, object>("MyCustomField1", 12345), 
-				new KeyValuePair<string, object>("MyCustomField2", DateTime.UtcNow), 
-				new KeyValuePair<string, object>("MyCustomField3", "qwerty") 
-			}, clientId).ConfigureAwait(false);
+				new KeyValuePair<string, object>("MyCustomField1", 12345),
+				new KeyValuePair<string, object>("MyCustomField2", DateTime.UtcNow),
+				new KeyValuePair<string, object>("MyCustomField3", "qwerty")
+			};
+			var listMemberId = await api.Lists.SubscribeAsync(userKey, listId, "integration@testing.com", true, true, subscriberCustomFields, clientId).ConfigureAwait(false);
 			Console.WriteLine("One member added to the list");
+
+			var query = "`email`=\"integration@testing.com\"";
+			var subscribers = await api.Lists.GetMembersAsync(userKey, listId, query: query, clientId: clientId).ConfigureAwait(false);
+			Console.WriteLine("Subscribers retrieved: {0}", subscribers.Count());
 
 			var subscriber = await api.Lists.GetMemberAsync(userKey, listId, listMemberId, clientId).ConfigureAwait(false);
 			Console.WriteLine("Subscriber retrieved: {0}", subscriber.Email);
 
-			var member1 = new ListMember()
+			var member1 = new ListMember
 			{
 				Email = "aa@aa.com",
-				CustomFields = new Dictionary<string, object>()
+				CustomFields = new Dictionary<string, object>
 				{
 					{ "MyCustomField1", 12345 },
 					{ "MyCustomField2", DateTime.UtcNow },
 					{ "MyCustomField3", "qwerty" }
 				}
 			};
-			var member2 = new ListMember()
+			var member2 = new ListMember
 			{
 				Email = "bbb@bbb.com",
-				CustomFields = new Dictionary<string, object>()
+				CustomFields = new Dictionary<string, object>
 				{
-					{ "MyCustomField1", 98765},
+					{ "MyCustomField1", 98765 },
 					{ "MyCustomField2", DateTime.MinValue },
 					{ "MyCustomField3", "azerty" }
 				}
@@ -80,7 +85,7 @@ namespace CakeMail.RestClient.IntegrationTests
 
 			var customFieldsToUpdate = new[]
 			{
-				new KeyValuePair<string, object>("MyCustomField1", 555555), 
+				new KeyValuePair<string, object>("MyCustomField1", 555555),
 				new KeyValuePair<string, object>("MyCustomField3", "zzzzzzzzzzzzzzzzzzzzzzzzzz")
 			};
 			var memberUpdated = await api.Lists.UpdateMemberAsync(userKey, listId, 1, customFieldsToUpdate, clientId).ConfigureAwait(false);

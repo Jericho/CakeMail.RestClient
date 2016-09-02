@@ -32,6 +32,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="name">Name of the segment.</param>
 		/// <param name="query">Rules for the segment.</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>ID of the new segment</returns>
 		/// <remarks>
 		/// Here is what I have discovered about the query: 
@@ -40,11 +41,11 @@ namespace CakeMail.RestClient.Resources
 		///		3) The percent sign is the wilcard
 		///		Here's an example: (`email` LIKE "a%")
 		///	</remarks>
-		public async Task<long> CreateAsync(string userKey, long listId, string name, string query = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<long> CreateAsync(string userKey, long listId, string name, string query = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/CreateSublist/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -53,7 +54,7 @@ namespace CakeMail.RestClient.Resources
 			if (query != null) parameters.Add(new KeyValuePair<string, object>("query", query));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<long>(path, parameters, null, cancellationToken).ConfigureAwait(false);
+			return _cakeMailRestClient.ExecuteRequestAsync<long>(path, parameters, null, cancellationToken);
 		}
 
 		/// <summary>
@@ -64,12 +65,13 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="includeStatistics">True if you want the statistics</param>
 		/// <param name="calculateEngagement">True if you want the engagement information to be calculated</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The <see cref="Segment">segment</see></returns>
-		public async Task<Segment> GetAsync(string userKey, long segmentId, bool includeStatistics = true, bool calculateEngagement = false, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<Segment> GetAsync(string userKey, long segmentId, bool includeStatistics = true, bool calculateEngagement = false, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/List/GetInfo/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("sublist_id", segmentId),
@@ -78,7 +80,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<Segment>(path, parameters, null, cancellationToken).ConfigureAwait(false);
+			return _cakeMailRestClient.ExecuteRequestAsync<Segment>(path, parameters, null, cancellationToken);
 		}
 
 		/// <summary>
@@ -90,13 +92,14 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="name">Name of the segment.</param>
 		/// <param name="query">Rules for the segment.</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the segment was updated</returns>
 		/// <remarks>A segment is sometimes referred to as a 'sub-list'</remarks>
-		public async Task<bool> UpdateAsync(string userKey, long segmentId, long listId, string name = null, string query = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<bool> UpdateAsync(string userKey, long segmentId, long listId, string name = null, string query = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/SetInfo/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("sublist_id", segmentId),
@@ -106,7 +109,7 @@ namespace CakeMail.RestClient.Resources
 			if (query != null) parameters.Add(new KeyValuePair<string, object>("query", query));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
+			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);
 		}
 
 		/// <summary>
@@ -115,19 +118,20 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="segmentId">ID of the segment</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the segment was deleted</returns>
-		public async Task<bool> DeleteAsync(string userKey, long segmentId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<bool> DeleteAsync(string userKey, long segmentId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/DeleteSublist/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("sublist_id", segmentId)
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
+			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);
 		}
 
 		/// <summary>
@@ -139,12 +143,13 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="offset">Offset the beginning of resulting segments.</param>
 		/// <param name="includeDetails">Retrieve all the stats for the segment</param>
 		/// <param name="clientId">ID of the client</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>Enumeration of <see cref="Segment">segments</see> matching the filtering criteria</returns>
-		public async Task<IEnumerable<Segment>> GetSegmentsAsync(string userKey, long listId, int? limit = 0, int? offset = 0, bool includeDetails = true, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<IEnumerable<Segment>> GetSegmentsAsync(string userKey, long listId, int? limit = 0, int? offset = 0, bool includeDetails = true, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/List/GetSublists/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -155,7 +160,7 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteArrayRequestAsync<Segment>(path, parameters, "sublists", cancellationToken).ConfigureAwait(false);
+			return _cakeMailRestClient.ExecuteArrayRequestAsync<Segment>(path, parameters, "sublists", cancellationToken);
 		}
 
 		/// <summary>
@@ -164,12 +169,13 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="listId">ID of the list</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
+		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The count of campaigns matching the filtering criteria</returns>
-		public async Task<long> GetCountAsync(string userKey, long listId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<long> GetCountAsync(string userKey, long listId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var path = "/List/GetList/";
 
-			var parameters = new List<KeyValuePair<string, object>>()
+			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
@@ -177,7 +183,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return await _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken).ConfigureAwait(false);
+			return _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken);
 		}
 
 		#endregion

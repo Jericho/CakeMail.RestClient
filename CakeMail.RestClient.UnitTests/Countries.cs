@@ -1,10 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using RestSharp;
-using System;
+using Shouldly;
 using System.Linq;
-using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.UnitTests
@@ -18,30 +15,22 @@ namespace CakeMail.RestClient.UnitTests
 		public async Task GetCountries()
 		{
 			// Arrange
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/Country/GetList/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 0
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			var parameters = new Parameter[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":{\"countries\":[{\"id\":\"f1\",\"en_name\":\"Fictitious Country 1\",\"fr_name\":\"Pays fictif 1\"},{\"id\":\"f2\",\"en_name\":\"Fictitious Country 2\",\"fr_name\":\"Pays fictif 2\"}]}}"
-			});
+				// There are no parameters
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":{\"countries\":[{\"id\":\"f1\",\"en_name\":\"Fictitious Country 1\",\"fr_name\":\"Pays fictif 1\"},{\"id\":\"f2\",\"en_name\":\"Fictitious Country 2\",\"fr_name\":\"Pays fictif 2\"}]}}";
+			var mockRestClient = new MockRestClient("/Country/GetList/", parameters, jsonResponse, false);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
 			var result = await apiClient.Countries.GetListAsync();
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.IsTrue(result.Any(tz => tz.Id == "f1" && tz.EnglishName.Equals("Fictitious Country 1")));
-			Assert.IsTrue(result.Any(tz => tz.Id == "f2" && tz.EnglishName.Equals("Fictitious Country 2")));
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.Any(tz => tz.Id == "f1" && tz.EnglishName.Equals("Fictitious Country 1")).ShouldBeTrue();
+			result.Any(tz => tz.Id == "f2" && tz.EnglishName.Equals("Fictitious Country 2")).ShouldBeTrue();
 		}
 
 		[TestMethod]
@@ -49,32 +38,22 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var countryId = "f1";
-
-			var mockRestClient = new Mock<IRestClient>(MockBehavior.Strict);
-			mockRestClient.Setup(m => m.BaseUrl).Returns(new Uri("http://localhost"));
-			mockRestClient.Setup(m => m.ExecuteTaskAsync(It.Is<IRestRequest>(r =>
-				r.Method == Method.POST &&
-				r.Resource == "/Country/GetProvinces/" &&
-				r.Parameters.Count(p => p.Name == "apikey" && (string)p.Value == API_KEY && p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.HttpHeader) == 1 &&
-				r.Parameters.Count(p => p.Type == ParameterType.GetOrPost) == 1 &&
-				r.Parameters.Count(p => p.Name == "country_id" && (string)p.Value == countryId && p.Type == ParameterType.GetOrPost) == 1
-			), It.IsAny<CancellationToken>())).ReturnsAsync(new RestResponse()
+			var parameters = new[]
 			{
-				StatusCode = HttpStatusCode.OK,
-				ContentType = "json",
-				Content = "{\"status\":\"success\",\"data\":{\"provinces\":[{\"id\":\"p1\",\"en_name\":\"Fictitious Province 1\",\"fr_name\":\"Province fictive 1\"},{\"id\":\"p2\",\"en_name\":\"Fictitious Province 2\",\"fr_name\":\"Province fictive 2\"}]}}"
-			});
+				new Parameter { Type = ParameterType.GetOrPost, Name = "country_id", Value = countryId }
+			};
+			var jsonResponse = "{\"status\":\"success\",\"data\":{\"provinces\":[{\"id\":\"p1\",\"en_name\":\"Fictitious Province 1\",\"fr_name\":\"Province fictive 1\"},{\"id\":\"p2\",\"en_name\":\"Fictitious Province 2\",\"fr_name\":\"Province fictive 2\"}]}}";
+			var mockRestClient = new MockRestClient("/Country/GetProvinces/", parameters, jsonResponse, false);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
 			var result = await apiClient.Countries.GetProvincesAsync(countryId);
 
 			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count());
-			Assert.IsTrue(result.Any(tz => tz.Id == "p1" && tz.EnglishName.Equals("Fictitious Province 1")));
-			Assert.IsTrue(result.Any(tz => tz.Id == "p2" && tz.EnglishName.Equals("Fictitious Province 2")));
+			result.ShouldNotBeNull();
+			result.Count().ShouldBe(2);
+			result.Any(tz => tz.Id == "p1" && tz.EnglishName.Equals("Fictitious Province 1")).ShouldBeTrue();
+			result.Any(tz => tz.Id == "p2" && tz.EnglishName.Equals("Fictitious Province 2")).ShouldBeTrue();
 		}
 	}
 }

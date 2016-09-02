@@ -63,7 +63,6 @@ namespace CakeMail.RestClient.Models
 		[JsonConverter(typeof(CakeMailIntegerBooleanConverter))]
 		public bool ContactSameAsAdmin { get; set; }
 
-
 		[JsonProperty("admin_email")]
 		public string AdminEmail { get; set; }
 
@@ -90,7 +89,6 @@ namespace CakeMail.RestClient.Models
 
 		[JsonProperty("admin_title")]
 		public string AdminTitle { get; set; }
-
 
 		[JsonProperty("contact_email")]
 		public string PrimaryContactEmail { get; set; }
