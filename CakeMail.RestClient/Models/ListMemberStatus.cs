@@ -15,6 +15,8 @@ namespace CakeMail.RestClient.Models
 		Deleted,
 		[EnumMember(Value = "inactive_bounced")]
 		InactiveBounced,
+		[EnumMember(Value = "active_bounced")]
+		ActiveBounced,
 		[EnumMember(Value = "spam")]
 		Spam
 	}
