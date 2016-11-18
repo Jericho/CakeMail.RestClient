@@ -176,7 +176,7 @@ namespace CakeMail.RestClient.Models
 		public long UniqueOpens { get; set; }
 
 		[JsonProperty("unsubscribes")]
-		public int? unsubscribes { get; set; }
+		public int? Unsubscribes { get; set; }
 
 		#endregion
 	}

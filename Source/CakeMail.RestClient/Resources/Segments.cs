@@ -35,12 +35,12 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>ID of the new segment</returns>
 		/// <remarks>
-		/// Here is what I have discovered about the query: 
-		///		1) the entire query must be surrounded by parenthesis: (...your query...)
-		///		2) field names must be surrounded with the 'special' quote: `yourfieldname`. On my US english keyboard, this 'special quote is the key directly above the 'Tab' and to the left of the '1'.
-		///		3) The percent sign is the wilcard
-		///		Here's an example: (`email` LIKE "a%")
-		///	</remarks>
+		/// Here is what I have discovered about the query:
+		/// 	1) the entire query must be surrounded by parenthesis: (...your query...)
+		/// 	2) field names must be surrounded with the 'special' quote: `yourfieldname`. On my US english keyboard, this 'special' quote is the key directly above the 'Tab' and to the left of the '1'.
+		/// 	3) The percent sign is the wilcard
+		/// 	Here's an example: (`email` LIKE "a%")
+		/// </remarks>
 		public Task<long> CreateAsync(string userKey, long listId, string name, string query = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			string path = "/List/CreateSublist/";

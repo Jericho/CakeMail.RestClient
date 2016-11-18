@@ -86,16 +86,16 @@ namespace CakeMail.RestClient.Resources
 			if (adminEmail != null) parameters.Add(new KeyValuePair<string, object>("admin_email", adminEmail));
 			if (adminFirstName != null) parameters.Add(new KeyValuePair<string, object>("admin_first_name", adminFirstName));
 			if (adminLastName != null) parameters.Add(new KeyValuePair<string, object>("admin_last_name", adminLastName));
-			if (adminPassword != null)
-			{
-				parameters.Add(new KeyValuePair<string, object>("admin_password", adminPassword));
-				parameters.Add(new KeyValuePair<string, object>("admin_password_confirmation", adminPassword));
-			}
 			if (adminTitle != null) parameters.Add(new KeyValuePair<string, object>("admin_title", adminTitle));
 			if (adminOfficePhone != null) parameters.Add(new KeyValuePair<string, object>("admin_office_phone", adminOfficePhone));
 			if (adminMobilePhone != null) parameters.Add(new KeyValuePair<string, object>("admin_mobile_phone", adminMobilePhone));
 			if (adminLanguage != null) parameters.Add(new KeyValuePair<string, object>("admin_language", adminLanguage));
 			if (adminTimezoneId.HasValue) parameters.Add(new KeyValuePair<string, object>("admin_timezone_id", adminTimezoneId.Value));
+			if (adminPassword != null)
+			{
+				parameters.Add(new KeyValuePair<string, object>("admin_password", adminPassword));
+				parameters.Add(new KeyValuePair<string, object>("admin_password_confirmation", adminPassword));
+			}
 
 			// Contact
 			parameters.Add(new KeyValuePair<string, object>("contact_same_as_admin", primaryContactSameAsAdmin ? "1" : "0"));
@@ -104,16 +104,16 @@ namespace CakeMail.RestClient.Resources
 				if (primaryContactEmail != null) parameters.Add(new KeyValuePair<string, object>("contact_email", primaryContactEmail));
 				if (primaryContactFirstName != null) parameters.Add(new KeyValuePair<string, object>("contact_first_name", primaryContactFirstName));
 				if (primaryContactLastName != null) parameters.Add(new KeyValuePair<string, object>("contact_last_name", primaryContactLastName));
-				if (primaryContactPassword != null)
-				{
-					parameters.Add(new KeyValuePair<string, object>("contact_password", primaryContactPassword));
-					parameters.Add(new KeyValuePair<string, object>("contact_password_confirmation", primaryContactPassword));
-				}
 				if (primaryContactTitle != null) parameters.Add(new KeyValuePair<string, object>("contact_title", primaryContactTitle));
 				if (primaryContactLanguage != null) parameters.Add(new KeyValuePair<string, object>("contact_language", primaryContactLanguage));
 				if (primaryContactTimezoneId.HasValue) parameters.Add(new KeyValuePair<string, object>("contact_timezone_id", primaryContactTimezoneId.Value));
 				if (primaryContactOfficePhone != null) parameters.Add(new KeyValuePair<string, object>("contact_office_phone", primaryContactOfficePhone));
 				if (primaryContactMobilePhone != null) parameters.Add(new KeyValuePair<string, object>("contact_mobile_phone", primaryContactMobilePhone));
+				if (primaryContactPassword != null)
+				{
+					parameters.Add(new KeyValuePair<string, object>("contact_password", primaryContactPassword));
+					parameters.Add(new KeyValuePair<string, object>("contact_password_confirmation", primaryContactPassword));
+				}
 			}
 
 			return _cakeMailRestClient.ExecuteRequestAsync<string>(path, parameters, null, cancellationToken);

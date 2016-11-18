@@ -383,6 +383,7 @@ namespace CakeMail.RestClient.Resources
 					else parameters.Add(new KeyValuePair<string, object>(string.Format("data[{0}]", customField.Key), customField.Value));
 				}
 			}
+
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return _cakeMailRestClient.ExecuteRequestAsync<long>(path, parameters, null, cancellationToken);
@@ -426,6 +427,7 @@ namespace CakeMail.RestClient.Resources
 					}
 				}
 			}
+
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return _cakeMailRestClient.ExecuteArrayRequestAsync<ImportResult>(path, parameters, null, cancellationToken);
@@ -616,6 +618,7 @@ namespace CakeMail.RestClient.Resources
 					else parameters.Add(new KeyValuePair<string, object>(string.Format("data[{0}]", customField.Key), customField.Value));
 				}
 			}
+
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);

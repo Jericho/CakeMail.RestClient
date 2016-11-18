@@ -54,7 +54,7 @@ namespace CakeMail.RestClient.Models
 		public string Timezone { get; set; }
 
 		[JsonProperty("timezone_id")]
-		public long timezone_id { get; set; }
+		public long TimezoneId { get; set; }
 
 		[JsonProperty("office_phone")]
 		public string OfficePhone { get; set; }
@@ -75,7 +75,7 @@ namespace CakeMail.RestClient.Models
 		public string CPanel { get; set; }
 
 		[JsonProperty("permissions")]
-		public string[] permissions { get; set; }
+		public string[] Permissions { get; set; }
 
 		#endregion
 	}

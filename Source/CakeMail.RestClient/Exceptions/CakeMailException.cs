@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
 
 namespace CakeMail.RestClient.Exceptions
 {
@@ -8,8 +6,11 @@ namespace CakeMail.RestClient.Exceptions
 	/// This class represents a generic CakeMail error. All other exceptions thrown by
 	/// the CakeMail API subclass this exception
 	/// </summary>
-	[Serializable]
+#if NETSTANDARD
+	public class CakeMailException : Exception
+#else
 	public class CakeMailException : ApplicationException
+#endif
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CakeMailException"/> class.
@@ -28,31 +29,6 @@ namespace CakeMail.RestClient.Exceptions
 		public CakeMailException(string message, Exception innerException)
 			: base(message, innerException)
 		{
-		}
-
-		/// <summary>
-		/// Deserialization constructor 
-		/// 
-		/// Constructor should be protected for unsealed classes, private for sealed classes.
-		/// (The Serializer invokes this constructor through reflection, so it can be private)
-		/// </summary>
-		/// <param name="info"></param>
-		/// <param name="context"></param>
-		[SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
-		protected CakeMailException(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-		}
-
-		/// <summary>
-		/// Populates a <see cref="SerializationInfo">SerializationInfo</see> with the data needed to serialize the target object.
-		/// </summary>
-		/// <param name="info"></param>
-		/// <param name="context"></param>
-		[SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
-		public override void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			base.GetObjectData(info, context);
 		}
 	}
 }

@@ -5,7 +5,7 @@ using System;
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	/// A List is a collection of subscribers (or List Members, or Records). 
+	/// A List is a collection of subscribers (or List Members, or Records).
 	/// Each subscriber or List Member is uniquely identified by their email address, and may include an limited amount of Fields containing demographic information associated to each email address.
 	/// </summary>
 	public class List
@@ -86,13 +86,13 @@ namespace CakeMail.RestClient.Models
 		public string oi_url { get; set; }
 
 		[JsonProperty("subscribe_url")]
-		public string subscribe_url { get; set; }
+		public string SubscribeUrl { get; set; }
 
 		[JsonProperty("oo_url")]
 		public string oo_url { get; set; }
 
 		[JsonProperty("webhook")]
-		public string webhook { get; set; }
+		public string Webhook { get; set; }
 
 		/// <remarks>This value is calculated when retrieving a list only if the 'calculateEngagement' parameter is set to true. Otherwise this value is null.</remarks>
 		[JsonProperty("engagement")]

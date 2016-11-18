@@ -49,6 +49,7 @@ namespace CakeMail.RestClient.Resources
 					parameters.Add(new KeyValuePair<string, object>(string.Format("email[{0}]", item.Index), item.Email));
 				}
 			}
+
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return _cakeMailRestClient.ExecuteArrayRequestAsync<SuppressEmailResult>(path, parameters, null, cancellationToken);
@@ -77,6 +78,7 @@ namespace CakeMail.RestClient.Resources
 					parameters.Add(new KeyValuePair<string, object>(string.Format("domain[{0}]", item.Index), item.Domain));
 				}
 			}
+
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return _cakeMailRestClient.ExecuteArrayRequestAsync<SuppressDomainResult>(path, parameters, null, cancellationToken);
@@ -105,6 +107,7 @@ namespace CakeMail.RestClient.Resources
 					parameters.Add(new KeyValuePair<string, object>(string.Format("localpart[{0}]", item.Index), item.LocalPart));
 				}
 			}
+
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return _cakeMailRestClient.ExecuteArrayRequestAsync<SuppressLocalPartResult>(path, parameters, "localparts", cancellationToken);
@@ -133,6 +136,7 @@ namespace CakeMail.RestClient.Resources
 					parameters.Add(new KeyValuePair<string, object>(string.Format("email[{0}]", item.Index), item.Email));
 				}
 			}
+
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return _cakeMailRestClient.ExecuteArrayRequestAsync<SuppressEmailResult>(path, parameters, null, cancellationToken);
@@ -161,6 +165,7 @@ namespace CakeMail.RestClient.Resources
 					parameters.Add(new KeyValuePair<string, object>(string.Format("domain[{0}]", item.Index), item.Domain));
 				}
 			}
+
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return _cakeMailRestClient.ExecuteArrayRequestAsync<SuppressDomainResult>(path, parameters, null, cancellationToken);
@@ -189,6 +194,7 @@ namespace CakeMail.RestClient.Resources
 					parameters.Add(new KeyValuePair<string, object>(string.Format("localpart[{0}]", item.Index), item.LocalPart));
 				}
 			}
+
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return _cakeMailRestClient.ExecuteArrayRequestAsync<SuppressLocalPartResult>(path, parameters, "localparts", cancellationToken);

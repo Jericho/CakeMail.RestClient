@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 
 namespace CakeMail.RestClient.Utilities
@@ -27,13 +28,14 @@ namespace CakeMail.RestClient.Utilities
 		/// <returns>The string value of the 'EnumMember' attribute associated with the value</returns>
 		public static string GetEnumMemberValue(this Enum value)
 		{
-			var type = value.GetType();
-			var name = Enum.GetName(type, value);
-			var attrib = type.GetField(name)
-				.GetCustomAttributes(false)
-				.OfType<EnumMemberAttribute>()
-				.SingleOrDefault();
-			return attrib == null ? "" : attrib.Value;
+			var fieldInfo = value.GetType().GetField(value.ToString());
+			if (fieldInfo == null) return value.ToString();
+
+			var attributes = fieldInfo.GetCustomAttributes(typeof(EnumMemberAttribute), false).ToArray();
+			if (attributes == null || attributes.Length == 0) return value.ToString();
+
+			var descriptionAttribute = attributes[0] as EnumMemberAttribute;
+			return (descriptionAttribute == null ? value.ToString() : descriptionAttribute.Value);
 		}
 
 		/// <summary>
@@ -44,21 +46,18 @@ namespace CakeMail.RestClient.Utilities
 		/// <returns>The Enum value associated with the 'EnumMember' attribute</returns>
 		public static T GetValueFromEnumMember<T>(this string enumMember) where T : struct, IConvertible
 		{
-			var type = typeof(T);
-			if (!type.IsEnum) throw new NotSupportedException("Type given must be an Enum");
-			foreach (var field in type.GetFields())
+			var fields = typeof(T).GetFields();
+			foreach (var fieldInfo in fields)
 			{
-				var attribute = Attribute.GetCustomAttribute(field, typeof(EnumMemberAttribute)) as EnumMemberAttribute;
-				if (attribute != null)
+				var attributes = fieldInfo.GetCustomAttributes(typeof(EnumMemberAttribute), false).OfType<EnumMemberAttribute>();
+				if (attributes.Any(a => a.Value == enumMember))
 				{
-					if (attribute.Value == enumMember) return (T)field.GetValue(null);
-				}
-				else
-				{
-					if (field.Name == enumMember) return (T)field.GetValue(null);
+					return (T)Enum.Parse(typeof(T), fieldInfo.Name, true);
 				}
 			}
-			throw new ArgumentException(string.Format("{0} does not have an element with value {1}", typeof(T), enumMember));
+
+			var message = string.Format("'{0}' is not a valid enumeration of '{1}'", enumMember, typeof(T).Name);
+			throw new Exception(message);
 		}
 	}
 }

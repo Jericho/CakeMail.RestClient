@@ -9,17 +9,12 @@ namespace CakeMail.RestClient
 	/// <summary>
 	/// Provides the base interface for implementation of access to the CakeMail API
 	/// </summary>
-	interface ICakeMailRestClient
+	public interface ICakeMailRestClient
 	{
 		/// <summary>
 		/// The API key provided by CakeMail
 		/// </summary>
 		string ApiKey { get; }
-
-		/// <summary>
-		/// The web proxy
-		/// </summary>
-		IWebProxy Proxy { get; }
 
 		/// <summary>
 		/// The user agent

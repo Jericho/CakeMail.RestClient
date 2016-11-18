@@ -199,12 +199,12 @@ namespace CakeMail.RestClient.Resources
 			if (mobilePhone != null) parameters.Add(new KeyValuePair<string, object>("mobile_phone", mobilePhone));
 			if (language != null) parameters.Add(new KeyValuePair<string, object>("language", language));
 			if (timezoneId != null) parameters.Add(new KeyValuePair<string, object>("timezone_id", timezoneId));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 			if (password != null)
 			{
 				parameters.Add(new KeyValuePair<string, object>("password", password));
 				parameters.Add(new KeyValuePair<string, object>("password_confirmation", password));
 			}
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);
 		}

@@ -68,6 +68,7 @@ namespace CakeMail.RestClient.Resources
 			{
 				parameters.Add(new KeyValuePair<string, object>(string.Format("permission[{0}]", item.Index), item.Name));
 			}
+
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);

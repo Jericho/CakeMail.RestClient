@@ -53,6 +53,7 @@ namespace CakeMail.RestClient.Resources
 					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}][name]", item.Index), item.Name));
 				}
 			}
+
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			// The data returned when creating a new category is a little bit unusual
@@ -184,6 +185,7 @@ namespace CakeMail.RestClient.Resources
 					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}]", label.Key), label.Value));
 				}
 			}
+
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);
@@ -265,6 +267,7 @@ namespace CakeMail.RestClient.Resources
 					parameters.Add(new KeyValuePair<string, object>(string.Format("client[{0}][visible]", item.Index), item.Visible ? "true" : "false"));
 				}
 			}
+
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);
@@ -298,6 +301,7 @@ namespace CakeMail.RestClient.Resources
 					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}][name]", item.Index), item.Name));
 				}
 			}
+
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			// The data returned when creating a new template is a little bit unusual
@@ -431,6 +435,7 @@ namespace CakeMail.RestClient.Resources
 					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}]", label.Key), label.Value));
 				}
 			}
+
 			if (content != null) parameters.Add(new KeyValuePair<string, object>("content", content));
 			if (categoryId.HasValue) parameters.Add(new KeyValuePair<string, object>("category_id", categoryId.Value));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
