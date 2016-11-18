@@ -1,24 +1,63 @@
 <?xml version="1.0"?>
 <package >
 	<metadata>
-	<id>$id$</id>
-	<version>5.1.0</version>
+	<id>CakeMail.RestClient</id>
+	<version>0.0.0</version>
 	<title>$title$</title>
-	<authors>$author$</authors>
-	<owners>$author$</owners>
+	<authors>Jeremie Desautels</authors>
+	<owners>Jeremie Desautels</owners>
+	<description>Strongly typed library for CakeMail's API</description>
+	<summary>CakeMail.RestClient is a .NET wrapper for the CakeMail API</summary>
 	<licenseUrl>http://jericho.mit-license.org</licenseUrl>
 	<projectUrl>https://github.com/Jericho/CakeMail.RestClient</projectUrl>
 	<iconUrl>https://github.com/identicons/jericho.png</iconUrl>
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
-	<description>$description$</description>
-	<releaseNotes>
-		- Add a missing value to the ListMemberStatus enum
-	</releaseNotes>
-	<copyright>Copyright 2016</copyright>
+	<copyright>Copyright (c) Jeremie Desautels and contributors</copyright>
+	<language>en-US</language>
 	<tags>CakeMail API REST</tags>
 	<dependencies>
-		<dependency id="Newtonsoft.Json" version="8.0.2" />
-		<dependency id="RestSharp" version="105.2.3" />
+		<group targetFramework="net452">
+			<dependency id="Newtonsoft.Json" version="8.0.2" />
+			<dependency id="RestSharp" version="105.2.3" />
+		</group>
+		<group targetFramework="net46">
+			<dependency id="Newtonsoft.Json" version="8.0.2" />
+			<dependency id="RestSharp" version="105.2.3" />
+		</group>
+		<group targetFramework="net461">
+			<dependency id="Newtonsoft.Json" version="8.0.2" />
+			<dependency id="RestSharp" version="105.2.3" />
+		</group>
+		<group targetFramework="net462">
+			<dependency id="Newtonsoft.Json" version="8.0.2" />
+			<dependency id="RestSharp" version="105.2.3" />
+		</group>
+		<group targetFramework=".NETStandard1.3">
+			<dependency id="NETStandard.Library" version="1.6.0" />
+			<dependency id="Newtonsoft.Json" version="9.0.1" />
+			<dependency id="System.ComponentModel.Primitives" version="4.1.0" />
+			<dependency id="System.Reflection.TypeExtensions" version="4.1.0" />
+		</group>
+		<group targetFramework=".NETStandard1.6">
+			<dependency id="NETStandard.Library" version="1.6.0" />
+			<dependency id="Newtonsoft.Json" version="9.0.1" />
+			<dependency id="System.ComponentModel.Primitives" version="4.1.0" />
+			<dependency id="System.Reflection.TypeExtensions" version="4.1.0" />
+		</group>
 	</dependencies>
 	</metadata>
+	<files>
+		<file src="CakeMail.RestClient/bin/Release/net452/CakeMail.RestClient.dll" target="lib/net452" />
+		<file src="CakeMail.RestClient/bin/Release/net452/CakeMail.RestClient.pdb" target="lib/net452" />
+		<file src="CakeMail.RestClient/bin/Release/net46/CakeMail.RestClient.dll" target="lib/net46" />
+		<file src="CakeMail.RestClient/bin/Release/net46/CakeMail.RestClient.pdb" target="lib/net46" />
+		<file src="CakeMail.RestClient/bin/Release/net461/CakeMail.RestClient.dll" target="lib/net461" />
+		<file src="CakeMail.RestClient/bin/Release/net461/CakeMail.RestClient.pdb" target="lib/net461" />
+		<file src="CakeMail.RestClient/bin/Release/net462/CakeMail.RestClient.dll" target="lib/net462" />
+		<file src="CakeMail.RestClient/bin/Release/net462/CakeMail.RestClient.pdb" target="lib/net462" />
+		<file src="CakeMail.RestClient/bin/Release/netstandard1.3/CakeMail.RestClient.dll" target="lib/netstandard1.3" />
+		<file src="CakeMail.RestClient/bin/Release/netstandard1.3/CakeMail.RestClient.pdb" target="lib/netstandard1.3" />
+		<file src="CakeMail.RestClient/bin/Release/netstandard1.6/CakeMail.RestClient.dll" target="lib/netstandard1.6" />
+		<file src="CakeMail.RestClient/bin/Release/netstandard1.6/CakeMail.RestClient.pdb" target="lib/netstandard1.6" />
+	</files>
 </package>
