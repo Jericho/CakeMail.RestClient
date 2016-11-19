@@ -14,11 +14,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{F7E192
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9D4FE070-9A1E-4746-BD77-5D81D7FF21FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakeMail.RestClient.IntegrationTests", "CakeMail.RestClient.IntegrationTests\CakeMail.RestClient.IntegrationTests.csproj", "{677D93C3-10C8-47AC-B196-60CA28F57A84}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakeMail.RestClient.UnitTests", "CakeMail.RestClient.UnitTests\CakeMail.RestClient.UnitTests.csproj", "{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CakeMail.RestClient", "CakeMail.RestClient\CakeMail.RestClient.xproj", "{DBEFB5D8-8E24-4152-8EFD-EF153FC3A753}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CakeMail.RestClient.IntegrationTests", "CakeMail.RestClient.IntegrationTests\CakeMail.RestClient.IntegrationTests.xproj", "{B19E7E01-717A-4D0E-B3BC-6D6F26A457A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,10 +26,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{677D93C3-10C8-47AC-B196-60CA28F57A84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{677D93C3-10C8-47AC-B196-60CA28F57A84}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{677D93C3-10C8-47AC-B196-60CA28F57A84}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{677D93C3-10C8-47AC-B196-60CA28F57A84}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -38,13 +34,17 @@ Global
 		{DBEFB5D8-8E24-4152-8EFD-EF153FC3A753}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBEFB5D8-8E24-4152-8EFD-EF153FC3A753}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBEFB5D8-8E24-4152-8EFD-EF153FC3A753}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B19E7E01-717A-4D0E-B3BC-6D6F26A457A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B19E7E01-717A-4D0E-B3BC-6D6F26A457A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B19E7E01-717A-4D0E-B3BC-6D6F26A457A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B19E7E01-717A-4D0E-B3BC-6D6F26A457A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{677D93C3-10C8-47AC-B196-60CA28F57A84} = {9D4FE070-9A1E-4746-BD77-5D81D7FF21FF}
 		{B481EE0F-4D2F-40AB-B2B1-7329AFC330DF} = {9D4FE070-9A1E-4746-BD77-5D81D7FF21FF}
 		{DBEFB5D8-8E24-4152-8EFD-EF153FC3A753} = {F7E19221-12B8-4C6E-B87A-167A1E95EBA1}
+		{B19E7E01-717A-4D0E-B3BC-6D6F26A457A8} = {9D4FE070-9A1E-4746-BD77-5D81D7FF21FF}
 	EndGlobalSection
 EndGlobal

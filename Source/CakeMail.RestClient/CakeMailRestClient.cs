@@ -2,15 +2,18 @@
 using CakeMail.RestClient.Resources;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CakeMail.RestClient.Utilities;
 
 namespace CakeMail.RestClient
 {
@@ -19,14 +22,22 @@ namespace CakeMail.RestClient
 	/// </summary>
 	public class CakeMailRestClient : ICakeMailRestClient
 	{
-		#region Fields
+		#region FIELDS
 
-		private static readonly string _version = GetVersion();
-		private readonly IRestClient _client;
+		private const string MEDIA_TYPE = "application/json";
+
+		private readonly bool _mustDisposeHttpClient;
+
+		private HttpClient _httpClient;
+
+		private enum Methods
+		{
+			GET, PUT, POST, PATCH, DELETE
+		}
 
 		#endregion
 
-		#region Properties
+		#region PROPERTIES
 
 		/// <summary>
 		/// The API key provided by CakeMail
@@ -34,36 +45,19 @@ namespace CakeMail.RestClient
 		public string ApiKey { get; private set; }
 
 		/// <summary>
-		/// The web proxy
-		/// </summary>
-		public IWebProxy Proxy
-		{
-			get { return _client.Proxy; }
-		}
-
-		/// <summary>
 		/// The user agent
 		/// </summary>
-		public string UserAgent
-		{
-			get { return _client.UserAgent; }
-		}
+		public string UserAgent { get; private set; }
 
 		/// <summary>
 		/// The timeout
 		/// </summary>
-		public int Timeout
-		{
-			get { return _client.Timeout; }
-		}
+		public int Timeout { get; private set; }
 
 		/// <summary>
 		/// The URL where all API requests are sent
 		/// </summary>
-		public Uri BaseUrl
-		{
-			get { return _client.BaseUrl; }
-		}
+		public Uri BaseUrl { get; private set; }
 
 		/// <summary>
 		/// The <see cref="Campaigns">Campaigns</see> resource
@@ -130,21 +124,27 @@ namespace CakeMail.RestClient
 		/// </summary>
 		public Triggers Triggers { get; private set; }
 
+		public string Version { get; private set; }
+
 		#endregion
 
-		#region Constructors and Destructors
+		#region CONSTRUCTORS AND DESTRUCTORS
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CakeMailRestClient"/> class.
 		/// </summary>
 		/// <param name="apiKey">The API Key received from CakeMail</param>
-		/// <param name="restClient">The rest client</param>
-		public CakeMailRestClient(string apiKey, IRestClient restClient)
-		{
-			this.ApiKey = apiKey;
-			_client = restClient;
+		public CakeMailRestClient(string apiKey) : this(apiKey, httpClient: (HttpClient)null) { }
 
-			InitializeResources();
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CakeMailRestClient"/> class.
+		/// </summary>
+		/// <param name="apiKey">The API Key received from CakeMail</param>
+		/// <param name="proxy">Allows you to specify a proxy</param>
+		public CakeMailRestClient(string apiKey, IWebProxy proxy = null)
+			: this(apiKey, httpClient: new HttpClient(new HttpClientHandler { Proxy = proxy, UseProxy = proxy != null }))
+		{
+			_mustDisposeHttpClient = true;
 		}
 
 		/// <summary>
@@ -153,24 +153,67 @@ namespace CakeMail.RestClient
 		/// <param name="apiKey">The API Key received from CakeMail</param>
 		/// <param name="host">The host where the API is hosted. The default is api.wbsrvc.com</param>
 		/// <param name="timeout">Timeout in milliseconds for connection to web service. The default is 5000.</param>
-		/// <param name="webProxy">The web proxy</param>
-		public CakeMailRestClient(string apiKey, string host = "api.wbsrvc.com", int timeout = 5000, IWebProxy webProxy = null)
+		/// <param name="httpClient">Allows you to inject your own HttpClient. This is useful, for example, to setup the HtppClient with a proxy</param>
+		public CakeMailRestClient(string apiKey, string host = "api.wbsrvc.com", int timeout = 5000, HttpClient httpClient = null)
 		{
-			this.ApiKey = apiKey;
+			ApiKey = apiKey;
+			BaseUrl = new Uri(string.Format("https://{0}", host));
+			Timeout = timeout;
 
-			_client = new RestSharp.RestClient("https://" + host)
-			{
-				Timeout = timeout,
-				UserAgent = string.Format("CakeMail .NET REST Client;{0}", _version),
-				Proxy = webProxy
-			};
+			Version = typeof(CakeMailRestClient).GetTypeInfo().Assembly.GetName().Version.ToString();
+			UserAgent = string.Format("CakeMail .NET REST Client;{0}", Version);
+
+			_mustDisposeHttpClient = httpClient == null;
+			_httpClient = httpClient ?? new HttpClient();
+			_httpClient.Timeout = TimeSpan.FromMilliseconds(Timeout);
+			_httpClient.BaseAddress = BaseUrl;
+			_httpClient.DefaultRequestHeaders.Accept.Clear();
+			_httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MEDIA_TYPE));
+			_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("apikey", ApiKey);
+			_httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", UserAgent);
 
 			InitializeResources();
 		}
 
+		~CakeMailRestClient()
+		{
+			// The object went out of scope and finalized is called.
+			// Call 'Dispose' to release unmanaged resources
+			// Managed resources will be released when GC runs the next time.
+			Dispose(false);
+		}
+
 		#endregion
 
-		#region Internal Methods
+		#region PUBLIC METHODS
+
+		public void Dispose()
+		{
+			// Call 'Dispose' to release resources
+			Dispose(true);
+
+			// Tell the GC that we have done the cleanup and there is nothing left for the Finalizer to do
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				ReleaseManagedResources();
+			}
+			else
+			{
+				// The object went out of scope and the Finalizer has been called.
+				// The GC will take care of releasing managed resources, therefore there is nothing to do here.
+			}
+
+			ReleaseUnmanagedResources();
+		}
+
+		#endregion
+
+		#region INTERNAL METHODS
 
 		internal Task<long> ExecuteCountRequestAsync(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken = default(CancellationToken))
 		{
@@ -187,8 +230,11 @@ namespace CakeMail.RestClient
 			// Execute the API call
 			var response = await ExecuteRequestAsync(urlPath, parameters, cancellationToken).ConfigureAwait(false);
 
+			// Make sure response indicates success
+			response.EnsureSuccess();
+
 			// Parse the response
-			var data = ParseCakeMailResponse(response);
+			var data = await ParseCakeMailResponseAsync(response).ConfigureAwait(false);
 
 			// Check if the response is a well-known object type (JArray, of JValue)
 			if (data is JArray) return (data as JArray).ToObject<T>();
@@ -208,29 +254,20 @@ namespace CakeMail.RestClient
 			return (property.Value as JObject).ToObject<T>();
 		}
 
-		internal async Task<IRestResponse> ExecuteRequestAsync(string urlPath, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken = default(CancellationToken))
+		internal async Task<HttpResponseMessage> ExecuteRequestAsync(string endpoint, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var request = new RestRequest(urlPath, Method.POST) { RequestFormat = DataFormat.Json };
+			var paramsWithValue = parameters.Where(p => p.Value != null).Select(p => string.Concat(Uri.EscapeDataString(p.Key), "=", Uri.EscapeDataString((string)p.Value)));
+			var paramsWithoutValue = parameters.Where(p => p.Value == null).Select(p => string.Concat(Uri.EscapeDataString(p.Key), "="));
+			var allParams = paramsWithValue.Union(paramsWithoutValue).ToArray();
+			var content = new StringContent(string.Join("&", paramsWithValue.Union(paramsWithoutValue)), Encoding.UTF8);
 
-			request.AddHeader("apikey", this.ApiKey);
-
-			if (parameters != null)
-			{
-				foreach (var parameter in parameters)
-				{
-					request.AddParameter(parameter.Key, parameter.Value);
-				}
-			}
-
-			var response = await _client.ExecuteTaskAsync(request, cancellationToken).ConfigureAwait(false);
-			ValidateResponse(request, response);
+			var response = await RequestAsync(Methods.POST, endpoint, content, cancellationToken).ConfigureAwait(false);
 
 #if DEBUG
-			var debugRequestMsg = string.Format("Request sent to CakeMail: {0}/{1}", _client.BaseUrl.ToString().TrimEnd('/'), urlPath.TrimStart('/'));
-			var debugHeadersMsg = string.Format("Request headers: {0}", string.Join("&", request.Parameters.Where(p => p.Type == ParameterType.HttpHeader).Select(p => string.Concat(p.Name, "=", p.Value))));
-			var debugParametersMsg = string.Format("Request parameters: {0}", string.Join("&", request.Parameters.Where(p => p.Type != ParameterType.HttpHeader).Select(p => string.Concat(p.Name, "=", p.Value))));
-			var debugResponseMsg = string.Format("Response received from CakeMail: {0}", response.Content);
-			Debug.WriteLine("{0}\r\n{1}\r\n{2}\r\n{3}\r\n{4}\r\n{0}", new string('=', 25), debugRequestMsg, debugHeadersMsg, debugParametersMsg, debugResponseMsg);
+			var debugRequestMsg = string.Format("Request sent to CakeMail: {0}/{1}", BaseUrl.ToString().TrimEnd('/'), endpoint.TrimStart('/'));
+			var debugParametersMsg = string.Format("Request parameters: {0}", string.Join("&", parameters.Select(p => string.Concat(p.Key, "=", p.Value))));
+			var debugResponseMsg = string.Format("Response received: {0}", await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+			Debug.WriteLine("{0}\r\n{1}\r\n{2}\r\n{3}\r\n{0}", new string('=', 25), debugRequestMsg, debugParametersMsg, debugResponseMsg);
 #endif
 
 			return response;
@@ -238,7 +275,53 @@ namespace CakeMail.RestClient
 
 		#endregion
 
-		#region Private Methods
+		#region PRIVATE METHODS
+
+		/// <summary>
+		///     Create a client that connects to the SendGrid Web API
+		/// </summary>
+		/// <param name="method">HTTP verb, case-insensitive</param>
+		/// <param name="endpoint">Resource endpoint</param>
+		/// <param name="content">A StringContent representing the content of the http request</param>
+		/// <returns>An asyncronous task</returns>
+		private async Task<HttpResponseMessage> RequestAsync(Methods method, string endpoint, StringContent content, CancellationToken cancellationToken = default(CancellationToken))
+		{
+			try
+			{
+				var methodAsString = string.Empty;
+				switch (method)
+				{
+					case Methods.GET: methodAsString = "GET"; break;
+					case Methods.PUT: methodAsString = "PUT"; break;
+					case Methods.POST: methodAsString = "POST"; break;
+					case Methods.PATCH: methodAsString = "PATCH"; break;
+					case Methods.DELETE: methodAsString = "DELETE"; break;
+					default:
+						var message = "{\"errors\":[{\"message\":\"Bad method call, supported methods are GET, PUT, POST, PATCH and DELETE\"}]}";
+						return new HttpResponseMessage(HttpStatusCode.MethodNotAllowed)
+						{
+							Content = new StringContent(message)
+						};
+				}
+
+				var httpRequest = new HttpRequestMessage
+				{
+					Method = new HttpMethod(methodAsString),
+					RequestUri = new Uri(string.Format("{0}{1}{2}", BaseUrl, endpoint.StartsWith("/", StringComparison.Ordinal) ? string.Empty : "/", endpoint)),
+					Content = content
+				};
+				var response = await _httpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+				return response;
+			}
+			catch (Exception ex)
+			{
+				var message = string.Format(".NET {0}, raw message: \n\n{1}", (ex is HttpRequestException) ? "HttpRequestException" : "Exception", ex.GetBaseException().Message);
+				return new HttpResponseMessage(HttpStatusCode.BadRequest)
+				{
+					Content = new StringContent(message)
+				};
+			}
+		}
 
 		private void InitializeResources()
 		{
@@ -257,26 +340,7 @@ namespace CakeMail.RestClient
 			this.Triggers = new Triggers(this);
 		}
 
-		private static string GetVersion()
-		{
-			try
-			{
-				// The following may throw 'System.Security.Permissions.FileIOPermission' under some circumpstances
-				//var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
-
-				// Here's an alternative suggested by Phil Haack: http://haacked.com/archive/2010/11/04/assembly-location-and-medium-trust.aspx
-				var assemblyVersion = new AssemblyName(typeof(CakeMailRestClient).Assembly.FullName).Version;
-				var version = string.Format("{0}.{1}.{2}", assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.Build);
-
-				return version;
-			}
-			catch
-			{
-				return "0.0.0";
-			}
-		}
-
-		private JToken ParseCakeMailResponse(IRestResponse response)
+		private async Task<JToken> ParseCakeMailResponseAsync(HttpResponseMessage response)
 		{
 			try
 			{
@@ -285,14 +349,15 @@ namespace CakeMail.RestClient
 				 *		"status" : "success",
 				 *		"data" : { ... data for the API call ... }
 				 *	}
-				 *	
+				 *
 				 * In case of an error, the response looks like this:
 				 *	{
 				 *		"status" : "failed",
 				 *		"data" : "An error has occured"
 				 *	}
 				 */
-				var cakeResponse = JObject.Parse(response.Content);
+				var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+				var cakeResponse = JObject.Parse(responseContent);
 				var status = cakeResponse["status"].ToString();
 				var data = cakeResponse["data"];
 				var postData = cakeResponse["post"];
@@ -311,83 +376,18 @@ namespace CakeMail.RestClient
 			}
 		}
 
-		private void ValidateResponse(IRestRequest request, IRestResponse response)
+		private void ReleaseManagedResources()
 		{
-			var responseUri = GetResponseUri(request, response);
-			if (response.ResponseStatus == ResponseStatus.Error)
+			if (_httpClient != null && _mustDisposeHttpClient)
 			{
-				var errorMessage = string.Format("Error received while making request: {0}", response.ErrorMessage);
-				throw new HttpException(errorMessage, response.StatusCode, responseUri);
-			}
-			else if (response.ResponseStatus == ResponseStatus.TimedOut)
-			{
-				throw new HttpException("Request timed out", response.StatusCode, responseUri, response.ErrorException);
-			}
-
-			var statusCode = (int)response.StatusCode;
-			if (statusCode == 200)
-			{
-				Validate200Response(request, response);
-			}
-			else if (statusCode >= 400 && statusCode < 500)
-			{
-				Validate400Response(request, response);
-			}
-			else if (statusCode >= 500 && statusCode < 600)
-			{
-				Validate500Response(request, response);
-			}
-			else if (!string.IsNullOrEmpty(response.ErrorMessage))
-			{
-				var errorMessage = string.Format("Received an error message from {0} (status code: {1}) (error message: {2})", request.Resource, (int)response.StatusCode, response.ErrorMessage);
-				throw new HttpException(errorMessage, response.StatusCode, responseUri);
-			}
-			else
-			{
-				var errorMessage = string.Format("Received an unexpected response from {0} (status code: {1})", request.Resource, (int)response.StatusCode);
-				throw new HttpException(errorMessage, response.StatusCode, responseUri);
+				_httpClient.Dispose();
+				_httpClient = null;
 			}
 		}
 
-		private void Validate200Response(IRestRequest request, IRestResponse response)
+		private void ReleaseUnmanagedResources()
 		{
-			var responseUri = GetResponseUri(request, response);
-			if (string.IsNullOrEmpty(response.Content))
-			{
-				var missingBodyMessage = string.Format("Received a 200 response from {0} but there was no message body.", request.Resource);
-				throw new HttpException(missingBodyMessage, response.StatusCode, responseUri);
-			}
-			else if (response.ContentType == null || !response.ContentType.Contains("json"))
-			{
-				var unsupportedContentTypeMessage = string.Format("Received a 200 response from {0} but the content type is not JSON: {1}", request.Resource, response.ContentType ?? "NULL");
-				throw new CakeMailException(unsupportedContentTypeMessage);
-			}
-		}
-
-		private void Validate400Response(IRestRequest request, IRestResponse response)
-		{
-			var responseUri = GetResponseUri(request, response);
-			if (string.IsNullOrEmpty(response.Content))
-			{
-				var missingBodyMessage = string.Format("Received a {0} error from {1} with no body", response.StatusCode, request.Resource);
-				throw new HttpException(missingBodyMessage, response.StatusCode, responseUri);
-			}
-
-			var errorMessage = string.Format("Received a {0} error from {1} with the following content: {2}", response.StatusCode, request.Resource, response.Content);
-			throw new HttpException(errorMessage, response.StatusCode, responseUri);
-		}
-
-		private void Validate500Response(IRestRequest request, IRestResponse response)
-		{
-			var responseUri = GetResponseUri(request, response);
-			var errorMessage = string.Format("Received a server ({0}) error from {1}", (int)response.StatusCode, request.Resource);
-			throw new HttpException(errorMessage, response.StatusCode, responseUri);
-		}
-
-		private Uri GetResponseUri(IRestRequest request, IRestResponse response)
-		{
-			var responseUri = response.ResponseUri ?? new Uri(string.Format("{0}/{1}", _client.BaseUrl.ToString().TrimEnd('/'), request.Resource.TrimStart('/')));
-			return responseUri;
+			// We do not hold references to unmanaged resources
 		}
 
 		#endregion

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Runtime.Serialization;
 
@@ -58,6 +59,24 @@ namespace CakeMail.RestClient.Utilities
 
 			var message = string.Format("'{0}' is not a valid enumeration of '{1}'", enumMember, typeof(T).Name);
 			throw new Exception(message);
+		}
+
+		public static void EnsureSuccess(this HttpResponseMessage response)
+		{
+			if (response.IsSuccessStatusCode) return;
+
+			var content = string.Empty;
+			if (response.Content != null)
+			{
+				content = response.Content.ReadAsStringAsync().Result;
+				response.Content.Dispose();
+			}
+			else
+			{
+				content = string.Format("StatusCode: {0}", response.StatusCode);
+			}
+
+			throw new Exception(content);
 		}
 	}
 }

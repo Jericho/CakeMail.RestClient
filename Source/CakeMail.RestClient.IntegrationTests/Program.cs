@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Configuration;
 
 namespace CakeMail.RestClient.IntegrationTests
 {
-	class Program
+	public class Program
 	{
-#pragma warning disable RECS0154 // Parameter is never used
-		static void Main(string[] args)
-#pragma warning restore RECS0154 // Parameter is never used
+		public static void Main()
 		{
 			Console.WriteLine("{0} Executing all CakeMail API methods ... {0}", new string('=', 10));
 
@@ -35,14 +32,23 @@ namespace CakeMail.RestClient.IntegrationTests
 			}
 		}
 
-		static void ExecuteAllMethods()
+		private static void ExecuteAllMethods()
 		{
-			var apiKey = ConfigurationManager.AppSettings["ApiKey"];
-			var userName = ConfigurationManager.AppSettings["UserName"];
-			var password = ConfigurationManager.AppSettings["Password"];
-			var overrideClientId = ConfigurationManager.AppSettings["OverrideClientId"];
+			// -----------------------------------------------------------------------------
 
-			var api = new CakeMailRestClient(apiKey);
+			// Do you want to proxy requests through Fiddler (useful for debugging)?
+			var useFiddler = true;
+
+			// -----------------------------------------------------------------------------
+
+
+			var proxy = useFiddler ? new WebProxy("http://localhost:8888") : null;
+			var apiKey = Environment.GetEnvironmentVariable("CAKEMAIL_APIKEY");
+			var userName = Environment.GetEnvironmentVariable("CAKEMAIL_USERNAME");
+			var password = Environment.GetEnvironmentVariable("CAKEMAIL_PASSWORD");
+			var overrideClientId = Environment.GetEnvironmentVariable("CAKEMAIL_OVERRIDECLIENTID");
+
+			var api = new CakeMailRestClient(apiKey, proxy);
 			var loginInfo = api.Users.LoginAsync(userName, password).Result;
 			var clientId = string.IsNullOrEmpty(overrideClientId) ? loginInfo.ClientId : long.Parse(overrideClientId);
 			var userKey = loginInfo.UserKey;

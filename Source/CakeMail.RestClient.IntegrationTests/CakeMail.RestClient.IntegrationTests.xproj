@@ -6,8 +6,8 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>dbefb5d8-8e24-4152-8efd-ef153fc3a753</ProjectGuid>
-    <RootNamespace>CakeMail.RestClient</RootNamespace>
+    <ProjectGuid>b19e7e01-717a-4d0e-b3bc-6d6f26a457a8</ProjectGuid>
+    <RootNamespace>CakeMail.RestClient.IntegrationTests</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
