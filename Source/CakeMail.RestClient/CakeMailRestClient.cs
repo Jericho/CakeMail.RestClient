@@ -163,16 +163,28 @@ namespace CakeMail.RestClient
 			Version = typeof(CakeMailRestClient).GetTypeInfo().Assembly.GetName().Version.ToString();
 			UserAgent = string.Format("CakeMail .NET REST Client;{0}", Version);
 
+			Campaigns = new Campaigns(this);
+			Clients = new Clients(this);
+			Countries = new Countries(this);
+			Permissions = new Permissions(this);
+			Lists = new Lists(this);
+			Timezones = new Timezones(this);
+			Mailings = new Mailings(this);
+			Relays = new Relays(this);
+			Segments = new Segments(this);
+			Users = new Users(this);
+			SuppressionLists = new SuppressionLists(this);
+			Templates = new Templates(this);
+			Triggers = new Triggers(this);
+
 			_mustDisposeHttpClient = httpClient == null;
 			_httpClient = httpClient ?? new HttpClient();
 			_httpClient.Timeout = TimeSpan.FromMilliseconds(Timeout);
 			_httpClient.BaseAddress = BaseUrl;
 			_httpClient.DefaultRequestHeaders.Accept.Clear();
 			_httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MEDIA_TYPE));
-			_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("apikey", ApiKey);
+			_httpClient.DefaultRequestHeaders.Add("apikey", ApiKey);
 			_httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", UserAgent);
-
-			InitializeResources();
 		}
 
 		~CakeMailRestClient()
@@ -321,23 +333,6 @@ namespace CakeMail.RestClient
 					Content = new StringContent(message)
 				};
 			}
-		}
-
-		private void InitializeResources()
-		{
-			this.Campaigns = new Campaigns(this);
-			this.Clients = new Clients(this);
-			this.Countries = new Countries(this);
-			this.Permissions = new Permissions(this);
-			this.Lists = new Lists(this);
-			this.Timezones = new Timezones(this);
-			this.Mailings = new Mailings(this);
-			this.Relays = new Relays(this);
-			this.Segments = new Segments(this);
-			this.Users = new Users(this);
-			this.SuppressionLists = new SuppressionLists(this);
-			this.Templates = new Templates(this);
-			this.Triggers = new Triggers(this);
 		}
 
 		private async Task<JToken> ParseCakeMailResponseAsync(HttpResponseMessage response)
