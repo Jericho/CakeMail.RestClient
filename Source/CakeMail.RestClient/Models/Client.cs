@@ -84,6 +84,7 @@ namespace CakeMail.RestClient.Models
 		public string Key { get; set; }
 
 		[JsonProperty("last_activity")]
+		[JsonConverter(typeof(CakeMailDateTimeConverter))]
 		public DateTime LastActivityOn { get; set; }
 
 		[JsonProperty("mailing_limit")]
