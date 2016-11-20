@@ -24,8 +24,6 @@ namespace CakeMail.RestClient
 	{
 		#region FIELDS
 
-		private const string MEDIA_TYPE = "application/json";
-
 		private readonly bool _mustDisposeHttpClient;
 
 		private HttpClient _httpClient;
@@ -182,7 +180,7 @@ namespace CakeMail.RestClient
 			_httpClient.Timeout = TimeSpan.FromMilliseconds(Timeout);
 			_httpClient.BaseAddress = BaseUrl;
 			_httpClient.DefaultRequestHeaders.Accept.Clear();
-			_httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MEDIA_TYPE));
+			_httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			_httpClient.DefaultRequestHeaders.Add("apikey", ApiKey);
 			_httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", UserAgent);
 		}
@@ -268,16 +266,20 @@ namespace CakeMail.RestClient
 
 		internal async Task<HttpResponseMessage> ExecuteRequestAsync(string endpoint, IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var paramsWithValue = parameters.Where(p => p.Value != null).Select(p => string.Concat(Uri.EscapeDataString(p.Key), "=", Uri.EscapeDataString((string)p.Value)));
-			var paramsWithoutValue = parameters.Where(p => p.Value == null).Select(p => string.Concat(Uri.EscapeDataString(p.Key), "="));
-			var allParams = paramsWithValue.Union(paramsWithoutValue).ToArray();
-			var content = new StringContent(string.Join("&", paramsWithValue.Union(paramsWithoutValue)), Encoding.UTF8);
+			var content = (StringContent)null;
+			if (parameters != null)
+			{
+				var paramsWithValue = parameters.Where(p => p.Value != null).Select(p => string.Concat(Uri.EscapeDataString(p.Key), "=", Uri.EscapeDataString(p.Value.ToString())));
+				var paramsWithoutValue = parameters.Where(p => p.Value == null).Select(p => string.Concat(Uri.EscapeDataString(p.Key), "="));
+				var allParams = paramsWithValue.Union(paramsWithoutValue).ToArray();
+				content = new StringContent(string.Join("&", paramsWithValue.Union(paramsWithoutValue)), Encoding.UTF8, "application/x-www-form-urlencoded");
+			}
 
 			var response = await RequestAsync(Methods.POST, endpoint, content, cancellationToken).ConfigureAwait(false);
 
 #if DEBUG
 			var debugRequestMsg = string.Format("Request sent to CakeMail: {0}/{1}", BaseUrl.ToString().TrimEnd('/'), endpoint.TrimStart('/'));
-			var debugParametersMsg = string.Format("Request parameters: {0}", string.Join("&", parameters.Select(p => string.Concat(p.Key, "=", p.Value))));
+			var debugParametersMsg = string.Format("Request parameters: {0}", parameters == null ? "[NULL]" : string.Join("&", parameters.Select(p => string.Concat(p.Key, "=", p.Value))));
 			var debugResponseMsg = string.Format("Response received: {0}", await response.Content.ReadAsStringAsync().ConfigureAwait(false));
 			Debug.WriteLine("{0}\r\n{1}\r\n{2}\r\n{3}\r\n{0}", new string('=', 25), debugRequestMsg, debugParametersMsg, debugResponseMsg);
 #endif
@@ -319,7 +321,7 @@ namespace CakeMail.RestClient
 				var httpRequest = new HttpRequestMessage
 				{
 					Method = new HttpMethod(methodAsString),
-					RequestUri = new Uri(string.Format("{0}{1}{2}", BaseUrl, endpoint.StartsWith("/", StringComparison.Ordinal) ? string.Empty : "/", endpoint)),
+					RequestUri = new Uri(BaseUrl, endpoint),
 					Content = content
 				};
 				var response = await _httpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
