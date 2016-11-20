@@ -37,7 +37,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			// -----------------------------------------------------------------------------
 
 			// Do you want to proxy requests through Fiddler (useful for debugging)?
-			var useFiddler = true;
+			var useFiddler = false;
 
 			// -----------------------------------------------------------------------------
 
