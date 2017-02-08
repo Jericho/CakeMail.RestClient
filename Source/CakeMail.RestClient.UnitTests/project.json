@@ -1,0 +1,23 @@
+{
+	"version": "1.0.0-*",
+	"testRunner": "xunit",
+	"dependencies": {
+		"CakeMail.RestClient": { "target": "project" },
+		"dotnet-test-xunit": "2.2.0-preview2-build1029",
+		"Moq": "4.6.38-alpha",
+					"RichardSzalay.MockHttp": "1.4.1",
+		"Shouldly": "2.8.2",
+		"xunit": "2.2.0-beta4-build3444"
+	},
+	"frameworks": {
+		"netcoreapp1.0": {
+			"dependencies": {
+				"Microsoft.NETCore.App": {
+					"type": "platform",
+					"version": "1.1.0"
+				}
+
+			}
+		}
+	}
+}
