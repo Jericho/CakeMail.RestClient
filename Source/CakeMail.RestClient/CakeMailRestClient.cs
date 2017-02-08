@@ -122,6 +122,12 @@ namespace CakeMail.RestClient
 		/// </summary>
 		public Triggers Triggers { get; private set; }
 
+		/// <summary>
+		/// Gets the Version.
+		/// </summary>
+		/// <value>
+		/// The version.
+		/// </value>
 		public string Version { get; private set; }
 
 		#endregion
@@ -139,7 +145,7 @@ namespace CakeMail.RestClient
 		/// </summary>
 		/// <param name="apiKey">The API Key received from CakeMail</param>
 		/// <param name="proxy">Allows you to specify a proxy</param>
-		public CakeMailRestClient(string apiKey, IWebProxy proxy = null)
+		public CakeMailRestClient(string apiKey, IWebProxy proxy)
 			: this(apiKey, httpClient: new HttpClient(new HttpClientHandler { Proxy = proxy, UseProxy = proxy != null }))
 		{
 			_mustDisposeHttpClient = true;
@@ -155,11 +161,11 @@ namespace CakeMail.RestClient
 		public CakeMailRestClient(string apiKey, string host = "api.wbsrvc.com", int timeout = 5000, HttpClient httpClient = null)
 		{
 			ApiKey = apiKey;
-			BaseUrl = new Uri(string.Format("https://{0}", host));
+			BaseUrl = new Uri($"https://{host.TrimEnd('/')}/");
 			Timeout = timeout;
 
 			Version = typeof(CakeMailRestClient).GetTypeInfo().Assembly.GetName().Version.ToString();
-			UserAgent = string.Format("CakeMail .NET REST Client;{0}", Version);
+			UserAgent = $"CakeMail.NET REST Client/{Version} (+https://github.com/Jericho/CakeMail.RestClient)";
 
 			Campaigns = new Campaigns(this);
 			Clients = new Clients(this);
@@ -185,6 +191,9 @@ namespace CakeMail.RestClient
 			_httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", UserAgent);
 		}
 
+		/// <summary>
+		/// Finalizes an instance of the <see cref="CakeMailRestClient"/> class.
+		/// </summary>
 		~CakeMailRestClient()
 		{
 			// The object went out of scope and finalized is called.
@@ -197,6 +206,9 @@ namespace CakeMail.RestClient
 
 		#region PUBLIC METHODS
 
+		/// <summary>
+		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		/// </summary>
 		public void Dispose()
 		{
 			// Call 'Dispose' to release resources
@@ -206,6 +218,10 @@ namespace CakeMail.RestClient
 			GC.SuppressFinalize(this);
 		}
 
+		/// <summary>
+		/// Releases unmanaged and - optionally - managed resources.
+		/// </summary>
+		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
 		protected virtual void Dispose(bool disposing)
 		{
 			if (disposing)
@@ -246,7 +262,7 @@ namespace CakeMail.RestClient
 			// Parse the response
 			var data = await ParseCakeMailResponseAsync(response).ConfigureAwait(false);
 
-			// Check if the response is a well-known object type (JArray, of JValue)
+			// Check if the response is a well-known object type (JArray or JValue)
 			if (data is JArray) return (data as JArray).ToObject<T>();
 			else if (data is JValue) return (data as JValue).ToObject<T>();
 
@@ -272,7 +288,7 @@ namespace CakeMail.RestClient
 				var paramsWithValue = parameters.Where(p => p.Value != null).Select(p => string.Concat(Uri.EscapeDataString(p.Key), "=", Uri.EscapeDataString(p.Value.ToString())));
 				var paramsWithoutValue = parameters.Where(p => p.Value == null).Select(p => string.Concat(Uri.EscapeDataString(p.Key), "="));
 				var allParams = paramsWithValue.Union(paramsWithoutValue).ToArray();
-				content = new StringContent(string.Join("&", paramsWithValue.Union(paramsWithoutValue)), Encoding.UTF8, "application/x-www-form-urlencoded");
+				content = new StringContent(string.Join("&", allParams), Encoding.UTF8, "application/x-www-form-urlencoded");
 			}
 
 			var response = await RequestAsync(Methods.POST, endpoint, content, cancellationToken).ConfigureAwait(false);
@@ -321,7 +337,7 @@ namespace CakeMail.RestClient
 				var httpRequest = new HttpRequestMessage
 				{
 					Method = new HttpMethod(methodAsString),
-					RequestUri = new Uri(BaseUrl, endpoint),
+					RequestUri = new Uri(BaseUrl, endpoint.TrimStart('/')),
 					Content = content
 				};
 				var response = await _httpClient.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);

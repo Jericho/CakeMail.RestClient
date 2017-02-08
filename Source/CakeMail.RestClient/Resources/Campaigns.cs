@@ -16,6 +16,10 @@ namespace CakeMail.RestClient.Resources
 
 		#region Constructor
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Campaigns" /> class.
+		/// </summary>
+		/// <param name="client">The HTTP client</param>
 		public Campaigns(CakeMailRestClient cakeMailRestClient)
 		{
 			_cakeMailRestClient = cakeMailRestClient;
