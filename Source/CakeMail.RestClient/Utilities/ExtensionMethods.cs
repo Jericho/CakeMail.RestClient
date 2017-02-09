@@ -51,7 +51,7 @@ namespace CakeMail.RestClient.Utilities
 			foreach (var fieldInfo in fields)
 			{
 				var attributes = fieldInfo.GetCustomAttributes(typeof(EnumMemberAttribute), false).OfType<EnumMemberAttribute>();
-				if (attributes.Any(a => a.Value == enumMember))
+				if (attributes.Any(a => a.Value == enumMember) || fieldInfo.Name == enumMember)
 				{
 					return (T)Enum.Parse(typeof(T), fieldInfo.Name, true);
 				}

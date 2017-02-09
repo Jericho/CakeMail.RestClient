@@ -1,8 +1,5 @@
-﻿using CakeMail.RestClient.Models;
-using CakeMail.RestClient.Resources;
+﻿using CakeMail.RestClient.Resources;
 using System;
-using System.Collections.Generic;
-using System.Net;
 
 namespace CakeMail.RestClient
 {

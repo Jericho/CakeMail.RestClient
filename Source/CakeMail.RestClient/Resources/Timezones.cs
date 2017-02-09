@@ -30,7 +30,7 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>An enumeration of all <see cref="Timezone">timezones</see>.</returns>
 		public Task<IEnumerable<Timezone>> GetAllAsync(CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/Client/GetTimezones/";
+			var path = "Client/GetTimezones";
 
 			return _cakeMailRestClient.ExecuteArrayRequestAsync<Timezone>(path, null, "timezones", cancellationToken);
 		}

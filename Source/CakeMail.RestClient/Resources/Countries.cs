@@ -31,7 +31,7 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>An enumeration of <see cref="Country">countries</see></returns>
 		public Task<IEnumerable<Country>> GetListAsync(CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/Country/GetList/";
+			var path = "/Country/GetList";
 
 			return _cakeMailRestClient.ExecuteArrayRequestAsync<Country>(path, null, "countries", cancellationToken);
 		}
@@ -44,7 +44,7 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>An enumeration of <see cref="Province">privinces</see></returns>
 		public Task<IEnumerable<Province>> GetProvincesAsync(string countryId, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/Country/GetProvinces/";
+			var path = "/Country/GetProvinces";
 
 			var parameters = new List<KeyValuePair<string, object>>
 			{

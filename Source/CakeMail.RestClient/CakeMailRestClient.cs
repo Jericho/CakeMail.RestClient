@@ -165,7 +165,7 @@ namespace CakeMail.RestClient
 			Timeout = timeout;
 
 			Version = typeof(CakeMailRestClient).GetTypeInfo().Assembly.GetName().Version.ToString();
-			UserAgent = $"CakeMail.NET REST Client/{Version} (+https://github.com/Jericho/CakeMail.RestClient)";
+			UserAgent = $"CakeMail .NET REST Client/{Version} (+https://github.com/Jericho/CakeMail.RestClient)";
 
 			Campaigns = new Campaigns(this);
 			Clients = new Clients(this);
@@ -296,7 +296,7 @@ namespace CakeMail.RestClient
 #if DEBUG
 			var debugRequestMsg = string.Format("Request sent to CakeMail: {0}/{1}", BaseUrl.ToString().TrimEnd('/'), endpoint.TrimStart('/'));
 			var debugParametersMsg = string.Format("Request parameters: {0}", parameters == null ? "[NULL]" : string.Join("&", parameters.Select(p => string.Concat(p.Key, "=", p.Value))));
-			var debugResponseMsg = string.Format("Response received: {0}", await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+			var debugResponseMsg = string.Format("Response received: {0}", response.Content == null ? "[NULL]" : await response.Content.ReadAsStringAsync().ConfigureAwait(false));
 			Debug.WriteLine("{0}\r\n{1}\r\n{2}\r\n{3}\r\n{0}", new string('=', 25), debugRequestMsg, debugParametersMsg, debugResponseMsg);
 #endif
 

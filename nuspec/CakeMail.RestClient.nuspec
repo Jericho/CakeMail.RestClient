@@ -3,7 +3,7 @@
 	<metadata>
 	<id>CakeMail.RestClient</id>
 	<version>0.0.0</version>
-	<title>$title$</title>
+	<title>CakeMail.RestClient</title>
 	<authors>Jeremie Desautels</authors>
 	<owners>Jeremie Desautels</owners>
 	<description>Strongly typed library for CakeMail's API</description>
@@ -18,30 +18,11 @@
 	<dependencies>
 		<group targetFramework="net452">
 			<dependency id="Newtonsoft.Json" version="8.0.2" />
-			<dependency id="RestSharp" version="105.2.3" />
-		</group>
-		<group targetFramework="net46">
-			<dependency id="Newtonsoft.Json" version="8.0.2" />
-			<dependency id="RestSharp" version="105.2.3" />
-		</group>
-		<group targetFramework="net461">
-			<dependency id="Newtonsoft.Json" version="8.0.2" />
-			<dependency id="RestSharp" version="105.2.3" />
-		</group>
-		<group targetFramework="net462">
-			<dependency id="Newtonsoft.Json" version="8.0.2" />
-			<dependency id="RestSharp" version="105.2.3" />
+			<dependency id="System.Net.Http" version="4.0.0" />
 		</group>
 		<group targetFramework=".NETStandard1.3">
 			<dependency id="NETStandard.Library" version="1.6.0" />
 			<dependency id="Newtonsoft.Json" version="9.0.1" />
-			<dependency id="System.ComponentModel.Primitives" version="4.1.0" />
-			<dependency id="System.Reflection.TypeExtensions" version="4.1.0" />
-		</group>
-		<group targetFramework=".NETStandard1.6">
-			<dependency id="NETStandard.Library" version="1.6.0" />
-			<dependency id="Newtonsoft.Json" version="9.0.1" />
-			<dependency id="System.ComponentModel.Primitives" version="4.1.0" />
 			<dependency id="System.Reflection.TypeExtensions" version="4.1.0" />
 		</group>
 	</dependencies>
@@ -49,15 +30,9 @@
 	<files>
 		<file src="CakeMail.RestClient/bin/Release/net452/CakeMail.RestClient.dll" target="lib/net452" />
 		<file src="CakeMail.RestClient/bin/Release/net452/CakeMail.RestClient.pdb" target="lib/net452" />
-		<file src="CakeMail.RestClient/bin/Release/net46/CakeMail.RestClient.dll" target="lib/net46" />
-		<file src="CakeMail.RestClient/bin/Release/net46/CakeMail.RestClient.pdb" target="lib/net46" />
-		<file src="CakeMail.RestClient/bin/Release/net461/CakeMail.RestClient.dll" target="lib/net461" />
-		<file src="CakeMail.RestClient/bin/Release/net461/CakeMail.RestClient.pdb" target="lib/net461" />
-		<file src="CakeMail.RestClient/bin/Release/net462/CakeMail.RestClient.dll" target="lib/net462" />
-		<file src="CakeMail.RestClient/bin/Release/net462/CakeMail.RestClient.pdb" target="lib/net462" />
+		<file src="CakeMail.RestClient/bin/Release/net452/CakeMail.RestClient.xml" target="lib/net452" />
 		<file src="CakeMail.RestClient/bin/Release/netstandard1.3/CakeMail.RestClient.dll" target="lib/netstandard1.3" />
 		<file src="CakeMail.RestClient/bin/Release/netstandard1.3/CakeMail.RestClient.pdb" target="lib/netstandard1.3" />
-		<file src="CakeMail.RestClient/bin/Release/netstandard1.6/CakeMail.RestClient.dll" target="lib/netstandard1.6" />
-		<file src="CakeMail.RestClient/bin/Release/netstandard1.6/CakeMail.RestClient.pdb" target="lib/netstandard1.6" />
+		<file src="CakeMail.RestClient/bin/Release/netstandard1.3/CakeMail.RestClient.xml" target="lib/netstandard1.3" />
 	</files>
 </package>
