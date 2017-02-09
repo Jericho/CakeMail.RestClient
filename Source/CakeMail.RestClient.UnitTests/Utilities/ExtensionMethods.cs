@@ -1,12 +1,11 @@
 ﻿using CakeMail.RestClient.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
 using System;
 using System.Runtime.Serialization;
+using Xunit;
 
 namespace CakeMail.RestClient.UnitTests.Utilities
 {
-	[TestClass]
 	public class ExtensionMethodsTests
 	{
 		private enum UnitTestingEnum
@@ -16,7 +15,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			BBB
 		}
 
-		[TestMethod]
+		[Fact]
 		public void ToCakeMailString_handles_DateTime_MinValue()
 		{
 			// Arrange
@@ -29,7 +28,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			result.ShouldBe(Constants.EMPTY_CAKEMAIL_DATE);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void ToCakeMailString_handles_DateTime()
 		{
 			// Arrange
@@ -42,7 +41,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			result.ShouldBe("2015-03-20 17:41:59");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void GetEnumMemberValue_handles_zero_attributes()
 		{
 			// Arrange
@@ -52,10 +51,10 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var result = value.GetEnumMemberValue();
 
 			// Assert
-			result.ShouldBe(String.Empty);
+			result.ShouldBe("AAA");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void GetEnumMemberValue_handles_attribute()
 		{
 			// Arrange
@@ -68,21 +67,23 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			result.ShouldBe("BBB");
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(NotSupportedException))]
+		[Fact]
 		public void GetValueFromEnumMember_thows_exception_when_invalid_type()
 		{
 			// Arrange
 			var enumMember = "BBB";
 
 			// Act
-			var result = enumMember.GetValueFromEnumMember<int>();
+			Should.Throw<Exception>(() =>
+			{
+				var result = enumMember.GetValueFromEnumMember<int>();
+			});
 
 			// Assert
 			// Nothing to assert, an exception will be thrown
 		}
 
-		[TestMethod]
+		[Fact]
 		public void GetValueFromEnumMember_handles_value_matching_attribute()
 		{
 			// Arrange
@@ -95,7 +96,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			result.ShouldBe(UnitTestingEnum.BBB);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void GetValueFromEnumMember_handles_value_matching_enum_name()
 		{
 			// Arrange
@@ -108,15 +109,17 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			result.ShouldBe(UnitTestingEnum.AAA);
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(ArgumentException))]
+		[Fact]
 		public void GetValueFromEnumMember_thows_exception_when_no_match()
 		{
 			// Arrange
 			var enumMember = "CCC";
 
 			// Act
-			var result = enumMember.GetValueFromEnumMember<UnitTestingEnum>();
+			Should.Throw<Exception>(() =>
+			{
+				var result = enumMember.GetValueFromEnumMember<UnitTestingEnum>();
+			});
 
 			// Assert
 			// Nothing to assert, an exception will be thrown

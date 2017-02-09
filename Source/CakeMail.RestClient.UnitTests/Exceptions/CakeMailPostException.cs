@@ -1,14 +1,13 @@
 ﻿using CakeMail.RestClient.Exceptions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
 using System;
+using Xunit;
 
 namespace CakeMail.RestClient.UnitTests.Utilities
 {
-	[TestClass]
 	public class CakeMailPostExceptionTests
 	{
-		[TestMethod]
+		[Fact]
 		public void CakeMailPostException_Constructor_with_message_and_postdata()
 		{
 			// Arrange
@@ -24,7 +23,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			exception.InnerException.ShouldBeNull();
 		}
 
-		[TestMethod]
+		[Fact]
 		public void CakeMailPostException_Constructor_with_message_and_postdata_and_innerexception()
 		{
 			// Arrange

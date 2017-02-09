@@ -1,29 +1,27 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RestSharp;
+﻿using RichardSzalay.MockHttp;
 using Shouldly;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace CakeMail.RestClient.UnitTests
 {
-	[TestClass]
 	public class CountriesTests
 	{
 		private const string API_KEY = "...dummy API key...";
 
-		[TestMethod]
+		[Fact]
 		public async Task GetCountries()
 		{
 			// Arrange
-			var parameters = new Parameter[]
-			{
-				// There are no parameters
-			};
 			var jsonResponse = "{\"status\":\"success\",\"data\":{\"countries\":[{\"id\":\"f1\",\"en_name\":\"Fictitious Country 1\",\"fr_name\":\"Pays fictif 1\"},{\"id\":\"f2\",\"en_name\":\"Fictitious Country 2\",\"fr_name\":\"Pays fictif 2\"}]}}";
-			var mockRestClient = new MockRestClient("/Country/GetList/", parameters, jsonResponse, false);
+
+			var mockHttp = new MockHttpMessageHandler();
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Country/GetList")).Respond("application/json", jsonResponse);
 
 			// Act
-			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
 			var result = await apiClient.Countries.GetListAsync();
 
 			// Assert
@@ -33,20 +31,18 @@ namespace CakeMail.RestClient.UnitTests
 			result.Any(tz => tz.Id == "f2" && tz.EnglishName.Equals("Fictitious Country 2")).ShouldBeTrue();
 		}
 
-		[TestMethod]
+		[Fact]
 		public async Task GetProvinces()
 		{
 			// Arrange
 			var countryId = "f1";
-			var parameters = new[]
-			{
-				new Parameter { Type = ParameterType.GetOrPost, Name = "country_id", Value = countryId }
-			};
 			var jsonResponse = "{\"status\":\"success\",\"data\":{\"provinces\":[{\"id\":\"p1\",\"en_name\":\"Fictitious Province 1\",\"fr_name\":\"Province fictive 1\"},{\"id\":\"p2\",\"en_name\":\"Fictitious Province 2\",\"fr_name\":\"Province fictive 2\"}]}}";
-			var mockRestClient = new MockRestClient("/Country/GetProvinces/", parameters, jsonResponse, false);
+
+			var mockHttp = new MockHttpMessageHandler();
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Country/GetProvinces")).Respond("application/json", jsonResponse);
 
 			// Act
-			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
 			var result = await apiClient.Countries.GetProvincesAsync(countryId);
 
 			// Assert

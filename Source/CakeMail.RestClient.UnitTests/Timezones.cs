@@ -1,29 +1,27 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RestSharp;
+﻿using RichardSzalay.MockHttp;
 using Shouldly;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace CakeMail.RestClient.UnitTests
 {
-	[TestClass]
 	public class TimezonesTests
 	{
 		private const string API_KEY = "...dummy API key...";
 
-		[TestMethod]
+		[Fact]
 		public async Task GetTimezones()
 		{
 			// Arrange
-			var parameters = new Parameter[]
-			{
-				// There are no parameters
-			};
 			var jsonResponse = "{\"status\":\"success\",\"data\":{\"timezones\":[{\"id\":\"152\",\"name\":\"America/Montreal\"},{\"id\":\"532\",\"name\":\"US/Central\"},{\"id\":\"542\",\"name\":\"UTC\"}]}}";
-			var mockRestClient = new MockRestClient("/Client/GetTimezones/", parameters, jsonResponse, false);
+
+			var mockHttp = new MockHttpMessageHandler();
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/GetTimezones")).Respond("application/json", jsonResponse);
 
 			// Act
-			var apiClient = new CakeMailRestClient(API_KEY, mockRestClient.Object);
+			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
 			var result = await apiClient.Timezones.GetAllAsync();
 
 			// Assert

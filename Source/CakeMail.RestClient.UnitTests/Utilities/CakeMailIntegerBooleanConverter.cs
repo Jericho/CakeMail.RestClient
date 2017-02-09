@@ -1,17 +1,16 @@
 ﻿using CakeMail.RestClient.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Shouldly;
 using System;
 using System.IO;
 using System.Text;
+using Xunit;
 
 namespace CakeMail.RestClient.UnitTests.Utilities
 {
-	[TestClass]
 	public class CakeMailIntegerBooleanConverterTests
 	{
-		[TestMethod]
+		[Fact]
 		public void CakeMailIntegerBooleanConverter_ReadJson_Successfully_parses_value_representing_true()
 		{
 			// Arrange
@@ -28,7 +27,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			result.ShouldBeTrue();
 		}
 
-		[TestMethod]
+		[Fact]
 		public void CakeMailIntegerBooleanConverter_ReadJson_Successfully_parses_value_representing_false()
 		{
 			// Arrange
@@ -45,8 +44,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			result.ShouldBeFalse();
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(Exception))]
+		[Fact]
 		public void CakeMailIntegerBooleanConverter_ReadJson_Throws_exception_when_content_is_not_a_string()
 		{
 			// Arrange
@@ -57,10 +55,13 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			reader.Read();
 
 			// Act
-			var result = (bool)converter.ReadJson(reader, typeof(DateTime), null, null);
+			Should.Throw<Exception>(() =>
+			{
+				var result = (bool)converter.ReadJson(reader, typeof(DateTime), null, null);
+			});
 		}
 
-		[TestMethod]
+		[Fact]
 		public void CakeMailIntegerBooleanConverter_CanConvert_returns_true()
 		{
 			// Arrange
@@ -75,7 +76,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			result.ShouldBeTrue();
 		}
 
-		[TestMethod]
+		[Fact]
 		public void CakeMailIntegerBooleanConverter_CanConvert_returns_false()
 		{
 			// Arrange
@@ -90,7 +91,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			result.ShouldBeFalse();
 		}
 
-		[TestMethod]
+		[Fact]
 		public void CakeMailIntegerBooleanConverter_WriteJson_Successfully_writes_value_representing_true()
 		{
 			// Arrange
@@ -113,7 +114,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			}
 		}
 
-		[TestMethod]
+		[Fact]
 		public void CakeMailIntegerBooleanConverter_WriteJson_Successfully_writes_value_representing_false()
 		{
 			// Arrange
@@ -136,8 +137,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			}
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(Exception))]
+		[Fact]
 		public void CakeMailIntegerBooleanConverter_WriteJson_Throws_exception_when_content_is_not_boolean()
 		{
 			// Arrange
@@ -151,7 +151,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 				using (var jsonWriter = new JsonTextWriter(sw))
 				{
 					// Act
-					converter.WriteJson(jsonWriter, value, null);
+					Should.Throw<Exception>(() => converter.WriteJson(jsonWriter, value, null));
 
 					// Assert
 					// Nothing to assert, since 'WriteJson' will throw an exception
