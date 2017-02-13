@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{16A48337-42CC-443A-B850-775D196B31E0}"
+	ProjectSection(SolutionItems) = preProject
+		..\build.cake = ..\build.cake
+		..\nuspec\CakeMail.RestClient.nuspec = ..\nuspec\CakeMail.RestClient.nuspec
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{F7E19221-12B8-4C6E-B87A-167A1E95EBA1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9D4FE070-9A1E-4746-BD77-5D81D7FF21FF}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CakeMail.RestClient", "CakeMail.RestClient\CakeMail.RestClient.xproj", "{DBEFB5D8-8E24-4152-8EFD-EF153FC3A753}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CakeMail.RestClient.IntegrationTests", "CakeMail.RestClient.IntegrationTests\CakeMail.RestClient.IntegrationTests.xproj", "{B19E7E01-717A-4D0E-B3BC-6D6F26A457A8}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CakeMail.RestClient.UnitTests", "CakeMail.RestClient.UnitTests\CakeMail.RestClient.UnitTests.xproj", "{964D6BC3-6DAA-4878-BBAE-839AE9942BAF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DBEFB5D8-8E24-4152-8EFD-EF153FC3A753}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBEFB5D8-8E24-4152-8EFD-EF153FC3A753}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBEFB5D8-8E24-4152-8EFD-EF153FC3A753}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBEFB5D8-8E24-4152-8EFD-EF153FC3A753}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B19E7E01-717A-4D0E-B3BC-6D6F26A457A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B19E7E01-717A-4D0E-B3BC-6D6F26A457A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B19E7E01-717A-4D0E-B3BC-6D6F26A457A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B19E7E01-717A-4D0E-B3BC-6D6F26A457A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{964D6BC3-6DAA-4878-BBAE-839AE9942BAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{964D6BC3-6DAA-4878-BBAE-839AE9942BAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{964D6BC3-6DAA-4878-BBAE-839AE9942BAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{964D6BC3-6DAA-4878-BBAE-839AE9942BAF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DBEFB5D8-8E24-4152-8EFD-EF153FC3A753} = {F7E19221-12B8-4C6E-B87A-167A1E95EBA1}
+		{B19E7E01-717A-4D0E-B3BC-6D6F26A457A8} = {9D4FE070-9A1E-4746-BD77-5D81D7FF21FF}
+		{964D6BC3-6DAA-4878-BBAE-839AE9942BAF} = {9D4FE070-9A1E-4746-BD77-5D81D7FF21FF}
+	EndGlobalSection
+EndGlobal

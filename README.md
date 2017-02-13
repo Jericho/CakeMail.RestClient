@@ -14,13 +14,23 @@ CakeMail.RestClient is a C# client for the CakeMail service through its RESTful 
 CakeMailRestAPI is available as a Nuget package.
 
 [![NuGet Version](http://img.shields.io/nuget/v/CakeMail.RestClient.svg)](https://www.nuget.org/packages/CakeMail.RestClient/)
-[![AppVeyor](https://img.shields.io/appveyor/ci/Jericho/cakemail-restclient.svg)](https://ci.appveyor.com/project/Jericho/cakemail-restclient)
+
+Pre-release packages are available on my MyGet feed:
+
+[![MyGet Pre Release](https://img.shields.io/myget/jericho/vpre/cakemail.restclient.svg)](http://myget.org/gallery/jericho)
+
 
 ## Release Notes
 
 
 
 
++ **6.0**
+    - Fix bug when retrieving a Client record and the 'last_activity' field contains empty date
+    - Add support for .NET STANDARD 1.3
+    - Replace RestSharp with PathosChild.Http.FluentClient 
+    - Switch unit testing to xUnit
+    - Implement GitFlow and repeatable build process
 
 + **5.0**
     - Upgraded to .NET 4.5.2

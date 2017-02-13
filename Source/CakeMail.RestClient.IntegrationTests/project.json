@@ -1,0 +1,20 @@
+{
+	"buildOptions": {
+		"emitEntryPoint": true
+	},
+	"dependencies": {
+		"CakeMail.RestClient": { "target": "project" },
+		"Microsoft.NETCore.App": {
+			"type": "platform",
+			"version": "1.1.0"
+		},
+		"System.Collections.NonGeneric": "4.3.0",
+		"System.Net.NetworkInformation": "4.3.0"
+	},
+	"frameworks": {
+		"netcoreapp1.0": {
+			"imports": "dnxcore50"
+		}
+	},
+	"version": "1.0.0-*"
+}
