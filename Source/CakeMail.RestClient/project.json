@@ -1,0 +1,51 @@
+{
+	"buildOptions": {
+		"emitEntryPoint": false,
+		"xmlDoc": true,
+		"platform": "anycpu",
+		"additionalArguments": [
+			"/ruleset:../CakeMail.RestClient.ruleset",
+			"/additionalfile:../stylecop.json"
+		],
+		"compile": {
+		}
+	},
+	"configurations": {
+		"Release": {
+			"buildOptions": {
+				"warningsAsErrors": false
+			}
+		}
+	},
+	"dependencies": {
+		"Newtonsoft.Json": "9.0.1",
+		"Pathoschild.Http.FluentClient": "3.0.0",
+		"StyleCop.Analyzers": {
+			"version": "1.0.0",
+			"type": "build"
+		}
+	},
+	"frameworks": {
+		"netstandard1.3": {
+			"buildOptions": {
+				"define": [ "NETSTANDARD" ]
+			},
+			"imports": "dnxcore50",
+			"dependencies": {
+				"NETStandard.Library": "1.6.1",
+				"System.Reflection.TypeExtensions": "4.1.0"
+			}
+		},
+		"net452": {
+			"buildOptions": {
+				"define": [ "NETFULL" ]
+			},
+			"dependencies": {
+			},
+			"frameworkAssemblies": {
+				"System.Runtime.Serialization": "4.0.0"
+			}
+		}
+	},
+	"version": "6.0.0-*"
+}
