@@ -84,6 +84,13 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[Fact]
+		public void RestClient_dispose()
+		{
+			var client = new CakeMailRestClient(API_KEY);
+			client.Dispose();
+		}
+
+		[Fact]
 		public async Task RestClient_Throws_exception_when_responsestatus_is_error()
 		{
 			// Arrange
