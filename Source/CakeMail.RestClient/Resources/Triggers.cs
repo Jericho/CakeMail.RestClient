@@ -59,22 +59,6 @@ namespace CakeMail.RestClient.Resources
 				.AsCakeMailObject<long>();
 		}
 
-		//public Task<bool> DeleteAsync(string userKey, long triggerId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
-		//{
-		//	var parameters = new List<KeyValuePair<string, object>>()
-		//	{
-		//		new KeyValuePair<string, object>("user_key", userKey),
-		//		new KeyValuePair<string, object>("trigger_id", triggerId),
-		//	};
-		//	if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-		//	return _client
-		//		.PostAsync("Trigger/Delete")
-		//		.WithFormUrlEncodedBody(parameters)
-		//		.WithCancellationToken(cancellationToken)
-		//		.AsCakeMailObject<bool>();
-		//}
-
 		/// <summary>
 		/// Retrieve a trigger
 		/// </summary>

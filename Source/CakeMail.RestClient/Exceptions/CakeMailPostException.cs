@@ -8,7 +8,7 @@ namespace CakeMail.RestClient.Exceptions
 	public class CakeMailPostException : CakeMailException
 	{
 		/// <summary>
-		/// The data that was posted
+		/// Gets or sets the data that was posted
 		/// </summary>
 		public string PostData { get; set; }
 

@@ -179,7 +179,7 @@ namespace CakeMail.RestClient.Resources
 
 		#region PRIVATE METHODS
 
-		private Task<T[]> GetLogsAsync<T>(string userKey, string logType, string arrayPropertyName, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken)) 
+		private Task<T[]> GetLogsAsync<T>(string userKey, string logType, string arrayPropertyName, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 			where T : RelayLog, new()
 		{
 			var parameters = new List<KeyValuePair<string, object>>

@@ -99,7 +99,7 @@ namespace CakeMail.RestClient.Resources
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
-				new KeyValuePair<string, object>("no_details", includeStatistics ? "false" : "true"),	// CakeMail expects 'false' if you want to include details
+				new KeyValuePair<string, object>("no_details", includeStatistics ? "false" : "true"), // CakeMail expects 'false' if you want to include details
 				new KeyValuePair<string, object>("with_engagement", calculateEngagement ? "true" : "false")
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
@@ -423,9 +423,9 @@ namespace CakeMail.RestClient.Resources
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="listId">ID of the list.</param>
+		/// <param name="listMembers">Subscribers.</param>
 		/// <param name="autoResponders">Trigger the autoresponders.</param>
 		/// <param name="triggers">Trigger the welcome email.</param>
-		/// <param name="listMembers">Subscribers.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="ImportResult">results</see></returns>

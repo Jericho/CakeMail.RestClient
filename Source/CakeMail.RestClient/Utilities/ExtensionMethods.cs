@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
@@ -42,7 +41,7 @@ namespace CakeMail.RestClient.Utilities
 			if (attributes == null || attributes.Length == 0) return value.ToString();
 
 			var descriptionAttribute = attributes[0] as EnumMemberAttribute;
-			return (descriptionAttribute == null ? value.ToString() : descriptionAttribute.Value);
+			return descriptionAttribute == null ? value.ToString() : descriptionAttribute.Value;
 		}
 
 		/// <summary>
@@ -51,7 +50,8 @@ namespace CakeMail.RestClient.Utilities
 		/// <typeparam name="T">The Enum type</typeparam>
 		/// <param name="enumMember">The value of the 'EnumMember' attribute</param>
 		/// <returns>The Enum value associated with the 'EnumMember' attribute</returns>
-		public static T GetValueFromEnumMember<T>(this string enumMember) where T : struct, IConvertible
+		public static T GetValueFromEnumMember<T>(this string enumMember)
+			where T : struct, IConvertible
 		{
 			var fields = typeof(T).GetFields();
 			foreach (var fieldInfo in fields)

@@ -28,82 +28,82 @@ namespace CakeMail.RestClient
 		#region PROPERTIES
 
 		/// <summary>
-		/// The API key provided by CakeMail
+		/// Gets the API key provided by CakeMail
 		/// </summary>
 		public string ApiKey { get; private set; }
 
 		/// <summary>
-		/// The user agent
+		/// Gets the user agent
 		/// </summary>
 		public string UserAgent { get; private set; }
 
 		/// <summary>
-		/// The URL where all API requests are sent
+		/// Gets the URL where all API requests are sent
 		/// </summary>
 		public Uri BaseUrl { get; private set; }
 
 		/// <summary>
-		/// The <see cref="Campaigns">Campaigns</see> resource
+		/// Gets the <see cref="Campaigns">Campaigns</see> resource
 		/// </summary>
 		public Campaigns Campaigns { get; private set; }
 
 		/// <summary>
-		/// The <see cref="Clients">Clients</see> resource
+		/// Gets the <see cref="Clients">Clients</see> resource
 		/// </summary>
 		public Clients Clients { get; private set; }
 
 		/// <summary>
-		/// The <see cref="Countries">Countries</see> resource
+		/// Gets the <see cref="Countries">Countries</see> resource
 		/// </summary>
 		public Countries Countries { get; private set; }
 
 		/// <summary>
-		/// The <see cref="Permissions">Permissions</see> resource
+		/// Gets the <see cref="Permissions">Permissions</see> resource
 		/// </summary>
 		public Permissions Permissions { get; private set; }
 
 		/// <summary>
-		/// The <see cref="Lists">Lists</see> resource
+		/// Gets the <see cref="Lists">Lists</see> resource
 		/// </summary>
 		public Lists Lists { get; private set; }
 
 		/// <summary>
-		/// The <see cref="Timezones">Timezones</see> resource
+		/// Gets the <see cref="Timezones">Timezones</see> resource
 		/// </summary>
 		public Timezones Timezones { get; private set; }
 
 		/// <summary>
-		/// The <see cref="Mailings">Mailings</see> resource
+		/// Gets the <see cref="Mailings">Mailings</see> resource
 		/// </summary>
 		public Mailings Mailings { get; private set; }
 
 		/// <summary>
-		/// The <see cref="Relays">Relays</see> resource
+		/// Gets the <see cref="Relays">Relays</see> resource
 		/// </summary>
 		public Relays Relays { get; private set; }
 
 		/// <summary>
-		/// The <see cref="Segments">Segments</see> resource
+		/// Gets the <see cref="Segments">Segments</see> resource
 		/// </summary>
 		public Segments Segments { get; private set; }
 
 		/// <summary>
-		/// The <see cref="Users">Users</see> resource
+		/// Gets the <see cref="Users">Users</see> resource
 		/// </summary>
 		public Users Users { get; private set; }
 
 		/// <summary>
-		/// The <see cref="SuppressionLists">SuppressionLists</see> resource
+		/// Gets the <see cref="SuppressionLists">SuppressionLists</see> resource
 		/// </summary>
 		public SuppressionLists SuppressionLists { get; private set; }
 
 		/// <summary>
-		/// The <see cref="Templates">Templates</see> resource
+		/// Gets the <see cref="Templates">Templates</see> resource
 		/// </summary>
 		public Templates Templates { get; private set; }
 
 		/// <summary>
-		/// The <see cref="Triggers">Triggers</see> resource
+		/// Gets the <see cref="Triggers">Triggers</see> resource
 		/// </summary>
 		public Triggers Triggers { get; private set; }
 
@@ -111,7 +111,7 @@ namespace CakeMail.RestClient
 		/// Gets the Version.
 		/// </summary>
 		/// <value>
-		/// The version.
+		/// Gets the version.
 		/// </value>
 		public string Version { get; private set; }
 
@@ -123,7 +123,10 @@ namespace CakeMail.RestClient
 		/// Initializes a new instance of the <see cref="CakeMailRestClient"/> class.
 		/// </summary>
 		/// <param name="apiKey">The API Key received from CakeMail</param>
-		public CakeMailRestClient(string apiKey) : this(apiKey, httpClient: (HttpClient)null) { }
+		public CakeMailRestClient(string apiKey)
+			: this(apiKey, httpClient: (HttpClient)null)
+		{
+		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CakeMailRestClient"/> class.
@@ -153,7 +156,6 @@ namespace CakeMail.RestClient
 			UserAgent = $"CakeMail .NET REST Client/{Version} (+https://github.com/Jericho/CakeMail.RestClient)";
 
 			_fluentClient = new FluentClient(this.BaseUrl, httpClient)
-				//.SetHeader("apikey", this.ApiKey)
 				.SetUserAgent(this.UserAgent);
 
 			_fluentClient.BaseClient.DefaultRequestHeaders.Add("apikey", this.ApiKey);

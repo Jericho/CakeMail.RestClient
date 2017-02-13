@@ -265,8 +265,8 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="name">Name of the client</param>
 		/// <param name="status">Status of the client. Possible values: 'trial', 'active', 'suspended_by_reseller', 'deleted'</param>
 		/// <param name="parentId">ID of the parent client</param>
-		/// <param name="address1">Address of the client</param>
-		/// <param name="address2">Address of the client</param>
+		/// <param name="address1">Address line 1 of the client</param>
+		/// <param name="address2">Address line 2 of the client</param>
 		/// <param name="city">City of the client</param>
 		/// <param name="provinceId">ID of the province of the client</param>
 		/// <param name="postalCode">Postal Code of the client</param>

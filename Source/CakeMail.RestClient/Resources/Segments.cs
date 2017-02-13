@@ -38,10 +38,10 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>ID of the new segment</returns>
 		/// <remarks>
 		/// Here is what I have discovered about the query:
-		/// 	1) the entire query must be surrounded by parenthesis: (...your query...)
-		/// 	2) field names must be surrounded with the 'special' quote: `yourfieldname`. On my US english keyboard, this 'special' quote is the key directly above the 'Tab' and to the left of the '1'.
-		/// 	3) The percent sign is the wilcard
-		/// 	Here's an example: (`email` LIKE "a%")
+		///     1) the entire query must be surrounded by parenthesis: (...your query...)
+		///     2) field names must be surrounded with the 'special' quote: `yourfieldname`. On my US english keyboard, this 'special' quote is the key directly above the 'Tab' and to the left of the '1'.
+		///     3) The percent sign is the wilcard
+		///     Here's an example: (`email` LIKE "a%")
 		/// </remarks>
 		public Task<long> CreateAsync(string userKey, long listId, string name, string query = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
@@ -77,7 +77,7 @@ namespace CakeMail.RestClient.Resources
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("sublist_id", segmentId),
-				new KeyValuePair<string, object>("no_details", includeStatistics ? "false" : "true"),	// CakeMail expects 'false' if you want to include details
+				new KeyValuePair<string, object>("no_details", includeStatistics ? "false" : "true"), // CakeMail expects 'false' if you want to include details
 				new KeyValuePair<string, object>("with_engagement", calculateEngagement ? "true" : "false")
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
@@ -162,7 +162,7 @@ namespace CakeMail.RestClient.Resources
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("list_id", listId),
 				new KeyValuePair<string, object>("count", "false"),
-				new KeyValuePair<string, object>("no_details", includeDetails ? "false" : "true")	// CakeMail expects 'false' if you want to include details
+				new KeyValuePair<string, object>("no_details", includeDetails ? "false" : "true") // CakeMail expects 'false' if you want to include details
 			};
 			if (limit > 0) parameters.Add(new KeyValuePair<string, object>("limit", limit));
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));

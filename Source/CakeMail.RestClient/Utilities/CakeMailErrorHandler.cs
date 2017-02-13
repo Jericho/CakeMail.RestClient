@@ -31,17 +31,17 @@ namespace CakeMail.RestClient.Utilities
 			}
 
 			/* A typical response from the CakeMail API looks like this:
-			 *	{
-			 *		"status" : "success",
-			 *		"data" : { ... data for the API call ... }
-			 *	}
+			 * {
+			 *     "status" : "success",
+			 *     "data" : { ... data for the API call ... }
+			 * }
 			 *
 			 * In case of an error, the response looks like this:
-			 *	{
-			 *		"status" : "failed",
-			 *		"data" : "An error has occured",
-			 *		"post" : "... additional information ..."	<-- This information is not always present in the response
-			 *	}
+			 * {
+			 *     "status" : "failed",
+			 *     "data" : "An error has occured",
+			 *     "post" : "... additional information ..." <-- This information is not always present in the response
+			 * }
 			 */
 			var responseContent = response.Message.Content.ReadAsStringAsync().Result;
 			var cakeResponse = JObject.Parse(responseContent);
