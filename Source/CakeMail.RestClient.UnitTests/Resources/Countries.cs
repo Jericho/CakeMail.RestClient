@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CakeMail.RestClient.UnitTests
+namespace CakeMail.RestClient.UnitTests.Resources
 {
 	public class CountriesTests
 	{

@@ -1,5 +1,6 @@
 ﻿using CakeMail.RestClient.Exceptions;
 using Moq;
+using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
 using Shouldly;
 using System;
@@ -42,13 +43,11 @@ namespace CakeMail.RestClient.UnitTests
 			var client = new CakeMailRestClient(API_KEY);
 			var userAgent = client.UserAgent;
 			var baseUrl = client.BaseUrl;
-			var timeout = client.Timeout;
 
 			// Assert
 			userAgent.Split(new[] { '/' })[0].ShouldBe("CakeMail .NET REST Client");
 			userAgent.Split(new[] { '+' })[1].Trim(new[] { '(', ')' }).ShouldBe("https://github.com/Jericho/CakeMail.RestClient");
 			baseUrl.ShouldBe(new Uri("https://api.wbsrvc.com"));
-			timeout.ShouldBe(5000);
 		}
 
 		[Fact]
@@ -60,11 +59,9 @@ namespace CakeMail.RestClient.UnitTests
 			// Act
 			var client = new CakeMailRestClient(API_KEY, mockProxy.Object);
 			var baseUrl = client.BaseUrl;
-			var timeout = client.Timeout;
 
 			// Assert
 			baseUrl.ShouldBe(new Uri("https://api.wbsrvc.com"));
-			timeout.ShouldBe(5000);
 		}
 
 		[Fact]
@@ -72,21 +69,18 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var mockHost = "my.apiserver.com";
-			var mockTimeout = 777;
 
 			var mockHttp = new MockHttpMessageHandler();
 			var httpClient = new HttpClient(mockHttp);
 
 			// Act
-			var client = new CakeMailRestClient(API_KEY, mockHost, mockTimeout, httpClient);
+			var client = new CakeMailRestClient(API_KEY, mockHost, httpClient);
 			var baseUrl = client.BaseUrl;
-			var timeout = client.Timeout;
 
 			// Assert
 			mockHttp.VerifyNoOutstandingExpectation();
 			mockHttp.VerifyNoOutstandingRequest();
 			baseUrl.ShouldBe(new Uri($"https://{mockHost}"));
-			timeout.ShouldBe(mockTimeout);
 		}
 
 		[Fact]
@@ -94,7 +88,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Country/GetList")).Respond(HttpStatusCode.BadRequest);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Country/GetList")).Respond(HttpStatusCode.BadRequest);
 
 			// Act
 			var client = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -109,7 +103,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Country/GetList")).Respond(HttpStatusCode.RequestTimeout);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Country/GetList")).Respond(HttpStatusCode.RequestTimeout);
 
 			// Act
 			var client = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -124,26 +118,11 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Country/GetList")).Respond("mediaType", "");
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Country/GetList")).Respond(HttpStatusCode.OK, new StringContent(""));
 
 			// Act
 			var client = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
-			await Should.ThrowAsync<HttpException>(async () =>
-			{
-				var result = await client.Countries.GetListAsync().ConfigureAwait(false);
-			});
-		}
-
-		[Fact]
-		public async Task RestClient_Throws_exception_when_request_is_successful_but_response_contenttype_is_not_specified()
-		{
-			// Arrange
-			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Country/GetList")).Respond(HttpStatusCode.OK, "", "dummy content");
-
-			// Act
-			var client = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
-			await Should.ThrowAsync<CakeMailException>(async () =>
+			await Should.ThrowAsync<JsonReaderException>(async () =>
 			{
 				var result = await client.Countries.GetListAsync().ConfigureAwait(false);
 			});
@@ -154,7 +133,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Country/GetList")).Respond((HttpStatusCode)450);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Country/GetList")).Respond((HttpStatusCode)450);
 
 			// Act
 			var client = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -169,7 +148,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Country/GetList")).Respond((HttpStatusCode)450, new StringContent("dummy content", Encoding.UTF8, "application/json"));
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Country/GetList")).Respond((HttpStatusCode)450, new StringContent("dummy content", Encoding.UTF8, "application/json"));
 
 			// Act
 			var client = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -184,7 +163,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Country/GetList")).Respond((HttpStatusCode)550);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Country/GetList")).Respond((HttpStatusCode)550);
 
 			// Act
 			var client = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -199,7 +178,7 @@ namespace CakeMail.RestClient.UnitTests
 		{
 			// Arrange
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Country/GetList")).Respond((HttpStatusCode)600);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Country/GetList")).Respond((HttpStatusCode)600);
 
 			// Act
 			var client = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -215,29 +194,12 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var mockHttp = new MockHttpMessageHandler();
 			mockHttp
-				.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Country/GetList"))
+				.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Country/GetList"))
 				.Respond((HttpStatusCode)600, new StringContent("This is a bogus error message", Encoding.UTF8, "application/json"));
 
 			// Act
 			var client = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
 			await Should.ThrowAsync<HttpException>(async () =>
-			{
-				var result = await client.Countries.GetListAsync().ConfigureAwait(false);
-			});
-		}
-
-		[Fact]
-		public async Task RestClient_Throws_exception_when_cakemail_api_returns_failure()
-		{
-			// Arrange
-			var mockHttp = new MockHttpMessageHandler();
-			mockHttp
-				.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Country/GetList"))
-				.Respond((HttpStatusCode)600, new StringContent("{\"status\":\"failure\",\"data\":\"An error has occured\"}", Encoding.UTF8, "application/json"));
-
-			// Act
-			var client = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
-			await Should.ThrowAsync<CakeMailException>(async () =>
 			{
 				var result = await client.Countries.GetListAsync().ConfigureAwait(false);
 			});
@@ -253,7 +215,7 @@ namespace CakeMail.RestClient.UnitTests
 			var mockHttp = new MockHttpMessageHandler();
 			mockHttp
 				.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Campaign/Delete"))
-				.Respond((HttpStatusCode)600, new StringContent(jsonResponse, Encoding.UTF8, "application/json"));
+				.Respond((HttpStatusCode)200, new StringContent(jsonResponse, Encoding.UTF8, "application/json"));
 
 			// Act
 			var client = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -273,11 +235,11 @@ namespace CakeMail.RestClient.UnitTests
 			var mockHttp = new MockHttpMessageHandler();
 			mockHttp
 				.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Campaign/Delete"))
-				.Respond((HttpStatusCode)600, new StringContent(jsonResponse, Encoding.UTF8, "application/json"));
+				.Respond((HttpStatusCode)200, new StringContent(jsonResponse, Encoding.UTF8, "application/json"));
 
 			// Act
 			var client = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
-			await Should.ThrowAsync<CakeMailException>(async () =>
+			await Should.ThrowAsync<JsonReaderException>(async () =>
 			{
 				var result = await client.Campaigns.DeleteAsync(USER_KEY, campaignId, CLIENT_ID);
 			});
@@ -297,7 +259,7 @@ namespace CakeMail.RestClient.UnitTests
 			var mockHttp = new MockHttpMessageHandler();
 			mockHttp
 				.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("TemplateV2/CreateCategory"))
-				.Respond((HttpStatusCode)600, new StringContent(jsonResponse, Encoding.UTF8, "application/json"));
+				.Respond((HttpStatusCode)200, new StringContent(jsonResponse, Encoding.UTF8, "application/json"));
 
 			// Act
 			var client = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());

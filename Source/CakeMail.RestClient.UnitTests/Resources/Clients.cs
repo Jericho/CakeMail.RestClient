@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CakeMail.RestClient.UnitTests
+namespace CakeMail.RestClient.UnitTests.Resources
 {
 	public class ClientsTests
 	{
@@ -53,7 +53,7 @@ namespace CakeMail.RestClient.UnitTests
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", confirmationCode);
 
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/Create/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/Create")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -71,7 +71,7 @@ namespace CakeMail.RestClient.UnitTests
 			string confirmationCode = "... dummy confirmation code ...";
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", confirmationCode);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/Create/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/Create")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -87,7 +87,7 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", CONFIRMATION_CODE);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/Create/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/Create")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -103,7 +103,7 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", CONFIRMATION_CODE);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/Create/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/Create")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -120,7 +120,7 @@ namespace CakeMail.RestClient.UnitTests
 			var confirmationId = "... dummy confirmation id ...";
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"client_id\":\"{0}\",\"client_key\":\"...dummy client key...\",\"admin_id\":\"123\",\"admin_key\":\"...dummy admin key...\",\"contact_id\":\"456\",\"contact_key\":\"...dummy contact key...\"}}}}", CLIENT_ID);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/Activate/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/Activate")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -138,7 +138,7 @@ namespace CakeMail.RestClient.UnitTests
 			var confirmationCode = "...dummy confirmation code...";
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"city\":\"Mock City\",\"company_name\":\"Fictitious Inc\",\"confirmation\":\"{0}\",\"address1\":\"123 1st Avenue\",\"address2\":\"Suite 1000\",\"country_id\":\"us\",\"currency\":\"USD\",\"fax\":\"222-222-2222\",\"parent_id\":\"1\",\"phone\":\"111-111-1111\",\"postal_code\":\"12345\",\"province_id\":\"FL\",\"status\":\"pending\",\"contact_same_as_admin\":\"1\",\"admin_email\":\"bobsmith@fictitiouscompany.com\",\"admin_password\":\"7cad97840d5b8e175870b1245a5fe9d8\",\"admin_first_name\":\"Bob\",\"admin_last_name\":\"Smith\",\"admin_language\":\"en_US\",\"admin_mobile_phone\":\"444-444-4444\",\"admin_office_phone\":\"333-333-3333\",\"admin_timezone_id\":\"542\",\"admin_title\":\"Administrator\",\"contact_email\":null,\"contact_password\":null,\"contact_first_name\":null,\"contact_last_name\":null,\"contact_language\":\"en_US\",\"contact_mobile_phone\":null,\"contact_office_phone\":null,\"contact_timezone_id\":\"152\",\"contact_title\":null,\"time\":\"2015-03-25 17:07:03\",\"last_confirmation\":\"2015-03-25 17:07:03\",\"expire\":\"2015-04-24 17:07:03\",\"website\":\"www.fictitiouscompany.com\",\"industry_id\":\"0\"}}}}", confirmationCode);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/GetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/GetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -155,7 +155,7 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"lineage\":\"1-{0}\",\"address1\":\"123 1st Avenue\",\"address2\":\"Suite 1000\",\"config_id\":\"55\",\"auth_domain\":\"md02.com\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"parent_bounce_domain\":\"bounce.fictitiouscompany.com\",\"city\":\"Mock City\",\"company_name\":\"Fictitious Inc\",\"contact_id\":\"0\",\"country\":\"United States\",\"country_id\":\"us\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"dkim_domain\":\"md02.com\",\"doptin_ip\":\"192.168.77.1\",\"fax\":null,\"force_unsub\":\"false\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"parent_forward_domain\":\"http://forward.fictitiouscompany.com/\",\"forward_ip\":\"192.168.77.2\",\"id\":\"{0}\",\"key\":\"...dummy key...\",\"last_activity\":\"2015-03-25 14:20:54\",\"mailing_limit\":\"900000\",\"manager_id\":\"0\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"parent_md_domain\":\"http://link.fictitiouscompany.com/\",\"month_limit\":\"900000\",\"default_contact_limit\":\"0\",\"contact_limit\":\"0\",\"mta_id\":\"1\",\"parent_id\":\"1\",\"phone\":null,\"plan_min_vol\":null,\"plan_period\":null,\"plan_price\":null,\"plan_start_date\":null,\"plan_type\":null,\"postal_code\":null,\"pricing_plan\":\"courrielleur-demo\",\"province\":\"Florida\",\"province_id\":\"FL\",\"registered_date\":\"2015-03-01 00:00:00\",\"reseller\":\"false\",\"status\":\"active\",\"lineage_status\":\"active\",\"default_trial\":\"false\",\"default_reseller\":\"false\",\"billing_bundle_id\":\"0\",\"billing_package_id\":\"0\",\"billing_discount_percent\":\"0.000\",\"callback\":null,\"trigger_info\":\"false\",\"website\":null,\"industry_id\":null}}}}", CLIENT_ID);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/GetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/GetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -174,7 +174,7 @@ namespace CakeMail.RestClient.UnitTests
 			var endDate = (DateTime?)null;
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"lineage\":\"1-{0}\",\"address1\":\"123 1st Avenue\",\"address2\":\"Suite 1000\",\"config_id\":\"55\",\"auth_domain\":\"md02.com\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"parent_bounce_domain\":\"bounce.fictitiouscompany.com\",\"city\":\"Mock City\",\"company_name\":\"Fictitious Inc\",\"contact_id\":\"0\",\"country\":\"United States\",\"country_id\":\"us\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"dkim_domain\":\"md02.com\",\"doptin_ip\":\"192.168.77.1\",\"fax\":null,\"force_unsub\":\"false\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"parent_forward_domain\":\"http://forward.fictitiouscompany.com/\",\"forward_ip\":\"192.168.77.2\",\"id\":\"{0}\",\"key\":\"...dummy key...\",\"last_activity\":\"2015-03-25 14:20:54\",\"mailing_limit\":\"900000\",\"manager_id\":\"0\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"parent_md_domain\":\"http://link.fictitiouscompany.com/\",\"month_limit\":\"900000\",\"default_contact_limit\":\"0\",\"contact_limit\":\"0\",\"mta_id\":\"1\",\"parent_id\":\"1\",\"phone\":null,\"plan_min_vol\":null,\"plan_period\":null,\"plan_price\":null,\"plan_start_date\":null,\"plan_type\":null,\"postal_code\":null,\"pricing_plan\":\"courrielleur-demo\",\"province\":\"Florida\",\"province_id\":\"FL\",\"registered_date\":\"2015-03-01 00:00:00\",\"reseller\":\"false\",\"status\":\"active\",\"lineage_status\":\"active\",\"default_trial\":\"false\",\"default_reseller\":\"false\",\"billing_bundle_id\":\"0\",\"billing_package_id\":\"0\",\"billing_discount_percent\":\"0.000\",\"callback\":null,\"trigger_info\":\"false\",\"website\":null,\"industry_id\":null}}}}", CLIENT_ID);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/GetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/GetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -193,7 +193,7 @@ namespace CakeMail.RestClient.UnitTests
 			var endDate = new DateTime(2014, 12, 31, 23, 59, 59, 999, DateTimeKind.Utc);
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"lineage\":\"1-{0}\",\"address1\":\"123 1st Avenue\",\"address2\":\"Suite 1000\",\"config_id\":\"55\",\"auth_domain\":\"md02.com\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"parent_bounce_domain\":\"bounce.fictitiouscompany.com\",\"city\":\"Mock City\",\"company_name\":\"Fictitious Inc\",\"contact_id\":\"0\",\"country\":\"United States\",\"country_id\":\"us\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"dkim_domain\":\"md02.com\",\"doptin_ip\":\"192.168.77.1\",\"fax\":null,\"force_unsub\":\"false\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"parent_forward_domain\":\"http://forward.fictitiouscompany.com/\",\"forward_ip\":\"192.168.77.2\",\"id\":\"{0}\",\"key\":\"...dummy key...\",\"last_activity\":\"2015-03-25 14:20:54\",\"mailing_limit\":\"900000\",\"manager_id\":\"0\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"parent_md_domain\":\"http://link.fictitiouscompany.com/\",\"month_limit\":\"900000\",\"default_contact_limit\":\"0\",\"contact_limit\":\"0\",\"mta_id\":\"1\",\"parent_id\":\"1\",\"phone\":null,\"plan_min_vol\":null,\"plan_period\":null,\"plan_price\":null,\"plan_start_date\":null,\"plan_type\":null,\"postal_code\":null,\"pricing_plan\":\"courrielleur-demo\",\"province\":\"Florida\",\"province_id\":\"FL\",\"registered_date\":\"2015-03-01 00:00:00\",\"reseller\":\"false\",\"status\":\"active\",\"lineage_status\":\"active\",\"default_trial\":\"false\",\"default_reseller\":\"false\",\"billing_bundle_id\":\"0\",\"billing_package_id\":\"0\",\"billing_discount_percent\":\"0.000\",\"callback\":null,\"trigger_info\":\"false\",\"website\":null,\"industry_id\":null}}}}", CLIENT_ID);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/GetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/GetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -213,7 +213,7 @@ namespace CakeMail.RestClient.UnitTests
 			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"clients\":[{0},{1}]}}}}", jsonClient1, jsonClient2);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/GetList/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/GetList")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -233,7 +233,7 @@ namespace CakeMail.RestClient.UnitTests
 			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"clients\":[{0},{1}]}}}}", jsonClient1, jsonClient2);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/GetList/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/GetList")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -253,7 +253,7 @@ namespace CakeMail.RestClient.UnitTests
 			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"clients\":[{0},{1}]}}}}", jsonClient1, jsonClient2);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/GetList/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/GetList")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -273,7 +273,7 @@ namespace CakeMail.RestClient.UnitTests
 			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"clients\":[{0},{1}]}}}}", jsonClient1, jsonClient2);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/GetList/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/GetList")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -293,7 +293,7 @@ namespace CakeMail.RestClient.UnitTests
 			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"clients\":[{0},{1}]}}}}", jsonClient1, jsonClient2);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/GetList/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/GetList")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -313,7 +313,7 @@ namespace CakeMail.RestClient.UnitTests
 			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"clients\":[{0},{1}]}}}}", jsonClient1, jsonClient2);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/GetList/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/GetList")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -332,7 +332,7 @@ namespace CakeMail.RestClient.UnitTests
 			var jsonClient2 = "{\"company_name\":\"Dummy Client #2\",\"contact_id\":\"456\",\"currency\":\"USD\",\"default_mailing_limit\":\"25\",\"default_month_limit\":\"250\",\"default_contact_limit\":\"0\",\"id\":\"222\",\"reseller\":\"false\",\"mailing_limit\":\"25\",\"contact_limit\":\"0\",\"manager_id\":\"0\",\"month_limit\":\"250\",\"parent_id\":\"1\",\"registered_date\":\"2015-03-24 22:36:40\",\"status\":\"active\",\"md_domain\":\"http://link.fictitiouscompany.com/\",\"bounce_domain\":\"bounce.fictitiouscompany.com\",\"forward_domain\":\"http://forward.fictitiouscompany.com/\",\"lineage\":\"1\"}";
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"clients\":[{0},{1}]}}}}", jsonClient1, jsonClient2);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/GetList/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/GetList")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -350,7 +350,7 @@ namespace CakeMail.RestClient.UnitTests
 			var status = ClientStatus.Active;
 			var jsonResponse = "{\"status\":\"success\",\"data\":{\"count\":\"2\"}}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/GetList/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/GetList")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -368,7 +368,7 @@ namespace CakeMail.RestClient.UnitTests
 			var name = "Dummy Client";
 			var jsonResponse = "{\"status\":\"success\",\"data\":{\"count\":\"2\"}}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/GetList/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/GetList")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -385,7 +385,7 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var jsonResponse = "{\"status\":\"success\",\"data\":{\"count\":\"2\"}}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/GetList/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/GetList")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -403,7 +403,7 @@ namespace CakeMail.RestClient.UnitTests
 			var name = "Fictitious Inc";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -420,7 +420,7 @@ namespace CakeMail.RestClient.UnitTests
 			var status = ClientStatus.Active;
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -437,7 +437,7 @@ namespace CakeMail.RestClient.UnitTests
 			var parentId = 1L;
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -454,7 +454,7 @@ namespace CakeMail.RestClient.UnitTests
 			var address1 = "123 1st Avenue";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -471,7 +471,7 @@ namespace CakeMail.RestClient.UnitTests
 			var address2 = "Suite 1000";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -488,7 +488,7 @@ namespace CakeMail.RestClient.UnitTests
 			var city = "Mock City";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -505,7 +505,7 @@ namespace CakeMail.RestClient.UnitTests
 			var provinceId = "FL";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -522,7 +522,7 @@ namespace CakeMail.RestClient.UnitTests
 			var postalCode = "12345";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -539,7 +539,7 @@ namespace CakeMail.RestClient.UnitTests
 			var countryId = "us";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -556,7 +556,7 @@ namespace CakeMail.RestClient.UnitTests
 			var website = "www.fictitiouscompany.com";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -573,7 +573,7 @@ namespace CakeMail.RestClient.UnitTests
 			var phone = "111-111-1111";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -590,7 +590,7 @@ namespace CakeMail.RestClient.UnitTests
 			var fax = "222-222-2222";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -607,7 +607,7 @@ namespace CakeMail.RestClient.UnitTests
 			var authDomain = "md02.com";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -624,7 +624,7 @@ namespace CakeMail.RestClient.UnitTests
 			var bounceDomain = "bounce.fictitiouscompany.com";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -641,7 +641,7 @@ namespace CakeMail.RestClient.UnitTests
 			var dkimDomain = "md02.com";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -658,7 +658,7 @@ namespace CakeMail.RestClient.UnitTests
 			var doptinIp = "192.168.77.1";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -675,7 +675,7 @@ namespace CakeMail.RestClient.UnitTests
 			var forwardDomain = "http://forward.fictitiouscompany.com/";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -692,7 +692,7 @@ namespace CakeMail.RestClient.UnitTests
 			var forwardIp = "192.168.77.2";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -709,7 +709,7 @@ namespace CakeMail.RestClient.UnitTests
 			var ipPool = "dummy";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -726,7 +726,7 @@ namespace CakeMail.RestClient.UnitTests
 			var mdDomain = "http://link.fictitiouscompany.com/";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -743,7 +743,7 @@ namespace CakeMail.RestClient.UnitTests
 			var isReseller = true;
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -760,7 +760,7 @@ namespace CakeMail.RestClient.UnitTests
 			var isReseller = false;
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -777,7 +777,7 @@ namespace CakeMail.RestClient.UnitTests
 			var currency = "USD";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -794,7 +794,7 @@ namespace CakeMail.RestClient.UnitTests
 			var planType = "dummy plan";
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -811,7 +811,7 @@ namespace CakeMail.RestClient.UnitTests
 			var mailingLimit = 10;
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -828,7 +828,7 @@ namespace CakeMail.RestClient.UnitTests
 			var monthLimit = 100;
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -845,7 +845,7 @@ namespace CakeMail.RestClient.UnitTests
 			var contactLimit = 1000;
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -862,7 +862,7 @@ namespace CakeMail.RestClient.UnitTests
 			var defaultMailingLimit = 10;
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -879,7 +879,7 @@ namespace CakeMail.RestClient.UnitTests
 			var defaultMonthLimit = 100;
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -896,7 +896,7 @@ namespace CakeMail.RestClient.UnitTests
 			var defaultContactLimit = 1000;
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -912,7 +912,7 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -928,7 +928,7 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -944,7 +944,7 @@ namespace CakeMail.RestClient.UnitTests
 			// Arrange
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Client/SetInfo/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Client/SetInfo")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());

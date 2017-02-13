@@ -1,4 +1,6 @@
 ﻿using CakeMail.RestClient.Models;
+using CakeMail.RestClient.Utilities;
+using Pathoschild.Http.Client;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,15 +11,15 @@ namespace CakeMail.RestClient.Resources
 	{
 		#region Fields
 
-		private readonly CakeMailRestClient _cakeMailRestClient;
+		private readonly IClient _client;
 
 		#endregion
 
 		#region Constructor
 
-		public Countries(CakeMailRestClient cakeMailRestClient)
+		public Countries(IClient client)
 		{
-			_cakeMailRestClient = cakeMailRestClient;
+			_client = client;
 		}
 
 		#endregion
@@ -29,11 +31,12 @@ namespace CakeMail.RestClient.Resources
 		/// </summary>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="Country">countries</see></returns>
-		public Task<IEnumerable<Country>> GetListAsync(CancellationToken cancellationToken = default(CancellationToken))
+		public Task<Country[]> GetListAsync(CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/Country/GetList";
-
-			return _cakeMailRestClient.ExecuteArrayRequestAsync<Country>(path, null, "countries", cancellationToken);
+			return _client
+				.PostAsync("Country/GetList")
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<Country[]>("countries");
 		}
 
 		/// <summary>
@@ -42,16 +45,18 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="countryId">ID of the country.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="Province">privinces</see></returns>
-		public Task<IEnumerable<Province>> GetProvincesAsync(string countryId, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<Province[]> GetProvincesAsync(string countryId, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/Country/GetProvinces";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("country_id", countryId)
 			};
 
-			return _cakeMailRestClient.ExecuteArrayRequestAsync<Province>(path, parameters, "provinces", cancellationToken);
+			return _client
+				.PostAsync("Country/GetProvinces")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<Province[]>("provinces");
 		}
 
 		#endregion

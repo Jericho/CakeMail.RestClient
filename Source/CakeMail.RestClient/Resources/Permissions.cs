@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using CakeMail.RestClient.Utilities;
+using Pathoschild.Http.Client;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,15 +11,15 @@ namespace CakeMail.RestClient.Resources
 	{
 		#region Fields
 
-		private readonly CakeMailRestClient _cakeMailRestClient;
+		private readonly IClient _client;
 
 		#endregion
 
 		#region Constructor
 
-		public Permissions(CakeMailRestClient cakeMailRestClient)
+		public Permissions(IClient client)
 		{
-			_cakeMailRestClient = cakeMailRestClient;
+			_client = client;
 		}
 
 		#endregion
@@ -32,10 +34,8 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of permissions</returns>
-		public Task<IEnumerable<string>> GetUserPermissionsAsync(string userKey, long userId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<string[]> GetUserPermissionsAsync(string userKey, long userId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/Permission/GetPermissions/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -43,7 +43,11 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequestAsync<string>(path, parameters, "permissions", cancellationToken);
+			return _client
+				.PostAsync("Permission/GetPermissions")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<string[]>("permissions");
 		}
 
 		/// <summary>
@@ -57,8 +61,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>True if the operation succeeded</returns>
 		public Task<bool> SetUserPermissionsAsync(string userKey, long userId, IEnumerable<string> permissions, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/Permission/SetPermissions/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -71,7 +73,11 @@ namespace CakeMail.RestClient.Resources
 
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("Permission/SetPermissions")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<bool>();
 		}
 
 		#endregion

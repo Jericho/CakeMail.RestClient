@@ -1,5 +1,6 @@
 ﻿using CakeMail.RestClient.Models;
 using CakeMail.RestClient.Utilities;
+using Pathoschild.Http.Client;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -11,15 +12,15 @@ namespace CakeMail.RestClient.Resources
 	{
 		#region Fields
 
-		private readonly CakeMailRestClient _cakeMailRestClient;
+		private readonly IClient _client;
 
 		#endregion
 
 		#region Constructor
 
-		public Relays(CakeMailRestClient cakeMailRestClient)
+		public Relays(IClient client)
 		{
-			_cakeMailRestClient = cakeMailRestClient;
+			_client = client;
 		}
 
 		#endregion
@@ -42,8 +43,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>True if the email is sent</returns>
 		public Task<bool> SendWithoutTrackingAsync(string userKey, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, MessageEncoding? encoding = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			string path = "/Relay/Send/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -60,7 +59,11 @@ namespace CakeMail.RestClient.Resources
 			if (encoding.HasValue) parameters.Add(new KeyValuePair<string, object>("encoding", encoding.Value.GetEnumMemberValue()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("Relay/Send")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<bool>();
 		}
 
 		/// <summary>
@@ -80,8 +83,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>True if the email is sent</returns>
 		public Task<bool> SendWithTrackingAsync(string userKey, long trackingId, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, MessageEncoding? encoding = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			string path = "/Relay/Send/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -99,7 +100,11 @@ namespace CakeMail.RestClient.Resources
 			if (encoding.HasValue) parameters.Add(new KeyValuePair<string, object>("encoding", encoding.Value.GetEnumMemberValue()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("Relay/Send")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<bool>();
 		}
 
 		/// <summary>
@@ -114,7 +119,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="RelayLog">log items</see> matching the filter criteria</returns>
-		public Task<IEnumerable<RelayLog>> GetSentLogsAsync(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<RelayLog[]> GetSentLogsAsync(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			return GetLogsAsync<RelayLog>(userKey, "sent", "sent_logs", trackingId, start, end, limit, offset, clientId, cancellationToken);
 		}
@@ -131,7 +136,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="RelayOpenLog">log items</see> matching the filter criteria</returns>
-		public Task<IEnumerable<RelayOpenLog>> GetOpenLogsAsync(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<RelayOpenLog[]> GetOpenLogsAsync(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			return GetLogsAsync<RelayOpenLog>(userKey, "open", "open_logs", trackingId, start, end, limit, offset, clientId, cancellationToken);
 		}
@@ -148,7 +153,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="RelayClickLog">log items</see> matching the filter criteria</returns>
-		public Task<IEnumerable<RelayClickLog>> GetClickLogsAsync(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<RelayClickLog[]> GetClickLogsAsync(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			return GetLogsAsync<RelayClickLog>(userKey, "clickthru", "clickthru_logs", trackingId, start, end, limit, offset, clientId, cancellationToken);
 		}
@@ -165,7 +170,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="RelayBounceLog">log items</see> matching the filter criteria</returns>
-		public Task<IEnumerable<RelayBounceLog>> GetBounceLogsAsync(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<RelayBounceLog[]> GetBounceLogsAsync(string userKey, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			return GetLogsAsync<RelayBounceLog>(userKey, "bounce", "bounce_logs", trackingId, start, end, limit, offset, clientId, cancellationToken);
 		}
@@ -174,10 +179,9 @@ namespace CakeMail.RestClient.Resources
 
 		#region PRIVATE METHODS
 
-		private Task<IEnumerable<T>> GetLogsAsync<T>(string userKey, string logType, string arrayPropertyName, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken)) where T : RelayLog, new()
+		private Task<T[]> GetLogsAsync<T>(string userKey, string logType, string arrayPropertyName, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken)) 
+			where T : RelayLog, new()
 		{
-			string path = "/Relay/GetLogs/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -190,7 +194,11 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequestAsync<T>(path, parameters, arrayPropertyName, cancellationToken);
+			return _client
+				.PostAsync("Relay/GetLogs")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<T[]>(arrayPropertyName);
 		}
 
 		#endregion

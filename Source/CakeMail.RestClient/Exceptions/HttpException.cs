@@ -11,12 +11,12 @@ namespace CakeMail.RestClient.Exceptions
 	public class HttpException : IOException
 	{
 		/// <summary>
-		/// The HTTP status code returned by the web service.
+		/// Gets the HTTP status code returned by the web service.
 		/// </summary>
 		public HttpStatusCode HttpStatus { get; private set; }
 
 		/// <summary>
-		/// The URI queried by the web service.
+		/// Gets the URI queried by the web service.
 		/// </summary>
 		public Uri Uri { get; private set; }
 

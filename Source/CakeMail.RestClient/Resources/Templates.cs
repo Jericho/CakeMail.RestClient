@@ -1,4 +1,6 @@
 ﻿using CakeMail.RestClient.Models;
+using CakeMail.RestClient.Utilities;
+using Pathoschild.Http.Client;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -10,15 +12,15 @@ namespace CakeMail.RestClient.Resources
 	{
 		#region Fields
 
-		private readonly CakeMailRestClient _cakeMailRestClient;
+		private readonly IClient _client;
 
 		#endregion
 
 		#region Constructor
 
-		public Templates(CakeMailRestClient cakeMailRestClient)
+		public Templates(IClient client)
 		{
-			_cakeMailRestClient = cakeMailRestClient;
+			_client = client;
 		}
 
 		#endregion
@@ -37,8 +39,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>ID of the new template category</returns>
 		public Task<long> CreateCategoryAsync(string userKey, IDictionary<string, string> labels, bool isVisibleByDefault = true, bool templatesCanBeCopied = true, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			string path = "/TemplateV2/CreateCategory/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -59,7 +59,11 @@ namespace CakeMail.RestClient.Resources
 			// The data returned when creating a new category is a little bit unusual
 			// Instead of simply returning the unique identifier of the new record like all the other 'Create' methods, for example: {"status":"success","data":"4593766"}
 			// this method return an object with a single property called 'id' containing the unique identifier of the new record, like this: {"status":"success","data":{"id":"14052"}}
-			return _cakeMailRestClient.ExecuteRequestAsync<long>(path, parameters, "id", cancellationToken);
+			return _client
+				.PostAsync("TemplateV2/CreateCategory")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<long>("id");
 		}
 
 		/// <summary>
@@ -72,8 +76,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>True if the template category is deleted</returns>
 		public async Task<bool> DeleteCategoryAsync(string userKey, long categoryId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			string path = "/TemplateV2/DeleteCategory/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -84,7 +86,13 @@ namespace CakeMail.RestClient.Resources
 			// The data returned when deleting a category is a little bit unusual
 			// Instead of returning a boolean value to indicate success, it returns an empty array!!!
 			// For example:  {"status":"success","data":[]}
-			await _cakeMailRestClient.ExecuteRequestAsync<object>(path, parameters, null, cancellationToken).ConfigureAwait(false);
+			await _client
+				.PostAsync("TemplateV2/DeleteCategory")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsResponse()
+				.ConfigureAwait(false);
+
 			return true;
 		}
 
@@ -98,8 +106,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>The <see cref="TemplateCategory">category</see></returns>
 		public Task<TemplateCategory> GetCategoryAsync(string userKey, long categoryId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/TemplateV2/GetCategory/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -107,7 +113,11 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<TemplateCategory>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("TemplateV2/GetCategory")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<TemplateCategory>();
 		}
 
 		/// <summary>
@@ -119,10 +129,8 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the categories are located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>Enumeration of <see cref="TemplateCategory">categories</see> matching the filtering criteria</returns>
-		public Task<IEnumerable<TemplateCategory>> GetCategoriesAsync(string userKey, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<TemplateCategory[]> GetCategoriesAsync(string userKey, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/TemplateV2/GetCategories/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -132,7 +140,11 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequestAsync<TemplateCategory>(path, parameters, "categories", cancellationToken);
+			return _client
+				.PostAsync("TemplateV2/GetCategories")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<TemplateCategory[]>("categories");
 		}
 
 		/// <summary>
@@ -144,8 +156,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>The count of categories matching the filtering criteria</returns>
 		public Task<long> GetCategoriesCountAsync(string userKey, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/TemplateV2/GetCategories/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -153,7 +163,11 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken);
+			return _client
+				.PostAsync("TemplateV2/GetCategories")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<long>("count");
 		}
 
 		/// <summary>
@@ -169,8 +183,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>True if the category was updated</returns>
 		public Task<bool> UpdateCategoryAsync(string userKey, long categoryId, IDictionary<string, string> labels, bool isVisibleByDefault = true, bool templatesCanBeCopied = true, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			string path = "/TemplateV2/SetCategory/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -188,7 +200,11 @@ namespace CakeMail.RestClient.Resources
 
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("TemplateV2/SetCategory")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<bool>();
 		}
 
 		/// <summary>
@@ -201,10 +217,8 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client in which the category is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of permissions</returns>
-		public Task<IEnumerable<TemplateCategoryVisibility>> GetCategoryVisibilityAsync(string userKey, long categoryId, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<TemplateCategoryVisibility[]> GetCategoryVisibilityAsync(string userKey, long categoryId, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/TemplateV2/GetCategoryVisibility/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -215,7 +229,11 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequestAsync<TemplateCategoryVisibility>(path, parameters, "clients", cancellationToken);
+			return _client
+				.PostAsync("TemplateV2/GetCategoryVisibility")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<TemplateCategoryVisibility[]>("clients");
 		}
 
 		/// <summary>
@@ -228,8 +246,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>The count of permissions matching the filtering criteria</returns>
 		public Task<long> GetCategoryVisibilityCountAsync(string userKey, long categoryId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/TemplateV2/GetCategoryVisibility/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -238,7 +254,11 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken);
+			return _client
+				.PostAsync("TemplateV2/GetCategoryVisibility")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<long>("count");
 		}
 
 		/// <summary>
@@ -252,8 +272,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>True if the permissions are successfully updated</returns>
 		public Task<bool> SetCategoryVisibilityAsync(string userKey, long categoryId, IDictionary<long, bool> clientVisibility, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/TemplateV2/SetCategoryVisibility/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -270,7 +288,11 @@ namespace CakeMail.RestClient.Resources
 
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("TemplateV2/SetCategoryVisibility")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<bool>();
 		}
 
 		/// <summary>
@@ -285,8 +307,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>ID of the new template</returns>
 		public Task<long> CreateAsync(string userKey, IDictionary<string, string> labels, string content, long categoryId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			string path = "/TemplateV2/CreateTemplate/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -307,7 +327,11 @@ namespace CakeMail.RestClient.Resources
 			// The data returned when creating a new template is a little bit unusual
 			// Instead of simply returning the unique identifier of the new record like all the other 'Create' methods, for example: {"status":"success","data":"4593766"}
 			// this method return an object with a single property called 'id' containing the unique identifier of the new record, like this: {"status":"success","data":{"id":"14052"}}
-			return _cakeMailRestClient.ExecuteRequestAsync<long>(path, parameters, "id", cancellationToken);
+			return _client
+				.PostAsync("TemplateV2/CreateTemplate")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<long>("id");
 		}
 
 		/// <summary>
@@ -320,8 +344,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>True if the template is deleted</returns>
 		public async Task<bool> DeleteAsync(string userKey, long templateId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			string path = "/TemplateV2/DeleteTemplate/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -332,7 +354,12 @@ namespace CakeMail.RestClient.Resources
 			// The data returned when deleting a template is a little bit unusual
 			// Instead of returning a boolean value to indicate success, it returns an empty array!!!
 			// For example:  {"status":"success","data":[]}
-			await _cakeMailRestClient.ExecuteRequestAsync(path, parameters, cancellationToken).ConfigureAwait(false);
+			await _client
+				.PostAsync("TemplateV2/DeleteTemplate")
+				.WithCancellationToken(cancellationToken)
+				.AsResponse()
+				.ConfigureAwait(false);
+
 			return true;
 		}
 
@@ -346,8 +373,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>The <see cref="Template">template</see></returns>
 		public Task<Template> GetAsync(string userKey, long templateId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/TemplateV2/GetTemplate/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -355,7 +380,11 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<Template>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("TemplateV2/GetTemplate")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<Template>();
 		}
 
 		/// <summary>
@@ -368,10 +397,8 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the templates are located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>Enumeration of <see cref="Template">templates</see> matching the filtering criteria</returns>
-		public Task<IEnumerable<Template>> GetTemplatesAsync(string userKey, long? categoryId = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<Template[]> GetTemplatesAsync(string userKey, long? categoryId = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/TemplateV2/GetTemplates/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -382,7 +409,11 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequestAsync<Template>(path, parameters, "templates", cancellationToken);
+			return _client
+				.PostAsync("TemplateV2/GetTemplates")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<Template[]>("templates");
 		}
 
 		/// <summary>
@@ -395,8 +426,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>The count of templates matching the filtering criteria</returns>
 		public Task<long> GetCountAsync(string userKey, long? categoryId = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/TemplateV2/GetTemplates/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -405,7 +434,11 @@ namespace CakeMail.RestClient.Resources
 			if (categoryId.HasValue) parameters.Add(new KeyValuePair<string, object>("category_id", categoryId.Value));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken);
+			return _client
+				.PostAsync("TemplateV2/GetTemplates")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<long>("count");
 		}
 
 		/// <summary>
@@ -421,8 +454,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>True if the category was updated</returns>
 		public Task<bool> UpdateAsync(string userKey, long templateId, IDictionary<string, string> labels, string content = null, long? categoryId = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			string path = "/TemplateV2/SetTemplate/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -440,7 +471,11 @@ namespace CakeMail.RestClient.Resources
 			if (categoryId.HasValue) parameters.Add(new KeyValuePair<string, object>("category_id", categoryId.Value));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("TemplateV2/SetTemplate")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<bool>();
 		}
 
 		#endregion

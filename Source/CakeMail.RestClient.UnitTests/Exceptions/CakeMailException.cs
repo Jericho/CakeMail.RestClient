@@ -3,7 +3,7 @@ using Shouldly;
 using System;
 using Xunit;
 
-namespace CakeMail.RestClient.UnitTests.Utilities
+namespace CakeMail.RestClient.UnitTests.Exceptions
 {
 	public class CakeMailExceptionTests
 	{

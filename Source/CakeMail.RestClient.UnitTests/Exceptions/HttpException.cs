@@ -4,7 +4,7 @@ using System;
 using System.Net;
 using Xunit;
 
-namespace CakeMail.RestClient.UnitTests.Utilities
+namespace CakeMail.RestClient.UnitTests.Exceptions
 {
 	public class HttpExceptionTests
 	{

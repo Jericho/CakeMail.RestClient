@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CakeMail.RestClient.UnitTests
+namespace CakeMail.RestClient.UnitTests.Resources
 {
 	public class PermissionsTests
 	{
@@ -21,7 +21,7 @@ namespace CakeMail.RestClient.UnitTests
 			var permissions = new string[] { "FirstPermission", "SecondPermission", "ThirdPermission" };
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Permission/SetPermissions/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Permission/SetPermissions")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -39,7 +39,7 @@ namespace CakeMail.RestClient.UnitTests
 			var permissions = new string[] { "FirstPermission", "SecondPermission", "ThirdPermission" };
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Permission/SetPermissions/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Permission/SetPermissions")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -56,7 +56,7 @@ namespace CakeMail.RestClient.UnitTests
 			var userId = 1234L;
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"permissions\":[\"FirstPermission\",\"SecondPermission\",\"ThirdPermission\"],\"user_id\":\"{0}\"}}}}", userId);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Permission/GetPermissions/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Permission/GetPermissions")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
@@ -74,7 +74,7 @@ namespace CakeMail.RestClient.UnitTests
 			var userId = 1234L;
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"permissions\":[\"FirstPermission\",\"SecondPermission\",\"ThirdPermission\"],\"user_id\":\"{0}\"}}}}", userId);
 			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("/Permission/GetPermissions/")).Respond("application/json", jsonResponse);
+			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Permission/GetPermissions")).Respond("application/json", jsonResponse);
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());

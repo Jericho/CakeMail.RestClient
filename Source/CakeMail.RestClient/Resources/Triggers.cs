@@ -1,5 +1,6 @@
 ﻿using CakeMail.RestClient.Models;
 using CakeMail.RestClient.Utilities;
+using Pathoschild.Http.Client;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -11,15 +12,15 @@ namespace CakeMail.RestClient.Resources
 	{
 		#region Fields
 
-		private readonly CakeMailRestClient _cakeMailRestClient;
+		private readonly IClient _client;
 
 		#endregion
 
 		#region Constructor
 
-		public Triggers(CakeMailRestClient cakeMailRestClient)
+		public Triggers(IClient client)
 		{
-			_cakeMailRestClient = cakeMailRestClient;
+			_client = client;
 		}
 
 		#endregion
@@ -40,8 +41,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>ID of the new trigger</returns>
 		public Task<long> CreateAsync(string userKey, string name, long listId, long? campaignId = null, MessageEncoding? encoding = null, TransferEncoding? transferEncoding = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			string path = "/Trigger/Create/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -53,13 +52,15 @@ namespace CakeMail.RestClient.Resources
 			if (campaignId.HasValue) parameters.Add(new KeyValuePair<string, object>("campaign_id", campaignId.Value));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<long>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("Trigger/Create")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<long>();
 		}
 
-		//public async Task<bool> DeleteAsync(string userKey, long triggerId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		//public Task<bool> DeleteAsync(string userKey, long triggerId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		//{
-		//	string path = "/Trigger/Delete/";
-
 		//	var parameters = new List<KeyValuePair<string, object>>()
 		//	{
 		//		new KeyValuePair<string, object>("user_key", userKey),
@@ -67,7 +68,11 @@ namespace CakeMail.RestClient.Resources
 		//	};
 		//	if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-		//	return await _cakeMailRestClient.ExecuteRequest<bool>(path, parameters, null, cancellationToken).ConfigureAwait(false);
+		//	return _client
+		//		.PostAsync("Trigger/Delete")
+		//		.WithFormUrlEncodedBody(parameters)
+		//		.WithCancellationToken(cancellationToken)
+		//		.AsCakeMailObject<bool>();
 		//}
 
 		/// <summary>
@@ -80,8 +85,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>The <see cref="Trigger">trigger</see></returns>
 		public Task<Trigger> GetAsync(string userKey, long triggerId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/Trigger/GetInfo/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -89,7 +92,11 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<Trigger>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("Trigger/GetInfo")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<Trigger>();
 		}
 
 		/// <summary>
@@ -120,8 +127,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>True if the trigger was updated</returns>
 		public Task<bool> UpdateAsync(string userKey, long triggerId, long? campaignId = null, string name = null, TriggerAction? action = null, MessageEncoding? encoding = null, TransferEncoding? transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClicksInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, int? delay = null, TriggerStatus? status = null, DateTime? date = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/Trigger/SetInfo/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -147,7 +152,11 @@ namespace CakeMail.RestClient.Resources
 			if (date.HasValue) parameters.Add(new KeyValuePair<string, object>("date_field", date.Value.ToCakeMailString()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("Trigger/SetInfo")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<bool>();
 		}
 
 		/// <summary>
@@ -163,10 +172,8 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="Trigger">triggers</see> matching the filter criteria</returns>
-		public Task<IEnumerable<Trigger>> GetTriggersAsync(string userKey, TriggerStatus? status = null, TriggerAction? action = null, long? listId = null, long? campaignId = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<Trigger[]> GetTriggersAsync(string userKey, TriggerStatus? status = null, TriggerAction? action = null, long? listId = null, long? campaignId = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/Trigger/GetList/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -180,7 +187,11 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequestAsync<Trigger>(path, parameters, "triggers", cancellationToken);
+			return _client
+				.PostAsync("Trigger/GetList")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<Trigger[]>("triggers");
 		}
 
 		/// <summary>
@@ -196,7 +207,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>The count of triggers matching the filtering criteria</returns>
 		public Task<long> GetCountAsync(string userKey, TriggerStatus? status = null, TriggerAction? action = null, long? listId = null, long? campaignId = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/Trigger/GetList/";
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -208,7 +218,11 @@ namespace CakeMail.RestClient.Resources
 			if (campaignId.HasValue) parameters.Add(new KeyValuePair<string, object>("campaign_id", campaignId.Value));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken);
+			return _client
+				.PostAsync("Trigger/GetList")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<long>("count");
 		}
 
 		/// <summary>
@@ -223,8 +237,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>True if the test email was sent</returns>
 		public Task<bool> SendTestEmailAsync(string userKey, long triggerId, string recipientEmail, bool separated = false, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/Trigger/SendTestEmail/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -234,7 +246,11 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("Trigger/SendTestEmail")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<bool>();
 		}
 
 		/// <summary>
@@ -247,8 +263,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>The <see cref="RawEmailMessage">multi-part message</see></returns>
 		public Task<RawEmailMessage> GetRawEmailMessageAsync(string userKey, long triggerId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/Trigger/GetEmailMessage/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -256,7 +270,11 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<RawEmailMessage>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("Trigger/GetEmailMessage")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<RawEmailMessage>();
 		}
 
 		/// <summary>
@@ -269,8 +287,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>The rendered HTML</returns>
 		public Task<string> GetRawHtmlAsync(string userKey, long triggerId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/Trigger/GetHtmlMessage/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -278,7 +294,11 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<string>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("Trigger/GetHtmlMessage")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<string>();
 		}
 
 		/// <summary>
@@ -291,8 +311,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>The rendered text</returns>
 		public Task<string> GetRawTextAsync(string userKey, long triggerId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/Trigger/GetTextMessage/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -300,7 +318,11 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<string>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("Trigger/GetTextMessage")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<string>();
 		}
 
 		/// <summary>
@@ -314,8 +336,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>True is the trigger is unleashed</returns>
 		public Task<bool> UnleashAsync(string userKey, long triggerId, long listMemberId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var path = "/Trigger/Unleash/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -324,7 +344,11 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<bool>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("Trigger/Unleash")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<bool>();
 		}
 
 		/// <summary>
@@ -343,10 +367,8 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="LogItem">log items</see> matching the filter criteria</returns>
-		public Task<IEnumerable<LogItem>> GetLogsAsync(string userKey, long triggerId, LogType? logType = null, long? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<LogItem[]> GetLogsAsync(string userKey, long triggerId, LogType? logType = null, long? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			string path = "/Trigger/GetLog/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -363,7 +385,11 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequestAsync<LogItem>(path, parameters, "logs", cancellationToken);
+			return _client
+				.PostAsync("Trigger/GetLog")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<LogItem[]>("logs");
 		}
 
 		/// <summary>
@@ -382,8 +408,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>The number of log items matching the filtering criteria</returns>
 		public Task<long> GetLogsCountAsync(string userKey, long triggerId, LogType? logType = null, long? listMemberId = null, bool uniques = false, bool totals = false, DateTime? start = null, DateTime? end = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			string path = "/Trigger/GetLog/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -398,7 +422,11 @@ namespace CakeMail.RestClient.Resources
 			if (listMemberId.HasValue) parameters.Add(new KeyValuePair<string, object>("record_id", listMemberId.Value));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken);
+			return _client
+				.PostAsync("Trigger/GetLog")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<long>("count");
 		}
 
 		/// <summary>
@@ -411,10 +439,8 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="Link">links</see> matching the filter criteria</returns>
-		public Task<IEnumerable<Link>> GetLinksAsync(string userKey, long triggerId, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<Link[]> GetLinksAsync(string userKey, long triggerId, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			string path = "/Trigger/GetLinks/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -425,7 +451,11 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequestAsync<Link>(path, parameters, "links", cancellationToken);
+			return _client
+				.PostAsync("Trigger/GetLinks")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<Link[]>("links");
 		}
 
 		/// <summary>
@@ -438,8 +468,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>The number of links matching the filtering criteria</returns>
 		public Task<long> GetLinksCountAsync(string userKey, long triggerId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			string path = "/Trigger/GetLinks/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -448,7 +476,11 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken);
+			return _client
+				.PostAsync("Trigger/GetLinks")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<long>("count");
 		}
 
 		/// <summary>
@@ -465,8 +497,6 @@ namespace CakeMail.RestClient.Resources
 		/// </remarks>
 		public Task<Link> GetLinkAsync(string userKey, long linkId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			string path = "/Trigger/GetLinkInfo/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -474,7 +504,11 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteRequestAsync<Link>(path, parameters, null, cancellationToken);
+			return _client
+				.PostAsync("Trigger/GetLinkInfo")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<Link>();
 		}
 
 		/// <summary>
@@ -489,10 +523,8 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="LinkStats">links with their statistics</see> matching the filter criteria</returns>
-		public Task<IEnumerable<LinkStats>> GetLinksWithStatsAsync(string userKey, long triggerId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<LinkStats[]> GetLinksWithStatsAsync(string userKey, long triggerId, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			string path = "/Trigger/GetLinksLog/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -505,7 +537,11 @@ namespace CakeMail.RestClient.Resources
 			if (offset > 0) parameters.Add(new KeyValuePair<string, object>("offset", offset));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteArrayRequestAsync<LinkStats>(path, parameters, "links", cancellationToken);
+			return _client
+				.PostAsync("Trigger/GetLinksLog")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<LinkStats[]>("links");
 		}
 
 		/// <summary>
@@ -520,8 +556,6 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>The number of links matching the filter criteria</returns>
 		public Task<long> GetLinksWithStatsCountAsync(string userKey, long triggerId, DateTime? start = null, DateTime? end = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			string path = "/Trigger/GetLinksLog/";
-
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -532,7 +566,11 @@ namespace CakeMail.RestClient.Resources
 			if (end.HasValue) parameters.Add(new KeyValuePair<string, object>("end_time", end.Value.ToCakeMailString()));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
-			return _cakeMailRestClient.ExecuteCountRequestAsync(path, parameters, cancellationToken);
+			return _client
+				.PostAsync("Trigger/GetLinksLog")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<long>("count");
 		}
 
 		#endregion
