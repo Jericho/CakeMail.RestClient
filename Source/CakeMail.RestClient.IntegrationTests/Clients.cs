@@ -18,7 +18,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			var clientsCount = await api.Clients.GetCountAsync(userKey, null, null, clientId).ConfigureAwait(false);
 			Console.WriteLine("Clients count = {0}", clientsCount);
 
-			var adminEmail = string.Format("admin{0:00}@integrationtesting.com", clientsCount);
+			var adminEmail = string.Format("admin{0:00}+{1:0000}@integrationtesting.com", clientsCount, (new Random()).Next(9999));
 			var confirmation = await api.Clients.CreateAsync(clientId, "_Integration Testing", "123 1st Street", "Suite 123", "Atlanta", "GA", "12345", "us", "www.company.com", "1-888-myphone", "1-888myfax", adminEmail, "Admin", "Integration Testing", "Super Administrator", "1-888-AdminPhone", "1-888-AdminMobile", "en_US", UTC_TIMEZONE_ID, "adminpassword", true).ConfigureAwait(false);
 			Console.WriteLine("New client created. Confirmation code: {0}", confirmation);
 
