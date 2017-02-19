@@ -2,7 +2,6 @@
 using CakeMail.RestClient.Utilities;
 using Pathoschild.Http.Client;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
