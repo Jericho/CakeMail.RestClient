@@ -12,7 +12,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			Console.WriteLine(new string('-', 25));
 			Console.WriteLine("Executing RELAYS methods...");
 
-			var sent = await api.Relays.SendWithoutTrackingAsync(userKey, "integration@testing.com", "Sent from integration test", "<html><body>Sent from integration test (HTML)</body></html>", "Sent from integration test (TEXT)", "sender@integrationtesting.com", "Integration Testing", null, clientId).ConfigureAwait(false);
+			var sent = await api.Relays.SendWithoutTrackingAsync(userKey, "integration@testing.com", "Sent from integration test", "<html><body>Sent from integration test (HTML)</body></html>", "Sent from integration test (TEXT)", "sender@integrationtesting.com", "Integration Testing", null, null, clientId).ConfigureAwait(false);
 			Console.WriteLine("Relay sent: {0}", sent ? "success" : "failed");
 
 			var sentLogs = await api.Relays.GetSentLogsAsync(userKey, null, null, null, null, null, clientId).ConfigureAwait(false);

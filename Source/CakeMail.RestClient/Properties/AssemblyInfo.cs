@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("CakeMail.RestClient is a .NET wrapper for the CakeMail API")]
 [assembly: AssemblyCompany("Jeremie Desautels")]
 [assembly: AssemblyProduct("CakeMail.RestClient")]
-[assembly: AssemblyCopyright("Copyright Jeremie Desautels © 2016")]
+[assembly: AssemblyCopyright("Copyright Jeremie Desautels © 2016-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
