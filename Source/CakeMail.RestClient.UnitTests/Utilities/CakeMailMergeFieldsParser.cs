@@ -42,8 +42,10 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 		{
 			// Arrange
 			var content = "Dear [firstname]";
-			var data = new Dictionary<string, object>();
-			data.Add("firstname", "Bob");
+			var data = new Dictionary<string, object>
+			{
+				{ "firstname", "Bob" }
+			};
 
 			// Act
 			var result = CakeMailMergeFieldsParser.Parse(content, data);
@@ -57,8 +59,10 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 		{
 			// Arrange
 			var content = "Dear [firstname]";
-			var data = new Dictionary<string, object>();
-			data.Add("lastname", "Smith");
+			var data = new Dictionary<string, object>
+			{
+				{ "lastname", "Smith" }
+			};
 
 			// Act
 			var result = CakeMailMergeFieldsParser.Parse(content, data);
@@ -72,8 +76,10 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 		{
 			// Arrange
 			var content = "Dear [firstname,friend]";
-			var data = new Dictionary<string, object>();
-			data.Add("lastname", "Smith");
+			var data = new Dictionary<string, object>
+			{
+				{ "lastname", "Smith" }
+			};
 
 			// Act
 			var result = CakeMailMergeFieldsParser.Parse(content, data);
@@ -87,8 +93,10 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 		{
 			// Arrange
 			var content = "Dear [firstname,friend]";
-			var data = new Dictionary<string, object>();
-			data.Add("firstname", null);
+			var data = new Dictionary<string, object>
+			{
+				{ "firstname", null }
+			};
 
 			// Act
 			var result = CakeMailMergeFieldsParser.Parse(content, data);
@@ -102,8 +110,10 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 		{
 			// Arrange
 			var content = "Thank you for being a customer since [customer_since | yyyy]";
-			var data = new Dictionary<string, object>();
-			data.Add("customer_since", new DateTime(2017, 4, 30, 4, 57, 0));
+			var data = new Dictionary<string, object>
+			{
+				{ "customer_since", new DateTime(2017, 4, 30, 4, 57, 0) }
+			};
 
 			// Act
 			var result = CakeMailMergeFieldsParser.Parse(content, data);
@@ -117,8 +127,10 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 		{
 			// Arrange
 			var content = "We drove [miles_driven|#,#] miles during this trip";
-			var data = new Dictionary<string, object>();
-			data.Add("miles_driven", (short)12345);
+			var data = new Dictionary<string, object>
+			{
+				{ "miles_driven", (short)12345 }
+			};
 
 			// Act
 			var result = CakeMailMergeFieldsParser.Parse(content, data);
@@ -132,8 +144,10 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 		{
 			// Arrange
 			var content = "We drove [miles_driven|#,#] miles during this trip";
-			var data = new Dictionary<string, object>();
-			data.Add("miles_driven", (int)12345);
+			var data = new Dictionary<string, object>
+			{
+				{ "miles_driven", (int)12345 }
+			};
 
 			// Act
 			var result = CakeMailMergeFieldsParser.Parse(content, data);
@@ -147,8 +161,10 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 		{
 			// Arrange
 			var content = "We drove [miles_driven|#,#] miles during this trip";
-			var data = new Dictionary<string, object>();
-			data.Add("miles_driven", (long)12345);
+			var data = new Dictionary<string, object>
+			{
+				{ "miles_driven", (long)12345 }
+			};
 
 			// Act
 			var result = CakeMailMergeFieldsParser.Parse(content, data);
@@ -162,8 +178,10 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 		{
 			// Arrange
 			var content = "We drove [miles_driven|0.00] miles today";
-			var data = new Dictionary<string, object>();
-			data.Add("miles_driven", (decimal)12.345);
+			var data = new Dictionary<string, object>
+			{
+				{ "miles_driven", (decimal)12.345 }
+			};
 
 			// Act
 			var result = CakeMailMergeFieldsParser.Parse(content, data);
@@ -177,8 +195,10 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 		{
 			// Arrange
 			var content = "We drove [miles_driven|0.00] miles today";
-			var data = new Dictionary<string, object>();
-			data.Add("miles_driven", (float)12.345);
+			var data = new Dictionary<string, object>
+			{
+				{ "miles_driven", (float)12.345 }
+			};
 
 			// Act
 			var result = CakeMailMergeFieldsParser.Parse(content, data);
@@ -192,8 +212,10 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 		{
 			// Arrange
 			var content = "We drove [miles_driven|0.00] miles today";
-			var data = new Dictionary<string, object>();
-			data.Add("miles_driven", (double)12.345);
+			var data = new Dictionary<string, object>
+			{
+				{ "miles_driven", (double)12.345 }
+			};
 
 			// Act
 			var result = CakeMailMergeFieldsParser.Parse(content, data);
@@ -245,7 +267,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 		public void DATE_with_format()
 		{
 			// Arrange
-			var content = "The current year is: [DATE|yyyy]";
+			var content = "The current year is: [DATE | yyyy]";
 
 			// Act
 			var result = CakeMailMergeFieldsParser.Parse(content, null);
@@ -271,7 +293,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 		public void TODAY_with_format()
 		{
 			// Arrange
-			var content = "The current year is: [TODAY|yyyy]";
+			var content = "The current year is: [TODAY |yyyy]";
 
 			// Act
 			var result = CakeMailMergeFieldsParser.Parse(content, null);

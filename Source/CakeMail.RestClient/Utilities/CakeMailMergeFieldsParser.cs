@@ -7,8 +7,8 @@ namespace CakeMail.RestClient.Utilities
 {
 	public static class CakeMailMergeFieldsParser
 	{
-		private static readonly Regex _currentDateRegex = new Regex(@"\[(NOW|TODAY|DATE)(?:\|(.*?))?\]", RegexOptions.Compiled);
-		private static readonly Regex _mergeFieldsRegex = new Regex(@"\[(.*?)(?:\|(.*?))?\]", RegexOptions.Compiled);
+		private static readonly Regex _currentDateRegex = new Regex(@"\[(NOW|TODAY|DATE)\s*(?:\|\s*(.*?))?\]", RegexOptions.Compiled);
+		private static readonly Regex _mergeFieldsRegex = new Regex(@"\[(.*?)\s*(?:\|\s*(.*?))?\]", RegexOptions.Compiled);
 
 		public static string Parse(string content, IDictionary<string, object> data)
 		{
