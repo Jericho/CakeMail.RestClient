@@ -201,5 +201,83 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			// Assert
 			result.ShouldBe("We drove 12.35 miles today");
 		}
+
+		[Fact]
+		public void DATE_without_format()
+		{
+			// Arrange
+			var content = "The current date is: [DATE]";
+
+			// Act
+			var result = CakeMailMergeFieldsParser.Parse(content, null);
+
+			// Assert
+			Assert.StartsWith("The current date is: ", content);
+		}
+
+		[Fact]
+		public void NOW_without_format()
+		{
+			// Arrange
+			var content = "The current date is: [NOW]";
+
+			// Act
+			var result = CakeMailMergeFieldsParser.Parse(content, null);
+
+			// Assert
+			Assert.StartsWith("The current date is: ", content);
+		}
+
+		[Fact]
+		public void TODAY_without_format()
+		{
+			// Arrange
+			var content = "The current date is: [TODAY]";
+
+			// Act
+			var result = CakeMailMergeFieldsParser.Parse(content, null);
+
+			// Assert
+			Assert.StartsWith("The current date is: ", content);
+		}
+
+		[Fact]
+		public void DATE_with_format()
+		{
+			// Arrange
+			var content = "The current year is: [DATE|yyyy]";
+
+			// Act
+			var result = CakeMailMergeFieldsParser.Parse(content, null);
+
+			// Assert
+			result.ShouldBe($"The current year is: {DateTime.UtcNow.Year}");
+		}
+
+		[Fact]
+		public void NOW_with_format()
+		{
+			// Arrange
+			var content = "The current year is: [NOW|yyyy]";
+
+			// Act
+			var result = CakeMailMergeFieldsParser.Parse(content, null);
+
+			// Assert
+			result.ShouldBe($"The current year is: {DateTime.UtcNow.Year}");
+		}
+
+		[Fact]
+		public void TODAY_with_format()
+		{
+			// Arrange
+			var content = "The current year is: [TODAY|yyyy]";
+
+			// Act
+			var result = CakeMailMergeFieldsParser.Parse(content, null);
+
+			// Assert
+			result.ShouldBe($"The current year is: {DateTime.UtcNow.Year}");
+		}
 	}
 }

@@ -7,8 +7,9 @@ namespace CakeMail.RestClient.Utilities
 {
 	public static class CakeMailMergeFieldsParser
 	{
+		private static readonly Regex _currentDateRegex = new Regex(@"\[(NOW|TODAY|DATE)(?:\|(.*?))?\]", RegexOptions.Compiled);
 		private static readonly Regex _mergeFieldsRegex = new Regex(@"\[(.*?)(?:\|(.*?))?\]", RegexOptions.Compiled);
-		
+
 		public static string Parse(string content, IDictionary<string, object> data)
 		{
 			if (string.IsNullOrEmpty(content))
@@ -16,14 +17,24 @@ namespace CakeMail.RestClient.Utilities
 				return string.Empty;
 			}
 
-			var mergedContent = _mergeFieldsRegex.Replace(content, (Match m) => MatchEval(m, data));
+			var mergedContent = _currentDateRegex.Replace(content, (Match m) => CurrentDateMatchEval(m));
+			mergedContent = _mergeFieldsRegex.Replace(mergedContent, (Match m) => MatchEval(m, data));
+
 			return mergedContent;
+		}
+
+		private static string CurrentDateMatchEval(Match m)
+		{
+			var format = (m.Groups.Count >= 3 ? m.Groups[2] : null)?.Value ?? string.Empty;
+			var dateAsString = DateTime.UtcNow.ToString(format);
+
+			return dateAsString;
 		}
 
 		private static string MatchEval(Match m, IDictionary<string, object> data)
 		{
 			var group1 = m.Groups[1].Value.Split(',');
-			var group2 = (m.Groups.Count >= 2 ? m.Groups[2] : null);
+			var group2 = (m.Groups.Count >= 3 ? m.Groups[2] : null);
 
 			var fieldName = group1[0].Trim();
 			var fallbackValue = (group1.Length >= 2 ? group1[1] : string.Empty).Trim();
