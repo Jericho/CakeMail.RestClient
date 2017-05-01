@@ -37,12 +37,17 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="text">Text content of the relay.</param>
 		/// <param name="senderEmail">Email address of the sender of the relay.</param>
 		/// <param name="senderName">Name of the sender of the relay.</param>
+		/// <param name="mergeData">Data to be merged into the content of the email</param>
 		/// <param name="encoding">Encoding to be used for the relay. Possible values: 'utf-8', 'iso-8859-x'</param>
 		/// <param name="clientId">Client ID of the client in which the relay is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the email is sent</returns>
-		public Task<bool> SendWithoutTrackingAsync(string userKey, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, MessageEncoding? encoding = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<bool> SendWithoutTrackingAsync(string userKey, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, IDictionary<string, object> mergeData = null, MessageEncoding? encoding = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
+			subject = CakeMailMergeFieldsParser.Parse(subject, mergeData);
+			html = CakeMailMergeFieldsParser.Parse(html, mergeData);
+			text = CakeMailMergeFieldsParser.Parse(text, mergeData);
+
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
@@ -77,12 +82,17 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="text">Text content of the relay.</param>
 		/// <param name="senderEmail">Email address of the sender of the relay.</param>
 		/// <param name="senderName">Name of the sender of the relay.</param>
+		/// <param name="mergeData">Data to be merged into the content of the email</param>
 		/// <param name="encoding">Encoding to be used for the relay. Possible values: 'utf-8', 'iso-8859-x'</param>
 		/// <param name="clientId">Client ID of the client in which the relay is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the email is sent</returns>
-		public Task<bool> SendWithTrackingAsync(string userKey, long trackingId, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, MessageEncoding? encoding = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<bool> SendWithTrackingAsync(string userKey, long trackingId, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, IDictionary<string, object> mergeData = null, MessageEncoding? encoding = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
+			subject = CakeMailMergeFieldsParser.Parse(subject, mergeData);
+			html = CakeMailMergeFieldsParser.Parse(html, mergeData);
+			text = CakeMailMergeFieldsParser.Parse(text, mergeData);
+
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
