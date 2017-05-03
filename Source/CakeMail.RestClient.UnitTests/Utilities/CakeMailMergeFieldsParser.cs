@@ -301,5 +301,178 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			// Assert
 			result.ShouldBe($"The current year is: {DateTime.UtcNow.Year}");
 		}
+
+		[Fact]
+		public void IF_true()
+		{
+			// Arrange
+			var content = "[IF `firstname` = \"Bob\"]Yes[ELSE]No[ENDIF]";
+			var data = new Dictionary<string, object>
+			{
+				{ "firstname", "Bob" }
+			};
+
+			// Act
+			var result = CakeMailMergeFieldsParser.Parse(content, data);
+
+			// Assert
+			result.ShouldBe("Yes");
+		}
+
+		[Fact]
+		public void IF_false_with_ELSE()
+		{
+			// Arrange
+			var content = "[IF `firstname` = \"Robert\"]Yes[ELSE]No[ENDIF]";
+			var data = new Dictionary<string, object>
+			{
+				{ "firstname", "Bob" }
+			};
+
+			// Act
+			var result = CakeMailMergeFieldsParser.Parse(content, data);
+
+			// Assert
+			result.ShouldBe("No");
+		}
+
+		[Fact]
+		public void IF_false_without_ELSE()
+		{
+			// Arrange
+			var content = "[IF `firstname` = \"Robert\"]Yes[ENDIF]";
+			var data = new Dictionary<string, object>
+			{
+				{ "firstname", "Bob" }
+			};
+
+			// Act
+			var result = CakeMailMergeFieldsParser.Parse(content, data);
+
+			// Assert
+			result.ShouldBeEmpty();
+		}
+
+		[Fact]
+		public void IF_false_with_ELSEIF_true()
+		{
+			// Arrange
+			var content = "[IF `firstname` = \"Robert\"]Yes - Robert[ELSEIF `firstname` = \"Bob\"]Yes - Bob[ELSE]No[ENDIF]";
+			var data = new Dictionary<string, object>
+			{
+				{ "firstname", "Bob" }
+			};
+
+			// Act
+			var result = CakeMailMergeFieldsParser.Parse(content, data);
+
+			// Assert
+			result.ShouldBe("Yes - Bob");
+		}
+
+		[Fact]
+		public void IF_false_with_ELSEIF_false()
+		{
+			// Arrange
+			var content = "[IF `firstname` = \"Robert\"]Yes - Robert[ELSEIF `firstname` = \"Bob\"]Yes - Bob[ELSE]No[ENDIF]";
+			var data = new Dictionary<string, object>
+			{
+				{ "firstname", "Jim" }
+			};
+
+			// Act
+			var result = CakeMailMergeFieldsParser.Parse(content, data);
+
+			// Assert
+			result.ShouldBe("No");
+		}
+
+		[Fact]
+		public void Two_conditions_both_true()
+		{
+			// Arrange
+			var content = "[IF `firstname` = \"Jim\" AND `lastname` = \"Halpert\"]Yes[ELSE]No[ENDIF]";
+			var data = new Dictionary<string, object>
+			{
+				{ "firstname", "Jim" },
+				{ "lastname", "Halpert" }
+			};
+
+			// Act
+			var result = CakeMailMergeFieldsParser.Parse(content, data);
+
+			// Assert
+			result.ShouldBe("Yes");
+		}
+
+		[Fact]
+		public void Two_conditions_one_true_one_false_AND()
+		{
+			// Arrange
+			var content = "[IF `firstname` = \"Jim\" AND `lastname` = \"Halpert\"]Yes[ELSE]No[ENDIF]";
+			var data = new Dictionary<string, object>
+			{
+				{ "firstname", "John" },
+				{ "lastname", "Halpert" }
+			};
+
+			// Act
+			var result = CakeMailMergeFieldsParser.Parse(content, data);
+
+			// Assert
+			result.ShouldBe("No");
+		}
+
+		[Fact]
+		public void Two_conditions_one_true_one_false_OR()
+		{
+			// Arrange
+			var content = "[IF `firstname` = \"Jim\" OR `lastname` = \"Halpert\"]Yes[ELSE]No[ENDIF]";
+			var data = new Dictionary<string, object>
+			{
+				{ "firstname", "John" },
+				{ "lastname", "Halpert" }
+			};
+
+			// Act
+			var result = CakeMailMergeFieldsParser.Parse(content, data);
+
+			// Assert
+			result.ShouldBe("Yes");
+		}
+
+		[Fact]
+		public void Numeric_true()
+		{
+			// Arrange
+			var content = "[IF `age` > \"18\"]Yes[ELSE]No[ENDIF]";
+			var data = new Dictionary<string, object>
+			{
+				{ "age", 25 }
+			};
+
+			// Act
+			var result = CakeMailMergeFieldsParser.Parse(content, data);
+
+			// Assert
+			result.ShouldBe("Yes");
+		}
+
+		[Fact]
+		public void Numeric_CAKEMAIL_BUG()
+		{
+			// Arrange
+			var content = "[IF `age` > \"18\"]Yes[ELSE]No[ENDIF]";
+			var data = new Dictionary<string, object>
+			{
+				{ "age", 9 }
+			};
+
+			// Act
+			var result = CakeMailMergeFieldsParser.Parse(content, data);
+
+			// Assert
+			result.ShouldBe("Yes");
+		}
 	}
 }
