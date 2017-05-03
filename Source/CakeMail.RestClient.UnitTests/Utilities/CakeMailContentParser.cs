@@ -9,7 +9,7 @@ using Xunit;
 
 namespace CakeMail.RestClient.UnitTests.Utilities
 {
-	public class CakeMailMergeFieldsParserTests
+	public class CakeMailContentParserTests
 	{
 		[Fact]
 		public void Returns_empty_string_when_content_is_null()
@@ -18,7 +18,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var content = (string)null;
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, null);
+			var result = CakeMailContentParser.Parse(content, null);
 
 			// Assert
 			result.ShouldBeEmpty();
@@ -31,7 +31,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var content = string.Empty;
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, null);
+			var result = CakeMailContentParser.Parse(content, null);
 
 			// Assert
 			result.ShouldBeEmpty();
@@ -48,7 +48,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("Dear Bob");
@@ -65,7 +65,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("Dear ");
@@ -82,7 +82,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("Dear friend");
@@ -99,7 +99,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("Dear friend");
@@ -116,7 +116,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("Thank you for being a customer since 2017");
@@ -133,7 +133,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("We drove 12,345 miles during this trip");
@@ -150,7 +150,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("We drove 12,345 miles during this trip");
@@ -167,7 +167,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("We drove 12,345 miles during this trip");
@@ -184,7 +184,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("We drove 12.35 miles today");
@@ -201,7 +201,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("We drove 12.35 miles today");
@@ -218,7 +218,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("We drove 12.35 miles today");
@@ -231,7 +231,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var content = "The current date is: [DATE]";
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, null);
+			var result = CakeMailContentParser.Parse(content, null);
 
 			// Assert
 			Assert.StartsWith("The current date is: ", content);
@@ -244,7 +244,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var content = "The current date is: [NOW]";
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, null);
+			var result = CakeMailContentParser.Parse(content, null);
 
 			// Assert
 			Assert.StartsWith("The current date is: ", content);
@@ -257,7 +257,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var content = "The current date is: [TODAY]";
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, null);
+			var result = CakeMailContentParser.Parse(content, null);
 
 			// Assert
 			Assert.StartsWith("The current date is: ", content);
@@ -270,7 +270,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var content = "The current year is: [DATE | yyyy]";
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, null);
+			var result = CakeMailContentParser.Parse(content, null);
 
 			// Assert
 			result.ShouldBe($"The current year is: {DateTime.UtcNow.Year}");
@@ -283,7 +283,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var content = "The current year is: [NOW|yyyy]";
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, null);
+			var result = CakeMailContentParser.Parse(content, null);
 
 			// Assert
 			result.ShouldBe($"The current year is: {DateTime.UtcNow.Year}");
@@ -296,7 +296,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			var content = "The current year is: [TODAY |yyyy]";
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, null);
+			var result = CakeMailContentParser.Parse(content, null);
 
 			// Assert
 			result.ShouldBe($"The current year is: {DateTime.UtcNow.Year}");
@@ -313,7 +313,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("Yes");
@@ -330,7 +330,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("No");
@@ -347,7 +347,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBeEmpty();
@@ -364,7 +364,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("Yes - Bob");
@@ -381,7 +381,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("No");
@@ -399,7 +399,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("Yes");
@@ -417,7 +417,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("No");
@@ -435,7 +435,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("Yes");
@@ -452,7 +452,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("Yes");
@@ -469,7 +469,7 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 			};
 
 			// Act
-			var result = CakeMailMergeFieldsParser.Parse(content, data);
+			var result = CakeMailContentParser.Parse(content, data);
 
 			// Assert
 			result.ShouldBe("Yes");
