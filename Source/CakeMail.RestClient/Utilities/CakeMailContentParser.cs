@@ -9,10 +9,11 @@ namespace CakeMail.RestClient.Utilities
 	{
 		private const string DYNAMIC_CONTENT_START_TAG = @"\[IF (.*?)\]";
 		private const string DYNAMIC_CONTENT_END_TAG = @"\[ENDIF\]";
+		private const string DYNAMIC_CONTENT_ELSEIF_TAG = "\\[ELSEIF (.*?)\\]";
+		private const string DYNAMIC_CONTENT_ELSE_TAG = "\\[ELSE\\]";
 
 		private static readonly Regex _currentDateRegex = new Regex(@"\[(NOW|TODAY|DATE)\s*(?:\|\s*(.*?))?\]", RegexOptions.Compiled);
 		private static readonly Regex _mergeFieldsRegex = new Regex(@"\[(.*?)\s*(?:\|\s*(.*?))?\]", RegexOptions.Compiled);
-		//private static readonly Regex _dynamicContentRegex = new Regex(@"\[IF (.*?)\](.*?)\[ENDIF\]", RegexOptions.Compiled);
 
 		public static string Parse(string content, IDictionary<string, object> data)
 		{
@@ -38,7 +39,7 @@ namespace CakeMail.RestClient.Utilities
 		private static string MergeFieldMatchEval(Match m, IDictionary<string, object> data)
 		{
 			var group1 = m.Groups[1].Value.Split(',');
-			var group2 = (m.Groups.Count >= 3 ? m.Groups[2] : null);
+			var group2 = m.Groups.Count >= 3 ? m.Groups[2] : null;
 
 			var fieldName = group1[0].Trim();
 			var fallbackValue = (group1.Length >= 2 ? group1[1] : string.Empty).Trim();
@@ -47,13 +48,6 @@ namespace CakeMail.RestClient.Utilities
 			var returnValue = FieldDataAsString(fieldName, data, format, fallbackValue);
 			return returnValue;
 		}
-
-		//private static string DynamicContentMatchEval(Match m, IDictionary<string, object> data)
-		//{
-		//	var predicate = m.Groups[1].Value;
-		//	var conditionalContent = (m.Groups.Count >= 3 ? m.Groups[2] : null)?.Value?.Trim() ?? string.Empty;
-
-		//}
 
 		private static string ParseDynamicContent(string content, IDictionary<string, object> data)
 		{
@@ -92,22 +86,25 @@ namespace CakeMail.RestClient.Utilities
 		{
 			if (string.IsNullOrEmpty(content)) return content;
 
-			string ELSEIF_TAG = "\\[ELSEIF (.*?)\\]";
-			string ELSE_TAG = "\\[ELSE\\]";
-
-			var matchCondition = Regex.Match(content, ELSEIF_TAG);
+			var matchCondition = Regex.Match(content, DYNAMIC_CONTENT_ELSEIF_TAG);
 			if (matchCondition.Success && condition) return content.Substring(0, matchCondition.Index);
 
 			if (!matchCondition.Success)
 			{
-				matchCondition = Regex.Match(content, ELSE_TAG);
+				matchCondition = Regex.Match(content, DYNAMIC_CONTENT_ELSE_TAG);
 				if (matchCondition.Success)
 				{
 					if (condition) return content.Substring(0, matchCondition.Index);
 					else return content.Substring(matchCondition.Index + matchCondition.Length);
 				}
-				else if (condition) return content;
-				else return "";
+				else if (condition)
+				{
+					return content;
+				}
+				else
+				{
+					return string.Empty;
+				}
 			}
 
 			var isTrue = EvaluateCondition(matchCondition.Groups[1].Value, data);
@@ -138,7 +135,8 @@ namespace CakeMail.RestClient.Utilities
 					if (logicalOperator == " AND " && !result) return false;
 					else if (logicalOperator == " OR " && result) return true;
 				}
-				return (logicalOperator == " AND ");
+
+				return logicalOperator == " AND ";
 			}
 			else if (logicalOperator == " AND ")
 			{
