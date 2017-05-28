@@ -44,9 +44,9 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>True if the email is sent</returns>
 		public Task<bool> SendWithoutTrackingAsync(string userKey, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, IDictionary<string, object> mergeData = null, MessageEncoding? encoding = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			subject = CakeMailMergeFieldsParser.Parse(subject, mergeData);
-			html = CakeMailMergeFieldsParser.Parse(html, mergeData);
-			text = CakeMailMergeFieldsParser.Parse(text, mergeData);
+			subject = CakeMailContentParser.Parse(subject, mergeData);
+			html = CakeMailContentParser.Parse(html, mergeData);
+			text = CakeMailContentParser.Parse(text, mergeData);
 
 			var parameters = new List<KeyValuePair<string, object>>
 			{
@@ -89,9 +89,9 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>True if the email is sent</returns>
 		public Task<bool> SendWithTrackingAsync(string userKey, long trackingId, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, IDictionary<string, object> mergeData = null, MessageEncoding? encoding = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			subject = CakeMailMergeFieldsParser.Parse(subject, mergeData);
-			html = CakeMailMergeFieldsParser.Parse(html, mergeData);
-			text = CakeMailMergeFieldsParser.Parse(text, mergeData);
+			subject = CakeMailContentParser.Parse(subject, mergeData);
+			html = CakeMailContentParser.Parse(html, mergeData);
+			text = CakeMailContentParser.Parse(text, mergeData);
 
 			var parameters = new List<KeyValuePair<string, object>>
 			{
