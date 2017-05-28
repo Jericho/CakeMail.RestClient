@@ -1,10 +1,7 @@
 ﻿using CakeMail.RestClient.Utilities;
-using Newtonsoft.Json;
 using Shouldly;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using Xunit;
 
 namespace CakeMail.RestClient.UnitTests.Utilities
@@ -461,11 +458,73 @@ namespace CakeMail.RestClient.UnitTests.Utilities
 		[Fact]
 		public void Numeric_CAKEMAIL_BUG()
 		{
+			// CakeMail only allows comparing merge fields with string values (e.g.:[ IF `age` >= "18"]content for adults[ELSE]content for minors[ENDIF])
+			// which does not work properly in some cases. Let's say we want to display display content for adults aged 18 or over and different content
+			// for minors and let's say you have a recipient age 9. We will treat 9 as a string (per the CakeMail logic) and compare it to the string "18".
+			// Well... guess what: the character "9" is greater than the character "1" (which is the first character in the string "18") and therefore this
+			// person who is clearly underage would receive an email with content intended to adults. Conversely, if you have a recipient age 100, this
+			// person would receive an email with the content for minors because "0" (the second character in the string "100") is smaller than "8" (the
+			// second character in the string "18").
+
 			// Arrange
-			var content = "[IF `age` > \"18\"]Yes[ELSE]No[ENDIF]";
+			var content = "[IF `age` > \"18\"]Adult[ELSE]Minor[ENDIF]";
 			var data = new Dictionary<string, object>
 			{
 				{ "age", 9 }
+			};
+
+			// Act
+			var result = CakeMailContentParser.Parse(content, data);
+
+			// Assert
+			result.ShouldBe("Adult");
+		}
+
+		[Fact]
+		public void Numeric_CAKEMAIL_BUG_Fix_false()
+		{
+			// The CakeMail.RestClient allows comparing merge fields with numeric values (e.g.: [ IF `age` >= 18]content for adults[ELSE]content for minors[ENDIF])
+			// which solves the problem I describe in the Numeric_CAKEMAIL_BUG unit test.
+
+			// Arrange
+			var content = "[IF `age` >= 18]Adult[ELSE]Minor[ENDIF]";
+			var data = new Dictionary<string, object>
+			{
+				{ "age", 9 }
+			};
+
+			// Act
+			var result = CakeMailContentParser.Parse(content, data);
+
+			// Assert
+			result.ShouldBe("Minor");
+		}
+
+		[Fact]
+		public void Numeric_CAKEMAIL_BUG_FIX_true()
+		{
+			// Arrange
+			var content = "[IF `age` >= 18]Adult[ELSE]Minor[ENDIF]";
+			var data = new Dictionary<string, object>
+			{
+				{ "age", 18 }
+			};
+
+			// Act
+			var result = CakeMailContentParser.Parse(content, data);
+
+			// Assert
+			result.ShouldBe("Adult");
+		}
+
+		[Fact]
+		public void Numeric_CAKEMAIL_double()
+		{
+			// Arrange
+			var content = "[IF `amount` == 2.0]Yes[ELSE]No[ENDIF]";
+			var data = new Dictionary<string, object>
+			{
+				{ "amount", Math.Sqrt(2) * Math.Sqrt(2) }
 			};
 
 			// Act

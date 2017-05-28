@@ -11,6 +11,8 @@ namespace CakeMail.RestClient.Utilities
 		private const string DYNAMIC_CONTENT_END_TAG = @"\[ENDIF\]";
 		private const string DYNAMIC_CONTENT_ELSEIF_TAG = "\\[ELSEIF (.*?)\\]";
 		private const string DYNAMIC_CONTENT_ELSE_TAG = "\\[ELSE\\]";
+		private const string DYNAMIC_CONTENT_CONDITION_STRING = "`(.*?)` (<=|>=|<|>|!=|==|=) \"(.*?)\"";
+		private const string DYNAMIC_CONTENT_CONDITION_NUMERIC = "`(.*?)` (<=|>=|<|>|!=|==|=) (.*?)$";
 
 		private static readonly Regex _currentDateRegex = new Regex(@"\[(NOW|TODAY|DATE)\s*(?:\|\s*(.*?))?\]", RegexOptions.Compiled);
 		private static readonly Regex _mergeFieldsRegex = new Regex(@"\[(.*?)\s*(?:\|\s*(.*?))?\]", RegexOptions.Compiled);
@@ -150,29 +152,51 @@ namespace CakeMail.RestClient.Utilities
 
 		private static bool EvaluateSingleCondition(string condition, IDictionary<string, object> data)
 		{
-			var matches = Regex.Match(condition, "`(.*?)` = \"(.*?)\"");
-			if (matches.Success) return IsEqual(matches.Groups[1].Value, matches.Groups[2].Value, data);
+			var matches = Regex.Match(condition, DYNAMIC_CONTENT_CONDITION_STRING);
+			if (matches.Success)
+			{
+				switch (matches.Groups[2].Value)
+				{
+					case "=":
+					case "==":
+						return IsEqual(matches.Groups[1].Value, matches.Groups[3].Value, data);
+					case "!=":
+						return !IsEqual(matches.Groups[1].Value, matches.Groups[3].Value, data);
+					case "LIKE":
+						return IsLike(matches.Groups[1].Value, matches.Groups[3].Value, data);
+					case "NOT LIKE":
+						return !IsLike(matches.Groups[1].Value, matches.Groups[3].Value, data);
+					case "<=":
+						return IsSmaller(matches.Groups[1].Value, matches.Groups[3].Value, data) || IsEqual(matches.Groups[1].Value, matches.Groups[3].Value, data);
+					case ">=":
+						return IsGreater(matches.Groups[1].Value, matches.Groups[3].Value, data) || IsEqual(matches.Groups[1].Value, matches.Groups[3].Value, data);
+					case "<":
+						return IsSmaller(matches.Groups[1].Value, matches.Groups[3].Value, data);
+					case ">":
+						return IsGreater(matches.Groups[1].Value, matches.Groups[3].Value, data);
+				}
+			}
 
-			matches = Regex.Match(condition, "`(.*?)` != \"(.*?)\"");
-			if (matches.Success) return !IsEqual(matches.Groups[1].Value, matches.Groups[2].Value, data);
-
-			matches = Regex.Match(condition, "`(.*?)` LIKE \"(.*?)\"");
-			if (matches.Success) return IsLike(matches.Groups[1].Value, matches.Groups[2].Value, data);
-
-			matches = Regex.Match(condition, "`(.*?)` NOT LIKE \"(.*?)\"");
-			if (matches.Success) return !IsLike(matches.Groups[1].Value, matches.Groups[2].Value, data);
-
-			matches = Regex.Match(condition, "`(.*?)` <= \"(.*?)\"");
-			if (matches.Success) return IsSmaller(matches.Groups[1].Value, matches.Groups[2].Value, data) || IsEqual(matches.Groups[1].Value, matches.Groups[2].Value, data);
-
-			matches = Regex.Match(condition, "`(.*?)` >= \"(.*?)\"");
-			if (matches.Success) return IsGreater(matches.Groups[1].Value, matches.Groups[2].Value, data) || IsEqual(matches.Groups[1].Value, matches.Groups[2].Value, data);
-
-			matches = Regex.Match(condition, "`(.*?)` < \"(.*?)\"");
-			if (matches.Success) return IsSmaller(matches.Groups[1].Value, matches.Groups[2].Value, data);
-
-			matches = Regex.Match(condition, "`(.*?)` > \"(.*?)\"");
-			if (matches.Success) return IsGreater(matches.Groups[1].Value, matches.Groups[2].Value, data);
+			matches = Regex.Match(condition, DYNAMIC_CONTENT_CONDITION_NUMERIC);
+			if (matches.Success)
+			{
+				switch (matches.Groups[2].Value)
+				{
+					case "=":
+					case "==":
+						return IsEqualNumeric(matches.Groups[1].Value, matches.Groups[3].Value, data);
+					case "!=":
+						return !IsEqualNumeric(matches.Groups[1].Value, matches.Groups[3].Value, data);
+					case "<=":
+						return IsSmallerNumeric(matches.Groups[1].Value, matches.Groups[3].Value, data) || IsEqualNumeric(matches.Groups[1].Value, matches.Groups[3].Value, data);
+					case ">=":
+						return IsGreaterNumeric(matches.Groups[1].Value, matches.Groups[3].Value, data) || IsEqualNumeric(matches.Groups[1].Value, matches.Groups[3].Value, data);
+					case "<":
+						return IsSmallerNumeric(matches.Groups[1].Value, matches.Groups[3].Value, data);
+					case ">":
+						return IsGreaterNumeric(matches.Groups[1].Value, matches.Groups[3].Value, data);
+				}
+			}
 
 			return false;
 		}
@@ -184,6 +208,25 @@ namespace CakeMail.RestClient.Utilities
 			return FieldDataAsString(fieldName, data, null, null) == value;
 		}
 
+		private static bool IsEqualNumeric(string fieldName, string value, IDictionary<string, object> data)
+		{
+			var fieldData = (object)null;
+			data.TryGetValue(fieldName, out fieldData);
+
+			if (fieldData is short) return (short)fieldData == Convert.ToInt16(value);
+			else if (fieldData is int) return (int)fieldData == Convert.ToInt32(value);
+			else if (fieldData is long) return (long)fieldData == Convert.ToInt64(value);
+			else if (fieldData is decimal) return (decimal)fieldData == Convert.ToDecimal(value);
+
+			// Cannot compare float/double because they are stored as binary fractions, not decimal fractions.
+			// Explanation: https://stackoverflow.com/questions/21895756/why-are-floating-point-numbers-inaccurate
+			// A solution described in this blog post (https://csharp.2000things.com/2011/09/21/416-use-an-epsilon-to-compare-two-floating-point-numbers/) suggests checking if the two values are "nearly" identical
+			else if (fieldData is float) return Math.Abs((float)fieldData - Convert.ToSingle(value)) < 0.00001;
+			else if (fieldData is double) return Math.Abs((double)fieldData - Convert.ToDouble(value)) < 0.00001;
+
+			return false;
+		}
+
 		private static bool IsSmaller(string fieldName, string value, IDictionary<string, object> data)
 		{
 			if (!data.ContainsKey(fieldName)) return false;
@@ -191,11 +234,45 @@ namespace CakeMail.RestClient.Utilities
 			return string.Compare(data[fieldName].ToString(), value, StringComparison.Ordinal) < 0;
 		}
 
+		private static bool IsSmallerNumeric(string fieldName, string value, IDictionary<string, object> data)
+		{
+			var fieldData = (object)null;
+			data.TryGetValue(fieldName, out fieldData);
+
+			if (fieldData is short) return (short)fieldData < Convert.ToInt16(value);
+			else if (fieldData is int) return (int)fieldData < Convert.ToInt32(value);
+			else if (fieldData is long) return (long)fieldData < Convert.ToInt64(value);
+			else if (fieldData is decimal) return (decimal)fieldData < Convert.ToDecimal(value);
+
+			// When checking if a float/double is smaller than another, we must make sure the two values are not "nearly" identical
+			else if (fieldData is float) return (float)fieldData < Convert.ToSingle(value) && Math.Abs((float)fieldData - Convert.ToSingle(value)) > 0.00001;
+			else if (fieldData is double) return (double)fieldData < Convert.ToDouble(value) && Math.Abs((double)fieldData - Convert.ToDouble(value)) > 0.00001;
+
+			return false;
+		}
+
 		private static bool IsGreater(string fieldName, string value, IDictionary<string, object> data)
 		{
 			if (!data.ContainsKey(fieldName)) return false;
 			value = value.TrimStart(new char[] { '"', '\'' }).TrimEnd(new char[] { '"', '\'' });
 			return string.Compare(data[fieldName].ToString(), value, StringComparison.Ordinal) > 0;
+		}
+
+		private static bool IsGreaterNumeric(string fieldName, string value, IDictionary<string, object> data)
+		{
+			var fieldData = (object)null;
+			data.TryGetValue(fieldName, out fieldData);
+
+			if (fieldData is short) return (short)fieldData > Convert.ToInt16(value);
+			else if (fieldData is int) return (int)fieldData > Convert.ToInt32(value);
+			else if (fieldData is long) return (long)fieldData > Convert.ToInt64(value);
+			else if (fieldData is decimal) return (decimal)fieldData > Convert.ToDecimal(value);
+
+			// When checking if a float/double is greater than another, we must make sure the two values are not "nearly" identical
+			else if (fieldData is float) return (float)fieldData > Convert.ToSingle(value) && Math.Abs((float)fieldData - Convert.ToSingle(value)) > 0.00001;
+			else if (fieldData is double) return (double)fieldData > Convert.ToDouble(value) && Math.Abs((double)fieldData - Convert.ToDouble(value)) > 0.00001;
+
+			return false;
 		}
 
 		private static bool IsLike(string fieldName, string value, IDictionary<string, object> data)
