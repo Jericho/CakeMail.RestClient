@@ -24,34 +24,65 @@ Pre-release packages are available on my MyGet feed:
 
 
 
++ **7.1**
+    - Add support for dynamic content which CakeMail already supports when sending bulk emails. In other words, you can have `IF ... ELSEIF ... ELSE ... ENDIF` in your HTML content, text content and subject as well.
+    - Please keep in mind the following the rules established by CakeMail for dynamic content:
+      - `IF`, `ELSEIF`, `ELSE` and `ENDIF` must be upper case which means that ``[IF `myfield` = "myValue"]`` is valid but ``[if `myfield` = "myValue"]`` is not.
+      - square bracket is the delimeter which means that ``[IF `myfield` = "myValue"]`` is valid but ``{IF `myfield` = "myValue"}`` is not.
+      - the name of the data field must be surrounded by back ticks (not to be confused with single quotes) which means that ``[IF `firstname` = "Bob"]`` is valid but ``[IF 'firstname' = "Bob"]`` is not.
+      - you can only compare a field to a constant value which means that ``[IF `firstname` = "Bob"]`` is valid but ``[IF `firstname` = `nickname`]`` is not.
+      - the constant value must be surrounded with double quotes when it's a string which means that ``[IF `firstname` = "Bob"]`` is valid but ``[IF `firstname` = 'Bob']`` is not.
+      - the constant value must not be surrounded by any quotes is a numeric valu when it's a numeric value which means that ``[IF `age` >= 18]`` is valid.
+      - the data field must be on the left side of the comparison which means that ``[IF `gender` = \"Male\"]`` is valid but ``[IF \"Male\" = `gender`]`` is not.
+      - you can have multiple conditions seperated by `AND` or `OR` which means that ``IF `firstname` = "Bob" AND `lastname` = "Smith"]`` is valid.
+      - the acceptable operators when comparing a field to a string value: `<`, `<=`, `=`, `!=`, `>=`, `>`, `LIKE` and `NOT LIKE`
+      - the acceptable operators when comparing a field to a mumeric value: `<`, `<=`, `=`, `!=`, `>=` and `>`
+```csharp
+var subject = "Special sale ends today";
+var html = "<html><body>[IF `gender` = \"Male\"]Men's clothing is on sale[ELSE]Women's clothing is on sale[ENDIF]</body></html>";
+var text = "[IF `gender` = \"Male\"]Men's clothing is on sale[ELSE]Women's clothing is on sale[ENDIF]";
+var mergeData = new Dictionary<string, object>
+{
+    { "gender", "Male" }
+};
+var sent = await api.Relays.SendWithoutTrackingAsync(userKey, "recipient@example.com", subject, html, text, "you@yourcompany.com", "Your name", mergeData, null, null, clientId).ConfigureAwait(false);
+```
+
 + **7.0**
-	- Add support for merge fields in html, text content and subject line when sending an email. CakeMail already support merge fields when sending bulk emails.
+    - Add support for merge fields in html, text content and subject line when sending an email. CakeMail already supports merge fields when sending bulk emails.
+    - Please keep in mind the following the rules for merge fields:
+      - square bracket is the delimeter which means that `[firstname]` is valid but `{firstname}` is not.
+      - you can specify a default value (sometimes called "fallback value") by adding a comma after the field name followed by the desired value. This default value is used when the value for the data field is undefined. For example: `Dear [firstname, friend]` will result in `Dear friend` if the firstname field is omitted or contains a null value for the current recipient.
+      - you can use `[TODAY]` to print the current date. Please note that `[NOW]` and `[DATE]` are also acceptable.
+      - when the merge field contains a numeric value or a datetime or when you use the `[TODAY]` merge field, you can specify a format string by adding the pipe character after the field name followed by the desired format string like so: `[TODAY | MMM d yyyy]`.
+      - Documentation for [datetime format string](https://msdn.microsoft.com/en-us/library/8kb3ddd4(v=vs.110).aspx)
+      - Documentation for [numeric format string](https://msdn.microsoft.com/en-us/library/0c899ak8(v=vs.110).aspx)
 ```csharp
 var subject = "Special sale ends today";
 var html = "<html><body>Dear [firstname, friend], our annual sale ends <b>today</b> [TODAY | MMMM d].</body></html>";
 var text = "[salutation] [lastname], our annual sale ends <b>today</b> [TODAY | MMMM d].";
 var mergeData = new Dictionary<string, object>
 {
-	{ "salutation", "Mr." },
-	{ "firstname", "Bob" },
-	{ "lastname", "Smith" }
+    { "salutation", "Mr." },
+    { "firstname", "Bob" },
+    { "lastname", "Smith" }
 };
 var sent = await api.Relays.SendWithoutTrackingAsync(userKey, "recipient@example.com", subject, html, text, "you@yourcompany.com", "Your name", mergeData, null, null, clientId).ConfigureAwait(false);
 ```
 
 + **6.0**
-	- Fix bug when retrieving a Client record and the 'last_activity' field contains empty date
-	- Add support for .NET STANDARD 1.3
-	- Replace RestSharp with PathosChild.Http.FluentClient 
-	- Switch unit testing to xUnit
-	- Implement GitFlow and repeatable build process
+    - Fix bug when retrieving a Client record and the 'last_activity' field contains empty date
+    - Add support for .NET STANDARD 1.3
+    - Replace RestSharp with PathosChild.Http.FluentClient 
+    - Switch unit testing to xUnit
+    - Implement GitFlow and repeatable build process
 
 + **5.0**
-	- Upgraded to .NET 4.5.2
+    - Upgraded to .NET 4.5.2
 
 + **4.0**
-	- All methods are now async.
-	- You can pass a cancellation token when invoking an async method.
+    - All methods are now async.
+    - You can pass a cancellation token when invoking an async method.
 
 This means, for example, that the following v3.0 call:
 
@@ -66,8 +97,8 @@ var count = await cakeMail.Campaigns.GetCountAsync(userKey, MailingStatus.Ongoin
 ```
 
 + **3.0**
-	- Methods are now logically grouped in separate resources. For instance, all methods related to users are grouped in a resource called 'Users', all methods related to campaigns are grouped in a resource called 'Campaigns', and so on.
-	- Methods have been renamed to avoid repetition. For example, GetCampaignsCount has been renamed GetCount off of the new 'Campaigns' resource.
+    - Methods are now logically grouped in separate resources. For instance, all methods related to users are grouped in a resource called 'Users', all methods related to campaigns are grouped in a resource called 'Campaigns', and so on.
+    - Methods have been renamed to avoid repetition. For example, GetCampaignsCount has been renamed GetCount off of the new 'Campaigns' resource.
 
 This means, for example, that the following v2.0 call:
 
@@ -83,16 +114,16 @@ var count = cakeMail.Campaigns.GetCount(userKey, MailingStatus.Ongoing);
 
 
 + **2.0**
-	- Unique identifiers changed to 'long' instead of 'int'.
-	- "Magic strings" replaced with enums. For example, instead of specifying sort direction with 'asc' and 'desc', you can now use SortDirection.Ascending and SortDirection.Descending.
-	- Fix bug in CreateTemplateCategory which prevents creating new categories
-	- Fix bug in DeleteTemplateCategory which causes an exception to be thrown despite the fact the category was successfuly deleted
-	- Fix bug in GetListMembers which causes exception: 'Json does not contain property members'
-	- Fix GetTriggerLinksLogs
-	- Added XML comments file for convenient intellisense in Visual Studio
+    - Unique identifiers changed to 'long' instead of 'int'.
+    - "Magic strings" replaced with enums. For example, instead of specifying sort direction with 'asc' and 'desc', you can now use SortDirection.Ascending and SortDirection.Descending.
+    - Fix bug in CreateTemplateCategory which prevents creating new categories
+    - Fix bug in DeleteTemplateCategory which causes an exception to be thrown despite the fact the category was successfuly deleted
+    - Fix bug in GetListMembers which causes exception: 'Json does not contain property members'
+    - Fix GetTriggerLinksLogs
+    - Added XML comments file for convenient intellisense in Visual Studio
 
 + **1.0**
-	- Initial release
+    - Initial release
 
 ## Installation
 
@@ -161,14 +192,14 @@ You can add members to your list like so:
 
 await cakeMail.Lists.SubscribeAsync(userKey, listId, "bob_the_customer@hotmail.com", true, true, new[]
 {
-	new KeyValuePair<string, object>("first_name", "Bob"), 
-	new KeyValuePair<string, object>("last_name", "Smith"), 
-	new KeyValuePair<string, object>("customer_since", DateTime.UtcNow) 
+    new KeyValuePair<string, object>("first_name", "Bob"), 
+    new KeyValuePair<string, object>("last_name", "Smith"), 
+    new KeyValuePair<string, object>("customer_since", DateTime.UtcNow) 
 });
 await cakeMail.Lists.SubscribeAsync(userKey, listId, "jane_the_prospect@hotmail.com", true, true, new[]
 {
-	new KeyValuePair<string, object>("first_name", "Jane"), 
-	new KeyValuePair<string, object>("last_name", "Doe")
+    new KeyValuePair<string, object>("first_name", "Jane"), 
+    new KeyValuePair<string, object>("last_name", "Doe")
 });
 ```
 
@@ -177,23 +208,23 @@ or you can import a group of members:
 ```csharp
 var member1 = new ListMember()
 {
-	Email = "bob_the_customer@hotmail.com",
-	CustomFields = new Dictionary<string, object>()
-	{
-		{ "first_name", "Bob" },
-		{ "last_name", "Smith" },
-		{ "customer_since", DateTime.UtcNow }
-	}
+    Email = "bob_the_customer@hotmail.com",
+    CustomFields = new Dictionary<string, object>()
+    {
+        { "first_name", "Bob" },
+        { "last_name", "Smith" },
+        { "customer_since", DateTime.UtcNow }
+    }
 };
 
 var member2 = new ListMember()
 {
-	Email = "jane_the_prospect@hotmail.com",
-	CustomFields = new Dictionary<string, object>()
-	{
-		{ "first_name", "Jane" },
-		{ "last_name", "Doe" }
-	}
+    Email = "jane_the_prospect@hotmail.com",
+    CustomFields = new Dictionary<string, object>()
+    {
+        { "first_name", "Jane" },
+        { "last_name", "Doe" }
+    }
 };
 
 var importResult = await cakeMail.Lists.ImportAsync(userKey, listId, new[] { member1, member2 });
