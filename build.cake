@@ -328,7 +328,7 @@ Task("Create-Release-Notes")
 	GitReleaseManagerCreate(gitHubUserName, gitHubPassword, gitHubUserName, gitHubRepo, new GitReleaseManagerCreateSettings {
 		Name              = milestone,
 		Milestone         = milestone,
-		Prerelease        = true,
+		Prerelease        = false,
 		TargetCommitish   = "master"
 	});
 });
