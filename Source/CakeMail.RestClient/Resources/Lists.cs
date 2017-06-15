@@ -200,7 +200,7 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (name != null) parameters.Add(new KeyValuePair<string, object>("name", name));
 			if (language != null) parameters.Add(new KeyValuePair<string, object>("language", language));
-			if (spamPolicyAccepted.HasValue) parameters.Add(new KeyValuePair<string, object>("list_policy", spamPolicyAccepted.Value ? "accepted" : "declined"));
+			if (spamPolicyAccepted.HasValue) parameters.Add(new KeyValuePair<string, object>("policy", spamPolicyAccepted.Value ? "accepted" : "declined"));
 			if (status.HasValue) parameters.Add(new KeyValuePair<string, object>("status", status.Value.GetEnumMemberValue()));
 			if (senderName != null) parameters.Add(new KeyValuePair<string, object>("sender_name", senderName));
 			if (senderEmail != null) parameters.Add(new KeyValuePair<string, object>("sender_email", senderEmail));
