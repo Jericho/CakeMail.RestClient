@@ -25,7 +25,7 @@ var configuration = Argument<string>("configuration", "Release");
 var libraryName = "CakeMail.RestClient";
 var gitHubRepo = "CakeMail.RestClient";
 
-var testCoverageFilter = "+[CakeMail.RestClient]* -[CakeMail.RestClient]CakeMail.RestClient.Properties.* -[CakeMail.RestClient]CakeMail.RestClient.Models.*";
+var testCoverageFilter = "+[CakeMail.RestClient]* -[CakeMail.RestClient]CakeMail.RestClient.Properties.* -[CakeMail.RestClient]CakeMail.RestClient.Model.* -[CakeMail.RestClient]CakeMail.RestClient.Logging.*";
 var testCoverageExcludeByAttribute = "*.ExcludeFromCodeCoverage*";
 var testCoverageExcludeByFile = "*/*Designer.cs;*/*AssemblyInfo.cs";
 

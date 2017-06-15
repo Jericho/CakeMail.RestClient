@@ -161,6 +161,7 @@ namespace CakeMail.RestClient
 			_fluentClient.BaseClient.DefaultRequestHeaders.Add("apikey", this.ApiKey);
 
 			_fluentClient.Filters.Remove<DefaultErrorFilter>();
+			_fluentClient.Filters.Add(new DiagnosticHandler());
 			_fluentClient.Filters.Add(new CakeMailErrorHandler());
 
 			Campaigns = new Campaigns(_fluentClient);
