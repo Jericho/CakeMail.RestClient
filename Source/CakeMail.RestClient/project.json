@@ -28,17 +28,16 @@
 	"frameworks": {
 		"netstandard1.3": {
 			"buildOptions": {
-				"define": [ "NETSTANDARD" ]
+				"define": [ "NETSTANDARD", "LIBLOG_PORTABLE" ]
 			},
 			"imports": "dnxcore50",
 			"dependencies": {
-				"NETStandard.Library": "1.6.1",
-				"System.Reflection.TypeExtensions": "4.3.0"
+				"NETStandard.Library": "1.6.1"
 			}
 		},
 		"net452": {
 			"buildOptions": {
-				"define": [ "NETFULL" ]
+				"define": [ "NETFULL", "LIBLOG_PORTABLE" ]
 			},
 			"dependencies": {
 			},
@@ -47,5 +46,5 @@
 			}
 		}
 	},
-	"version": "7.0.0-*"
+	"version": "7.2.0-*"
 }

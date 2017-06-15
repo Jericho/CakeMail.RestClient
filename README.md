@@ -30,9 +30,9 @@ Pre-release packages are available on my MyGet feed:
       - `IF`, `ELSEIF`, `ELSE` and `ENDIF` must be upper case which means that ``[IF `myfield` = "myValue"]`` is valid but ``[if `myfield` = "myValue"]`` is not.
       - square bracket is the delimeter which means that ``[IF `myfield` = "myValue"]`` is valid but ``{IF `myfield` = "myValue"}`` is not.
       - the name of the data field must be surrounded by back ticks (not to be confused with single quotes) which means that ``[IF `firstname` = "Bob"]`` is valid but ``[IF 'firstname' = "Bob"]`` is not.
-      - you can only compare a field to a constant value which means that ``[IF `firstname` = "Bob"]`` is valid but ``[IF `firstname` = `nickname`]`` is not.
+      - you can only compare a field to a constant value and you can't compare a field to another field which means that ``[IF `firstname` = "Bob"]`` is valid but ``[IF `firstname` = `nickname`]`` is not.
       - the constant value must be surrounded with double quotes when it's a string which means that ``[IF `firstname` = "Bob"]`` is valid but ``[IF `firstname` = 'Bob']`` is not.
-      - the constant value must not be surrounded by any quotes is a numeric valu when it's a numeric value which means that ``[IF `age` >= 18]`` is valid.
+      - the constant value must not be surrounded by any quotes when it's a numeric value which means that ``[IF `age` >= 18]`` is valid.
       - the data field must be on the left side of the comparison which means that ``[IF `gender` = \"Male\"]`` is valid but ``[IF \"Male\" = `gender`]`` is not.
       - you can have multiple conditions seperated by `AND` or `OR` which means that ``IF `firstname` = "Bob" AND `lastname` = "Smith"]`` is valid.
       - the acceptable operators when comparing a field to a string value: `<`, `<=`, `=`, `!=`, `>=`, `>`, `LIKE` and `NOT LIKE`

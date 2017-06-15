@@ -2,12 +2,12 @@
 #addin "nuget:?package=Cake.Coveralls&version=0.4.0"
 
 // Install tools.
-#tool "nuget:?package=GitVersion.CommandLine&version=4.0.0-beta0009"
+#tool "nuget:?package=GitVersion.CommandLine&version=4.0.0-beta0012"
 #tool "nuget:?package=GitReleaseManager&version=0.6.0"
 #tool "nuget:?package=OpenCover&version=4.6.519"
-#tool "nuget:?package=ReportGenerator&version=2.5.2"
+#tool "nuget:?package=ReportGenerator&version=2.5.8"
 #tool "nuget:?package=coveralls.io&version=1.3.4"
-#tool "nuget:?package=xunit.runner.console&version=2.2.0-rc1-build3507"
+#tool "nuget:?package=xunit.runner.console&version=2.2.0"
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -25,7 +25,7 @@ var configuration = Argument<string>("configuration", "Release");
 var libraryName = "CakeMail.RestClient";
 var gitHubRepo = "CakeMail.RestClient";
 
-var testCoverageFilter = "+[CakeMail.RestClient]* -[CakeMail.RestClient]CakeMail.RestClient.Properties.* -[CakeMail.RestClient]CakeMail.RestClient.Models.*";
+var testCoverageFilter = "+[CakeMail.RestClient]* -[CakeMail.RestClient]CakeMail.RestClient.Properties.* -[CakeMail.RestClient]CakeMail.RestClient.Models.* -[CakeMail.RestClient]CakeMail.RestClient.Logging.*";
 var testCoverageExcludeByAttribute = "*.ExcludeFromCodeCoverage*";
 var testCoverageExcludeByFile = "*/*Designer.cs;*/*AssemblyInfo.cs";
 
@@ -211,18 +211,14 @@ Task("Run-Code-Coverage")
 	.IsDependentOn("Build")
 	.Does(() =>
 {
-	var testSettings = new DotNetCoreTestSettings {
-		Configuration = configuration
-	};
-
 	Action<ICakeContext> testAction = ctx => ctx.DotNetCoreTest(unitTestsPath, new DotNetCoreTestSettings {
 		NoBuild = true,
 		Configuration = configuration,
-		ArgumentCustomization = args => args.AppendSwitchQuoted("-xml", codeCoverageDir + "/coverage.xml")
+		ArgumentCustomization = args => args.AppendSwitchQuoted("-xml", codeCoverageDir + "coverage.xml")
 	});
 
 	OpenCover(testAction,
-		codeCoverageDir + "/coverage.xml",
+		codeCoverageDir + "coverage.xml",
 		new OpenCoverSettings {
 			ArgumentCustomization = args => args.Append("-mergeoutput")
 		}
@@ -328,7 +324,7 @@ Task("Create-Release-Notes")
 	GitReleaseManagerCreate(gitHubUserName, gitHubPassword, gitHubUserName, gitHubRepo, new GitReleaseManagerCreateSettings {
 		Name              = milestone,
 		Milestone         = milestone,
-		Prerelease        = true,
+		Prerelease        = false,
 		TargetCommitish   = "master"
 	});
 });
