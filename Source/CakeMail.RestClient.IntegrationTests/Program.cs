@@ -31,23 +31,23 @@ namespace CakeMail.RestClient.IntegrationTests
 
 			try
 			{
-				var api = new CakeMailRestClient(apiKey, proxy);
-				var loginInfo = api.Users.LoginAsync(userName, password).Result;
+				var client = new CakeMailRestClient(apiKey, proxy);
+				var loginInfo = client.Users.LoginAsync(userName, password).Result;
 				var clientId = string.IsNullOrEmpty(overrideClientId) ? loginInfo.ClientId : long.Parse(overrideClientId);
 				var userKey = loginInfo.UserKey;
 
-				TimezonesTests.ExecuteAllMethods(api).Wait();
-				CountriesTests.ExecuteAllMethods(api).Wait();
-				ClientsTests.ExecuteAllMethods(api, userKey, clientId).Wait();
-				UsersTests.ExecuteAllMethods(api, userKey, clientId).Wait();
-				PermissionsTests.ExecuteAllMethods(api, userKey, clientId).Wait();
-				CampaignsTests.ExecuteAllMethods(api, userKey, clientId).Wait();
-				ListsTests.ExecuteAllMethods(api, userKey, clientId).Wait();
-				TemplatesTests.ExecuteAllMethods(api, userKey, clientId).Wait();
-				SuppressionListsTests.ExecuteAllMethods(api, userKey, clientId).Wait();
-				RelaysTests.ExecuteAllMethods(api, userKey, clientId).Wait();
-				TriggersTests.ExecuteAllMethods(api, userKey, clientId).Wait();
-				MailingsTests.ExecuteAllMethods(api, userKey, clientId).Wait();
+				TimezonesTests.ExecuteAllMethods(client).Wait();
+				CountriesTests.ExecuteAllMethods(client).Wait();
+				ClientsTests.ExecuteAllMethods(client, userKey, clientId).Wait();
+				UsersTests.ExecuteAllMethods(client, userKey, clientId).Wait();
+				PermissionsTests.ExecuteAllMethods(client, userKey, clientId).Wait();
+				CampaignsTests.ExecuteAllMethods(client, userKey, clientId).Wait();
+				ListsTests.ExecuteAllMethods(client, userKey, clientId).Wait();
+				TemplatesTests.ExecuteAllMethods(client, userKey, clientId).Wait();
+				SuppressionListsTests.ExecuteAllMethods(client, userKey, clientId).Wait();
+				RelaysTests.ExecuteAllMethods(client, userKey, clientId).Wait();
+				TriggersTests.ExecuteAllMethods(client, userKey, clientId).Wait();
+				MailingsTests.ExecuteAllMethods(client, userKey, clientId).Wait();
 			}
 			catch (Exception e)
 			{
