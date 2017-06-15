@@ -64,7 +64,7 @@ namespace CakeMail.RestClient.Utilities
 				diagnosticMessage.AppendLine($"The request took {timer.Elapsed.ToDurationString()}");
 			}
 
-			Debug.WriteLine("{0}\r\n{1}{0}", new String('=', 25), diagnosticMessage.ToString());
+			Debug.WriteLine("{0}\r\n{1}{0}", new string('=', 25), diagnosticMessage.ToString());
 
 			if (_logger != null && _logger.IsDebugEnabled())
 			{
