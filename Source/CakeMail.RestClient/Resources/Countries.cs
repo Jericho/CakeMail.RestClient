@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
-	public class Countries
+	public class Countries : ICountries
 	{
 		#region Fields
 
@@ -17,7 +17,7 @@ namespace CakeMail.RestClient.Resources
 
 		#region Constructor
 
-		public Countries(IClient client)
+		internal Countries(IClient client)
 		{
 			_client = client;
 		}

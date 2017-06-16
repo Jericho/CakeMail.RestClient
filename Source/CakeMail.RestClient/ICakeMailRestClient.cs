@@ -23,30 +23,30 @@ namespace CakeMail.RestClient
 		/// </summary>
 		Uri BaseUrl { get; }
 
-		Campaigns Campaigns { get; }
+		ICampaigns Campaigns { get; }
 
-		Clients Clients { get; }
+		IClients Clients { get; }
 
-		Countries Countries { get; }
+		ICountries Countries { get; }
 
-		Permissions Permissions { get; }
+		IPermissions Permissions { get; }
 
-		Lists Lists { get; }
+		ILists Lists { get; }
 
-		Timezones Timezones { get; }
+		ITimezones Timezones { get; }
 
-		Mailings Mailings { get; }
+		IMailings Mailings { get; }
 
-		Relays Relays { get; }
+		IRelays Relays { get; }
 
-		Segments Segments { get; }
+		ISegments Segments { get; }
 
-		Users Users { get; }
+		IUsers Users { get; }
 
-		SuppressionLists SuppressionLists { get; }
+		ISuppressionLists SuppressionLists { get; }
 
-		Templates Templates { get; }
+		ITemplates Templates { get; }
 
-		Triggers Triggers { get; }
+		ITriggers Triggers { get; }
 	}
 }

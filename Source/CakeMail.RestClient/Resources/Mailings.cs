@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
-	public class Mailings
+	public class Mailings : IMailings
 	{
 		#region Fields
 
@@ -18,7 +18,7 @@ namespace CakeMail.RestClient.Resources
 
 		#region Constructor
 
-		public Mailings(IClient client)
+		internal Mailings(IClient client)
 		{
 			_client = client;
 		}

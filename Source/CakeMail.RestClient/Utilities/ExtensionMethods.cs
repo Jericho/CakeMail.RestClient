@@ -15,7 +15,7 @@ namespace CakeMail.RestClient.Utilities
 	/// <summary>
 	/// Various extension methods
 	/// </summary>
-	public static class ExtensionMethods
+	internal static class ExtensionMethods
 	{
 		/// <summary>
 		/// Convert a DateTime into a string that can be accepted by the CakeMail API.

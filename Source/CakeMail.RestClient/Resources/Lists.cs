@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
-	public class Lists
+	public class Lists : ILists
 	{
 		#region Fields
 
@@ -20,7 +20,7 @@ namespace CakeMail.RestClient.Resources
 
 		#region Constructor
 
-		public Lists(IClient client)
+		internal Lists(IClient client)
 		{
 			_client = client;
 		}

@@ -9,7 +9,7 @@ namespace CakeMail.RestClient.Utilities
 	/// Error handler for requests dispatched to the CakeMail API
 	/// </summary>
 	/// <seealso cref="Pathoschild.Http.Client.Extensibility.IHttpFilter" />
-	public class CakeMailErrorHandler : IHttpFilter
+	internal class CakeMailErrorHandler : IHttpFilter
 	{
 		#region PUBLIC METHODS
 

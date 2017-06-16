@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
@@ -11,6 +13,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright Jeremie Desautels © 2016-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+
+[assembly: CLSCompliant(true)]
+[assembly: InternalsVisibleTo("CakeMail.RestClient.UnitTests")]
 
 // Make it easy to distinguish Debug and Release builds;
 #if DEBUG

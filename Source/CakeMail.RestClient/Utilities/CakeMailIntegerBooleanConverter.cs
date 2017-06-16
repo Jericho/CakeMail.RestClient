@@ -8,7 +8,7 @@ namespace CakeMail.RestClient.Utilities
 	/// Converter class used in conjuction with JSON.NET to convert a Boolean into a string format acceptable to CakeMail
 	/// </summary>
 	[ComVisible(false)]
-	public class CakeMailIntegerBooleanConverter : JsonConverter
+	internal class CakeMailIntegerBooleanConverter : JsonConverter
 	{
 		/// <summary>
 		/// Writes the JSON representation of the Boolean value

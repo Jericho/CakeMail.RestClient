@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
-	public class Clients
+	public class Clients : IClients
 	{
 		#region Fields
 
@@ -22,7 +22,7 @@ namespace CakeMail.RestClient.Resources
 		/// Initializes a new instance of the <see cref="Clients" /> class.
 		/// </summary>
 		/// <param name="client">The HTTP client</param>
-		public Clients(IClient client)
+		internal Clients(IClient client)
 		{
 			_client = client;
 		}
