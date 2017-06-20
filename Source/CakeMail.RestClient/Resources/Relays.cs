@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
+	/// <summary>
+	/// Allows you to manage relays
+	/// </summary>
+	/// <seealso cref="CakeMail.RestClient.Resources.IRelays" />
 	public class Relays : IRelays
 	{
 		#region Fields
