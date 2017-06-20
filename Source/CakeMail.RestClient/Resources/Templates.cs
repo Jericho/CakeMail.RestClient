@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
+	/// <summary>
+	/// Allows you to manage templates
+	/// </summary>
+	/// <seealso cref="CakeMail.RestClient.Resources.ITemplates" />
 	public class Templates : ITemplates
 	{
 		#region Fields
