@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
+	/// <summary>
+	/// Allows you to manage triggers
+	/// </summary>
+	/// <seealso cref="CakeMail.RestClient.Resources.ITriggers" />
 	public class Triggers : ITriggers
 	{
 		#region Fields
