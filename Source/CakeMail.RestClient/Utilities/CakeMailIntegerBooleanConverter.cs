@@ -50,7 +50,7 @@ namespace CakeMail.RestClient.Utilities
 		/// <summary>
 		/// Determines whether this instance can convert the specified object type.
 		/// </summary>
-		/// <param name="objectType"></param>
+		/// <param name="objectType">The type of object</param>
 		/// <returns>true if this instance can convert the specified object type; otherwise, false.</returns>
 		public override bool CanConvert(Type objectType)
 		{

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace CakeMail.RestClient.Resources
 {
 	/// <summary>
-	///Allows you to manage suppression lists
+	/// Allows you to manage suppression lists
 	/// </summary>
 	public interface ISuppressionLists
 	{

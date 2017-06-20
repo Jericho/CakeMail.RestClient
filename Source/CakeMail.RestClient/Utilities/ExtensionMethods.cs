@@ -20,8 +20,8 @@ namespace CakeMail.RestClient.Utilities
 		/// <summary>
 		/// Convert a DateTime into a string that can be accepted by the CakeMail API.
 		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
+		/// <param name="value">The datetime value to be converted</param>
+		/// <returns>The string representation of the value</returns>
 		public static string ToCakeMailString(this DateTime value)
 		{
 			if (value == DateTime.MinValue) return Constants.EMPTY_CAKEMAIL_DATE;
