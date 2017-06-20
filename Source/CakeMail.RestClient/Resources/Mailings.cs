@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
+	/// <summary>
+	/// Allows you to manage mailings
+	/// </summary>
+	/// <seealso cref="CakeMail.RestClient.Resources.IMailings" />
 	public class Mailings : IMailings
 	{
 		#region Fields
