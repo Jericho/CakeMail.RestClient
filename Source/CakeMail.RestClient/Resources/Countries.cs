@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
+	/// <summary>
+	/// Alows you to manage the list of countries
+	/// </summary>
+	/// <seealso cref="CakeMail.RestClient.Resources.ICountries" />
 	public class Countries : ICountries
 	{
 		#region Fields
