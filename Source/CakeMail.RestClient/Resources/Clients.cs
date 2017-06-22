@@ -40,8 +40,8 @@ namespace CakeMail.RestClient.Resources
 		/// </summary>
 		/// <param name="parentId">ID of the parent client.</param>
 		/// <param name="name">Name of the client</param>
-		/// <param name="address1">Address of the client</param>
-		/// <param name="address2">Address of the client</param>
+		/// <param name="address1">Line 1 of the client's address</param>
+		/// <param name="address2">Line 2 of the client's address</param>
 		/// <param name="city">City of the client</param>
 		/// <param name="provinceId">ID of the province of the client</param>
 		/// <param name="postalCode">Postal Code of the client</param>

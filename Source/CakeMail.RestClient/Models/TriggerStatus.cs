@@ -15,6 +15,7 @@ namespace CakeMail.RestClient.Models
 		/// </summary>
 		[EnumMember(Value = "active")]
 		Active,
+
 		/// <summary>
 		/// Inactive
 		/// </summary>
