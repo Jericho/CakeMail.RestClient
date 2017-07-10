@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
+	/// <summary>
+	/// Allows you to manage permissions
+	/// </summary>
+	/// <seealso cref="CakeMail.RestClient.Resources.IPermissions" />
 	public class Permissions : IPermissions
 	{
 		#region Fields

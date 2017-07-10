@@ -1,14 +1,14 @@
 {
 	"buildOptions": {
-		"emitEntryPoint": false,
-		"xmlDoc": true,
-		"platform": "anycpu",
 		"additionalArguments": [
 			"/ruleset:../CakeMail.RestClient.ruleset",
 			"/additionalfile:../stylecop.json"
 		],
 		"compile": {
-		}
+		},
+		"emitEntryPoint": false,
+		"platform": "anycpu",
+		"xmlDoc": true
 	},
 	"configurations": {
 		"Release": {
@@ -21,7 +21,7 @@
 		"Newtonsoft.Json": "9.0.1",
 		"Pathoschild.Http.FluentClient": "3.0.0",
 		"StyleCop.Analyzers": {
-			"version": "1.1.0-beta001",
+			"version": "1.1.0-beta003",
 			"type": "build"
 		}
 	},
@@ -30,10 +30,10 @@
 			"buildOptions": {
 				"define": [ "NETSTANDARD", "LIBLOG_PORTABLE" ]
 			},
-			"imports": "dnxcore50",
 			"dependencies": {
 				"NETStandard.Library": "1.6.1"
-			}
+			},
+			"imports": "dnxcore50"
 		},
 		"net452": {
 			"buildOptions": {

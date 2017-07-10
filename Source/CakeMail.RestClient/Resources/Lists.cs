@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
+	/// <summary>
+	/// Alows you to manage lists
+	/// </summary>
+	/// <seealso cref="CakeMail.RestClient.Resources.ILists" />
 	public class Lists : ILists
 	{
 		#region Fields

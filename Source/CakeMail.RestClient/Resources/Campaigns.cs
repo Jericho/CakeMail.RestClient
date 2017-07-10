@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
+	/// <summary>
+	/// Allows you to manage Campaigns
+	/// </summary>
+	/// <seealso cref="CakeMail.RestClient.Resources.ICampaigns" />
 	public class Campaigns : ICampaigns
 	{
 		#region Fields
