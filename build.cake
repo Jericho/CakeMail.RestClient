@@ -193,7 +193,7 @@ Task("Run-Code-Coverage")
 		codeCoverageDir + "coverage.xml",
 		new OpenCoverSettings
 		{
-			ArgumentCustomization = args => args.Append("-mergeoutput")
+			ArgumentCustomization = args => args.Append("-mergeoutput -oldstyle")
 		}
 		.WithFilter(testCoverageFilter)
 		.ExcludeByAttribute(testCoverageExcludeByAttribute)
