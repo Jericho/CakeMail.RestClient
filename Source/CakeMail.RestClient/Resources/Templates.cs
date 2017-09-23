@@ -196,9 +196,10 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (labels != null)
 			{
-				foreach (var label in labels)
+				foreach (var item in labels.Select((label, i) => new { Index = i, Language = label.Key, Name = label.Value }))
 				{
-					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}]", label.Key), label.Value));
+					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}][language]", item.Index), item.Language));
+					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}][name]", item.Index), item.Name));
 				}
 			}
 
@@ -465,9 +466,10 @@ namespace CakeMail.RestClient.Resources
 			};
 			if (labels != null)
 			{
-				foreach (var label in labels)
+				foreach (var item in labels.Select((label, i) => new { Index = i, Language = label.Key, Name = label.Value }))
 				{
-					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}]", label.Key), label.Value));
+					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}][language]", item.Index), item.Language));
+					parameters.Add(new KeyValuePair<string, object>(string.Format("label[{0}][name]", item.Index), item.Name));
 				}
 			}
 
