@@ -13,7 +13,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			Console.WriteLine(new string('-', 25));
 			Console.WriteLine("Executing TEMPLATES methods...");
 
-			var categoryLabels = new Dictionary<string, string> 
+			var categoryLabels = new Dictionary<string, string>
 			{
 				{ "en_US", "My Category" },
 				{ "fr_FR", "Ma Catégorie" }
@@ -23,6 +23,14 @@ namespace CakeMail.RestClient.IntegrationTests
 
 			var category = await api.Templates.GetCategoryAsync(userKey, categoryId, clientId).ConfigureAwait(false);
 			Console.WriteLine("Template category retrieved: Name = {0}", category.Name);
+
+			categoryLabels = new Dictionary<string, string>
+			{
+				{ "en_US", "My Category UPDATED" },
+				{ "fr_FR", "Ma Catégorie UPDATED" }
+			};
+			var categoryUpdated = await api.Templates.UpdateCategoryAsync(userKey, categoryId, categoryLabels, true, true, clientId).ConfigureAwait(false);
+			Console.WriteLine("Template category updated. Id: {0}", categoryId);
 
 			var categories = await api.Templates.GetCategoriesAsync(userKey, 0, 0, clientId).ConfigureAwait(false);
 			Console.WriteLine("All Template categories retrieved. Count = {0}", categories.Count());
@@ -40,7 +48,7 @@ namespace CakeMail.RestClient.IntegrationTests
 				Console.WriteLine("Template category permissions revoked: {0}", permissionsRevoked ? "success" : "failed");
 			}
 
-			var templateLabels = new Dictionary<string, string> 
+			var templateLabels = new Dictionary<string, string>
 			{
 				{ "en_US", "My Template" },
 				{ "fr_FR", "Mon Modèle" }
@@ -48,6 +56,14 @@ namespace CakeMail.RestClient.IntegrationTests
 			var templateContent = "<html><body>Hello World</body></html>";
 			var templateId = await api.Templates.CreateAsync(userKey, templateLabels, templateContent, categoryId, clientId).ConfigureAwait(false);
 			Console.WriteLine("Template created. Id = {0}", templateId);
+
+			templateLabels = new Dictionary<string, string>
+			{
+				{ "en_US", "My Template UPDATED" },
+				{ "fr_FR", "Ma Modèle UPDATED" }
+			};
+			var templateUpdated = await api.Templates.UpdateAsync(userKey, templateId, templateLabels, templateContent, categoryId, clientId).ConfigureAwait(false);
+			Console.WriteLine("Template updated. Id: {0}", templateId);
 
 			var templates = await api.Templates.GetTemplatesAsync(userKey, categoryId, null, null, clientId).ConfigureAwait(false);
 			Console.WriteLine("All Templates retrieved. Count = {0}", templates.Count());
