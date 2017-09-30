@@ -357,6 +357,7 @@ namespace CakeMail.RestClient.Resources
 			// For example:  {"status":"success","data":[]}
 			await _client
 				.PostAsync("TemplateV2/DeleteTemplate")
+				.WithFormUrlEncodedBody(parameters)
 				.WithCancellationToken(cancellationToken)
 				.AsResponse()
 				.ConfigureAwait(false);
