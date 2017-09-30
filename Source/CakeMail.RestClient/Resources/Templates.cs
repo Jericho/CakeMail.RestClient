@@ -188,7 +188,7 @@ namespace CakeMail.RestClient.Resources
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("category_id", categoryId),
 				new KeyValuePair<string, object>("default", isVisibleByDefault ? "1" : "0"),
-				new KeyValuePair<string, object>("templates_copyable", templatesCanBeCopied ? "1" : "0")
+				new KeyValuePair<string, object>("copyable", templatesCanBeCopied ? "1" : "0")
 			};
 			if (labels != null)
 			{
@@ -357,6 +357,7 @@ namespace CakeMail.RestClient.Resources
 			// For example:  {"status":"success","data":[]}
 			await _client
 				.PostAsync("TemplateV2/DeleteTemplate")
+				.WithFormUrlEncodedBody(parameters)
 				.WithCancellationToken(cancellationToken)
 				.AsResponse()
 				.ConfigureAwait(false);
