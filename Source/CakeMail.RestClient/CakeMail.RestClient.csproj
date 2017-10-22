@@ -2,18 +2,23 @@
 
   <PropertyGroup>
     <TargetFrameworks>net452;netstandard1.3</TargetFrameworks>
-    <PlatformTarget>anycpu</PlatformTarget>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <OutputType>Library</OutputType>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.1</NetStandardImplicitPackageVersion>
-    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <Version>$(SemVer)</Version>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DebugType>full</DebugType>
+    <Version>$(SemVer)</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>CakeMail.RestClient</PackageId>
+    <Title>CakeMail.RestClient</Title>
+    <Description>CakeMail.RestClient is a .NET wrapper for the CakeMail API</Description>
+    <Copyright>Copyright (c) Jeremie Desautels and contributors 2016 - Present</Copyright>
+    <Authors>Jericho</Authors>
+    <Owners>Jericho</Owners>
+    <PackageTags>CakeMail API REST</PackageTags>
+    <PackageProjectUrl>https://github.com/Jericho/CakeMail.RestClient</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/identicons/jericho.png</PackageIconUrl>
+    <PackageLicenseUrl>http://jericho.mit-license.org</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
