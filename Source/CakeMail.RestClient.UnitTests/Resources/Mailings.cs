@@ -34,24 +34,6 @@ namespace CakeMail.RestClient.UnitTests.Resources
 		}
 
 		[Fact]
-		public async Task CreateMailing_without_type()
-		{
-			// Arrange
-			var name = "My new mailing";
-			var mailingId = 123L;
-			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":\"{0}\"}}", mailingId);
-			var mockHttp = new MockHttpMessageHandler();
-			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Mailing/Create")).Respond("application/json", jsonResponse);
-
-			// Act
-			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
-			var result = await apiClient.Mailings.CreateAsync(USER_KEY, name, type: null);
-
-			// Assert
-			result.ShouldBe(mailingId);
-		}
-
-		[Fact]
 		public async Task CreateMailing_with_campaignid()
 		{
 			// Arrange

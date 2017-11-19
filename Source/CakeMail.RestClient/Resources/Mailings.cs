@@ -44,15 +44,15 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is created.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>ID of the new mailing</returns>
-		public Task<long> CreateAsync(string userKey, string name, long? campaignId = null, MailingType? type = MailingType.Standard, long? recurringId = null, MessageEncoding? encoding = null, TransferEncoding? transferEncoding = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<long> CreateAsync(string userKey, string name, long? campaignId = null, MailingType type = MailingType.Standard, long? recurringId = null, MessageEncoding? encoding = null, TransferEncoding? transferEncoding = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("name", name)
+				new KeyValuePair<string, object>("name", name),
+				new KeyValuePair<string, object>("type", type.GetEnumMemberValue())
 			};
 			if (campaignId.HasValue) parameters.Add(new KeyValuePair<string, object>("campaign_id", campaignId.Value));
-			if (type.HasValue) parameters.Add(new KeyValuePair<string, object>("type", type.Value.GetEnumMemberValue()));
 			if (recurringId.HasValue) parameters.Add(new KeyValuePair<string, object>("recurring_id", recurringId.Value));
 			if (encoding.HasValue) parameters.Add(new KeyValuePair<string, object>("encoding", encoding.Value.GetEnumMemberValue()));
 			if (transferEncoding.HasValue) parameters.Add(new KeyValuePair<string, object>("transfer_encoding", transferEncoding.Value.GetEnumMemberValue()));
