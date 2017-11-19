@@ -1,25 +1,29 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net452;netstandard1.3;netstandard2.0</TargetFrameworks>
-    <PlatformTarget>anycpu</PlatformTarget>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <OutputType>Library</OutputType>
+    <TargetFrameworks>net452;netstandard1.3</TargetFrameworks>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.1</NetStandardImplicitPackageVersion>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard2.0' ">2.0.0</NetStandardImplicitPackageVersion>
-    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <Version>$(SemVer)</Version>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DebugType>full</DebugType>
+    <Version>$(SemVer)</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>CakeMail.RestClient</PackageId>
+    <Title>CakeMail.RestClient</Title>
+    <Description>CakeMail.RestClient is a .NET wrapper for the CakeMail API</Description>
+    <Copyright>Copyright (c) Jeremie Desautels and contributors 2016 - Present</Copyright>
+    <Authors>Jericho</Authors>
+    <Owners>Jericho</Owners>
+    <PackageTags>CakeMail API REST</PackageTags>
+    <PackageProjectUrl>https://github.com/Jericho/CakeMail.RestClient</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/identicons/jericho.png</PackageIconUrl>
+    <PackageLicenseUrl>http://jericho.mit-license.org</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="Pathoschild.Http.FluentClient" Version="3.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="Pathoschild.Http.FluentClient" Version="3.1.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta004" PrivateAssets="All" />
   </ItemGroup>
 

@@ -1,12 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.3
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{16A48337-42CC-443A-B850-775D196B31E0}"
 	ProjectSection(SolutionItems) = preProject
 		..\build.cake = ..\build.cake
-		..\nuspec\CakeMail.RestClient.nuspec = ..\nuspec\CakeMail.RestClient.nuspec
 		..\LICENSE = ..\LICENSE
 		..\README.md = ..\README.md
 	EndProjectSection
