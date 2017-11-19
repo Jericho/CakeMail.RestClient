@@ -23,7 +23,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is created.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>ID of the new mailing</returns>
-		Task<long> CreateAsync(string userKey, string name, long? campaignId = default(long?), MailingType? type = MailingType.Standard, long? recurringId = default(long?), MessageEncoding? encoding = default(MessageEncoding?), TransferEncoding? transferEncoding = default(TransferEncoding?), long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<long> CreateAsync(string userKey, string name, long? campaignId = default(long?), MailingType type = MailingType.Standard, long? recurringId = default(long?), MessageEncoding? encoding = default(MessageEncoding?), TransferEncoding? transferEncoding = default(TransferEncoding?), long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
 
 		/// <summary>
 		/// Delete a mailing

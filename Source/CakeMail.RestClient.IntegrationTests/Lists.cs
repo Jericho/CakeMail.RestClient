@@ -38,11 +38,11 @@ namespace CakeMail.RestClient.IntegrationTests
 			var fields = await api.Lists.GetFieldsAsync(userKey, listId, clientId).ConfigureAwait(false);
 			Console.WriteLine("List contains the following fields: {0}", string.Join(", ", fields.Select(f => f.Name)));
 
-			var subscriberCustomFields = new[]
+			var subscriberCustomFields = new Dictionary<string, object>()
 			{
-				new KeyValuePair<string, object>("MyCustomField1", 12345),
-				new KeyValuePair<string, object>("MyCustomField2", DateTime.UtcNow),
-				new KeyValuePair<string, object>("MyCustomField3", "qwerty")
+				{"MyCustomField1", 12345 },
+				{ "MyCustomField2", DateTime.UtcNow },
+				{ "MyCustomField3", "qwerty" }
 			};
 			var listMemberId = await api.Lists.SubscribeAsync(userKey, listId, "integration@testing.com", true, true, subscriberCustomFields, clientId).ConfigureAwait(false);
 			Console.WriteLine("One member added to the list");
@@ -83,10 +83,10 @@ namespace CakeMail.RestClient.IntegrationTests
 			var membersCount = await api.Lists.GetMembersCountAsync(userKey, listId, null, clientId).ConfigureAwait(false);
 			Console.WriteLine("Members count = {0}", membersCount);
 
-			var customFieldsToUpdate = new[]
+			var customFieldsToUpdate = new Dictionary<string, object>
 			{
-				new KeyValuePair<string, object>("MyCustomField1", 555555),
-				new KeyValuePair<string, object>("MyCustomField3", "zzzzzzzzzzzzzzzzzzzzzzzzzz")
+				{ "MyCustomField1", 555555 },
+				{ "MyCustomField3", "zzzzzzzzzzzzzzzzzzzzzzzzzz" }
 			};
 			var memberUpdated = await api.Lists.UpdateMemberAsync(userKey, listId, 1, customFieldsToUpdate, clientId).ConfigureAwait(false);
 			Console.WriteLine("Member updated: {0}", memberUpdated ? "success" : "failed");

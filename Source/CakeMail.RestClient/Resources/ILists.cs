@@ -243,7 +243,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>ID of the new subscriber</returns>
-		Task<long> SubscribeAsync(string userKey, long listId, string email, bool autoResponders = true, bool triggers = true, IEnumerable<KeyValuePair<string, object>> customFields = null, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<long> SubscribeAsync(string userKey, long listId, string email, bool autoResponders = true, bool triggers = true, IDictionary<string, object> customFields = null, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
 
 		/// <summary>
 		/// Unsubscribe a member from the list.
@@ -297,6 +297,6 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the member was updated</returns>
-		Task<bool> UpdateMemberAsync(string userKey, long listId, long listMemberId, IEnumerable<KeyValuePair<string, object>> customFields = null, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> UpdateMemberAsync(string userKey, long listId, long listMemberId, IDictionary<string, object> customFields = null, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
 	}
 }

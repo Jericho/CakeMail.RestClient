@@ -1,5 +1,6 @@
 ﻿using CakeMail.RestClient.Utilities;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace CakeMail.RestClient.Models
 {
@@ -35,6 +36,9 @@ namespace CakeMail.RestClient.Models
 
 		[JsonProperty("level")]
 		public long Level { get; set; }
+
+		[JsonProperty("labels")]
+		public KeyValuePair<string, string>[] Labels { get; set; }
 
 		#endregion
 	}

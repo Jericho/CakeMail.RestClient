@@ -64,6 +64,12 @@ namespace CakeMail.RestClient.Models
 		[JsonConverter(typeof(CakeMailDateTimeConverter))]
 		public DateTime RegisteredOn { get; set; }
 
+		/// <summary>
+		/// Gets or sets the custom fields.
+		/// </summary>
+		/// <value>
+		/// The custom fields.
+		/// </value>
 		[JsonExtensionData]
 		public IDictionary<string, object> CustomFields { get; set; }
 
