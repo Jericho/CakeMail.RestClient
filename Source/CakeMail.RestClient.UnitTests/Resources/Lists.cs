@@ -1510,10 +1510,10 @@ namespace CakeMail.RestClient.UnitTests.Resources
 			// Arrange
 			var listId = 12345L;
 			var memberId = 456L;
-			var customFields = new[]
+			var customFields = new Dictionary<string, object>()
 			{
-				new KeyValuePair<string, object>("fullname", "Bob Smith"),
-				new KeyValuePair<string, object>("birthday", new DateTime(1973, 1, 1))
+				{ "fullname", "Bob Smith" },
+				{ "birthday", new DateTime(1973, 1, 1) }
 			};
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();

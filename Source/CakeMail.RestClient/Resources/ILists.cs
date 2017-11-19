@@ -297,6 +297,6 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the member was updated</returns>
-		Task<bool> UpdateMemberAsync(string userKey, long listId, long listMemberId, IEnumerable<KeyValuePair<string, object>> customFields = null, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> UpdateMemberAsync(string userKey, long listId, long listMemberId, IDictionary<string, object> customFields = null, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
 	}
 }

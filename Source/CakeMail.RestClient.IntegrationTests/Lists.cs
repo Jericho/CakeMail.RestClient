@@ -83,10 +83,10 @@ namespace CakeMail.RestClient.IntegrationTests
 			var membersCount = await api.Lists.GetMembersCountAsync(userKey, listId, null, clientId).ConfigureAwait(false);
 			Console.WriteLine("Members count = {0}", membersCount);
 
-			var customFieldsToUpdate = new[]
+			var customFieldsToUpdate = new Dictionary<string, object>
 			{
-				new KeyValuePair<string, object>("MyCustomField1", 555555),
-				new KeyValuePair<string, object>("MyCustomField3", "zzzzzzzzzzzzzzzzzzzzzzzzzz")
+				{ "MyCustomField1", 555555 },
+				{ "MyCustomField3", "zzzzzzzzzzzzzzzzzzzzzzzzzz" }
 			};
 			var memberUpdated = await api.Lists.UpdateMemberAsync(userKey, listId, 1, customFieldsToUpdate, clientId).ConfigureAwait(false);
 			Console.WriteLine("Member updated: {0}", memberUpdated ? "success" : "failed");
