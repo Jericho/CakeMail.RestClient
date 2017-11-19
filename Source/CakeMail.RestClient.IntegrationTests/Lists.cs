@@ -38,11 +38,11 @@ namespace CakeMail.RestClient.IntegrationTests
 			var fields = await api.Lists.GetFieldsAsync(userKey, listId, clientId).ConfigureAwait(false);
 			Console.WriteLine("List contains the following fields: {0}", string.Join(", ", fields.Select(f => f.Name)));
 
-			var subscriberCustomFields = new[]
+			var subscriberCustomFields = new Dictionary<string, object>()
 			{
-				new KeyValuePair<string, object>("MyCustomField1", 12345),
-				new KeyValuePair<string, object>("MyCustomField2", DateTime.UtcNow),
-				new KeyValuePair<string, object>("MyCustomField3", "qwerty")
+				{"MyCustomField1", 12345 },
+				{ "MyCustomField2", DateTime.UtcNow },
+				{ "MyCustomField3", "qwerty" }
 			};
 			var listMemberId = await api.Lists.SubscribeAsync(userKey, listId, "integration@testing.com", true, true, subscriberCustomFields, clientId).ConfigureAwait(false);
 			Console.WriteLine("One member added to the list");

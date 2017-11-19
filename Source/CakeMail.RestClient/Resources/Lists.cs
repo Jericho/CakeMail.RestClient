@@ -394,7 +394,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>ID of the new subscriber</returns>
-		public Task<long> SubscribeAsync(string userKey, long listId, string email, bool autoResponders = true, bool triggers = true, IEnumerable<KeyValuePair<string, object>> customFields = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<long> SubscribeAsync(string userKey, long listId, string email, bool autoResponders = true, bool triggers = true, IDictionary<string, object> customFields = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{
