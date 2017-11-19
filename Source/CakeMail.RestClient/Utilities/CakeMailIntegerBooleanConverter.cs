@@ -8,7 +8,7 @@ namespace CakeMail.RestClient.Utilities
 	/// Converter class used in conjuction with JSON.NET to convert a Boolean into a string format acceptable to CakeMail
 	/// </summary>
 	[ComVisible(false)]
-	public class CakeMailIntegerBooleanConverter : JsonConverter
+	internal class CakeMailIntegerBooleanConverter : JsonConverter
 	{
 		/// <summary>
 		/// Writes the JSON representation of the Boolean value
@@ -50,7 +50,7 @@ namespace CakeMail.RestClient.Utilities
 		/// <summary>
 		/// Determines whether this instance can convert the specified object type.
 		/// </summary>
-		/// <param name="objectType"></param>
+		/// <param name="objectType">The type of object</param>
 		/// <returns>true if this instance can convert the specified object type; otherwise, false.</returns>
 		public override bool CanConvert(Type objectType)
 		{

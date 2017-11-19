@@ -9,7 +9,11 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
-	public class SuppressionLists
+	/// <summary>
+	/// Allows you to manage suppression lists
+	/// </summary>
+	/// <seealso cref="CakeMail.RestClient.Resources.ISuppressionLists" />
+	public class SuppressionLists : ISuppressionLists
 	{
 		#region Fields
 
@@ -19,7 +23,7 @@ namespace CakeMail.RestClient.Resources
 
 		#region Constructor
 
-		public SuppressionLists(IClient client)
+		internal SuppressionLists(IClient client)
 		{
 			_client = client;
 		}

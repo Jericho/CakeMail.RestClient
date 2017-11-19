@@ -8,7 +8,11 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
-	public class Relays
+	/// <summary>
+	/// Allows you to manage relays
+	/// </summary>
+	/// <seealso cref="CakeMail.RestClient.Resources.IRelays" />
+	public class Relays : IRelays
 	{
 		#region Fields
 
@@ -18,7 +22,7 @@ namespace CakeMail.RestClient.Resources
 
 		#region Constructor
 
-		public Relays(IClient client)
+		internal Relays(IClient client)
 		{
 			_client = client;
 		}
@@ -44,31 +48,7 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>True if the email is sent</returns>
 		public Task<bool> SendWithoutTrackingAsync(string userKey, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, IDictionary<string, object> mergeData = null, MessageEncoding? encoding = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			subject = CakeMailContentParser.Parse(subject, mergeData);
-			html = CakeMailContentParser.Parse(html, mergeData);
-			text = CakeMailContentParser.Parse(text, mergeData);
-
-			var parameters = new List<KeyValuePair<string, object>>
-			{
-				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("email", recipientEmailAddress),
-				new KeyValuePair<string, object>("subject", subject),
-				new KeyValuePair<string, object>("html_message", html),
-				new KeyValuePair<string, object>("text_message", text),
-				new KeyValuePair<string, object>("sender_email", senderEmail),
-				new KeyValuePair<string, object>("track_opening", "false"),
-				new KeyValuePair<string, object>("track_clicks_in_html", "false"),
-				new KeyValuePair<string, object>("track_clicks_in_text", "false")
-			};
-			if (senderName != null) parameters.Add(new KeyValuePair<string, object>("sender_name", senderName));
-			if (encoding.HasValue) parameters.Add(new KeyValuePair<string, object>("encoding", encoding.Value.GetEnumMemberValue()));
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-			return _client
-				.PostAsync("Relay/Send")
-				.WithFormUrlEncodedBody(parameters)
-				.WithCancellationToken(cancellationToken)
-				.AsCakeMailObject<bool>();
+			return SendAsync(userKey, recipientEmailAddress, subject, html, text, senderEmail, senderName, mergeData, encoding, clientId, false, cancellationToken);
 		}
 
 		/// <summary>
@@ -89,32 +69,7 @@ namespace CakeMail.RestClient.Resources
 		/// <returns>True if the email is sent</returns>
 		public Task<bool> SendWithTrackingAsync(string userKey, long trackingId, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, IDictionary<string, object> mergeData = null, MessageEncoding? encoding = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			subject = CakeMailContentParser.Parse(subject, mergeData);
-			html = CakeMailContentParser.Parse(html, mergeData);
-			text = CakeMailContentParser.Parse(text, mergeData);
-
-			var parameters = new List<KeyValuePair<string, object>>
-			{
-				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("tracking_id", trackingId),
-				new KeyValuePair<string, object>("email", recipientEmailAddress),
-				new KeyValuePair<string, object>("subject", subject),
-				new KeyValuePair<string, object>("html_message", html),
-				new KeyValuePair<string, object>("text_message", text),
-				new KeyValuePair<string, object>("sender_email", senderEmail),
-				new KeyValuePair<string, object>("track_opening", "true"),
-				new KeyValuePair<string, object>("track_clicks_in_html", "true"),
-				new KeyValuePair<string, object>("track_clicks_in_text", "true")
-			};
-			if (senderName != null) parameters.Add(new KeyValuePair<string, object>("sender_name", senderName));
-			if (encoding.HasValue) parameters.Add(new KeyValuePair<string, object>("encoding", encoding.Value.GetEnumMemberValue()));
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-			return _client
-				.PostAsync("Relay/Send")
-				.WithFormUrlEncodedBody(parameters)
-				.WithCancellationToken(cancellationToken)
-				.AsCakeMailObject<bool>();
+			return SendAsync(userKey, recipientEmailAddress, subject, html, text, senderEmail, senderName, mergeData, encoding, clientId, true, cancellationToken);
 		}
 
 		/// <summary>
@@ -188,6 +143,35 @@ namespace CakeMail.RestClient.Resources
 		#endregion
 
 		#region PRIVATE METHODS
+
+		private Task<bool> SendAsync(string userKey, string recipientEmailAddress, string subject, string html, string text, string senderEmail, string senderName = null, IDictionary<string, object> mergeData = null, MessageEncoding? encoding = null, long? clientId = null, bool enableTracking = true, CancellationToken cancellationToken = default(CancellationToken))
+		{
+			subject = CakeMailContentParser.Parse(subject, mergeData);
+			html = CakeMailContentParser.Parse(html, mergeData);
+			text = CakeMailContentParser.Parse(text, mergeData);
+
+			var parameters = new List<KeyValuePair<string, object>>
+			{
+				new KeyValuePair<string, object>("user_key", userKey),
+				new KeyValuePair<string, object>("email", recipientEmailAddress),
+				new KeyValuePair<string, object>("subject", subject),
+				new KeyValuePair<string, object>("html_message", html),
+				new KeyValuePair<string, object>("text_message", text),
+				new KeyValuePair<string, object>("sender_email", senderEmail),
+				new KeyValuePair<string, object>("track_opening", enableTracking ? "true" : "false"),
+				new KeyValuePair<string, object>("track_clicks_in_html", enableTracking ? "true" : "false"),
+				new KeyValuePair<string, object>("track_clicks_in_text", enableTracking ? "true" : "false")
+			};
+			if (senderName != null) parameters.Add(new KeyValuePair<string, object>("sender_name", senderName));
+			if (encoding.HasValue) parameters.Add(new KeyValuePair<string, object>("encoding", encoding.Value.GetEnumMemberValue()));
+			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
+
+			return _client
+				.PostAsync("Relay/Send")
+				.WithFormUrlEncodedBody(parameters)
+				.WithCancellationToken(cancellationToken)
+				.AsCakeMailObject<bool>();
+		}
 
 		private Task<T[]> GetLogsAsync<T>(string userKey, string logType, string arrayPropertyName, long? trackingId = null, DateTime? start = null, DateTime? end = null, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 			where T : RelayLog, new()

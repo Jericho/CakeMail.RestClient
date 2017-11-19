@@ -23,30 +23,77 @@ namespace CakeMail.RestClient
 		/// </summary>
 		Uri BaseUrl { get; }
 
-		Campaigns Campaigns { get; }
+		/// <summary>
+		/// Gets the <see cref="Campaigns">Campaigns</see> resource
+		/// </summary>
+		ICampaigns Campaigns { get; }
 
-		Clients Clients { get; }
+		/// <summary>
+		/// Gets the <see cref="Clients">Clients</see> resource
+		/// </summary>
+		IClients Clients { get; }
 
-		Countries Countries { get; }
+		/// <summary>
+		/// Gets the <see cref="Countries">Countries</see> resource
+		/// </summary>
+		ICountries Countries { get; }
 
-		Permissions Permissions { get; }
+		/// <summary>
+		/// Gets the <see cref="Permissions">Permissions</see> resource
+		/// </summary>
+		IPermissions Permissions { get; }
 
-		Lists Lists { get; }
+		/// <summary>
+		/// Gets the <see cref="Lists">Lists</see> resource
+		/// </summary>
+		ILists Lists { get; }
 
-		Timezones Timezones { get; }
+		/// <summary>
+		/// Gets the <see cref="Timezones">Timezones</see> resource
+		/// </summary>
+		ITimezones Timezones { get; }
 
-		Mailings Mailings { get; }
+		/// <summary>
+		/// Gets the <see cref="Mailings">Mailings</see> resource
+		/// </summary>
+		IMailings Mailings { get; }
 
-		Relays Relays { get; }
+		/// <summary>
+		/// Gets the <see cref="Relays">Relays</see> resource
+		/// </summary>
+		IRelays Relays { get; }
 
-		Segments Segments { get; }
+		/// <summary>
+		/// Gets the <see cref="Segments">Segments</see> resource
+		/// </summary>
+		ISegments Segments { get; }
 
-		Users Users { get; }
+		/// <summary>
+		/// Gets the <see cref="Users">Users</see> resource
+		/// </summary>
+		IUsers Users { get; }
 
-		SuppressionLists SuppressionLists { get; }
+		/// <summary>
+		/// Gets the <see cref="SuppressionLists">SuppressionLists</see> resource
+		/// </summary>
+		ISuppressionLists SuppressionLists { get; }
 
-		Templates Templates { get; }
+		/// <summary>
+		/// Gets the <see cref="Templates">Templates</see> resource
+		/// </summary>
+		ITemplates Templates { get; }
 
-		Triggers Triggers { get; }
+		/// <summary>
+		/// Gets the <see cref="Triggers">Triggers</see> resource
+		/// </summary>
+		ITriggers Triggers { get; }
+
+		/// <summary>
+		/// Gets the Version.
+		/// </summary>
+		/// <value>
+		/// Gets the version.
+		/// </value>
+		string Version { get; }
 	}
 }

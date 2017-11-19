@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Various constants used in CakeMail.RestClient
 	/// </summary>
-	public static class Constants
+	internal static class Constants
 	{
 		/// <summary>
 		/// The string representation of a null DateTime as definied by CakeMail

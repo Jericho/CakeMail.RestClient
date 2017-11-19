@@ -15,13 +15,13 @@ namespace CakeMail.RestClient.Utilities
 	/// <summary>
 	/// Various extension methods
 	/// </summary>
-	public static class ExtensionMethods
+	internal static class ExtensionMethods
 	{
 		/// <summary>
 		/// Convert a DateTime into a string that can be accepted by the CakeMail API.
 		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
+		/// <param name="value">The datetime value to be converted</param>
+		/// <returns>The string representation of the value</returns>
 		public static string ToCakeMailString(this DateTime value)
 		{
 			if (value == DateTime.MinValue) return Constants.EMPTY_CAKEMAIL_DATE;
@@ -35,7 +35,7 @@ namespace CakeMail.RestClient.Utilities
 		/// <returns>The string value of the 'EnumMember' attribute associated with the value</returns>
 		public static string GetEnumMemberValue(this Enum value)
 		{
-			var fieldInfo = value.GetType().GetField(value.ToString());
+			var fieldInfo = value.GetType().GetRuntimeField(value.ToString());
 			if (fieldInfo == null) return value.ToString();
 
 			var attributes = fieldInfo.GetCustomAttributes(typeof(EnumMemberAttribute), false).ToArray();
@@ -54,8 +54,8 @@ namespace CakeMail.RestClient.Utilities
 		public static T GetValueFromEnumMember<T>(this string enumMember)
 			where T : struct, IConvertible
 		{
-			var fields = typeof(T).GetFields();
-			foreach (var fieldInfo in fields)
+			var fields = typeof(T).GetRuntimeFields();
+			foreach (var fieldInfo in fields.Where(f => f.IsPublic))
 			{
 				var attributes = fieldInfo.GetCustomAttributes(typeof(EnumMemberAttribute), false).OfType<EnumMemberAttribute>();
 				if (attributes.Any(a => a.Value == enumMember) || fieldInfo.Name == enumMember)

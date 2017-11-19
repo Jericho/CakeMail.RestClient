@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
-	public class Timezones
+	/// <summary>
+	/// Allows you to manage timezones
+	/// </summary>
+	/// <seealso cref="CakeMail.RestClient.Resources.ITimezones" />
+	public class Timezones : ITimezones
 	{
 		#region Fields
 
@@ -16,7 +20,7 @@ namespace CakeMail.RestClient.Resources
 
 		#region Constructor
 
-		public Timezones(IClient client)
+		internal Timezones(IClient client)
 		{
 			_client = client;
 		}

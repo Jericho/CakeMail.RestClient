@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
-	public class Segments
+	/// <summary>
+	/// Allows you to manage segments
+	/// </summary>
+	/// <seealso cref="CakeMail.RestClient.Resources.ISegments" />
+	public class Segments : ISegments
 	{
 		#region Fields
 
@@ -17,7 +21,7 @@ namespace CakeMail.RestClient.Resources
 
 		#region Constructor
 
-		public Segments(IClient client)
+		internal Segments(IClient client)
 		{
 			_client = client;
 		}

@@ -274,7 +274,7 @@ namespace CakeMail.RestClient.UnitTests.Resources
 		public async Task GetLists_with_sortdirection()
 		{
 			// Arrange
-			var sortDirection = SortDirection.Ascending;
+			var sortDirection = Models.SortDirection.Ascending;
 			var jsonList1 = "{\"id\":\"123\",\"name\":\"Dummy list 1\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
 			var jsonList2 = "{\"id\":\"456\",\"name\":\"Dummy list 2\",\"status\":\"active\",\"policy\":\"declined\",\"language\":\"en_US\",\"created_on\":\"2015-03-26 22:02:45\",\"sender_name\":\"Bob Smith\",\"sender_email\":\"bobsmith@fictitiouscomapny.com\",\"forward_page\":null,\"goto_oi\":null,\"goto_di\":null,\"goto_oo\":null,\"b_ac_limit\":\"3\",\"b_cr_limit\":\"3\",\"b_df_limit\":\"3\",\"b_fm_limit\":\"3\",\"b_hb_limit\":\"0\",\"b_mb_limit\":\"3\",\"b_sb_limit\":\"3\",\"b_tr_limit\":\"3\",\"di_trig_cnt\":\"0\",\"oi_trig_cnt\":\"0\",\"oo_trig_cnt\":\"0\",\"oi_url\":\"http://link.fictitiouscompany.com/oi/1/2b494468e2a377f39751ff716103fd49\",\"subscribe_url\":\"http://link.fictitiouscompany.com/s/1/2b494468e2a377f39751ff716103fd49\",\"oo_url\":\"http://link.fictitiouscompany.com/oo/1/2b494468e2a377f39751ff716103fd49\",\"webhook\":null,\"engagement\":null,\"pending\":\"0\",\"active\":\"0\",\"bounced\":\"0\",\"invalid\":\"0\",\"unsubscribed\":\"0\",\"spam\":\"0\",\"deleted\":\"0\"}";
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"lists\":[{0},{1}]}}}}", jsonList1, jsonList2);
@@ -933,11 +933,11 @@ namespace CakeMail.RestClient.UnitTests.Resources
 			var subscriberId = 777;
 			var firstName = "Bob";
 			var lastName = "Smith";
-			var customFields = new[]
+			var customFields = new Dictionary<string, object>()
 			{
-				new KeyValuePair<string, object>("firstname", firstName),
-				new KeyValuePair<string, object>("lastname", lastName),
-				new KeyValuePair<string, object>("birthday", new DateTime(1973, 1, 1))
+				{ "firstname", firstName },
+				{ "lastname", lastName },
+				{ "birthday", new DateTime(1973, 1, 1) }
 			};
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{0}}}", subscriberId);
 			var mockHttp = new MockHttpMessageHandler();
@@ -1345,7 +1345,7 @@ namespace CakeMail.RestClient.UnitTests.Resources
 		{
 			// Arrange
 			var listId = 12345L;
-			var sortDirection = SortDirection.Ascending;
+			var sortDirection = Models.SortDirection.Ascending;
 			var jsonMember1 = "{\"id\":\"1\",\"status\":\"active\",\"bounce_type\":\"none\",\"bounce_count\":\"0\",\"email\":\"aaa@aaa.com\",\"registered\":\"2015-04-01 15:08:22\"}";
 			var jsonMember2 = "{\"id\":\"2\",\"status\":\"active\",\"bounce_type\":\"none\",\"bounce_count\":\"0\",\"email\":\"bb@bb.com\",\"registered\":\"2015-04-01 15:08:22\"}";
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"records\":[{0},{1}]}}}}", jsonMember1, jsonMember2);
@@ -1510,10 +1510,10 @@ namespace CakeMail.RestClient.UnitTests.Resources
 			// Arrange
 			var listId = 12345L;
 			var memberId = 456L;
-			var customFields = new[]
+			var customFields = new Dictionary<string, object>()
 			{
-				new KeyValuePair<string, object>("fullname", "Bob Smith"),
-				new KeyValuePair<string, object>("birthday", new DateTime(1973, 1, 1))
+				{ "fullname", "Bob Smith" },
+				{ "birthday", new DateTime(1973, 1, 1) }
 			};
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();

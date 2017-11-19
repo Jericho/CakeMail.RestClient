@@ -8,7 +8,11 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
-	public class Templates
+	/// <summary>
+	/// Allows you to manage templates
+	/// </summary>
+	/// <seealso cref="CakeMail.RestClient.Resources.ITemplates" />
+	public class Templates : ITemplates
 	{
 		#region Fields
 
@@ -18,7 +22,7 @@ namespace CakeMail.RestClient.Resources
 
 		#region Constructor
 
-		public Templates(IClient client)
+		internal Templates(IClient client)
 		{
 			_client = client;
 		}

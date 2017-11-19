@@ -45,67 +45,67 @@ namespace CakeMail.RestClient
 		/// <summary>
 		/// Gets the <see cref="Campaigns">Campaigns</see> resource
 		/// </summary>
-		public Campaigns Campaigns { get; private set; }
+		public ICampaigns Campaigns { get; private set; }
 
 		/// <summary>
 		/// Gets the <see cref="Clients">Clients</see> resource
 		/// </summary>
-		public Clients Clients { get; private set; }
+		public IClients Clients { get; private set; }
 
 		/// <summary>
 		/// Gets the <see cref="Countries">Countries</see> resource
 		/// </summary>
-		public Countries Countries { get; private set; }
+		public ICountries Countries { get; private set; }
 
 		/// <summary>
 		/// Gets the <see cref="Permissions">Permissions</see> resource
 		/// </summary>
-		public Permissions Permissions { get; private set; }
+		public IPermissions Permissions { get; private set; }
 
 		/// <summary>
 		/// Gets the <see cref="Lists">Lists</see> resource
 		/// </summary>
-		public Lists Lists { get; private set; }
+		public ILists Lists { get; private set; }
 
 		/// <summary>
 		/// Gets the <see cref="Timezones">Timezones</see> resource
 		/// </summary>
-		public Timezones Timezones { get; private set; }
+		public ITimezones Timezones { get; private set; }
 
 		/// <summary>
 		/// Gets the <see cref="Mailings">Mailings</see> resource
 		/// </summary>
-		public Mailings Mailings { get; private set; }
+		public IMailings Mailings { get; private set; }
 
 		/// <summary>
 		/// Gets the <see cref="Relays">Relays</see> resource
 		/// </summary>
-		public Relays Relays { get; private set; }
+		public IRelays Relays { get; private set; }
 
 		/// <summary>
 		/// Gets the <see cref="Segments">Segments</see> resource
 		/// </summary>
-		public Segments Segments { get; private set; }
+		public ISegments Segments { get; private set; }
 
 		/// <summary>
 		/// Gets the <see cref="Users">Users</see> resource
 		/// </summary>
-		public Users Users { get; private set; }
+		public IUsers Users { get; private set; }
 
 		/// <summary>
 		/// Gets the <see cref="SuppressionLists">SuppressionLists</see> resource
 		/// </summary>
-		public SuppressionLists SuppressionLists { get; private set; }
+		public ISuppressionLists SuppressionLists { get; private set; }
 
 		/// <summary>
 		/// Gets the <see cref="Templates">Templates</see> resource
 		/// </summary>
-		public Templates Templates { get; private set; }
+		public ITemplates Templates { get; private set; }
 
 		/// <summary>
 		/// Gets the <see cref="Triggers">Triggers</see> resource
 		/// </summary>
-		public Triggers Triggers { get; private set; }
+		public ITriggers Triggers { get; private set; }
 
 		/// <summary>
 		/// Gets the Version.

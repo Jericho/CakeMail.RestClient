@@ -4,6 +4,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/m8lsx7snrc5jdrdi?svg=true)](https://ci.appveyor.com/project/Jericho/cakemail-restclient)
 [![Coverage Status](https://coveralls.io/repos/Jericho/CakeMail.RestClient/badge.svg)](https://coveralls.io/r/Jericho/CakeMail.RestClient)
 [![CodeFactor](https://www.codefactor.io/repository/github/jericho/cakemail.restclient/badge)](https://www.codefactor.io/repository/github/jericho/cakemail.restclient)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2FJericho%2FCakeMail.RestClient.svg?type=shield)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2FJericho%2FCakeMail.RestClient?ref=badge_shield)
 
 ## About
 
@@ -243,3 +244,7 @@ var reminderMailingId = await cakeMail.Mailings.CreateAsync(userKey, "2015 User 
 await cakeMail.Mailings.UpdateAsync(userKey, reminderMailingId, listId: listId, htmlContent: "<html><body>Don't forget our upcoming annual user conference</body></html>", textContent: "Don't forget our upcoming annual user conference", subject: "Reminder about our 2015 user conference");
 await cakeMail.Mailings.SheduleAsync(userKey, reminderMailingId, DateTime.UtcNow.AddDays(2));
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2FJericho%2FCakeMail.RestClient.svg?type=large)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2FJericho%2FCakeMail.RestClient?ref=badge_large)

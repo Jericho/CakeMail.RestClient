@@ -1,7 +1,6 @@
 ﻿using CakeMail.RestClient.Models;
 using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.IntegrationTests
@@ -15,10 +14,13 @@ namespace CakeMail.RestClient.IntegrationTests
 			Console.WriteLine("Executing TRIGGERS methods...");
 
 			var listId = await api.Lists.CreateAsync(userKey, "INTEGRATION TESTING list for trigger", "Bob Smith", "bobsmith@fictitiouscomapny.com", true, clientId).ConfigureAwait(false);
-			var listMemberId = await api.Lists.SubscribeAsync(userKey, listId, "recipient@destination.com", true, true, null, clientId).ConfigureAwait(false);
+			Console.WriteLine("New list created. Id: {0}", listId);
 
-			var campaigns = await api.Campaigns.GetListAsync(userKey, CampaignStatus.Ongoing, null, CampaignsSortBy.Name, SortDirection.Ascending, 1, 0, clientId).ConfigureAwait(false);
-			var campaign = campaigns.First();
+			var listMemberId = await api.Lists.SubscribeAsync(userKey, listId, "recipient@destination.com", true, true, null, clientId).ConfigureAwait(false);
+			Console.WriteLine("New member subscribed to the list. Id: {0}", listMemberId);
+
+			var campaignId = await api.Campaigns.CreateAsync(userKey, "INTEGRATION TESTING campaign for trigger", clientId).ConfigureAwait(false);
+			Console.WriteLine("New campaign created. Id: {0}", campaignId);
 
 			var triggers = await api.Triggers.GetTriggersAsync(userKey, TriggerStatus.Active, null, null, null, null, null, clientId).ConfigureAwait(false);
 			Console.WriteLine("Active triggers retrieved. Count = {0}", triggers.Count());
@@ -26,7 +28,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			var triggersCount = await api.Triggers.GetCountAsync(userKey, TriggerStatus.Active, null, null, null, clientId).ConfigureAwait(false);
 			Console.WriteLine("Active triggers count = {0}", triggersCount);
 
-			var triggerId = await api.Triggers.CreateAsync(userKey, "Integration Testing: trigger", listId, campaign.Id, null, null, clientId).ConfigureAwait(false);
+			var triggerId = await api.Triggers.CreateAsync(userKey, "Integration Testing: trigger", listId, campaignId, null, null, clientId).ConfigureAwait(false);
 			Console.WriteLine("New trigger created. Id: {0}", triggerId);
 
 			var trigger = await api.Triggers.GetAsync(userKey, triggerId, clientId).ConfigureAwait(false);
@@ -72,8 +74,11 @@ namespace CakeMail.RestClient.IntegrationTests
 				//Console.WriteLine("Trigger link retrieved. URI = {0}", link.Uri);
 			}
 
-			var deleted = await api.Lists.DeleteAsync(userKey, listId, clientId).ConfigureAwait(false);
-			Console.WriteLine("List deleted: {0}", deleted ? "success" : "failed");
+			var listDeleted = await api.Lists.DeleteAsync(userKey, listId, clientId).ConfigureAwait(false);
+			Console.WriteLine("List deleted: {0}", listDeleted ? "success" : "failed");
+
+			var campaignDeleted = await api.Campaigns.DeleteAsync(userKey, campaignId, clientId).ConfigureAwait(false);
+			Console.WriteLine("List deleted: {0}", campaignDeleted ? "success" : "failed");
 
 			Console.WriteLine(new string('-', 25));
 			Console.WriteLine("");

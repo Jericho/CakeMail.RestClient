@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace CakeMail.RestClient.Utilities
 {
-	public static class CakeMailContentParser
+	internal static class CakeMailContentParser
 	{
 		private const string DYNAMIC_CONTENT_START_TAG = @"\[IF (.*?)\]";
 		private const string DYNAMIC_CONTENT_END_TAG = @"\[ENDIF\]";

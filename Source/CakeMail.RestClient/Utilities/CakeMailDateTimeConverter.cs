@@ -9,7 +9,7 @@ namespace CakeMail.RestClient.Utilities
 	/// Converter class used in conjuction with JSON.NET to convert a DateTime into a string format acceptable to CakeMail
 	/// </summary>
 	[ComVisible(false)]
-	public class CakeMailDateTimeConverter : DateTimeConverterBase
+	internal class CakeMailDateTimeConverter : DateTimeConverterBase
 	{
 		/// <summary>
 		/// Writes the JSON representation of the DateTime value
@@ -52,7 +52,7 @@ namespace CakeMail.RestClient.Utilities
 		/// <summary>
 		/// Determines whether this instance can convert the specified object type.
 		/// </summary>
-		/// <param name="objectType"></param>
+		/// <param name="objectType">The type of object</param>
 		/// <returns>true if this instance can convert the specified object type; otherwise, false.</returns>
 		public override bool CanConvert(Type objectType)
 		{

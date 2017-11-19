@@ -1,11 +1,12 @@
 ﻿using CakeMail.RestClient.Logging;
 using System;
+using System.Net;
 
 namespace CakeMail.RestClient.IntegrationTests
 {
 	public class Program
 	{
-		public static void Main()
+		static void Main()
 		{
 			// -----------------------------------------------------------------------------
 

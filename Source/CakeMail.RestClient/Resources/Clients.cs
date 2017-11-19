@@ -8,7 +8,11 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
-	public class Clients
+	/// <summary>
+	/// Allows you to manage clients
+	/// </summary>
+	/// <seealso cref="CakeMail.RestClient.Resources.IClients" />
+	public class Clients : IClients
 	{
 		#region Fields
 
@@ -22,7 +26,7 @@ namespace CakeMail.RestClient.Resources
 		/// Initializes a new instance of the <see cref="Clients" /> class.
 		/// </summary>
 		/// <param name="client">The HTTP client</param>
-		public Clients(IClient client)
+		internal Clients(IClient client)
 		{
 			_client = client;
 		}
@@ -36,8 +40,8 @@ namespace CakeMail.RestClient.Resources
 		/// </summary>
 		/// <param name="parentId">ID of the parent client.</param>
 		/// <param name="name">Name of the client</param>
-		/// <param name="address1">Address of the client</param>
-		/// <param name="address2">Address of the client</param>
+		/// <param name="address1">Line 1 of the client's address</param>
+		/// <param name="address2">Line 2 of the client's address</param>
 		/// <param name="city">City of the client</param>
 		/// <param name="provinceId">ID of the province of the client</param>
 		/// <param name="postalCode">Postal Code of the client</param>
@@ -66,6 +70,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="primaryContactPassword">Password of the primary contact</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>A confirmation code which must be used subsequently to 'activate' the client</returns>
+		/// <remarks>After the client is created, it needs to be <see cref="ConfirmAsync(string, CancellationToken)">confirmed</see> using the confirmation code returned by this method.</remarks>
 		public Task<string> CreateAsync(long parentId, string name, string address1 = null, string address2 = null, string city = null, string provinceId = null, string postalCode = null, string countryId = null, string website = null, string phone = null, string fax = null, string adminEmail = null, string adminFirstName = null, string adminLastName = null, string adminTitle = null, string adminOfficePhone = null, string adminMobilePhone = null, string adminLanguage = null, long? adminTimezoneId = null, string adminPassword = null, bool primaryContactSameAsAdmin = true, string primaryContactEmail = null, string primaryContactFirstName = null, string primaryContactLastName = null, string primaryContactTitle = null, string primaryContactOfficePhone = null, string primaryContactMobilePhone = null, string primaryContactLanguage = null, long? primaryContactTimezoneId = null, string primaryContactPassword = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var parameters = new List<KeyValuePair<string, object>>
@@ -338,7 +343,7 @@ namespace CakeMail.RestClient.Resources
 		}
 
 		/// <summary>
-		/// Activate a client which has been previously suspended
+		/// Activates client that was previously suspended.
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="clientId">ID of the client.</param>

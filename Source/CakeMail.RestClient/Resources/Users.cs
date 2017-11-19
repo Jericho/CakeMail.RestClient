@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.Resources
 {
-	public class Users
+	/// <summary>
+	/// Allows you to manage users
+	/// </summary>
+	/// <seealso cref="CakeMail.RestClient.Resources.IUsers" />
+	public class Users : IUsers
 	{
 		#region Fields
 
@@ -17,7 +21,7 @@ namespace CakeMail.RestClient.Resources
 
 		#region Constructor
 
-		public Users(IClient client)
+		internal Users(IClient client)
 		{
 			_client = client;
 		}
