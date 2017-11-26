@@ -233,10 +233,10 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="trackingParameters">Additional tracking parameters for links.</param>
 		/// <param name="delay">Delay (in seconds) to be used when the trigger is unleashed.</param>
 		/// <param name="status">Status of the trigger. Possible values: 'active', 'inactive'</param>
-		/// <param name="date">DateTime to be used for trigger with action 'specific' or 'annual'.</param>
+		/// <param name="dateField">DateTime field to be used for trigger with action 'specific' or 'annual'.</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the trigger was updated</returns>
-		Task<bool> UpdateAsync(string userKey, long triggerId, long? campaignId = default(long?), string name = null, TriggerAction? action = default(TriggerAction?), MessageEncoding? encoding = default(MessageEncoding?), TransferEncoding? transferEncoding = default(TransferEncoding?), string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = default(bool?), bool? trackClicksInHtml = default(bool?), bool? trackClicksInText = default(bool?), string trackingParameters = null, int? delay = default(int?), TriggerStatus? status = default(TriggerStatus?), DateTime? date = default(DateTime?), long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> UpdateAsync(string userKey, long triggerId, long? campaignId = default(long?), string name = null, TriggerAction? action = default(TriggerAction?), MessageEncoding? encoding = default(MessageEncoding?), TransferEncoding? transferEncoding = default(TransferEncoding?), string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = default(bool?), bool? trackClicksInHtml = default(bool?), bool? trackClicksInText = default(bool?), string trackingParameters = null, int? delay = default(int?), TriggerStatus? status = default(TriggerStatus?), string dateField = null, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
 	}
 }

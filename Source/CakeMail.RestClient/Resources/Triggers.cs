@@ -109,11 +109,11 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="trackingParameters">Additional tracking parameters for links.</param>
 		/// <param name="delay">Delay (in seconds) to be used when the trigger is unleashed.</param>
 		/// <param name="status">Status of the trigger. Possible values: 'active', 'inactive'</param>
-		/// <param name="date">DateTime to be used for trigger with action 'specific' or 'annual'.</param>
+		/// <param name="dateField">DateTime field to be used for trigger with action 'specific' or 'annual'.</param>
 		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the trigger was updated</returns>
-		public Task<bool> UpdateAsync(string userKey, long triggerId, long? campaignId = null, string name = null, TriggerAction? action = null, MessageEncoding? encoding = null, TransferEncoding? transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClicksInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, int? delay = null, TriggerStatus? status = null, DateTime? date = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<bool> UpdateAsync(string userKey, long triggerId, long? campaignId = null, string name = null, TriggerAction? action = null, MessageEncoding? encoding = null, TransferEncoding? transferEncoding = null, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = null, bool? trackClicksInHtml = null, bool? trackClicksInText = null, string trackingParameters = null, int? delay = null, TriggerStatus? status = null, string dateField = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{
@@ -137,7 +137,7 @@ namespace CakeMail.RestClient.Resources
 			if (trackingParameters != null) parameters.Add(new KeyValuePair<string, object>("tracking_params", trackingParameters));
 			if (delay != null) parameters.Add(new KeyValuePair<string, object>("delay", delay));
 			if (status.HasValue) parameters.Add(new KeyValuePair<string, object>("status", status.Value.GetEnumMemberValue()));
-			if (date.HasValue) parameters.Add(new KeyValuePair<string, object>("date_field", date.Value.ToCakeMailString()));
+			if (!string.IsNullOrEmpty(dateField)) parameters.Add(new KeyValuePair<string, object>("date_field", dateField));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return _client
