@@ -553,7 +553,7 @@ namespace CakeMail.RestClient.UnitTests.Resources
 		{
 			// Arrange
 			var triggerId = 123L;
-			var date = new DateTime(2015, 12, 1, 13, 6, 6);
+			var dateField = "birthday";
 
 			var jsonResponse = "{\"status\":\"success\",\"data\":\"true\"}";
 			var mockHttp = new MockHttpMessageHandler();
@@ -561,7 +561,7 @@ namespace CakeMail.RestClient.UnitTests.Resources
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
-			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, date: date);
+			var result = await apiClient.Triggers.UpdateAsync(USER_KEY, triggerId, dateField: dateField);
 
 			// Assert
 			result.ShouldBeTrue();
