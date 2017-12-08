@@ -1,6 +1,8 @@
 ﻿using CakeMail.RestClient.Models;
 using System;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.IntegrationTests
@@ -9,45 +11,40 @@ namespace CakeMail.RestClient.IntegrationTests
 	{
 		private const int UTC_TIMEZONE_ID = 542;
 
-		public static async Task ExecuteAllMethods(CakeMailRestClient api, string userKey, long clientId)
+		public static async Task ExecuteAllMethods(ICakeMailRestClient client, string userKey, long clientId, TextWriter log, CancellationToken cancellationToken)
 		{
-			Console.WriteLine("");
-			Console.WriteLine(new string('-', 25));
-			Console.WriteLine("Executing CLIENTS methods...");
+			await log.WriteLineAsync("\n***** CLIENT *****").ConfigureAwait(false);
 
-			var clientsCount = await api.Clients.GetCountAsync(userKey, null, null, clientId).ConfigureAwait(false);
-			Console.WriteLine("Clients count = {0}", clientsCount);
+			var clientsCount = await client.Clients.GetCountAsync(userKey, null, null, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Clients count = {clientsCount}").ConfigureAwait(false);
 
 			var adminEmail = string.Format("admin{0:00}+{1:0000}@integrationtesting.com", clientsCount, (new Random()).Next(9999));
-			var confirmation = await api.Clients.CreateAsync(clientId, "_Integration Testing", "123 1st Street", "Suite 123", "Atlanta", "GA", "12345", "us", "www.company.com", "1-888-myphone", "1-888myfax", adminEmail, "Admin", "Integration Testing", "Super Administrator", "1-888-AdminPhone", "1-888-AdminMobile", "en_US", UTC_TIMEZONE_ID, "adminpassword", true).ConfigureAwait(false);
-			Console.WriteLine("New client created. Confirmation code: {0}", confirmation);
+			var confirmation = await client.Clients.CreateAsync(clientId, "_Integration Testing", "123 1st Street", "Suite 123", "Atlanta", "GA", "12345", "us", "www.company.com", "1-888-myphone", "1-888myfax", adminEmail, "Admin", "Integration Testing", "Super Administrator", "1-888-AdminPhone", "1-888-AdminMobile", "en_US", UTC_TIMEZONE_ID, "adminpassword", true).ConfigureAwait(false);
+			await log.WriteLineAsync($"New client created. Confirmation code: {confirmation}").ConfigureAwait(false);
 
-			var unconfirmedClient = await api.Clients.GetAsync(userKey, confirmation).ConfigureAwait(false);
-			Console.WriteLine("Information about this unconfirmed client: Name = {0}", unconfirmedClient.Name);
+			var unconfirmedClient = await client.Clients.GetAsync(userKey, confirmation).ConfigureAwait(false);
+			await log.WriteLineAsync($"Information about this unconfirmed client: Name = {unconfirmedClient.Name}").ConfigureAwait(false);
 
-			var registrationInfo = await api.Clients.ConfirmAsync(confirmation).ConfigureAwait(false);
-			Console.WriteLine("Client has been confirmed. Id = {0}", registrationInfo.ClientId);
+			var registrationInfo = await client.Clients.ConfirmAsync(confirmation).ConfigureAwait(false);
+			await log.WriteLineAsync($"Client has been confirmed. Id = {registrationInfo.ClientId}").ConfigureAwait(false);
 
-			var clients = await api.Clients.GetListAsync(userKey, null, null, ClientsSortBy.CompanyName, SortDirection.Ascending, null, null, clientId).ConfigureAwait(false);
-			Console.WriteLine("All clients retrieved. Count = {0}", clients.Count());
+			var clients = await client.Clients.GetListAsync(userKey, null, null, ClientsSortBy.CompanyName, SortDirection.Ascending, null, null, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"All clients retrieved. Count = {clients.Count()}").ConfigureAwait(false);
 
-			var updated = await api.Clients.UpdateAsync(userKey, registrationInfo.ClientId, name: "Fictitious Company").ConfigureAwait(false);
-			Console.WriteLine("Client updated: {0}", updated ? "success" : "failed");
+			var updated = await client.Clients.UpdateAsync(userKey, registrationInfo.ClientId, name: "Fictitious Company").ConfigureAwait(false);
+			await log.WriteLineAsync($"Client updated: {(updated ? "success" : "failed")}").ConfigureAwait(false);
 
-			var client = await api.Clients.GetAsync(userKey, registrationInfo.ClientId).ConfigureAwait(false);
-			Console.WriteLine("Client retrieved: Name = {0}", client.Name);
+			var myClient = await client.Clients.GetAsync(userKey, registrationInfo.ClientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Client retrieved: Name = {myClient.Name}").ConfigureAwait(false);
 
-			var suspended = await api.Clients.SuspendAsync(userKey, client.Id).ConfigureAwait(false);
-			Console.WriteLine("Client suspended: {0}", suspended ? "success" : "failed");
+			var suspended = await client.Clients.SuspendAsync(userKey, myClient.Id).ConfigureAwait(false);
+			await log.WriteLineAsync($"Client suspended: {(suspended ? "success" : "failed")}").ConfigureAwait(false);
 
-			var reactivated = await api.Clients.ActivateAsync(userKey, client.Id).ConfigureAwait(false);
-			Console.WriteLine("Client re-activated: {0}", reactivated ? "success" : "failed");
+			var reactivated = await client.Clients.ActivateAsync(userKey, myClient.Id).ConfigureAwait(false);
+			await log.WriteLineAsync($"Client re-activated: {(reactivated ? "success" : "failed")}").ConfigureAwait(false);
 
-			var deleted = await api.Clients.DeleteAsync(userKey, client.Id).ConfigureAwait(false);
-			Console.WriteLine("Client deleted: {0}", deleted ? "success" : "failed");
-
-			Console.WriteLine(new string('-', 25));
-			Console.WriteLine("");
+			var deleted = await client.Clients.DeleteAsync(userKey, myClient.Id).ConfigureAwait(false);
+			await log.WriteLineAsync($"Client deleted: {(deleted ? "success" : "failed")}").ConfigureAwait(false);
 		}
 	}
 }

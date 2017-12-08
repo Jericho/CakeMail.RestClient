@@ -1,51 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.IntegrationTests
 {
 	public static class TemplatesTests
 	{
-		public static async Task ExecuteAllMethods(CakeMailRestClient api, string userKey, long clientId)
+		public static async Task ExecuteAllMethods(ICakeMailRestClient client, string userKey, long clientId, TextWriter log, CancellationToken cancellationToken)
 		{
-			Console.WriteLine("");
-			Console.WriteLine(new string('-', 25));
-			Console.WriteLine("Executing TEMPLATES methods...");
+			await log.WriteLineAsync("\n***** TEMPLATES *****").ConfigureAwait(false);
 
 			var categoryLabels = new Dictionary<string, string>
 			{
 				{ "en_US", "My Category" },
 				{ "fr_FR", "Ma Catégorie" }
 			};
-			var categoryId = await api.Templates.CreateCategoryAsync(userKey, categoryLabels, true, true, clientId).ConfigureAwait(false);
-			Console.WriteLine("New template category created. Id: {0}", categoryId);
+			var categoryId = await client.Templates.CreateCategoryAsync(userKey, categoryLabels, true, true, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"New template category created. Id: {categoryId}").ConfigureAwait(false);
 
-			var category = await api.Templates.GetCategoryAsync(userKey, categoryId, clientId).ConfigureAwait(false);
-			Console.WriteLine("Template category retrieved: Name = {0}", category.Name);
+			var category = await client.Templates.GetCategoryAsync(userKey, categoryId, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Template category retrieved: Name = {category.Name}").ConfigureAwait(false);
 
 			categoryLabels = new Dictionary<string, string>
 			{
 				{ "en_US", "My Category UPDATED" },
 				{ "fr_FR", "Ma Catégorie UPDATED" }
 			};
-			var categoryUpdated = await api.Templates.UpdateCategoryAsync(userKey, categoryId, categoryLabels, true, true, clientId).ConfigureAwait(false);
-			Console.WriteLine("Template category updated. Id: {0}", categoryId);
+			var categoryUpdated = await client.Templates.UpdateCategoryAsync(userKey, categoryId, categoryLabels, true, true, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Template category updated. Id: {categoryId}").ConfigureAwait(false);
 
-			var categories = await api.Templates.GetCategoriesAsync(userKey, 0, 0, clientId).ConfigureAwait(false);
-			Console.WriteLine("All Template categories retrieved. Count = {0}", categories.Count());
+			var categories = await client.Templates.GetCategoriesAsync(userKey, 0, 0, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"All Template categories retrieved. Count = {categories.Count()}").ConfigureAwait(false);
 
-			var categoriesCount = await api.Templates.GetCategoriesCountAsync(userKey, clientId).ConfigureAwait(false);
-			Console.WriteLine("Template categories count = {0}", categoriesCount);
+			var categoriesCount = await client.Templates.GetCategoriesCountAsync(userKey, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Template categories count = {categoriesCount}").ConfigureAwait(false);
 
-			var permissions = await api.Templates.GetCategoryVisibilityAsync(userKey, categoryId, null, null, clientId).ConfigureAwait(false);
-			Console.WriteLine("Template category permissions: {0}", string.Join(", ", permissions.Select(p => string.Format("{0}={1}", p.CompanyName, p.Visible))));
+			var permissions = await client.Templates.GetCategoryVisibilityAsync(userKey, categoryId, null, null, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Template category permissions: {string.Join(", ", permissions.Select(p => string.Format("{0}={1}", p.CompanyName, p.Visible)))}").ConfigureAwait(false);
 
 			if (permissions.Any())
 			{
 				var newPermissions = permissions.ToDictionary(p => p.ClientId, p => false);
-				var permissionsRevoked = await api.Templates.SetCategoryVisibilityAsync(userKey, categoryId, newPermissions, clientId).ConfigureAwait(false);
-				Console.WriteLine("Template category permissions revoked: {0}", permissionsRevoked ? "success" : "failed");
+				var permissionsRevoked = await client.Templates.SetCategoryVisibilityAsync(userKey, categoryId, newPermissions, clientId).ConfigureAwait(false);
+				await log.WriteLineAsync($"Template category permissions revoked: {(permissionsRevoked ? "success" : "failed")}").ConfigureAwait(false);
 			}
 
 			var templateLabels = new Dictionary<string, string>
@@ -54,31 +53,28 @@ namespace CakeMail.RestClient.IntegrationTests
 				{ "fr_FR", "Mon Modèle" }
 			};
 			var templateContent = "<html><body>Hello World</body></html>";
-			var templateId = await api.Templates.CreateAsync(userKey, templateLabels, templateContent, categoryId, clientId).ConfigureAwait(false);
-			Console.WriteLine("Template created. Id = {0}", templateId);
+			var templateId = await client.Templates.CreateAsync(userKey, templateLabels, templateContent, categoryId, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Template created. Id = {templateId}").ConfigureAwait(false);
 
 			templateLabels = new Dictionary<string, string>
 			{
 				{ "en_US", "My Template UPDATED" },
 				{ "fr_FR", "Ma Modèle UPDATED" }
 			};
-			var templateUpdated = await api.Templates.UpdateAsync(userKey, templateId, templateLabels, templateContent, categoryId, clientId).ConfigureAwait(false);
-			Console.WriteLine("Template updated. Id: {0}", templateId);
+			var templateUpdated = await client.Templates.UpdateAsync(userKey, templateId, templateLabels, templateContent, categoryId, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Template updated. Id: {templateId}").ConfigureAwait(false);
 
-			var templates = await api.Templates.GetTemplatesAsync(userKey, categoryId, null, null, clientId).ConfigureAwait(false);
-			Console.WriteLine("All Templates retrieved. Count = {0}", templates.Count());
+			var templates = await client.Templates.GetTemplatesAsync(userKey, categoryId, null, null, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"All Templates retrieved. Count = {templates.Count()}").ConfigureAwait(false);
 
-			var template = await api.Templates.GetAsync(userKey, templateId, clientId).ConfigureAwait(false);
-			Console.WriteLine("Template retrieved: Name = {0}", template.Name);
+			var template = await client.Templates.GetAsync(userKey, templateId, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Template retrieved: Name = {template.Name}").ConfigureAwait(false);
 
-			var templateDeleted = await api.Templates.DeleteAsync(userKey, templateId, clientId).ConfigureAwait(false);
-			Console.WriteLine("Template deleted: {0}", templateDeleted ? "success" : "failed");
+			var templateDeleted = await client.Templates.DeleteAsync(userKey, templateId, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Template deleted: {(templateDeleted ? "success" : "failed")}").ConfigureAwait(false);
 
-			var categoryDeleted = await api.Templates.DeleteCategoryAsync(userKey, categoryId, clientId).ConfigureAwait(false);
-			Console.WriteLine("Template category deleted: {0}", categoryDeleted ? "success" : "failed");
-
-			Console.WriteLine(new string('-', 25));
-			Console.WriteLine("");
+			var categoryDeleted = await client.Templates.DeleteCategoryAsync(userKey, categoryId, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Template category deleted: {(categoryDeleted ? "success" : "failed")}").ConfigureAwait(false);
 		}
 	}
 }

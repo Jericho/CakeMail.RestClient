@@ -1,26 +1,22 @@
-﻿using System;
+﻿using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.IntegrationTests
 {
 	public static class TimezonesTests
 	{
-		public static async Task ExecuteAllMethods(CakeMailRestClient api)
+		public static async Task ExecuteAllMethods(ICakeMailRestClient client, string userKey, long clientId, TextWriter log, CancellationToken cancellationToken)
 		{
-			Console.WriteLine("");
-			Console.WriteLine(new string('-', 25));
-			Console.WriteLine("Executing TIMEZONES methods...");
+			await log.WriteLineAsync("\n***** TIMEZONES *****").ConfigureAwait(false);
 
-			var timezones = await api.Timezones.GetAllAsync().ConfigureAwait(false);
-			Console.WriteLine("Retrieved all timezones. There are {0} timezones.", timezones.Count());
+			var timezones = await client.Timezones.GetAllAsync(cancellationToken).ConfigureAwait(false);
+			await log.WriteLineAsync($"Retrieved all timezones. There are {timezones.Count()} timezones.").ConfigureAwait(false);
 
 			var utcTimezones = timezones.Where(tz => tz.Name.Contains("UTC")).ToArray();
-			Console.WriteLine("The following timezones contain the word UTC in their name:");
-			Console.WriteLine(string.Join(", ", utcTimezones.Select(tz => string.Format("{0} ({1})", tz.Name, tz.Id))));
-
-			Console.WriteLine(new string('-', 25));
-			Console.WriteLine("");
+			await log.WriteLineAsync("The following timezones contain the word UTC in their name:").ConfigureAwait(false);
+			await log.WriteLineAsync(string.Join(", ", utcTimezones.Select(tz => $"{tz.Name} ({tz.Id})"))).ConfigureAwait(false);
 		}
 	}
 }

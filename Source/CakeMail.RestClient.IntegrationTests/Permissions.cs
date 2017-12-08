@@ -1,38 +1,34 @@
 ﻿using CakeMail.RestClient.Models;
-using System;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.IntegrationTests
 {
 	public static class PermissionsTests
 	{
-		public static async Task ExecuteAllMethods(CakeMailRestClient api, string userKey, long clientId)
+		public static async Task ExecuteAllMethods(ICakeMailRestClient client, string userKey, long clientId, TextWriter log, CancellationToken cancellationToken)
 		{
-			Console.WriteLine("");
-			Console.WriteLine(new string('-', 25));
-			Console.WriteLine("Executing PERMISSIONS methods...");
+			await log.WriteLineAsync("\n***** PERMISSIONS *****").ConfigureAwait(false);
 
-			var users = await api.Users.GetUsersAsync(userKey, UserStatus.Active, null, null, clientId).ConfigureAwait(false);
-			Console.WriteLine("All users retrieved");
+			var users = await client.Users.GetUsersAsync(userKey, UserStatus.Active, null, null, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync("All users retrieved").ConfigureAwait(false);
 
 			var user = users.First();
-			Console.WriteLine("For testing purposes, we selected {0} {1}", user.FirstName, user.LastName);
+			await log.WriteLineAsync($"For testing purposes, we selected {user.FirstName} {user.LastName}").ConfigureAwait(false);
 
-			var originalUserPermissions = await api.Permissions.GetUserPermissionsAsync(userKey, user.Id, clientId).ConfigureAwait(false);
-			Console.WriteLine("Current user permissions: {0}", string.Join(", ", originalUserPermissions));
+			var originalUserPermissions = await client.Permissions.GetUserPermissionsAsync(userKey, user.Id, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Current user permissions: {string.Join(", ", originalUserPermissions)}").ConfigureAwait(false);
 
-			var updated = await api.Permissions.SetUserPermissionsAsync(userKey, user.Id, new[] { "admin_settings" }, clientId).ConfigureAwait(false);
-			Console.WriteLine("Permissions updated: {0}", updated ? "success" : "failed");
+			var updated = await client.Permissions.SetUserPermissionsAsync(userKey, user.Id, new[] { "admin_settings" }, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Permissions updated: {(updated ? "success" : "failed")}").ConfigureAwait(false);
 
-			var newUserPermissions = await api.Permissions.GetUserPermissionsAsync(userKey, user.Id, clientId).ConfigureAwait(false);
-			Console.WriteLine("New user permissions: {0}", string.Join(", ", newUserPermissions));
+			var newUserPermissions = await client.Permissions.GetUserPermissionsAsync(userKey, user.Id, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"New user permissions: {string.Join(", ", newUserPermissions)}").ConfigureAwait(false);
 
-			updated = await api.Permissions.SetUserPermissionsAsync(userKey, user.Id, originalUserPermissions, clientId).ConfigureAwait(false);
-			Console.WriteLine("Permissions reset to original values: {0}", updated ? "success" : "failed");
-
-			Console.WriteLine(new string('-', 25));
-			Console.WriteLine("");
+			updated = await client.Permissions.SetUserPermissionsAsync(userKey, user.Id, originalUserPermissions, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Permissions reset to original values: {(updated ? "success" : "failed")}").ConfigureAwait(false);
 		}
 	}
 }

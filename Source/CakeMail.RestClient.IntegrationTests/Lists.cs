@@ -1,42 +1,42 @@
 ﻿using CakeMail.RestClient.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.IntegrationTests
 {
 	public static class ListsTests
 	{
-		public static async Task ExecuteAllMethods(CakeMailRestClient api, string userKey, long clientId)
+		public static async Task ExecuteAllMethods(ICakeMailRestClient client, string userKey, long clientId, TextWriter log, CancellationToken cancellationToken)
 		{
-			Console.WriteLine("");
-			Console.WriteLine(new string('-', 25));
-			Console.WriteLine("Executing LISTS methods...");
+			await log.WriteLineAsync("\n***** LISTS *****").ConfigureAwait(false);
 
-			var lists = await api.Lists.GetListsAsync(userKey, ListStatus.Active, null, ListsSortBy.Name, SortDirection.Descending, null, null, clientId).ConfigureAwait(false);
-			Console.WriteLine("All lists retrieved. Count = {0}", lists.Count());
+			var lists = await client.Lists.GetListsAsync(userKey, ListStatus.Active, null, ListsSortBy.Name, SortDirection.Descending, null, null, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"All lists retrieved. Count = {lists.Count()}").ConfigureAwait(false);
 
-			var listsCount = await api.Lists.GetCountAsync(userKey, ListStatus.Active, null, clientId).ConfigureAwait(false);
-			Console.WriteLine("Lists count = {0}", listsCount);
+			var listsCount = await client.Lists.GetCountAsync(userKey, ListStatus.Active, null, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Lists count = {listsCount}").ConfigureAwait(false);
 
-			var listId = await api.Lists.CreateAsync(userKey, "Dummy list", "Bob Smith", "bobsmith@fictitiouscomapny.com", true, clientId).ConfigureAwait(false);
-			Console.WriteLine("New list created. Id: {0}", listId);
+			var listId = await client.Lists.CreateAsync(userKey, "Dummy list", "Bob Smith", "bobsmith@fictitiouscomapny.com", true, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"New list created. Id: {listId}").ConfigureAwait(false);
 
-			var updated = await api.Lists.UpdateAsync(userKey, listId, name: "Updated name", clientId: clientId).ConfigureAwait(false);
-			Console.WriteLine("List updated: {0}", updated ? "success" : "failed");
+			var updated = await client.Lists.UpdateAsync(userKey, listId, name: "Updated name", clientId: clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"List updated: {(updated ? "success" : "failed")}").ConfigureAwait(false);
 
-			var list = await api.Lists.GetAsync(userKey, listId, false, false, clientId).ConfigureAwait(false);
-			Console.WriteLine("List retrieved: Name = {0}", list.Name);
+			var list = await client.Lists.GetAsync(userKey, listId, false, false, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"List retrieved: Name = {list.Name}").ConfigureAwait(false);
 
-			await api.Lists.AddFieldAsync(userKey, listId, "MyCustomField1", FieldType.Integer, clientId).ConfigureAwait(false);
-			await api.Lists.AddFieldAsync(userKey, listId, "MyCustomField2", FieldType.DateTime, clientId).ConfigureAwait(false);
-			await api.Lists.AddFieldAsync(userKey, listId, "MyCustomField3", FieldType.Text, clientId).ConfigureAwait(false);
-			await api.Lists.AddFieldAsync(userKey, listId, "MyCustomField4", FieldType.Memo, clientId).ConfigureAwait(false);
-			Console.WriteLine("Custom fields added to the list");
+			await client.Lists.AddFieldAsync(userKey, listId, "MyCustomField1", FieldType.Integer, clientId).ConfigureAwait(false);
+			await client.Lists.AddFieldAsync(userKey, listId, "MyCustomField2", FieldType.DateTime, clientId).ConfigureAwait(false);
+			await client.Lists.AddFieldAsync(userKey, listId, "MyCustomField3", FieldType.Text, clientId).ConfigureAwait(false);
+			await client.Lists.AddFieldAsync(userKey, listId, "MyCustomField4", FieldType.Memo, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Custom fields added to the list").ConfigureAwait(false);
 
-			var fields = await api.Lists.GetFieldsAsync(userKey, listId, clientId).ConfigureAwait(false);
-			Console.WriteLine("List contains the following fields: {0}", string.Join(", ", fields.Select(f => f.Name)));
+			var fields = await client.Lists.GetFieldsAsync(userKey, listId, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"List contains the following fields: {string.Join(", ", fields.Select(f => f.Name))}").ConfigureAwait(false);
 
 			var subscriberCustomFields = new Dictionary<string, object>()
 			{
@@ -44,15 +44,15 @@ namespace CakeMail.RestClient.IntegrationTests
 				{ "MyCustomField2", DateTime.UtcNow },
 				{ "MyCustomField3", "qwerty" }
 			};
-			var listMemberId = await api.Lists.SubscribeAsync(userKey, listId, "integration@testing.com", true, true, subscriberCustomFields, clientId).ConfigureAwait(false);
-			Console.WriteLine("One member added to the list");
+			var listMemberId = await client.Lists.SubscribeAsync(userKey, listId, "integration@testing.com", true, true, subscriberCustomFields, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync("One member added to the list").ConfigureAwait(false);
 
 			var query = "`email`=\"integration@testing.com\"";
-			var subscribers = await api.Lists.GetMembersAsync(userKey, listId, query: query, clientId: clientId).ConfigureAwait(false);
-			Console.WriteLine("Subscribers retrieved: {0}", subscribers.Count());
+			var subscribers = await client.Lists.GetMembersAsync(userKey, listId, query: query, clientId: clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Subscribers retrieved: {subscribers.Count()}").ConfigureAwait(false);
 
-			var subscriber = await api.Lists.GetMemberAsync(userKey, listId, listMemberId, clientId).ConfigureAwait(false);
-			Console.WriteLine("Subscriber retrieved: {0}", subscriber.Email);
+			var subscriber = await client.Lists.GetMemberAsync(userKey, listId, listMemberId, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Subscriber retrieved: {subscriber.Email}").ConfigureAwait(false);
 
 			var member1 = new ListMember
 			{
@@ -74,44 +74,41 @@ namespace CakeMail.RestClient.IntegrationTests
 					{ "MyCustomField3", "azerty" }
 				}
 			};
-			var importResult = await api.Lists.ImportAsync(userKey, listId, new[] { member1, member2 }, false, false, clientId).ConfigureAwait(false);
-			Console.WriteLine("Two members imported into the list");
+			var importResult = await client.Lists.ImportAsync(userKey, listId, new[] { member1, member2 }, false, false, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync("Two members imported into the list").ConfigureAwait(false);
 
-			var members = await api.Lists.GetMembersAsync(userKey, listId, null, null, null, null, null, null, clientId).ConfigureAwait(false);
-			Console.WriteLine("All list members retrieved. Count = {0}", members.Count());
+			var members = await client.Lists.GetMembersAsync(userKey, listId, null, null, null, null, null, null, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"All list members retrieved. Count = {members.Count()}").ConfigureAwait(false);
 
-			var membersCount = await api.Lists.GetMembersCountAsync(userKey, listId, null, clientId).ConfigureAwait(false);
-			Console.WriteLine("Members count = {0}", membersCount);
+			var membersCount = await client.Lists.GetMembersCountAsync(userKey, listId, null, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Members count = {membersCount}").ConfigureAwait(false);
 
 			var customFieldsToUpdate = new Dictionary<string, object>
 			{
 				{ "MyCustomField1", 555555 },
 				{ "MyCustomField3", "zzzzzzzzzzzzzzzzzzzzzzzzzz" }
 			};
-			var memberUpdated = await api.Lists.UpdateMemberAsync(userKey, listId, 1, customFieldsToUpdate, clientId).ConfigureAwait(false);
-			Console.WriteLine("Member updated: {0}", memberUpdated ? "success" : "failed");
+			var memberUpdated = await client.Lists.UpdateMemberAsync(userKey, listId, 1, customFieldsToUpdate, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Member updated: {(memberUpdated ? "success" : "failed")}").ConfigureAwait(false);
 
-			var logs = await api.Lists.GetLogsAsync(userKey, listId, LogType.Open, false, false, null, null, null, null, clientId).ConfigureAwait(false);
-			Console.WriteLine("Retrieved 'Opens'. Count = {0}", logs.Count());
+			var logs = await client.Lists.GetLogsAsync(userKey, listId, LogType.Open, false, false, null, null, null, null, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Retrieved 'Opens'. Count = {logs.Count()}").ConfigureAwait(false);
 
-			var firstSegmentId = await api.Segments.CreateAsync(userKey, listId, "Segment #1", "(`email` LIKE \"aa%\")", clientId).ConfigureAwait(false);
-			var secondSegmentId = await api.Segments.CreateAsync(userKey, listId, "Segment #2", "(`email` LIKE \"bb%\")", clientId).ConfigureAwait(false);
-			Console.WriteLine("Two segments created");
+			var firstSegmentId = await client.Segments.CreateAsync(userKey, listId, "Segment #1", "(`email` LIKE \"aa%\")", clientId).ConfigureAwait(false);
+			var secondSegmentId = await client.Segments.CreateAsync(userKey, listId, "Segment #2", "(`email` LIKE \"bb%\")", clientId).ConfigureAwait(false);
+			await log.WriteLineAsync("Two segments created").ConfigureAwait(false);
 
-			var segments = await api.Segments.GetSegmentsAsync(userKey, listId, 0, 0, true, clientId).ConfigureAwait(false);
-			Console.WriteLine("Segments retrieved. Count = {0}", segments.Count());
+			var segments = await client.Segments.GetSegmentsAsync(userKey, listId, 0, 0, true, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Segments retrieved. Count = {segments.Count()}").ConfigureAwait(false);
 
-			var firstSegmentDeleted = await api.Segments.DeleteAsync(userKey, firstSegmentId, clientId).ConfigureAwait(false);
-			Console.WriteLine("First segment deleted");
+			var firstSegmentDeleted = await client.Segments.DeleteAsync(userKey, firstSegmentId, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync("First segment deleted").ConfigureAwait(false);
 
-			var secondSegmentDeleted = await api.Segments.DeleteAsync(userKey, secondSegmentId, clientId).ConfigureAwait(false);
-			Console.WriteLine("Second segment deleted");
+			var secondSegmentDeleted = await client.Segments.DeleteAsync(userKey, secondSegmentId, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync("Second segment deleted").ConfigureAwait(false);
 
-			var deleted = await api.Lists.DeleteAsync(userKey, listId, clientId).ConfigureAwait(false);
-			Console.WriteLine("List deleted: {0}", deleted ? "success" : "failed");
-
-			Console.WriteLine(new string('-', 25));
-			Console.WriteLine("");
+			var deleted = await client.Lists.DeleteAsync(userKey, listId, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"List deleted: {(deleted ? "success" : "failed")}").ConfigureAwait(false);
 		}
 	}
 }

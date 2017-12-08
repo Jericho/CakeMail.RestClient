@@ -1,38 +1,34 @@
 ﻿using CakeMail.RestClient.Models;
-using System;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.IntegrationTests
 {
 	public static class CampaignsTests
 	{
-		public static async Task ExecuteAllMethods(CakeMailRestClient api, string userKey, long clientId)
+		public static async Task ExecuteAllMethods(ICakeMailRestClient client, string userKey, long clientId, TextWriter log, CancellationToken cancellationToken)
 		{
-			Console.WriteLine("");
-			Console.WriteLine(new string('-', 25));
-			Console.WriteLine("Executing CAMPAIGNS methods...");
+			await log.WriteLineAsync("\n***** CAMPAIGNS *****").ConfigureAwait(false);
 
-			var campaigns = await api.Campaigns.GetListAsync(userKey, CampaignStatus.Ongoing, null, CampaignsSortBy.Name, SortDirection.Ascending, null, null, clientId).ConfigureAwait(false);
-			Console.WriteLine("All campaigns retrieved. Count = {0}", campaigns.Count());
+			var campaigns = await client.Campaigns.GetListAsync(userKey, CampaignStatus.Ongoing, null, CampaignsSortBy.Name, SortDirection.Ascending, null, null, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"All campaigns retrieved. Count = {campaigns.Count()}").ConfigureAwait(false);
 
-			var campaignsCount = await api.Campaigns.GetCountAsync(userKey, CampaignStatus.Ongoing, null, clientId).ConfigureAwait(false);
-			Console.WriteLine("Campaigns count = {0}", campaignsCount);
+			var campaignsCount = await client.Campaigns.GetCountAsync(userKey, CampaignStatus.Ongoing, null, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Campaigns count = {campaignsCount}").ConfigureAwait(false);
 
-			var campaignId = await api.Campaigns.CreateAsync(userKey, "Dummy campaign", clientId).ConfigureAwait(false);
-			Console.WriteLine("New campaign created. Id: {0}", campaignId);
+			var campaignId = await client.Campaigns.CreateAsync(userKey, "Dummy campaign", clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"New campaign created. Id: {campaignId}").ConfigureAwait(false);
 
-			var updated = await api.Campaigns.UpdateAsync(userKey, campaignId, "Updated name", clientId).ConfigureAwait(false);
-			Console.WriteLine("Campaign updated: {0}", updated ? "success" : "failed");
+			var updated = await client.Campaigns.UpdateAsync(userKey, campaignId, "Updated name", clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Campaign updated: {(updated ? "success" : "failed")}").ConfigureAwait(false);
 
-			var campaign = await api.Campaigns.GetAsync(userKey, campaignId, clientId).ConfigureAwait(false);
-			Console.WriteLine("Campaign retrieved: Name = {0}", campaign.Name);
+			var campaign = await client.Campaigns.GetAsync(userKey, campaignId, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Campaign retrieved: Name = {campaign.Name}").ConfigureAwait(false);
 
-			var deleted = await api.Campaigns.DeleteAsync(userKey, campaignId, clientId).ConfigureAwait(false);
-			Console.WriteLine("Campaign deleted: {0}", deleted ? "success" : "failed");
-
-			Console.WriteLine(new string('-', 25));
-			Console.WriteLine("");
+			var deleted = await client.Campaigns.DeleteAsync(userKey, campaignId, clientId).ConfigureAwait(false);
+			await log.WriteLineAsync($"Campaign deleted: {(deleted ? "success" : "failed")}").ConfigureAwait(false);
 		}
 	}
 }

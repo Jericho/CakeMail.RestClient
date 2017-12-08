@@ -1,43 +1,39 @@
-﻿using System;
+﻿using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.IntegrationTests
 {
 	public static class CountriesTests
 	{
-		public static async Task ExecuteAllMethods(CakeMailRestClient api)
+		public static async Task ExecuteAllMethods(ICakeMailRestClient client, string userKey, long clientId, TextWriter log, CancellationToken cancellationToken)
 		{
-			Console.WriteLine("");
-			Console.WriteLine(new string('-', 25));
-			Console.WriteLine("Executing COUNTRIES methods...");
+			await log.WriteLineAsync("\n***** COUNTRIES *****").ConfigureAwait(false);
 
-			var countries = await api.Countries.GetListAsync().ConfigureAwait(false);
-			Console.WriteLine("Retrieved all countries. There are {0} countries.", countries.Count());
+			var countries = await client.Countries.GetListAsync().ConfigureAwait(false);
+			await log.WriteLineAsync($"Retrieved all countries. There are {countries.Count()} countries.").ConfigureAwait(false);
 
 			var canada = countries.Single(country => country.EnglishName == "Canada");
-			Console.WriteLine("Canada --> Id: {0}", canada.Id);
+			await log.WriteLineAsync($"Canada --> Id: {canada.Id}").ConfigureAwait(false);
 
-			var canadianProvinces = await api.Countries.GetProvincesAsync(canada.Id).ConfigureAwait(false);
-			Console.WriteLine("There are {0} canadian provinces/territories/etc.", canadianProvinces.Count());
+			var canadianProvinces = await client.Countries.GetProvincesAsync(canada.Id).ConfigureAwait(false);
+			await log.WriteLineAsync($"There are {canadianProvinces.Count()} canadian provinces/territories/etc.").ConfigureAwait(false);
 
 			var quebec = canadianProvinces.Single(province => province.EnglishName == "Quebec");
-			Console.WriteLine("Quebec --> Id: {0}", quebec.Id);
+			await log.WriteLineAsync($"Quebec --> Id: {quebec.Id}").ConfigureAwait(false);
 
 			var usa = countries.Single(country => country.EnglishName == "United States");
-			Console.WriteLine("USA --> Id: {0}", usa.Id);
+			await log.WriteLineAsync($"USA --> Id: {usa.Id}").ConfigureAwait(false);
 
-			var americanStates = await api.Countries.GetProvincesAsync(usa.Id).ConfigureAwait(false);
-			Console.WriteLine("There are {0} american states/territories/etc.", americanStates.Count());
+			var americanStates = await client.Countries.GetProvincesAsync(usa.Id).ConfigureAwait(false);
+			await log.WriteLineAsync($"There are {americanStates.Count()} american states/territories/etc.").ConfigureAwait(false);
 
 			var georgia = americanStates.Single(province => province.EnglishName == "Georgia");
-			Console.WriteLine("Georgia --> Id: {0}", georgia.Id);
+			await log.WriteLineAsync($"Georgia --> Id: {georgia.Id}").ConfigureAwait(false);
 
 			var florida = americanStates.Single(province => province.EnglishName == "Florida");
-			Console.WriteLine("Florida --> Id: {0}", florida.Id);
-
-			Console.WriteLine(new string('-', 25));
-			Console.WriteLine("");
+			await log.WriteLineAsync($"Florida --> Id: {florida.Id}").ConfigureAwait(false);
 		}
 	}
 }
