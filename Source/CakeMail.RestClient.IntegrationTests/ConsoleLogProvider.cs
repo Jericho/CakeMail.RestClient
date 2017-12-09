@@ -22,7 +22,7 @@
 				{
 					message = message + "|" + exception;
 				}
-				Console.WriteLine("{0} | {1} | {2} | {3}", DateTime.UtcNow, logLevel, name, message);
+				Console.WriteLine($"{DateTime.UtcNow} | {logLevel} | {name} | {message}");
 
 				return true;
 			};
