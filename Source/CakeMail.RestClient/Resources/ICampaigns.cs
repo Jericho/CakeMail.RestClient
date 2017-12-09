@@ -70,10 +70,11 @@ namespace CakeMail.RestClient.Resources
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="campaignId">ID of the campaign.</param>
+		/// <param name="status">The status of the campaign. Possible value 'ongoing', 'closed'</param>
 		/// <param name="name">The name of the campaign</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the record was updated.</returns>
-		Task<bool> UpdateAsync(string userKey, long campaignId, string name, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> UpdateAsync(string userKey, long campaignId, CampaignStatus? status = default(CampaignStatus?), string name = null, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
 	}
 }

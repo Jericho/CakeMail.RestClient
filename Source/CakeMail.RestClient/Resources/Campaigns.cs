@@ -173,18 +173,20 @@ namespace CakeMail.RestClient.Resources
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="campaignId">ID of the campaign.</param>
+		/// <param name="status">The status of the campaign. Possible value 'ongoing', 'closed'</param>
 		/// <param name="name">The name of the campaign</param>
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the record was updated.</returns>
-		public Task<bool> UpdateAsync(string userKey, long campaignId, string name, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<bool> UpdateAsync(string userKey, long campaignId, CampaignStatus? status = null, string name = null, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{
 				new KeyValuePair<string, object>("user_key", userKey),
 				new KeyValuePair<string, object>("campaign_id", campaignId),
-				new KeyValuePair<string, object>("name", name)
 			};
+			if (status.HasValue) parameters.Add(new KeyValuePair<string, object>("status", status.Value.GetEnumMemberValue()));
+			if (!string.IsNullOrEmpty(name)) parameters.Add(new KeyValuePair<string, object>("name", name));
 			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
 
 			return _client
