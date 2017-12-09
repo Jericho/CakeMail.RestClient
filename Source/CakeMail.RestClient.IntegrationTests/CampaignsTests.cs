@@ -21,7 +21,7 @@ namespace CakeMail.RestClient.IntegrationTests
 			var campaignId = await client.Campaigns.CreateAsync(userKey, "Dummy campaign", clientId).ConfigureAwait(false);
 			await log.WriteLineAsync($"New campaign created. Id: {campaignId}").ConfigureAwait(false);
 
-			var updated = await client.Campaigns.UpdateAsync(userKey, campaignId, "Updated name", clientId).ConfigureAwait(false);
+			var updated = await client.Campaigns.UpdateAsync(userKey, campaignId, CampaignStatus.Ongoing, "Updated name", clientId).ConfigureAwait(false);
 			await log.WriteLineAsync($"Campaign updated: {(updated ? "success" : "failed")}").ConfigureAwait(false);
 
 			var campaign = await client.Campaigns.GetAsync(userKey, campaignId, clientId).ConfigureAwait(false);

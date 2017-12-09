@@ -391,7 +391,7 @@ namespace CakeMail.RestClient.UnitTests.Resources
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
-			var result = await apiClient.Campaigns.UpdateAsync(USER_KEY, campaignId, name);
+			var result = await apiClient.Campaigns.UpdateAsync(USER_KEY, campaignId, CampaignStatus.Ongoing, name);
 
 			// Assert
 			result.ShouldBeTrue();
@@ -410,7 +410,7 @@ namespace CakeMail.RestClient.UnitTests.Resources
 
 			// Act
 			var apiClient = new CakeMailRestClient(API_KEY, httpClient: mockHttp.ToHttpClient());
-			var result = await apiClient.Campaigns.UpdateAsync(USER_KEY, campaignId, name, CLIENT_ID);
+			var result = await apiClient.Campaigns.UpdateAsync(USER_KEY, campaignId, CampaignStatus.Ongoing, name, CLIENT_ID);
 
 			// Assert
 			result.ShouldBeTrue();
