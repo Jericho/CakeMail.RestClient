@@ -1,11 +1,11 @@
 // Install addins.
-#addin "nuget:?package=Cake.Coveralls&version=0.7.0"
+#addin "nuget:?package=Cake.Coveralls&version=0.8.0"
 
 // Install tools.
 #tool "nuget:?package=GitVersion.CommandLine&version=4.0.0-beta0012"
-#tool "nuget:?package=GitReleaseManager&version=0.6.0"
+#tool "nuget:?package=GitReleaseManager&version=0.7.0"
 #tool "nuget:?package=OpenCover&version=4.6.519"
-#tool "nuget:?package=ReportGenerator&version=3.0.2"
+#tool "nuget:?package=ReportGenerator&version=3.1.2"
 #tool "nuget:?package=coveralls.io&version=1.4.2"
 #tool "nuget:?package=xunit.runner.console&version=2.3.1"
 
@@ -150,8 +150,6 @@ Task("Restore-NuGet-Packages")
 	{
 		Sources = new [] {
 			"https://www.myget.org/F/xunit/api/v3/index.json",
-			"https://dotnet.myget.org/F/dotnet-core/api/v3/index.json",
-			"https://dotnet.myget.org/F/cli-deps/api/v3/index.json",
 			"https://api.nuget.org/v3/index.json",
 		}
 	});
@@ -161,9 +159,10 @@ Task("Build")
 	.IsDependentOn("Restore-NuGet-Packages")
 	.Does(() =>
 {
-	DotNetCoreBuild(sourceFolder + libraryName + ".sln", new DotNetCoreBuildSettings
+	DotNetCoreBuild($"{sourceFolder}{libraryName}.sln", new DotNetCoreBuildSettings
 	{
 		Configuration = configuration,
+		NoRestore = true,
 		ArgumentCustomization = args => args.Append("/p:SemVer=" + versionInfo.LegacySemVerPadded)
 	});
 });
@@ -233,7 +232,7 @@ Task("Create-NuGet-Package")
 		IncludeSymbols = false,
 		NoBuild = true,
 		OutputDirectory = outputDir,
-        ArgumentCustomization = (args) =>
+		ArgumentCustomization = (args) =>
 		{
 			return args
 				.Append("/p:Version={0}", versionInfo.LegacySemVerPadded)
