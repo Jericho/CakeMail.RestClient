@@ -1,13 +1,13 @@
 // Install addins.
-#addin "nuget:?package=Cake.Coveralls&version=0.7.0"
+#addin nuget:?package=Cake.Coveralls&version=0.9.0
 
 // Install tools.
-#tool "nuget:?package=GitVersion.CommandLine&version=4.0.0-beta0012"
-#tool "nuget:?package=GitReleaseManager&version=0.6.0"
-#tool "nuget:?package=OpenCover&version=4.6.519"
-#tool "nuget:?package=ReportGenerator&version=3.0.2"
-#tool "nuget:?package=coveralls.io&version=1.4.2"
-#tool "nuget:?package=xunit.runner.console&version=2.3.1"
+#tool nuget:?package=GitVersion.CommandLine&version=5.0.0-beta2-6
+#tool nuget:?package=GitReleaseManager&version=0.8.0
+#tool nuget:?package=OpenCover&version=4.7.922
+#tool nuget:?package=ReportGenerator&version=4.0.15
+#tool nuget:?package=coveralls.io&version=1.4.2
+#tool nuget:?package=xunit.runner.console&version=2.4.1
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -49,9 +49,9 @@ var milestone = string.Concat("v", versionInfo.MajorMinorPatch);
 var cakeVersion = typeof(ICakeContext).Assembly.GetName().Version.ToString();
 var isLocalBuild = BuildSystem.IsLocalBuild;
 var isMainBranch = StringComparer.OrdinalIgnoreCase.Equals("master", BuildSystem.AppVeyor.Environment.Repository.Branch);
-var	isMainRepo = StringComparer.OrdinalIgnoreCase.Equals(gitHubUserName + "/" + gitHubRepo, BuildSystem.AppVeyor.Environment.Repository.Name);
-var	isPullRequest = BuildSystem.AppVeyor.Environment.PullRequest.IsPullRequest;
-var	isTagged = (
+var isMainRepo = StringComparer.OrdinalIgnoreCase.Equals(gitHubUserName + "/" + gitHubRepo, BuildSystem.AppVeyor.Environment.Repository.Name);
+var isPullRequest = BuildSystem.AppVeyor.Environment.PullRequest.IsPullRequest;
+var isTagged = (
 	BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag &&
 	!string.IsNullOrWhiteSpace(BuildSystem.AppVeyor.Environment.Repository.Tag.Name)
 );
@@ -150,8 +150,6 @@ Task("Restore-NuGet-Packages")
 	{
 		Sources = new [] {
 			"https://www.myget.org/F/xunit/api/v3/index.json",
-			"https://dotnet.myget.org/F/dotnet-core/api/v3/index.json",
-			"https://dotnet.myget.org/F/cli-deps/api/v3/index.json",
 			"https://api.nuget.org/v3/index.json",
 		}
 	});
@@ -161,9 +159,10 @@ Task("Build")
 	.IsDependentOn("Restore-NuGet-Packages")
 	.Does(() =>
 {
-	DotNetCoreBuild(sourceFolder + libraryName + ".sln", new DotNetCoreBuildSettings
+	DotNetCoreBuild($"{sourceFolder}{libraryName}.sln", new DotNetCoreBuildSettings
 	{
 		Configuration = configuration,
+		NoRestore = true,
 		ArgumentCustomization = args => args.Append("/p:SemVer=" + versionInfo.LegacySemVerPadded)
 	});
 });
@@ -232,8 +231,9 @@ Task("Create-NuGet-Package")
 		IncludeSource = false,
 		IncludeSymbols = false,
 		NoBuild = true,
+		NoDependencies = true,
 		OutputDirectory = outputDir,
-        ArgumentCustomization = (args) =>
+		ArgumentCustomization = (args) =>
 		{
 			return args
 				.Append("/p:Version={0}", versionInfo.LegacySemVerPadded)
@@ -243,7 +243,7 @@ Task("Create-NuGet-Package")
 		}
 	};
 
-	DotNetCorePack(sourceFolder + libraryName + "/" + libraryName + ".csproj", settings);
+	DotNetCorePack($"{sourceFolder}{libraryName}/{libraryName}.csproj", settings);
 });
 
 Task("Upload-AppVeyor-Artifacts")
