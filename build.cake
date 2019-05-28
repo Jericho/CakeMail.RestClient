@@ -2,12 +2,12 @@
 #addin nuget:?package=Cake.Coveralls&version=0.9.0
 
 // Install tools.
-#tool nuget:?package=GitVersion.CommandLine&version=4.0.0-beta0014
-#tool nuget:?package=GitReleaseManager&version=0.7.1
-#tool nuget:?package=OpenCover&version=4.6.519
-#tool nuget:?package=ReportGenerator&version=4.0.0-rc4
+#tool nuget:?package=GitVersion.CommandLine&version=4.0.0
+#tool nuget:?package=GitReleaseManager&version=0.8.0
+#tool nuget:?package=OpenCover&version=4.7.922
+#tool nuget:?package=ReportGenerator&version=4.1.8
 #tool nuget:?package=coveralls.io&version=1.4.2
-#tool nuget:?package=xunit.runner.console&version=2.4.0
+#tool nuget:?package=xunit.runner.console&version=2.4.1
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -229,13 +229,14 @@ Task("Create-NuGet-Package")
 	{
 		Configuration = configuration,
 		IncludeSource = false,
-		IncludeSymbols = false,
+		IncludeSymbols = true,
 		NoBuild = true,
 		NoDependencies = true,
 		OutputDirectory = outputDir,
 		ArgumentCustomization = (args) =>
 		{
 			return args
+				.Append("/p:SymbolPackageFormat=snupkg")
 				.Append("/p:Version={0}", versionInfo.LegacySemVerPadded)
 				.Append("/p:AssemblyVersion={0}", versionInfo.MajorMinorPatch)
 				.Append("/p:FileVersion={0}", versionInfo.MajorMinorPatch)
