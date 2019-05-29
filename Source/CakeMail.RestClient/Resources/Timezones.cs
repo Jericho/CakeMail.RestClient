@@ -34,7 +34,7 @@ namespace CakeMail.RestClient.Resources
 		/// </summary>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of all <see cref="Timezone">timezones</see>.</returns>
-		public Task<Timezone[]> GetAllAsync(CancellationToken cancellationToken = default(CancellationToken))
+		public Task<Timezone[]> GetAllAsync(CancellationToken cancellationToken = default)
 		{
 			return _client
 				.PostAsync("Client/GetTimezones")

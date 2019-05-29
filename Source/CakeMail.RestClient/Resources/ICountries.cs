@@ -14,7 +14,7 @@ namespace CakeMail.RestClient.Resources
 		/// </summary>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="Country">countries</see></returns>
-		Task<Country[]> GetListAsync(CancellationToken cancellationToken = default(CancellationToken));
+		Task<Country[]> GetListAsync(CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Get the list of state/provinces for a given country
@@ -22,6 +22,6 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="countryId">ID of the country.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="Province">privinces</see></returns>
-		Task<Province[]> GetProvincesAsync(string countryId, CancellationToken cancellationToken = default(CancellationToken));
+		Task<Province[]> GetProvincesAsync(string countryId, CancellationToken cancellationToken = default);
 	}
 }

@@ -18,7 +18,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="cancellationToken">The cancellation token.</param>
 		/// <returns>True if the client was activated</returns>
 		/// <remarks>This method is simply a shortcut for: UpdateClient(userKey, clientId, status: "active")</remarks>
-		Task<bool> ActivateAsync(string userKey, long clientId, CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> ActivateAsync(string userKey, long clientId, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Confirms a client.
@@ -26,7 +26,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="confirmationCode">The confirmation code.</param>
 		/// <param name="cancellationToken">The cancellation token.</param>
 		/// <returns><see cref="ClientRegistrationInfo">Information</see> about the activated client</returns>
-		Task<ClientRegistrationInfo> ConfirmAsync(string confirmationCode, CancellationToken cancellationToken = default(CancellationToken));
+		Task<ClientRegistrationInfo> ConfirmAsync(string confirmationCode, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Creates a new client.
@@ -64,7 +64,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="cancellationToken">The cancellation token.</param>
 		/// <remarks>After the client is created, it needs to be <see cref="ConfirmAsync(string, CancellationToken)">confirmed</see> using the confirmation code returned by this method.</remarks>
 		/// <returns>The confirmation code</returns>
-		Task<string> CreateAsync(long parentId, string name, string address1 = null, string address2 = null, string city = null, string provinceId = null, string postalCode = null, string countryId = null, string website = null, string phone = null, string fax = null, string adminEmail = null, string adminFirstName = null, string adminLastName = null, string adminTitle = null, string adminOfficePhone = null, string adminMobilePhone = null, string adminLanguage = null, long? adminTimezoneId = default(long?), string adminPassword = null, bool primaryContactSameAsAdmin = true, string primaryContactEmail = null, string primaryContactFirstName = null, string primaryContactLastName = null, string primaryContactTitle = null, string primaryContactOfficePhone = null, string primaryContactMobilePhone = null, string primaryContactLanguage = null, long? primaryContactTimezoneId = default(long?), string primaryContactPassword = null, CancellationToken cancellationToken = default(CancellationToken));
+		Task<string> CreateAsync(long parentId, string name, string address1 = null, string address2 = null, string city = null, string provinceId = null, string postalCode = null, string countryId = null, string website = null, string phone = null, string fax = null, string adminEmail = null, string adminFirstName = null, string adminLastName = null, string adminTitle = null, string adminOfficePhone = null, string adminMobilePhone = null, string adminLanguage = null, long? adminTimezoneId = default(long?), string adminPassword = null, bool primaryContactSameAsAdmin = true, string primaryContactEmail = null, string primaryContactFirstName = null, string primaryContactLastName = null, string primaryContactTitle = null, string primaryContactOfficePhone = null, string primaryContactMobilePhone = null, string primaryContactLanguage = null, long? primaryContactTimezoneId = default(long?), string primaryContactPassword = null, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Deletes a client.
@@ -74,7 +74,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="cancellationToken">The cancellation token.</param>
 		/// <returns>True if the client was deleted</returns>
 		/// <remarks>This method is simply a shortcut for: UpdateClient(userKey, clientId, status: "deleted")</remarks>
-		Task<bool> DeleteAsync(string userKey, long clientId, CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> DeleteAsync(string userKey, long clientId, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve a pending client.
@@ -84,7 +84,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The <see cref="UnConfirmedClient">client</see></returns>
 		/// <remarks>Pending clients must be activated before they can start using the CakeMail service.</remarks>
-		Task<UnConfirmedClient> GetAsync(string userKey, string confirmationCode, CancellationToken cancellationToken = default(CancellationToken));
+		Task<UnConfirmedClient> GetAsync(string userKey, string confirmationCode, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve a client
@@ -95,7 +95,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="endDate">End date to return stats about the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The <see cref="Client">client</see></returns>
-		Task<Client> GetAsync(string userKey, long clientId, DateTime? startDate = default(DateTime?), DateTime? endDate = default(DateTime?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<Client> GetAsync(string userKey, long clientId, DateTime? startDate = default(DateTime?), DateTime? endDate = default(DateTime?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Get a count of clients matching the filtering criteria
@@ -106,7 +106,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The number of clients matching the filtering criteria</returns>
-		Task<long> GetCountAsync(string userKey, ClientStatus? status = default(ClientStatus?), string name = null, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<long> GetCountAsync(string userKey, ClientStatus? status = default(ClientStatus?), string name = null, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve the clients matching the filtering criteria
@@ -121,7 +121,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>Enumeration of <see cref="Client">clients</see> matching the filtering criteria</returns>
-		Task<Client[]> GetListAsync(string userKey, ClientStatus? status = default(ClientStatus?), string name = null, ClientsSortBy? sortBy = default(ClientsSortBy?), SortDirection? sortDirection = default(SortDirection?), int? limit = 0, int? offset = 0, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<Client[]> GetListAsync(string userKey, ClientStatus? status = default(ClientStatus?), string name = null, ClientsSortBy? sortBy = default(ClientsSortBy?), SortDirection? sortDirection = default(SortDirection?), int? limit = 0, int? offset = 0, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Suspend a client
@@ -131,7 +131,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the client was suspended</returns>
 		/// <remarks>This method is simply a shortcut for: UpdateClient(userKey, clientId, status: "suspended_by_reseller")</remarks>
-		Task<bool> SuspendAsync(string userKey, long clientId, CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> SuspendAsync(string userKey, long clientId, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Update a client
@@ -169,6 +169,6 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="defaultContactLimit"></param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the record was updated.</returns>
-		Task<bool> UpdateAsync(string userKey, long clientId, string name = null, ClientStatus? status = default(ClientStatus?), long? parentId = default(long?), string address1 = null, string address2 = null, string city = null, string provinceId = null, string postalCode = null, string countryId = null, string website = null, string phone = null, string fax = null, string authDomain = null, string bounceDomain = null, string dkimDomain = null, string doptinIp = null, string forwardDomain = null, string forwardIp = null, string ipPool = null, string mdDomain = null, bool? isReseller = default(bool?), string currency = null, string planType = null, int? mailingLimit = default(int?), int? monthLimit = default(int?), int? contactLimit = default(int?), int? defaultMailingLimit = default(int?), int? defaultMonthLimit = default(int?), int? defaultContactLimit = default(int?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> UpdateAsync(string userKey, long clientId, string name = null, ClientStatus? status = default(ClientStatus?), long? parentId = default(long?), string address1 = null, string address2 = null, string city = null, string provinceId = null, string postalCode = null, string countryId = null, string website = null, string phone = null, string fax = null, string authDomain = null, string bounceDomain = null, string dkimDomain = null, string doptinIp = null, string forwardDomain = null, string forwardIp = null, string ipPool = null, string mdDomain = null, bool? isReseller = default(bool?), string currency = null, string planType = null, int? mailingLimit = default(int?), int? monthLimit = default(int?), int? contactLimit = default(int?), int? defaultMailingLimit = default(int?), int? defaultMonthLimit = default(int?), int? defaultContactLimit = default(int?), CancellationToken cancellationToken = default);
 	}
 }

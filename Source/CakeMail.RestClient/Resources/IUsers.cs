@@ -25,7 +25,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>ID of the new user</returns>
-		Task<long> CreateAsync(string userKey, string email, string password, string firstName = null, string lastName = null, string title = null, string officePhone = null, string mobilePhone = null, string language = null, long timezoneId = 542, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<long> CreateAsync(string userKey, string email, string password, string firstName = null, string lastName = null, string title = null, string officePhone = null, string mobilePhone = null, string language = null, long timezoneId = 542, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Suspend a user
@@ -35,7 +35,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the user is suspended</returns>
-		Task<bool> DeactivateAsync(string userKey, long userId, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> DeactivateAsync(string userKey, long userId, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Delete a user
@@ -45,7 +45,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the user is deleted</returns>
-		Task<bool> DeleteAsync(string userKey, long userId, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> DeleteAsync(string userKey, long userId, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve a user
@@ -55,7 +55,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The <see cref="User">user</see></returns>
-		Task<User> GetAsync(string userKey, long userId, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<User> GetAsync(string userKey, long userId, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Get a count of users matching the filtering criteria.
@@ -65,7 +65,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The count of users matching the filtering criteria</returns>
-		Task<long> GetCountAsync(string userKey, UserStatus? status = default(UserStatus?), long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<long> GetCountAsync(string userKey, UserStatus? status = default(UserStatus?), long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve the users matching the filtering criteria.
@@ -77,7 +77,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>Enumeration of <see cref="User">users</see> matching the filtering criteria</returns>
-		Task<User[]> GetUsersAsync(string userKey, UserStatus? status = default(UserStatus?), int? limit = 0, int? offset = 0, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<User[]> GetUsersAsync(string userKey, UserStatus? status = default(UserStatus?), int? limit = 0, int? offset = 0, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Validate user name and password
@@ -87,7 +87,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The <see cref="LoginInfo">login information</see> for the user</returns>
-		Task<LoginInfo> LoginAsync(string email, string password, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<LoginInfo> LoginAsync(string email, string password, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Update a user
@@ -107,6 +107,6 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the user was updated</returns>
-		Task<bool> UpdateAsync(string userKey, long userId, string email = null, string password = null, string firstName = null, string lastName = null, string title = null, string officePhone = null, string mobilePhone = null, string language = null, long? timezoneId = default(long?), UserStatus? status = default(UserStatus?), long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> UpdateAsync(string userKey, long userId, string email = null, string password = null, string firstName = null, string lastName = null, string title = null, string officePhone = null, string mobilePhone = null, string language = null, long? timezoneId = default(long?), UserStatus? status = default(UserStatus?), long? clientId = default(long?), CancellationToken cancellationToken = default);
 	}
 }

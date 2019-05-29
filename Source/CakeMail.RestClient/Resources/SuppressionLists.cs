@@ -40,7 +40,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="SuppressEmailResult">results</see>. Each item in this enumeration indicates the result of adding an email address to the suppression list.</returns>
-		public Task<SuppressEmailResult[]> AddEmailAddressesAsync(string userKey, IEnumerable<string> emailAddresses, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<SuppressEmailResult[]> AddEmailAddressesAsync(string userKey, IEnumerable<string> emailAddresses, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{
@@ -71,7 +71,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="SuppressDomainResult">results</see>. Each item in this enumeration indicates the result of adding a domain to the suppression list.</returns>
-		public Task<SuppressDomainResult[]> AddDomainsAsync(string userKey, IEnumerable<string> domains, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<SuppressDomainResult[]> AddDomainsAsync(string userKey, IEnumerable<string> domains, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{
@@ -102,7 +102,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="SuppressLocalPartResult">results</see>. Each item in this enumeration indicates the result of adding a localpart to the suppression list.</returns>
-		public Task<SuppressLocalPartResult[]> AddLocalPartsAsync(string userKey, IEnumerable<string> localParts, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<SuppressLocalPartResult[]> AddLocalPartsAsync(string userKey, IEnumerable<string> localParts, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{
@@ -133,7 +133,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="SuppressEmailResult">results</see>. Each item in this enumeration indicates the result of removing an email address from the suppression list.</returns>
-		public Task<SuppressEmailResult[]> RemoveEmailAddressesAsync(string userKey, IEnumerable<string> emailAddresses, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<SuppressEmailResult[]> RemoveEmailAddressesAsync(string userKey, IEnumerable<string> emailAddresses, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{
@@ -164,7 +164,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="SuppressDomainResult">results</see>. Each item in this enumeration indicates the result of removing a domain from the suppression list.</returns>
-		public Task<SuppressDomainResult[]> RemoveDomainsAsync(string userKey, IEnumerable<string> domains, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<SuppressDomainResult[]> RemoveDomainsAsync(string userKey, IEnumerable<string> domains, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{
@@ -195,7 +195,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="SuppressLocalPartResult">results</see>. Each item in this enumeration indicates the result of removing a localpart from the suppression list.</returns>
-		public Task<SuppressLocalPartResult[]> RemoveLocalPartsAsync(string userKey, IEnumerable<string> localParts, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<SuppressLocalPartResult[]> RemoveLocalPartsAsync(string userKey, IEnumerable<string> localParts, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{
@@ -227,7 +227,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="SuppressedEmail">addresses</see>. The result also indicates how each email address ended up on the suppression list.</returns>
-		public Task<SuppressedEmail[]> GetEmailAddressesAsync(string userKey, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<SuppressedEmail[]> GetEmailAddressesAsync(string userKey, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{
@@ -254,7 +254,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of domains.</returns>
-		public async Task<string[]> GetDomainsAsync(string userKey, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public async Task<string[]> GetDomainsAsync(string userKey, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{
@@ -285,7 +285,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of localparts.</returns>
-		public async Task<string[]> GetLocalPartsAsync(string userKey, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public async Task<string[]> GetLocalPartsAsync(string userKey, int? limit = 0, int? offset = 0, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{
@@ -314,7 +314,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The number of email addresses on the suppresssion list</returns>
-		public Task<long> GetEmailAddressesCountAsync(string userKey, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<long> GetEmailAddressesCountAsync(string userKey, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{
@@ -337,7 +337,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The number of domains on the suppresssion list</returns>
-		public Task<long> GetDomainsCountAsync(string userKey, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<long> GetDomainsCountAsync(string userKey, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{
@@ -360,7 +360,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The number of localparts on the suppresssion list</returns>
-		public Task<long> GetLocalPartsCountAsync(string userKey, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		public Task<long> GetLocalPartsCountAsync(string userKey, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{

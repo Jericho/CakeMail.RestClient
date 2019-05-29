@@ -21,7 +21,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the field was added to the list</returns>
-		Task<bool> AddFieldAsync(string userKey, long listId, string name, FieldType type, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> AddFieldAsync(string userKey, long listId, string name, FieldType type, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Add a test email to the list.
@@ -32,7 +32,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the email address was added</returns>
-		Task<bool> AddTestEmailAsync(string userKey, long listId, string email, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> AddTestEmailAsync(string userKey, long listId, string email, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Create a list
@@ -45,7 +45,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is created.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>ID of the new list</returns>
-		Task<long> CreateAsync(string userKey, string name, string defaultSenderName, string defaultSenderEmailAddress, bool spamPolicyAccepted = false, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<long> CreateAsync(string userKey, string name, string defaultSenderName, string defaultSenderEmailAddress, bool spamPolicyAccepted = false, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Delete a list
@@ -55,7 +55,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the list is deleted</returns>
-		Task<bool> DeleteAsync(string userKey, long listId, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> DeleteAsync(string userKey, long listId, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Remove a field from a list
@@ -66,7 +66,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the field was removed from the list</returns>
-		Task<bool> DeleteFieldAsync(string userKey, long listId, string name, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> DeleteFieldAsync(string userKey, long listId, string name, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Delete a member from the list.
@@ -77,7 +77,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the member was deleted</returns>
-		Task<bool> DeleteMemberAsync(string userKey, long listId, long listMemberId, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> DeleteMemberAsync(string userKey, long listId, long listMemberId, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Delete a test email from a list.
@@ -88,7 +88,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the email address was deleted</returns>
-		Task<bool> DeleteTestEmailAsync(string userKey, long listId, string email, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> DeleteTestEmailAsync(string userKey, long listId, string email, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve a list
@@ -100,7 +100,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The <see cref="List">list</see></returns>
-		Task<List> GetAsync(string userKey, long listId, bool includeStatistics = true, bool calculateEngagement = false, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<List> GetAsync(string userKey, long listId, bool includeStatistics = true, bool calculateEngagement = false, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Get a count of lists matching the filtering criteria.
@@ -111,7 +111,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The count of lists matching the filtering criteria</returns>
-		Task<long> GetCountAsync(string userKey, ListStatus? status = default(ListStatus?), string name = null, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<long> GetCountAsync(string userKey, ListStatus? status = default(ListStatus?), string name = null, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve the list of fields of a list
@@ -121,7 +121,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="ListField">fields</see></returns>
-		Task<ListField[]> GetFieldsAsync(string userKey, long listId, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<ListField[]> GetFieldsAsync(string userKey, long listId, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve the lists matching the filtering criteria.
@@ -136,7 +136,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>Enumeration of <see cref="List">lists</see> matching the filtering criteria</returns>
-		Task<List[]> GetListsAsync(string userKey, ListStatus? status = default(ListStatus?), string name = null, ListsSortBy? sortBy = default(ListsSortBy?), SortDirection? sortDirection = default(SortDirection?), int? limit = 0, int? offset = 0, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<List[]> GetListsAsync(string userKey, ListStatus? status = default(ListStatus?), string name = null, ListsSortBy? sortBy = default(ListsSortBy?), SortDirection? sortDirection = default(SortDirection?), int? limit = 0, int? offset = 0, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve the log items for a given list
@@ -153,7 +153,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="LogItem">log items</see> matching the filter criteria</returns>
-		Task<LogItem[]> GetLogsAsync(string userKey, long listId, LogType? logType = default(LogType?), bool uniques = false, bool totals = false, DateTime? start = default(DateTime?), DateTime? end = default(DateTime?), int? limit = 0, int? offset = 0, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<LogItem[]> GetLogsAsync(string userKey, long listId, LogType? logType = default(LogType?), bool uniques = false, bool totals = false, DateTime? start = default(DateTime?), DateTime? end = default(DateTime?), int? limit = 0, int? offset = 0, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Get a count of log items matching the filter criteria
@@ -168,7 +168,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The number of log items matching the filtering criteria</returns>
-		Task<long> GetLogsCountAsync(string userKey, long listId, LogType? logType = default(LogType?), bool uniques = false, bool totals = false, DateTime? start = default(DateTime?), DateTime? end = default(DateTime?), long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<long> GetLogsCountAsync(string userKey, long listId, LogType? logType = default(LogType?), bool uniques = false, bool totals = false, DateTime? start = default(DateTime?), DateTime? end = default(DateTime?), long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve the information about a list member
@@ -179,7 +179,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The <see cref=" ListMember">list mamber</see></returns>
-		Task<ListMember> GetMemberAsync(string userKey, long listId, long listMemberId, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<ListMember> GetMemberAsync(string userKey, long listId, long listMemberId, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve the list members matching the filtering criteria.
@@ -195,7 +195,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>Enumeration of <see cref="List">lists</see> matching the filtering criteria</returns>
-		Task<ListMember[]> GetMembersAsync(string userKey, long listId, ListMemberStatus? status = default(ListMemberStatus?), string query = null, ListMembersSortBy? sortBy = default(ListMembersSortBy?), SortDirection? sortDirection = default(SortDirection?), int? limit = 0, int? offset = 0, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<ListMember[]> GetMembersAsync(string userKey, long listId, ListMemberStatus? status = default(ListMemberStatus?), string query = null, ListMembersSortBy? sortBy = default(ListMembersSortBy?), SortDirection? sortDirection = default(SortDirection?), int? limit = 0, int? offset = 0, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Get a count of list members matching the filtering criteria
@@ -206,7 +206,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The number of list members matching the filtering criteria</returns>
-		Task<long> GetMembersCountAsync(string userKey, long listId, ListMemberStatus? status = default(ListMemberStatus?), long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<long> GetMembersCountAsync(string userKey, long listId, ListMemberStatus? status = default(ListMemberStatus?), long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve the lists of test email addresses for a given list
@@ -216,7 +216,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>Enumeration of <see cref="string">test email addresses</see></returns>
-		Task<string[]> GetTestEmailsAsync(string userKey, long listId, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<string[]> GetTestEmailsAsync(string userKey, long listId, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Add multiple subscribers to a list.
@@ -229,7 +229,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="ImportResult">results</see></returns>
-		Task<ImportResult[]> ImportAsync(string userKey, long listId, IEnumerable<ListMember> listMembers, bool autoResponders = true, bool triggers = true, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<ImportResult[]> ImportAsync(string userKey, long listId, IEnumerable<ListMember> listMembers, bool autoResponders = true, bool triggers = true, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Add a subscriber to a list.
@@ -243,7 +243,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>ID of the new subscriber</returns>
-		Task<long> SubscribeAsync(string userKey, long listId, string email, bool autoResponders = true, bool triggers = true, IDictionary<string, object> customFields = null, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<long> SubscribeAsync(string userKey, long listId, string email, bool autoResponders = true, bool triggers = true, IDictionary<string, object> customFields = null, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Unsubscribe a member from the list.
@@ -254,7 +254,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the member was unsubscribed</returns>
-		Task<bool> UnsubscribeAsync(string userKey, long listId, string email, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> UnsubscribeAsync(string userKey, long listId, string email, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Unsubscribe a member from the list.
@@ -265,7 +265,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the member was unsubscribed</returns>
-		Task<bool> UnsubscribeAsync(string userKey, long listId, long listMemberId, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> UnsubscribeAsync(string userKey, long listId, long listMemberId, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Update a list
@@ -285,7 +285,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the list was updated</returns>
-		Task<bool> UpdateAsync(string userKey, long listId, string name = null, string language = null, bool? spamPolicyAccepted = default(bool?), ListStatus? status = default(ListStatus?), string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> UpdateAsync(string userKey, long listId, string name = null, string language = null, bool? spamPolicyAccepted = default(bool?), ListStatus? status = default(ListStatus?), string senderName = null, string senderEmail = null, string goto_oi = null, string goto_di = null, string goto_oo = null, string webhook = null, long? clientId = default(long?), CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Update a list member
@@ -297,6 +297,6 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the member was updated</returns>
-		Task<bool> UpdateMemberAsync(string userKey, long listId, long listMemberId, IDictionary<string, object> customFields = null, long? clientId = default(long?), CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> UpdateMemberAsync(string userKey, long listId, long listMemberId, IDictionary<string, object> customFields = null, long? clientId = default(long?), CancellationToken cancellationToken = default);
 	}
 }
