@@ -128,6 +128,12 @@ namespace CakeMail.RestClient.Models
 		/// DNS failure
 		/// </summary>
 		[EnumMember(Value = "bounce_df")]
-		DnsFailure
+		DnsFailure,
+
+		/// <summary>
+		/// Received
+		/// </summary>
+		[EnumMember(Value = "received")]
+		Received
 	}
 }
