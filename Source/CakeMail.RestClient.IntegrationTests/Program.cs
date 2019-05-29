@@ -1,3 +1,4 @@
+using CakeMail.RestClient.IntegrationTests.Tests;
 using CakeMail.RestClient.Logging;
 using System;
 using System.IO;

@@ -1,11 +1,11 @@
-﻿using CakeMail.RestClient.Models;
+using CakeMail.RestClient.Models;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CakeMail.RestClient.IntegrationTests
+namespace CakeMail.RestClient.IntegrationTests.Tests
 {
 	public static class ClientsTests
 	{
