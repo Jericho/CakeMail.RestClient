@@ -21,6 +21,7 @@ namespace CakeMail.RestClient.Utilities
 
 		internal const string DIAGNOSTIC_ID_HEADER_NAME = "CakeMailRestClient-Diagnostic-Id";
 		private static readonly ILog _logger = LogProvider.For<DiagnosticHandler>();
+		private readonly LogBehavior _logBehavior;
 
 		#endregion
 
@@ -32,8 +33,9 @@ namespace CakeMail.RestClient.Utilities
 
 		#region CTOR
 
-		public DiagnosticHandler()
+		public DiagnosticHandler(LogBehavior logBehavior)
 		{
+			_logBehavior = logBehavior;
 		}
 
 		#endregion
@@ -100,7 +102,7 @@ namespace CakeMail.RestClient.Utilities
 
 				if (_logger != null && _logger.IsErrorEnabled())
 				{
-					_logger.Error(e, "An exception occurred when inspecting the response from SendGrid");
+					_logger.Error(e, "An exception occurred when inspecting the response from CakeMail");
 				}
 			}
 			finally
@@ -113,9 +115,15 @@ namespace CakeMail.RestClient.Utilities
 
 					if (_logger != null && _logger.IsDebugEnabled())
 					{
-						_logger.Debug(diagnosticMessage
-							.Replace("{", "{{")
-							.Replace("}", "}}"));
+						var shouldLog = response.IsSuccessStatusCode && _logBehavior.HasFlag(LogBehavior.LogSuccessfulCalls);
+						shouldLog |= !response.IsSuccessStatusCode && _logBehavior.HasFlag(LogBehavior.LogFailedCalls);
+
+						if (shouldLog)
+						{
+							_logger.Debug(diagnosticMessage
+								.Replace("{", "{{")
+								.Replace("}", "}}"));
+						}
 					}
 				}
 
