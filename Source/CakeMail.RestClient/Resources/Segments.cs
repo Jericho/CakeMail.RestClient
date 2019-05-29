@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace CakeMail.RestClient.Resources
 {
 	/// <summary>
-	/// Allows you to manage segments
+	/// Allows you to manage segments.
 	/// </summary>
 	/// <seealso cref="CakeMail.RestClient.Resources.ISegments" />
 	public class Segments : ISegments
@@ -31,21 +31,21 @@ namespace CakeMail.RestClient.Resources
 		#region Public Methods
 
 		/// <summary>
-		/// Create a list segment
+		/// Create a list segment.
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="listId">ID of the list.</param>
 		/// <param name="name">Name of the segment.</param>
 		/// <param name="query">Rules for the segment.</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
-		/// <param name="cancellationToken">The cancellation token</param>
-		/// <returns>ID of the new segment</returns>
+		/// <param name="cancellationToken">The cancellation token.</param>
+		/// <returns>ID of the new segment.</returns>
 		/// <remarks>
 		/// Here is what I have discovered about the query:
 		///     1) the entire query must be surrounded by parenthesis: (...your query...)
 		///     2) field names must be surrounded with the 'special' quote: `yourfieldname`. On my US english keyboard, this 'special' quote is the key directly above the 'Tab' and to the left of the '1'.
 		///     3) The percent sign is the wilcard
-		///     Here's an example: (`email` LIKE "a%")
+		///     Here's an example: (`email` LIKE "a%").
 		/// </remarks>
 		public Task<long> CreateAsync(string userKey, long listId, string name, string query = null, long? clientId = null, CancellationToken cancellationToken = default)
 		{
@@ -66,15 +66,15 @@ namespace CakeMail.RestClient.Resources
 		}
 
 		/// <summary>
-		/// Retrieve a segment
+		/// Retrieve a segment.
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="segmentId">ID of the segment</param>
-		/// <param name="includeStatistics">True if you want the statistics</param>
-		/// <param name="calculateEngagement">True if you want the engagement information to be calculated</param>
+		/// <param name="segmentId">ID of the segment.</param>
+		/// <param name="includeStatistics">True if you want the statistics.</param>
+		/// <param name="calculateEngagement">True if you want the engagement information to be calculated.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
-		/// <param name="cancellationToken">The cancellation token</param>
-		/// <returns>The <see cref="Segment">segment</see></returns>
+		/// <param name="cancellationToken">The cancellation token.</param>
+		/// <returns>The <see cref="Segment">segment</see>.</returns>
 		public Task<Segment> GetAsync(string userKey, long segmentId, bool includeStatistics = true, bool calculateEngagement = false, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
@@ -94,17 +94,17 @@ namespace CakeMail.RestClient.Resources
 		}
 
 		/// <summary>
-		/// Update a segment (AKA sublist)
+		/// Update a segment (AKA sublist).
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="segmentId">ID of the segment</param>
-		/// <param name="listId">ID of the list</param>
+		/// <param name="segmentId">ID of the segment.</param>
+		/// <param name="listId">ID of the list.</param>
 		/// <param name="name">Name of the segment.</param>
 		/// <param name="query">Rules for the segment.</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
-		/// <param name="cancellationToken">The cancellation token</param>
-		/// <returns>True if the segment was updated</returns>
-		/// <remarks>A segment is sometimes referred to as a 'sub-list'</remarks>
+		/// <param name="cancellationToken">The cancellation token.</param>
+		/// <returns>True if the segment was updated.</returns>
+		/// <remarks>A segment is sometimes referred to as a 'sub-list'.</remarks>
 		public Task<bool> UpdateAsync(string userKey, long segmentId, long listId, string name = null, string query = null, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
@@ -125,13 +125,13 @@ namespace CakeMail.RestClient.Resources
 		}
 
 		/// <summary>
-		/// Delete a segment
+		/// Delete a segment.
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="segmentId">ID of the segment</param>
+		/// <param name="segmentId">ID of the segment.</param>
 		/// <param name="clientId">Client ID of the client in which the segment is located.</param>
-		/// <param name="cancellationToken">The cancellation token</param>
-		/// <returns>True if the segment was deleted</returns>
+		/// <param name="cancellationToken">The cancellation token.</param>
+		/// <returns>True if the segment was deleted.</returns>
 		public Task<bool> DeleteAsync(string userKey, long segmentId, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
@@ -152,13 +152,13 @@ namespace CakeMail.RestClient.Resources
 		/// Retrieve the segments matching the filtering criteria.
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="listId">ID of the list</param>
+		/// <param name="listId">ID of the list.</param>
 		/// <param name="limit">Limit the number of resulting segments.</param>
 		/// <param name="offset">Offset the beginning of resulting segments.</param>
-		/// <param name="includeDetails">Retrieve all the stats for the segment</param>
-		/// <param name="clientId">ID of the client</param>
-		/// <param name="cancellationToken">The cancellation token</param>
-		/// <returns>Enumeration of <see cref="Segment">segments</see> matching the filtering criteria</returns>
+		/// <param name="includeDetails">Retrieve all the stats for the segment.</param>
+		/// <param name="clientId">ID of the client.</param>
+		/// <param name="cancellationToken">The cancellation token.</param>
+		/// <returns>Enumeration of <see cref="Segment">segments</see> matching the filtering criteria.</returns>
 		public Task<Segment[]> GetSegmentsAsync(string userKey, long listId, int? limit = 0, int? offset = 0, bool includeDetails = true, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
@@ -183,10 +183,10 @@ namespace CakeMail.RestClient.Resources
 		/// Get a count of segments matching the filtering criteria.
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="listId">ID of the list</param>
+		/// <param name="listId">ID of the list.</param>
 		/// <param name="clientId">Client ID of the client in which the list is located.</param>
-		/// <param name="cancellationToken">The cancellation token</param>
-		/// <returns>The count of campaigns matching the filtering criteria</returns>
+		/// <param name="cancellationToken">The cancellation token.</param>
+		/// <returns>The count of campaigns matching the filtering criteria.</returns>
 		public Task<long> GetCountAsync(string userKey, long listId, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>

@@ -6,7 +6,7 @@ using Pathoschild.Http.Client.Extensibility;
 namespace CakeMail.RestClient.Utilities
 {
 	/// <summary>
-	/// Error handler for requests dispatched to the CakeMail API
+	/// Error handler for requests dispatched to the CakeMail API.
 	/// </summary>
 	/// <seealso cref="Pathoschild.Http.Client.Extensibility.IHttpFilter" />
 	internal class CakeMailErrorHandler : IHttpFilter

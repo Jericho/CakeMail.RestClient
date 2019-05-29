@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	///  Enumeration to indicate the type of log
+	///  Enumeration to indicate the type of log.
 	/// </summary>
 	[JsonConverter(typeof(StringEnumConverter))]
 	public enum LogType

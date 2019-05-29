@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	/// Enumeration to indicate the status of a user
+	/// Enumeration to indicate the status of a user.
 	/// </summary>
 	[JsonConverter(typeof(StringEnumConverter))]
 	public enum UserStatus

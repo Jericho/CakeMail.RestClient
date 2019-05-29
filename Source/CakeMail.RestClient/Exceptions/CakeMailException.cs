@@ -4,7 +4,7 @@ namespace CakeMail.RestClient.Exceptions
 {
 	/// <summary>
 	/// This class represents a generic CakeMail error. All other exceptions thrown by
-	/// the CakeMail API subclass this exception
+	/// the CakeMail API subclass this exception.
 	/// </summary>
 	public class CakeMailException : ApplicationException
 	{

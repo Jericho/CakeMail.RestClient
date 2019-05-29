@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	/// Enumeration to indicate the type of a custom field
+	/// Enumeration to indicate the type of a custom field.
 	/// </summary>
 	[JsonConverter(typeof(StringEnumConverter))]
 	public enum FieldType

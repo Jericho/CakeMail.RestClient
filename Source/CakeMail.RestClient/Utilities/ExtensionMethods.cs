@@ -15,15 +15,15 @@ using System.Threading.Tasks;
 namespace CakeMail.RestClient.Utilities
 {
 	/// <summary>
-	/// Various extension methods
+	/// Various extension methods.
 	/// </summary>
 	internal static class ExtensionMethods
 	{
 		/// <summary>
 		/// Convert a DateTime into a string that can be accepted by the CakeMail API.
 		/// </summary>
-		/// <param name="value">The datetime value to be converted</param>
-		/// <returns>The string representation of the value</returns>
+		/// <param name="value">The datetime value to be converted.</param>
+		/// <returns>The string representation of the value.</returns>
 		public static string ToCakeMailString(this DateTime value)
 		{
 			if (value == DateTime.MinValue) return Constants.EMPTY_CAKEMAIL_DATE;
@@ -33,8 +33,8 @@ namespace CakeMail.RestClient.Utilities
 		/// <summary>
 		/// Get the value of the 'EnumMember' attribute associated with the value.
 		/// </summary>
-		/// <param name="value">The enum value</param>
-		/// <returns>The string value of the 'EnumMember' attribute associated with the value</returns>
+		/// <param name="value">The enum value.</param>
+		/// <returns>The string value of the 'EnumMember' attribute associated with the value.</returns>
 		public static string GetEnumMemberValue(this Enum value)
 		{
 			var fieldInfo = value.GetType().GetRuntimeField(value.ToString());
@@ -48,11 +48,11 @@ namespace CakeMail.RestClient.Utilities
 		}
 
 		/// <summary>
-		/// Get the enum value associated with the 'EnumMember' attribute string value
+		/// Get the enum value associated with the 'EnumMember' attribute string value.
 		/// </summary>
-		/// <typeparam name="T">The Enum type</typeparam>
-		/// <param name="enumMember">The value of the 'EnumMember' attribute</param>
-		/// <returns>The Enum value associated with the 'EnumMember' attribute</returns>
+		/// <typeparam name="T">The Enum type.</typeparam>
+		/// <param name="enumMember">The value of the 'EnumMember' attribute.</param>
+		/// <returns>The Enum value associated with the 'EnumMember' attribute.</returns>
 		public static T GetValueFromEnumMember<T>(this string enumMember)
 			where T : struct, IConvertible
 		{
@@ -72,7 +72,7 @@ namespace CakeMail.RestClient.Utilities
 
 		/// <summary>Asynchronously parses the JSON response from the CakeMail API and converts the data the desired type.</summary>
 		/// <typeparam name="T">The response model to deserialize into.</typeparam>
-		/// <param name="response">The response</param>
+		/// <param name="response">The response.</param>
 		/// <returns>Returns the response body, or <c>null</c> if the response has no body.</returns>
 		/// <exception cref="ApiException">An error occurred processing the response.</exception>
 		public static Task<T> AsCakeMailObject<T>(this IResponse response)
@@ -82,8 +82,8 @@ namespace CakeMail.RestClient.Utilities
 
 		/// <summary>Asynchronously parses the JSON response from the CakeMail API and converts the data the desired type.</summary>
 		/// <typeparam name="T">The response model to deserialize into.</typeparam>
-		/// <param name="request">The request</param>
-		/// <param name="propertyName">The name of the JSON property (or null if not applicable) where the desired data is stored</param>
+		/// <param name="request">The request.</param>
+		/// <param name="propertyName">The name of the JSON property (or null if not applicable) where the desired data is stored.</param>
 		/// <returns>Returns the response body, or <c>null</c> if the response has no body.</returns>
 		/// <exception cref="ApiException">An error occurred processing the response.</exception>
 		public static async Task<T> AsCakeMailObject<T>(this IRequest request, string propertyName = null)
@@ -115,7 +115,7 @@ namespace CakeMail.RestClient.Utilities
 		///  representation by using a human readable format.
 		/// </summary>
 		/// <param name="timeSpan">The time span.</param>
-		/// <returns>Returns the human readable representation of the TimeSpan</returns>
+		/// <returns>Returns the human readable representation of the TimeSpan.</returns>
 		public static string ToDurationString(this TimeSpan timeSpan)
 		{
 			// In case the TimeSpan is extremely short
@@ -275,8 +275,8 @@ namespace CakeMail.RestClient.Utilities
 
 		/// <summary>Asynchronously parses the JSON response from the CakeMail API and converts the data the desired type.</summary>
 		/// <typeparam name="T">The response model to deserialize into.</typeparam>
-		/// <param name="httpContent">The content</param>
-		/// <param name="propertyName">The name of the JSON property (or null if not applicable) where the desired data is stored</param>
+		/// <param name="httpContent">The content.</param>
+		/// <param name="propertyName">The name of the JSON property (or null if not applicable) where the desired data is stored.</param>
 		/// <returns>Returns the response body, or <c>null</c> if the response has no body.</returns>
 		/// <exception cref="ApiException">An error occurred processing the response.</exception>
 		private static async Task<T> AsCakeMailObjectAsync<T>(this HttpContent httpContent, string propertyName = null)

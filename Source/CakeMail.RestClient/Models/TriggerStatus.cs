@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	/// Enumeration to indicate the status of a trigger
+	/// Enumeration to indicate the status of a trigger.
 	/// </summary>
 	[JsonConverter(typeof(StringEnumConverter))]
 	public enum TriggerStatus

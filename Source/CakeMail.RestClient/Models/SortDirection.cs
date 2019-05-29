@@ -3,7 +3,7 @@
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	/// Enumeration to indicate sort direction
+	/// Enumeration to indicate sort direction.
 	/// </summary>
 	public enum SortDirection
 	{
