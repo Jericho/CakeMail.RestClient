@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net461;net472;netstandard2.0</TargetFrameworks>
@@ -16,15 +16,15 @@
 
   <PropertyGroup>
     <PackageId>CakeMail.RestClient</PackageId>
-    <Title>CakeMail.RestClient</Title>
+    <AssemblyName>CakeMail.RestClient</AssemblyName>
+    <AssemblyTitle>CakeMail.RestClient</AssemblyTitle>
+    <Authors>Jeremie Desautels</Authors>
     <Description>CakeMail.RestClient is a .NET wrapper for the CakeMail API</Description>
     <Copyright>Copyright (c) Jeremie Desautels and contributors 2016 - Present</Copyright>
-    <Authors>Jericho</Authors>
-    <Owners>Jericho</Owners>
-    <PackageTags>CakeMail API REST</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Jericho/CakeMail.RestClient</PackageProjectUrl>
     <PackageIconUrl>https://github.com/identicons/jericho.png</PackageIconUrl>
-    <PackageLicenseUrl>http://jericho.mit-license.org</PackageLicenseUrl>
+    <PackageTags>CakeMail API REST</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,7 +36,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
     <PackageReference Include="Pathoschild.Http.FluentClient" Version="3.3.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
