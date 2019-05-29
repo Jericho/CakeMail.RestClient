@@ -17,7 +17,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the campaign is created.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>ID of the new campaign</returns>
-		Task<long> CreateAsync(string userKey, string name, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<long> CreateAsync(string userKey, string name, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Delete a campaign.
@@ -27,7 +27,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the campaign is deleted</returns>
-		Task<bool> DeleteAsync(string userKey, long campaignId, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<bool> DeleteAsync(string userKey, long campaignId, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve a campaign.
@@ -37,7 +37,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The <see cref="Campaign">campaign</see></returns>
-		Task<Campaign> GetAsync(string userKey, long campaignId, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<Campaign> GetAsync(string userKey, long campaignId, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Get a count of campaigns matching the filtering criteria.
@@ -48,7 +48,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The count of campaigns matching the filtering criteria</returns>
-		Task<long> GetCountAsync(string userKey, CampaignStatus? status = default(CampaignStatus?), string name = null, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<long> GetCountAsync(string userKey, CampaignStatus? status = default, string name = null, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve the campaigns matching the filtering criteria.
@@ -63,7 +63,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>Array of <see cref="Campaign">campaigns</see> matching the filtering criteria</returns>
-		Task<Campaign[]> GetListAsync(string userKey, CampaignStatus? status = default(CampaignStatus?), string name = null, CampaignsSortBy? sortBy = default(CampaignsSortBy?), SortDirection? sortDirection = default(SortDirection?), int? limit = 0, int? offset = 0, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<Campaign[]> GetListAsync(string userKey, CampaignStatus? status = default, string name = null, CampaignsSortBy? sortBy = default, SortDirection? sortDirection = default, int? limit = 0, int? offset = 0, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Update a campaign
@@ -75,6 +75,6 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the campaign is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the record was updated.</returns>
-		Task<bool> UpdateAsync(string userKey, long campaignId, CampaignStatus? status = default(CampaignStatus?), string name = null, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<bool> UpdateAsync(string userKey, long campaignId, CampaignStatus? status = default, string name = null, long? clientId = default, CancellationToken cancellationToken = default);
 	}
 }

@@ -17,7 +17,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of permissions</returns>
-		Task<string[]> GetUserPermissionsAsync(string userKey, long userId, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<string[]> GetUserPermissionsAsync(string userKey, long userId, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Set the permissions granted to a given user
@@ -28,6 +28,6 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">ID of the client.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the operation succeeded</returns>
-		Task<bool> SetUserPermissionsAsync(string userKey, long userId, IEnumerable<string> permissions, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<bool> SetUserPermissionsAsync(string userKey, long userId, IEnumerable<string> permissions, long? clientId = default, CancellationToken cancellationToken = default);
 	}
 }

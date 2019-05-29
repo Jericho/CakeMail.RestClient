@@ -23,7 +23,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is created.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>ID of the new mailing</returns>
-		Task<long> CreateAsync(string userKey, string name, long? campaignId = default(long?), MailingType type = MailingType.Standard, long? recurringId = default(long?), MessageEncoding? encoding = default(MessageEncoding?), TransferEncoding? transferEncoding = default(TransferEncoding?), long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<long> CreateAsync(string userKey, string name, long? campaignId = default, MailingType type = MailingType.Standard, long? recurringId = default, MessageEncoding? encoding = default, TransferEncoding? transferEncoding = default, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Delete a mailing
@@ -33,7 +33,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the mailing is deleted</returns>
-		Task<bool> DeleteAsync(string userKey, long mailingId, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<bool> DeleteAsync(string userKey, long mailingId, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve a mailing
@@ -43,7 +43,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The <see cref="Mailing">mailing</see></returns>
-		Task<Mailing> GetAsync(string userKey, long mailingId, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<Mailing> GetAsync(string userKey, long mailingId, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Get a count of mailings matching the filtering criteria.
@@ -60,7 +60,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailings are located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The count of mailings matching the filtering criteria</returns>
-		Task<long> GetCountAsync(string userKey, MailingStatus? status = default(MailingStatus?), MailingType? type = default(MailingType?), string name = null, long? listId = default(long?), long? campaignId = default(long?), long? recurringId = default(long?), DateTime? start = default(DateTime?), DateTime? end = default(DateTime?), long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<long> GetCountAsync(string userKey, MailingStatus? status = default, MailingType? type = default, string name = null, long? listId = default, long? campaignId = default, long? recurringId = default, DateTime? start = default, DateTime? end = default, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve a link
@@ -70,7 +70,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the link is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The <see cref="Link">link</see></returns>
-		Task<Link> GetLinkAsync(string userKey, long linkId, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<Link> GetLinkAsync(string userKey, long linkId, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve the links for a given mailing
@@ -85,7 +85,7 @@ namespace CakeMail.RestClient.Resources
 		/// <remarks>
 		/// The CakeMail API returns an empty array if you attempt to get the links in a mailing that has not been sent, even if the HTML contains multiple links.
 		/// </remarks>
-		Task<Link[]> GetLinksAsync(string userKey, long mailingId, int? limit = 0, int? offset = 0, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<Link[]> GetLinksAsync(string userKey, long mailingId, int? limit = 0, int? offset = 0, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Get a count of links matching the filter criteria
@@ -95,7 +95,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The number of links matching the filtering criteria</returns>
-		Task<long> GetLinksCountAsync(string userKey, long mailingId, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<long> GetLinksCountAsync(string userKey, long mailingId, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve the links (with their statistics) for a given mailing
@@ -109,7 +109,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>An enumeration of <see cref="LinkStats">links with their statistics</see> matching the filter criteria</returns>
-		Task<LinkStats[]> GetLinksWithStatsAsync(string userKey, long mailingId, DateTime? start = default(DateTime?), DateTime? end = default(DateTime?), int? limit = 0, int? offset = 0, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<LinkStats[]> GetLinksWithStatsAsync(string userKey, long mailingId, DateTime? start = default, DateTime? end = default, int? limit = 0, int? offset = 0, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Get a count of links (with their statistics) for a given mailing
@@ -123,7 +123,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The number of links matching the filter criteria</returns>
-		Task<long> GetLinksWithStatsCountAsync(string userKey, long mailingId, DateTime? start = default(DateTime?), DateTime? end = default(DateTime?), int? limit = 0, int? offset = 0, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<long> GetLinksWithStatsCountAsync(string userKey, long mailingId, DateTime? start = default, DateTime? end = default, int? limit = 0, int? offset = 0, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve the log items for a given mailing
@@ -146,7 +146,7 @@ namespace CakeMail.RestClient.Resources
 		/// The current error message is cryptic: Table 'api_cake_logs.mailing_xxxxxxx_big' doesn't exist.
 		/// I was assured in May 2015 that they will improve this message to make it more informative.
 		/// </remarks>
-		Task<LogItem[]> GetLogsAsync(string userKey, long mailingId, LogType? logType = default(LogType?), long? listMemberId = default(long?), bool uniques = false, bool totals = false, DateTime? start = default(DateTime?), DateTime? end = default(DateTime?), int? limit = 0, int? offset = 0, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<LogItem[]> GetLogsAsync(string userKey, long mailingId, LogType? logType = default, long? listMemberId = default, bool uniques = false, bool totals = false, DateTime? start = default, DateTime? end = default, int? limit = 0, int? offset = 0, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Get a count of log items matching the filter criteria
@@ -162,7 +162,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The number of log items matching the filtering criteria</returns>
-		Task<long> GetLogsCountAsync(string userKey, long mailingId, LogType? logType = default(LogType?), long? listMemberId = default(long?), bool uniques = false, bool totals = false, DateTime? start = default(DateTime?), DateTime? end = default(DateTime?), long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<long> GetLogsCountAsync(string userKey, long mailingId, LogType? logType = default, long? listMemberId = default, bool uniques = false, bool totals = false, DateTime? start = default, DateTime? end = default, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Retrieve the mailings matching the filtering criteria.
@@ -183,7 +183,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailings are located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>Enumeration of <see cref="Mailing">mailings</see> matching the filtering criteria</returns>
-		Task<Mailing[]> GetMailingsAsync(string userKey, MailingStatus? status = default(MailingStatus?), MailingType? type = default(MailingType?), string name = null, long? listId = default(long?), long? campaignId = default(long?), long? recurringId = default(long?), DateTime? start = default(DateTime?), DateTime? end = default(DateTime?), MailingsSortBy? sortBy = default(MailingsSortBy?), SortDirection? sortDirection = default(SortDirection?), int? limit = 0, int? offset = 0, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<Mailing[]> GetMailingsAsync(string userKey, MailingStatus? status = default, MailingType? type = default, string name = null, long? listId = default, long? campaignId = default, long? recurringId = default, DateTime? start = default, DateTime? end = default, MailingsSortBy? sortBy = default, SortDirection? sortDirection = default, int? limit = 0, int? offset = 0, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Get the multi-part version of a mailing
@@ -193,7 +193,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The <see cref="RawEmailMessage">multi-part message</see></returns>
-		Task<RawEmailMessage> GetRawEmailMessageAsync(string userKey, long mailingId, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<RawEmailMessage> GetRawEmailMessageAsync(string userKey, long mailingId, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Get the rendered HTML version of a mailing.
@@ -203,7 +203,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The rendered HTML</returns>
-		Task<string> GetRawHtmlAsync(string userKey, long mailingId, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<string> GetRawHtmlAsync(string userKey, long mailingId, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Get the rendered text version of a mailing.
@@ -213,7 +213,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>The rendered text</returns>
-		Task<string> GetRawTextAsync(string userKey, long mailingId, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<string> GetRawTextAsync(string userKey, long mailingId, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Resume a suspended mailing
@@ -223,7 +223,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the mailing is resumed</returns>
-		Task<bool> ResumeAsync(string userKey, long mailingId, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<bool> ResumeAsync(string userKey, long mailingId, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Schedule a mailing
@@ -234,7 +234,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the mailing is scheduled</returns>
-		Task<bool> ScheduleAsync(string userKey, long mailingId, DateTime? date = default(DateTime?), long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<bool> ScheduleAsync(string userKey, long mailingId, DateTime? date = default, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Send a test of a mailing.
@@ -246,7 +246,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the test email was sent</returns>
-		Task<bool> SendTestEmailAsync(string userKey, long mailingId, string recipientEmail, bool separated = false, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<bool> SendTestEmailAsync(string userKey, long mailingId, string recipientEmail, bool separated = false, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Suspend a delivering mailing
@@ -256,7 +256,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the mailing is suspended</returns>
-		Task<bool> SuspendAsync(string userKey, long mailingId, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<bool> SuspendAsync(string userKey, long mailingId, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Unschedule a mailing
@@ -266,7 +266,7 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the mailing is unscheduled</returns>
-		Task<bool> UnscheduleAsync(string userKey, long mailingId, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<bool> UnscheduleAsync(string userKey, long mailingId, long? clientId = default, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Update a mailing
@@ -296,6 +296,6 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="clientId">Client ID of the client in which the mailing is located.</param>
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the mailing was updated</returns>
-		Task<bool> UpdateAsync(string userKey, long mailingId, long? campaignId = default(long?), long? listId = default(long?), long? sublistId = default(long?), string name = null, MailingType? type = default(MailingType?), MessageEncoding? encoding = default(MessageEncoding?), TransferEncoding? transferEncoding = default(TransferEncoding?), string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = default(bool?), bool? trackClicksInHtml = default(bool?), bool? trackClicksInText = default(bool?), string trackingParameters = null, DateTime? endingOn = default(DateTime?), int? maxRecurrences = default(int?), string recurringConditions = null, long? clientId = default(long?), CancellationToken cancellationToken = default);
+		Task<bool> UpdateAsync(string userKey, long mailingId, long? campaignId = default, long? listId = default, long? sublistId = default, string name = null, MailingType? type = default, MessageEncoding? encoding = default, TransferEncoding? transferEncoding = default, string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = default, bool? trackClicksInHtml = default, bool? trackClicksInText = default, string trackingParameters = null, DateTime? endingOn = default, int? maxRecurrences = default, string recurringConditions = null, long? clientId = default, CancellationToken cancellationToken = default);
 	}
 }
