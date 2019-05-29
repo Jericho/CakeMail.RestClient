@@ -1,4 +1,4 @@
-﻿using CakeMail.RestClient.Models;
+using CakeMail.RestClient.Models;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -238,15 +238,5 @@ namespace CakeMail.RestClient.Resources
 		/// <param name="cancellationToken">The cancellation token</param>
 		/// <returns>True if the trigger was updated</returns>
 		Task<bool> UpdateAsync(string userKey, long triggerId, long? campaignId = default(long?), string name = null, TriggerAction? action = default(TriggerAction?), MessageEncoding? encoding = default(MessageEncoding?), TransferEncoding? transferEncoding = default(TransferEncoding?), string subject = null, string senderEmail = null, string senderName = null, string replyTo = null, string htmlContent = null, string textContent = null, bool? trackOpens = default(bool?), bool? trackClicksInHtml = default(bool?), bool? trackClicksInText = default(bool?), string trackingParameters = null, int? delay = default(int?), TriggerStatus? status = default(TriggerStatus?), string dateField = null, long? clientId = default(long?), CancellationToken cancellationToken = default);
-
-		/// <summary>
-		/// Delete a trigger
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="triggerId">ID of the trigger</param>
-		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
-		/// <param name="cancellationToken">The cancellation token</param>
-		/// <returns>True if the trigger is deleted</returns>
-		Task<bool> DeleteAsync(string userKey, long triggerId, long? clientId = null, CancellationToken cancellationToken = default);
 	}
 }

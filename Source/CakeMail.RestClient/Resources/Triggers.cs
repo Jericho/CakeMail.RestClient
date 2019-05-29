@@ -1,4 +1,4 @@
-﻿using CakeMail.RestClient.Models;
+using CakeMail.RestClient.Models;
 using CakeMail.RestClient.Utilities;
 using Pathoschild.Http.Client;
 using System;
@@ -559,30 +559,6 @@ namespace CakeMail.RestClient.Resources
 				.WithFormUrlEncodedBody(parameters)
 				.WithCancellationToken(cancellationToken)
 				.AsCakeMailObject<long>("count");
-		}
-
-		/// <summary>
-		/// Delete a trigger
-		/// </summary>
-		/// <param name="userKey">User Key of the user who initiates the call.</param>
-		/// <param name="triggerId">ID of the trigger</param>
-		/// <param name="clientId">Client ID of the client in which the trigger is located.</param>
-		/// <param name="cancellationToken">The cancellation token</param>
-		/// <returns>True if the trigger is deleted</returns>
-		public Task<bool> DeleteAsync(string userKey, long triggerId, long? clientId = null, CancellationToken cancellationToken = default)
-		{
-			var parameters = new List<KeyValuePair<string, object>>
-			{
-				new KeyValuePair<string, object>("user_key", userKey),
-				new KeyValuePair<string, object>("trigger_id", triggerId)
-			};
-			if (clientId.HasValue) parameters.Add(new KeyValuePair<string, object>("client_id", clientId.Value));
-
-			return _client
-				.PostAsync("Trigger/Delete")
-				.WithFormUrlEncodedBody(parameters)
-				.WithCancellationToken(cancellationToken)
-				.AsCakeMailObject<bool>();
 		}
 
 		#endregion

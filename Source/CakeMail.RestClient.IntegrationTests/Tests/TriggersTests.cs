@@ -1,4 +1,4 @@
-﻿using CakeMail.RestClient.Models;
+using CakeMail.RestClient.Models;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -78,9 +78,6 @@ namespace CakeMail.RestClient.IntegrationTests.Tests
 
 			var campaignDeleted = await client.Campaigns.DeleteAsync(userKey, campaignId, clientId, cancellationToken).ConfigureAwait(false);
 			await log.WriteLineAsync($"List deleted: {(campaignDeleted ? "success" : "failed")}").ConfigureAwait(false);
-
-			var triggerDeleted = await client.Triggers.DeleteAsync(userKey, triggerId, clientId, cancellationToken).ConfigureAwait(false);
-			await log.WriteLineAsync($"Trigger deleted: {(triggerDeleted ? "success" : "failed")}").ConfigureAwait(false);
 		}
 	}
 }
