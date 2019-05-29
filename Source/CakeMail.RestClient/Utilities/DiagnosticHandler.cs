@@ -1,4 +1,4 @@
-﻿using CakeMail.RestClient.Logging;
+using CakeMail.RestClient.Logging;
 using Pathoschild.Http.Client;
 using Pathoschild.Http.Client.Extensibility;
 using System;
@@ -6,21 +6,35 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace CakeMail.RestClient.Utilities
 {
 	/// <summary>
-	/// Diagnostic handler for requests dispatched to the CakeMail API
+	/// Diagnostic handler for requests dispatched to the CakeMail API.
 	/// </summary>
 	/// <seealso cref="Pathoschild.Http.Client.Extensibility.IHttpFilter" />
 	internal class DiagnosticHandler : IHttpFilter
 	{
 		#region FIELDS
 
-		private const string DIAGNOSTIC_ID_HEADER_NAME = "CakeMailRestClientDiagnosticId";
+		internal const string DIAGNOSTIC_ID_HEADER_NAME = "CakeMailRestClient-Diagnostic-Id";
 		private static readonly ILog _logger = LogProvider.For<DiagnosticHandler>();
-		private readonly IDictionary<WeakReference<HttpRequestMessage>, Tuple<StringBuilder, Stopwatch>> _diagnostics = new Dictionary<WeakReference<HttpRequestMessage>, Tuple<StringBuilder, Stopwatch>>();
+
+		#endregion
+
+		#region PROPERTIES
+
+		internal static IDictionary<string, (WeakReference<HttpRequestMessage> RequestReference, StringBuilder Diagnostic, long RequestTimestamp, long ResponseTimeStamp)> DiagnosticsInfo { get; } = new Dictionary<string, (WeakReference<HttpRequestMessage>, StringBuilder, long, long)>();
+
+		#endregion
+
+		#region CTOR
+
+		public DiagnosticHandler()
+		{
+		}
 
 		#endregion
 
@@ -30,17 +44,23 @@ namespace CakeMail.RestClient.Utilities
 		/// <param name="request">The HTTP request.</param>
 		public void OnRequest(IRequest request)
 		{
-			request.WithHeader(DIAGNOSTIC_ID_HEADER_NAME, Guid.NewGuid().ToString("N"));
+			// Add a unique ID to the request header
+			var diagnosticId = Guid.NewGuid().ToString("N");
+			request.WithHeader(DIAGNOSTIC_ID_HEADER_NAME, diagnosticId);
 
+			// Log the request
 			var httpRequest = request.Message;
+			var diagnostic = new StringBuilder();
 
-			var diagnosticMessage = new StringBuilder();
-			diagnosticMessage.AppendLine($"Request: {httpRequest}");
-			diagnosticMessage.AppendLine($"Request Content: {httpRequest.Content?.ReadAsStringAsync().Result ?? "<NULL>"}");
+			diagnostic.AppendLine("REQUEST:");
+			diagnostic.AppendLine($"  {httpRequest.Method.Method} {httpRequest.RequestUri}");
+			LogHeaders(diagnostic, httpRequest.Headers);
+			LogContent(diagnostic, httpRequest.Content);
 
-			lock (_diagnostics)
+			// Add the diagnotic info to our cache
+			lock (DiagnosticsInfo)
 			{
-				_diagnostics.Add(new WeakReference<HttpRequestMessage>(request.Message), new Tuple<StringBuilder, Stopwatch>(diagnosticMessage, Stopwatch.StartNew()));
+				DiagnosticsInfo.Add(diagnosticId, (new WeakReference<HttpRequestMessage>(request.Message), diagnostic, Stopwatch.GetTimestamp(), long.MinValue));
 			}
 		}
 
@@ -49,28 +69,59 @@ namespace CakeMail.RestClient.Utilities
 		/// <param name="httpErrorAsException">Whether HTTP error responses should be raised as exceptions.</param>
 		public void OnResponse(IResponse response, bool httpErrorAsException)
 		{
-			var diagnosticInfo = GetDiagnosticInfo(response.Message.RequestMessage);
-			var diagnosticMessage = diagnosticInfo.Item1;
-			var timer = diagnosticInfo.Item2;
-			if (timer != null) timer.Stop();
-
+			var responseTimestamp = Stopwatch.GetTimestamp();
 			var httpResponse = response.Message;
 
-			diagnosticMessage.AppendLine($"Response: {httpResponse}");
-			diagnosticMessage.AppendLine($"Response Content: {httpResponse.Content?.ReadAsStringAsync().Result ?? "<NULL>"}");
+			var diagnosticId = response.Message.RequestMessage.Headers.GetValue(DiagnosticHandler.DIAGNOSTIC_ID_HEADER_NAME);
+			var diagnosticInfo = DiagnosticsInfo[diagnosticId];
+			diagnosticInfo.ResponseTimeStamp = responseTimestamp;
 
-			if (timer != null)
+			try
 			{
-				diagnosticMessage.AppendLine($"The request took {timer.Elapsed.ToDurationString()}");
+				// Log the response
+				diagnosticInfo.Diagnostic.AppendLine();
+				diagnosticInfo.Diagnostic.AppendLine("RESPONSE:");
+				diagnosticInfo.Diagnostic.AppendLine($"  HTTP/{httpResponse.Version} {(int)httpResponse.StatusCode} {httpResponse.ReasonPhrase}");
+				LogHeaders(diagnosticInfo.Diagnostic, httpResponse.Headers);
+				LogContent(diagnosticInfo.Diagnostic, httpResponse.Content);
+
+				// Calculate how much time elapsed between request and response
+				var elapsed = TimeSpan.FromTicks(diagnosticInfo.ResponseTimeStamp - diagnosticInfo.RequestTimestamp);
+
+				// Log diagnostic
+				diagnosticInfo.Diagnostic.AppendLine();
+				diagnosticInfo.Diagnostic.AppendLine("DIAGNOSTIC:");
+				diagnosticInfo.Diagnostic.AppendLine($"  The request took {elapsed.ToDurationString()}");
 			}
-
-			Debug.WriteLine("{0}\r\n{1}{0}", new string('=', 25), diagnosticMessage.ToString());
-
-			if (_logger != null && _logger.IsDebugEnabled())
+			catch (Exception e)
 			{
-				_logger.Debug(diagnosticMessage.ToString()
-					.Replace("{", "{{")
-					.Replace("}", "}}"));
+				Debug.WriteLine("{0}\r\nAN EXCEPTION OCCURRED: {1}\r\n{0}", new string('=', 50), e.GetBaseException().Message);
+				diagnosticInfo.Diagnostic.AppendLine($"AN EXCEPTION OCCURRED: {e.GetBaseException().Message}");
+
+				if (_logger != null && _logger.IsErrorEnabled())
+				{
+					_logger.Error(e, "An exception occurred when inspecting the response from SendGrid");
+				}
+			}
+			finally
+			{
+				var diagnosticMessage = diagnosticInfo.Diagnostic.ToString();
+
+				if (!string.IsNullOrEmpty(diagnosticMessage))
+				{
+					Debug.WriteLine("{0}\r\n{1}{0}", new string('=', 50), diagnosticMessage);
+
+					if (_logger != null && _logger.IsDebugEnabled())
+					{
+						_logger.Debug(diagnosticMessage
+							.Replace("{", "{{")
+							.Replace("}", "}}"));
+					}
+				}
+
+				DiagnosticsInfo[diagnosticId] = diagnosticInfo;
+
+				Cleanup();
 			}
 		}
 
@@ -78,42 +129,67 @@ namespace CakeMail.RestClient.Utilities
 
 		#region PRIVATE METHODS
 
-		private Tuple<StringBuilder, Stopwatch> GetDiagnosticInfo(HttpRequestMessage requestMessage)
+		private void LogHeaders(StringBuilder diagnostic, HttpHeaders httpHeaders)
 		{
-			lock (_diagnostics)
+			if (httpHeaders != null)
 			{
-				var diagnosticId = requestMessage.Headers.GetValues(DIAGNOSTIC_ID_HEADER_NAME).FirstOrDefault();
-
-				foreach (WeakReference<HttpRequestMessage> key in _diagnostics.Keys.ToArray())
+				foreach (var header in httpHeaders)
 				{
-					// Get request
-					HttpRequestMessage request;
-
-					// Check if garbage collected
-					if (!key.TryGetTarget(out request))
+					if (header.Key.Equals("authorization", StringComparison.OrdinalIgnoreCase))
 					{
-						_diagnostics.Remove(key);
-						continue;
+						diagnostic.AppendLine($"  {header.Key}: ...redacted for security reasons...");
 					}
-
-					// Check if different request
-					var requestDiagnosticId = request.Headers.GetValues(DIAGNOSTIC_ID_HEADER_NAME).FirstOrDefault();
-					if (requestDiagnosticId != diagnosticId)
+					else
 					{
-						continue;
+						diagnostic.AppendLine($"  {header.Key}: {string.Join(", ", header.Value)}");
 					}
-
-					// Get the diagnostic info from dictionary
-					var diagnosticInfo = _diagnostics[key];
-
-					// Remove the diagnostic info from dictionary
-					_diagnostics.Remove(key);
-
-					return diagnosticInfo;
 				}
 			}
+		}
 
-			return new Tuple<StringBuilder, Stopwatch>(new StringBuilder(), null);
+		private void LogContent(StringBuilder diagnostic, HttpContent httpContent)
+		{
+			if (httpContent == null)
+			{
+				diagnostic.AppendLine("  Content-Length: 0");
+			}
+			else
+			{
+				LogHeaders(diagnostic, httpContent.Headers);
+
+				var contentLength = httpContent.Headers?.ContentLength.GetValueOrDefault(0) ?? 0;
+				if (!httpContent.Headers?.Contains("Content-Length") ?? false)
+				{
+					diagnostic.AppendLine($"  Content-Length: {contentLength}");
+				}
+
+				if (contentLength > 0)
+				{
+					diagnostic.AppendLine();
+					diagnostic.AppendLine(httpContent.ReadAsStringAsync(null).GetAwaiter().GetResult() ?? "<NULL>");
+				}
+			}
+		}
+
+		private void Cleanup()
+		{
+			try
+			{
+				// Remove diagnostic information for requests that have been garbage collected
+				foreach (string key in DiagnosticHandler.DiagnosticsInfo.Keys.ToArray())
+				{
+					var diagnosticInfo = DiagnosticHandler.DiagnosticsInfo[key];
+					if (!diagnosticInfo.RequestReference.TryGetTarget(out HttpRequestMessage request))
+					{
+						DiagnosticHandler.DiagnosticsInfo.Remove(key);
+						continue;
+					}
+				}
+			}
+			catch
+			{
+				// Intentionally left empty
+			}
 		}
 
 		#endregion

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Net;
 
@@ -21,16 +21,23 @@ namespace CakeMail.RestClient.Exceptions
 		public Uri Uri { get; private set; }
 
 		/// <summary>
+		/// Gets the human readable representation of the request/response.
+		/// </summary>
+		public string DiagnosticLog { get; private set; }
+
+		/// <summary>
 		/// Initializes a new instance of the <see cref="HttpException"/> class.
 		/// </summary>
 		/// <param name="message">A message describing the reason why the exception was thrown.</param>
 		/// <param name="httpStatus">The HTTP status of the response that caused the exception.</param>
 		/// <param name="uri">The URL queried.</param>
-		public HttpException(string message, HttpStatusCode httpStatus, Uri uri)
+		/// <param name="diagnosticLog">The human readable representation of the request/response.</param>
+		public HttpException(string message, HttpStatusCode httpStatus, Uri uri, string diagnosticLog)
 			: base(message)
 		{
 			HttpStatus = httpStatus;
 			Uri = uri;
+			DiagnosticLog = diagnosticLog;
 		}
 
 		/// <summary>
@@ -39,12 +46,14 @@ namespace CakeMail.RestClient.Exceptions
 		/// <param name="message">A message describing the reason why the exception was thrown.</param>
 		/// <param name="httpStatus">The HTTP status of the response that caused the exception.</param>
 		/// <param name="uri">The URL queried.</param>
+		/// <param name="diagnosticLog">The human readable representation of the request/response.</param>
 		/// <param name="innerException">The underlying exception that caused this one.</param>
-		public HttpException(string message, HttpStatusCode httpStatus, Uri uri, Exception innerException)
+		public HttpException(string message, HttpStatusCode httpStatus, Uri uri, string diagnosticLog, Exception innerException)
 			: base(message, innerException)
 		{
 			HttpStatus = httpStatus;
 			Uri = uri;
+			DiagnosticLog = diagnosticLog;
 		}
 	}
 }
