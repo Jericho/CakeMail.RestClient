@@ -46,7 +46,7 @@ var mergeData = new Dictionary<string, object>
 {
     { "gender", "Male" }
 };
-var sent = await client.Relays.SendWithoutTrackingAsync(userKey, "recipient@example.com", subject, html, text, "you@yourcompany.com", "Your name", mergeData, null, null, clientId).ConfigureAwait(false);
+var sent = await client.Relays.SendWithoutTrackingAsync(userKey, "recipient@example.com", subject, html, text, "you@yourcompany.com", "Your name", mergeData, null, null, clientId, cancellationToken).ConfigureAwait(false);
 ```
 
 + **7.0**
@@ -68,7 +68,7 @@ var mergeData = new Dictionary<string, object>
     { "firstname", "Bob" },
     { "lastname", "Smith" }
 };
-var sent = await client.Relays.SendWithoutTrackingAsync(userKey, "recipient@example.com", subject, html, text, "you@yourcompany.com", "Your name", mergeData, null, null, clientId).ConfigureAwait(false);
+var sent = await client.Relays.SendWithoutTrackingAsync(userKey, "recipient@example.com", subject, html, text, "you@yourcompany.com", "Your name", mergeData, null, null, clientId, cancellationToken).ConfigureAwait(false);
 ```
 
 + **6.0**
