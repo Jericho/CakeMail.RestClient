@@ -1,4 +1,4 @@
-﻿using CakeMail.RestClient.Logging;
+using CakeMail.RestClient.Logging;
 using System;
 using System.IO;
 using System.Net;
@@ -30,7 +30,7 @@ namespace CakeMail.RestClient.IntegrationTests
 
 			if (debugHttpMessagesToConsole)
 			{
-				LogProvider.SetCurrentLogProvider(new ConsoleLogProvider());
+				LogProvider.SetCurrentLogProvider(new ColoredConsoleLogProvider());
 			}
 
 			var source = new CancellationTokenSource();

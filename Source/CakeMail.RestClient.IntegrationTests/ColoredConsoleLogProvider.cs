@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace CakeMail.RestCient.IntegrationTests
+namespace CakeMail.RestClient.IntegrationTests
 {
 	// Inspired by: https://github.com/damianh/LibLog/blob/master/src/LibLog.Example.ColoredConsoleLogProvider/ColoredConsoleLogProvider.cs
 	public class ColoredConsoleLogProvider : ILogProvider
