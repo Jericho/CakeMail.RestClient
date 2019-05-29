@@ -615,11 +615,6 @@ namespace CakeMail.RestClient.UnitTests.Resources
 		{
 			// Arrange
 			var content = "Sample content 2";
-			var labels = new Dictionary<string, string>
-			{
-				{ "en_US", "My Template" },
-				{ "fr_FR", "Mon modèle" }
-			};
 			var jsonResponse = string.Format("{{\"status\":\"success\",\"data\":{{\"id\":\"{0}\"}}}}", TEMPLATE_ID);
 			var mockHttp = new MockHttpMessageHandler();
 			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("TemplateV2/CreateTemplate")).Respond("application/json", jsonResponse);
