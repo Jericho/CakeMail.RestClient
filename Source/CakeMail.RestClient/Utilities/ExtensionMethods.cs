@@ -40,11 +40,12 @@ namespace CakeMail.RestClient.Utilities
 			var fieldInfo = value.GetType().GetRuntimeField(value.ToString());
 			if (fieldInfo == null) return value.ToString();
 
-			var attributes = fieldInfo.GetCustomAttributes(typeof(EnumMemberAttribute), false).ToArray();
-			if (attributes == null || attributes.Length == 0) return value.ToString();
+			var attribute = fieldInfo
+				.GetCustomAttributes()
+				.OfType<EnumMemberAttribute>()
+				.FirstOrDefault();
 
-			var descriptionAttribute = attributes[0] as EnumMemberAttribute;
-			return descriptionAttribute == null ? value.ToString() : descriptionAttribute.Value;
+			return attribute?.Value ?? value.ToString();
 		}
 
 		/// <summary>
