@@ -1,4 +1,4 @@
-﻿using CakeMail.RestClient.Resources;
+using CakeMail.RestClient.Resources;
 using CakeMail.RestClient.Utilities;
 using Pathoschild.Http.Client;
 using Pathoschild.Http.Client.Extensibility;
@@ -10,7 +10,7 @@ using System.Reflection;
 namespace CakeMail.RestClient
 {
 	/// <summary>
-	/// Core class for using the CakeMail Api
+	/// Core class for using the CakeMail Api.
 	/// </summary>
 	public class CakeMailRestClient : ICakeMailRestClient
 	{
@@ -28,82 +28,82 @@ namespace CakeMail.RestClient
 		#region PROPERTIES
 
 		/// <summary>
-		/// Gets the API key provided by CakeMail
+		/// Gets the API key provided by CakeMail.
 		/// </summary>
 		public string ApiKey { get; private set; }
 
 		/// <summary>
-		/// Gets the user agent
+		/// Gets the user agent.
 		/// </summary>
 		public string UserAgent { get; private set; }
 
 		/// <summary>
-		/// Gets the URL where all API requests are sent
+		/// Gets the URL where all API requests are sent.
 		/// </summary>
 		public Uri BaseUrl { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Campaigns">Campaigns</see> resource
+		/// Gets the <see cref="Campaigns">Campaigns</see> resource.
 		/// </summary>
 		public ICampaigns Campaigns { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Clients">Clients</see> resource
+		/// Gets the <see cref="Clients">Clients</see> resource.
 		/// </summary>
 		public IClients Clients { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Countries">Countries</see> resource
+		/// Gets the <see cref="Countries">Countries</see> resource.
 		/// </summary>
 		public ICountries Countries { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Permissions">Permissions</see> resource
+		/// Gets the <see cref="Permissions">Permissions</see> resource.
 		/// </summary>
 		public IPermissions Permissions { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Lists">Lists</see> resource
+		/// Gets the <see cref="Lists">Lists</see> resource.
 		/// </summary>
 		public ILists Lists { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Timezones">Timezones</see> resource
+		/// Gets the <see cref="Timezones">Timezones</see> resource.
 		/// </summary>
 		public ITimezones Timezones { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Mailings">Mailings</see> resource
+		/// Gets the <see cref="Mailings">Mailings</see> resource.
 		/// </summary>
 		public IMailings Mailings { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Relays">Relays</see> resource
+		/// Gets the <see cref="Relays">Relays</see> resource.
 		/// </summary>
 		public IRelays Relays { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Segments">Segments</see> resource
+		/// Gets the <see cref="Segments">Segments</see> resource.
 		/// </summary>
 		public ISegments Segments { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Users">Users</see> resource
+		/// Gets the <see cref="Users">Users</see> resource.
 		/// </summary>
 		public IUsers Users { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="SuppressionLists">SuppressionLists</see> resource
+		/// Gets the <see cref="SuppressionLists">SuppressionLists</see> resource.
 		/// </summary>
 		public ISuppressionLists SuppressionLists { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Templates">Templates</see> resource
+		/// Gets the <see cref="Templates">Templates</see> resource.
 		/// </summary>
 		public ITemplates Templates { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Triggers">Triggers</see> resource
+		/// Gets the <see cref="Triggers">Triggers</see> resource.
 		/// </summary>
 		public ITriggers Triggers { get; private set; }
 
@@ -142,9 +142,9 @@ namespace CakeMail.RestClient
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CakeMailRestClient"/> class.
 		/// </summary>
-		/// <param name="apiKey">The API Key received from CakeMail</param>
-		/// <param name="host">The host where the API is hosted. The default is api.wbsrvc.com</param>
-		/// <param name="httpClient">Allows you to inject your own HttpClient. This is useful, for example, to setup the HtppClient with a proxy</param>
+		/// <param name="apiKey">The API Key received from CakeMail.</param>
+		/// <param name="host">The host where the API is hosted. The default is api.wbsrvc.com.</param>
+		/// <param name="httpClient">Allows you to inject your own HttpClient. This is useful, for example, to setup the HtppClient with a proxy.</param>
 		public CakeMailRestClient(string apiKey, string host = DEFAULT_HOST, HttpClient httpClient = null)
 		{
 			_mustDisposeHttpClient = httpClient == null;
