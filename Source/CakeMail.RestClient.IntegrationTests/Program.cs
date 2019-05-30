@@ -1,5 +1,6 @@
 using CakeMail.RestClient.IntegrationTests.Tests;
 using CakeMail.RestClient.Logging;
+using CakeMail.RestClient.Utilities;
 using System;
 using System.IO;
 using System.Net;
@@ -13,14 +14,22 @@ namespace CakeMail.RestClient.IntegrationTests
 		static async Task<int> Main()
 		{
 			// -----------------------------------------------------------------------------
-
-			// Do you want to proxy requests through Fiddler (useful for debugging)?
+			// Do you want to proxy requests through Fiddler? Can be useful for debugging.
 			var useFiddler = false;
 
-			// As an alternative to Fiddler, you can display debug information about
-			// every HTTP request/response in the console. This is useful for debugging
-			// purposes but the amount of information can be overwhelming.
-			var debugHttpMessagesToConsole = false;
+			// Do you want debug information displayed in the console?
+			var logToConsole = true;
+
+			// Logging options.
+			var options = new CakeMailClientOptions()
+			{
+				LogLevelFailedCalls = LogLevel.Error,
+				LogLevelSuccessfulCalls = LogLevel.Debug
+			};
+
+			// To see only errors, set this value to 'LogLevel.Error'.
+			// To see every single call made to SendGrid's API, set this value to 'LogLevel.Debug'.
+			var minLogLevel = LogLevel.Error;
 			// -----------------------------------------------------------------------------
 
 			var proxy = useFiddler ? new WebProxy("http://localhost:8888") : null;
@@ -29,9 +38,9 @@ namespace CakeMail.RestClient.IntegrationTests
 			var password = Environment.GetEnvironmentVariable("CAKEMAIL_PASSWORD");
 			var overrideClientId = Environment.GetEnvironmentVariable("CAKEMAIL_OVERRIDECLIENTID");
 
-			if (debugHttpMessagesToConsole)
+			if (logToConsole)
 			{
-				LogProvider.SetCurrentLogProvider(new ColoredConsoleLogProvider());
+				LogProvider.SetCurrentLogProvider(new ColoredConsoleLogProvider(minLogLevel));
 			}
 
 			var source = new CancellationTokenSource();

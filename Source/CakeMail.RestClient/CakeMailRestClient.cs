@@ -1,3 +1,4 @@
+using CakeMail.RestClient.Logging;
 using CakeMail.RestClient.Resources;
 using CakeMail.RestClient.Utilities;
 using Pathoschild.Http.Client;
@@ -183,7 +184,7 @@ namespace CakeMail.RestClient
 			_fluentClient.Filters.Remove<DefaultErrorFilter>();
 
 			// Order is important: DiagnosticHandler must be first.
-			_fluentClient.Filters.Add(new DiagnosticHandler(_options.LogBehavior));
+			_fluentClient.Filters.Add(new DiagnosticHandler(_options.LogLevelSuccessfulCalls, _options.LogLevelFailedCalls));
 			_fluentClient.Filters.Add(new CakeMailErrorHandler());
 
 			_fluentClient.BaseClient.DefaultRequestHeaders.Add("apikey", this.ApiKey);
@@ -277,7 +278,11 @@ namespace CakeMail.RestClient
 		{
 			return new CakeMailClientOptions()
 			{
-				LogBehavior = LogBehavior.LogEverything
+				// Setting to 'Debug' to mimic previous behavior. I think this is a sensible default setting.
+				LogLevelSuccessfulCalls = LogLevel.Debug,
+
+				// Setting to 'Debug' to mimic previous behavior. I think 'Error' would make more sense.
+				LogLevelFailedCalls = LogLevel.Debug
 			};
 		}
 
