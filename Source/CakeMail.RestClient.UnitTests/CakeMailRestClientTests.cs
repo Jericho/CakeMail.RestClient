@@ -1,4 +1,4 @@
-﻿using CakeMail.RestClient.Exceptions;
+using CakeMail.RestClient.Exceptions;
 using Moq;
 using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
@@ -56,29 +56,23 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var client = new CakeMailRestClient(API_KEY, mockProxy.Object);
-			var baseUrl = client.BaseUrl;
 
 			// Assert
-			baseUrl.ShouldBe(new Uri("https://api.wbsrvc.com"));
+			client.BaseUrl.ShouldBe(new Uri("https://api.wbsrvc.com/"));
 		}
 
 		[Fact]
 		public void RestClient_constructor_with_HttpClient()
 		{
 			// Arrange
-			var mockHost = "my.apiserver.com";
-
 			var mockHttp = new MockHttpMessageHandler();
 			var httpClient = new HttpClient(mockHttp);
 
 			// Act
-			var client = new CakeMailRestClient(API_KEY, mockHost, httpClient);
-			var baseUrl = client.BaseUrl;
+			var client = new CakeMailRestClient(API_KEY, httpClient);
 
 			// Assert
-			mockHttp.VerifyNoOutstandingExpectation();
-			mockHttp.VerifyNoOutstandingRequest();
-			baseUrl.ShouldBe(new Uri($"https://{mockHost}"));
+			client.BaseUrl.ShouldBe(new Uri("https://api.wbsrvc.com/"));
 		}
 
 		[Fact]
