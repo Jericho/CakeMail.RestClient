@@ -98,16 +98,7 @@ namespace CakeMail.RestClient.Utilities
 		/// <returns>Returns the request builder for chaining.</returns>
 		public static IRequest WithFormUrlEncodedBody(this IRequest request, IEnumerable<KeyValuePair<string, object>> parameters)
 		{
-			var body = (FormUrlEncodedContent)null;
-			if (parameters != null)
-			{
-				var paramsWithValue = parameters.Where(p => p.Value != null).Select(p => new KeyValuePair<string, string>(p.Key, p.Value.ToString()));
-				var paramsWithoutValue = parameters.Where(p => p.Value == null).Select(p => new KeyValuePair<string, string>(p.Key, null));
-				var allParams = paramsWithValue.Union(paramsWithoutValue).ToArray();
-				body = new FormUrlEncodedContent(allParams);
-			}
-
-			return request.WithBodyContent(body);
+			return request.WithBody(bodyBuilder => bodyBuilder.FormUrlEncoded(parameters));
 		}
 
 		/// <summary>
