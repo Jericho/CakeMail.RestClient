@@ -140,6 +140,12 @@ namespace CakeMail.RestClient.Models
 		/// Schedule
 		/// </summary>
 		[EnumMember(Value = "schedule")]
-		Schedule
+		Schedule,
+
+		/// <summary>
+		/// Generating
+		/// </summary>
+		[EnumMember(Value = "generating")]
+		Generating
 	}
 }
