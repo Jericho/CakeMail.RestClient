@@ -30,14 +30,22 @@ namespace CakeMail.RestClient
 		#region PROPERTIES
 
 		/// <summary>
-		/// Gets the API key provided by CakeMail.
+		/// Gets the Version.
 		/// </summary>
-		public string ApiKey { get; private set; }
+		/// <value>
+		/// The version.
+		/// </value>
+		public static string Version { get; private set; }
 
 		/// <summary>
 		/// Gets the user agent.
 		/// </summary>
-		public string UserAgent { get; private set; }
+		public static string UserAgent { get; private set; }
+
+		/// <summary>
+		/// Gets the API key provided by CakeMail.
+		/// </summary>
+		public string ApiKey { get; private set; }
 
 		/// <summary>
 		/// Gets the URL where all API requests are sent.
@@ -109,17 +117,21 @@ namespace CakeMail.RestClient
 		/// </summary>
 		public ITriggers Triggers { get; private set; }
 
-		/// <summary>
-		/// Gets the Version.
-		/// </summary>
-		/// <value>
-		/// Gets the version.
-		/// </value>
-		public string Version { get; private set; }
-
 		#endregion
 
 		#region CONSTRUCTORS AND DESTRUCTORS
+
+		/// <summary>
+		/// Initializes static members of the <see cref="CakeMailRestClient"/> class.
+		/// </summary>
+		static CakeMailRestClient()
+		{
+			Version = typeof(CakeMailRestClient).GetTypeInfo().Assembly.GetName().Version.ToString(3);
+#if DEBUG
+			Version = "DEBUG";
+#endif
+			UserAgent = $"CakeMail .NET REST Client/{Version} (+https://github.com/Jericho/CakeMail.RestClient)";
+		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CakeMailRestClient"/> class.
@@ -172,14 +184,9 @@ namespace CakeMail.RestClient
 
 			ApiKey = apiKey;
 			BaseUrl = new Uri(CAKEMAIL_BASE_URI);
-			Version = typeof(CakeMailRestClient).GetTypeInfo().Assembly.GetName().Version.ToString(3);
-#if DEBUG
-			Version = "DEBUG";
-#endif
-			UserAgent = $"CakeMail .NET REST Client/{Version} (+https://github.com/Jericho/CakeMail.RestClient)";
 
 			_fluentClient = new FluentClient(this.BaseUrl, httpClient)
-				.SetUserAgent(this.UserAgent);
+				.SetUserAgent(CakeMailRestClient.UserAgent);
 
 			_fluentClient.Filters.Remove<DefaultErrorFilter>();
 
