@@ -3,7 +3,7 @@
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	/// A country
+	/// A country.
 	/// </summary>
 	public class Country
 	{

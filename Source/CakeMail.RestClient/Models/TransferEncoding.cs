@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	/// Enumeration to indicate transfer encoding
+	/// Enumeration to indicate transfer encoding.
 	/// </summary>
 	[JsonConverter(typeof(StringEnumConverter))]
 	public enum TransferEncoding

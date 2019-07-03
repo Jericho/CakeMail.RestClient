@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	/// Enumeration to indicate the type of mailing
+	/// Enumeration to indicate the type of mailing.
 	/// </summary>
 	[JsonConverter(typeof(StringEnumConverter))]
 	public enum MailingType

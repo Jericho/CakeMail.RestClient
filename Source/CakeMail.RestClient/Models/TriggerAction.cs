@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	///  Enumeration to indicate the action to kick off a trigger
+	///  Enumeration to indicate the action to kick off a trigger.
 	/// </summary>
 	[JsonConverter(typeof(StringEnumConverter))]
 	public enum TriggerAction

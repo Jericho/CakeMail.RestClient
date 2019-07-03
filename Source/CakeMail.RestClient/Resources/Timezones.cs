@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CakeMail.RestClient.Resources
 {
 	/// <summary>
-	/// Allows you to manage timezones
+	/// Allows you to manage timezones.
 	/// </summary>
 	/// <seealso cref="CakeMail.RestClient.Resources.ITimezones" />
 	public class Timezones : ITimezones
@@ -30,11 +30,11 @@ namespace CakeMail.RestClient.Resources
 		#region Public Methods
 
 		/// <summary>
-		/// Retrieve the list of all timezones known to the CakeMail system
+		/// Retrieve the list of all timezones known to the CakeMail system.
 		/// </summary>
-		/// <param name="cancellationToken">The cancellation token</param>
+		/// <param name="cancellationToken">The cancellation token.</param>
 		/// <returns>An enumeration of all <see cref="Timezone">timezones</see>.</returns>
-		public Task<Timezone[]> GetAllAsync(CancellationToken cancellationToken = default(CancellationToken))
+		public Task<Timezone[]> GetAllAsync(CancellationToken cancellationToken = default)
 		{
 			return _client
 				.PostAsync("Client/GetTimezones")

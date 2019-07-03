@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace CakeMail.RestClient.Resources
 {
 	/// <summary>
-	/// Alows you to manage the list of countries
+	/// Alows you to manage the list of countries.
 	/// </summary>
 	/// <seealso cref="CakeMail.RestClient.Resources.ICountries" />
 	public class Countries : ICountries
@@ -31,11 +31,11 @@ namespace CakeMail.RestClient.Resources
 		#region Public Methods
 
 		/// <summary>
-		/// Get the list of countries
+		/// Get the list of countries.
 		/// </summary>
-		/// <param name="cancellationToken">The cancellation token</param>
-		/// <returns>An enumeration of <see cref="Country">countries</see></returns>
-		public Task<Country[]> GetListAsync(CancellationToken cancellationToken = default(CancellationToken))
+		/// <param name="cancellationToken">The cancellation token.</param>
+		/// <returns>An enumeration of <see cref="Country">countries</see>.</returns>
+		public Task<Country[]> GetListAsync(CancellationToken cancellationToken = default)
 		{
 			return _client
 				.PostAsync("Country/GetList")
@@ -44,12 +44,12 @@ namespace CakeMail.RestClient.Resources
 		}
 
 		/// <summary>
-		/// Get the list of state/provinces for a given country
+		/// Get the list of state/provinces for a given country.
 		/// </summary>
 		/// <param name="countryId">ID of the country.</param>
-		/// <param name="cancellationToken">The cancellation token</param>
-		/// <returns>An enumeration of <see cref="Province">privinces</see></returns>
-		public Task<Province[]> GetProvincesAsync(string countryId, CancellationToken cancellationToken = default(CancellationToken))
+		/// <param name="cancellationToken">The cancellation token.</param>
+		/// <returns>An enumeration of <see cref="Province">privinces</see>.</returns>
+		public Task<Province[]> GetProvincesAsync(string countryId, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{

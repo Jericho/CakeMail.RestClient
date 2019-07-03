@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	/// Enumeration to indicate the type of encoding
+	/// Enumeration to indicate the type of encoding.
 	/// </summary>
 	[JsonConverter(typeof(StringEnumConverter))]
 	public enum MessageEncoding

@@ -3,7 +3,7 @@
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	/// Enumeration to indicate how to sort mailings
+	/// Enumeration to indicate how to sort mailings.
 	/// </summary>
 	public enum MailingsSortBy
 	{

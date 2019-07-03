@@ -2224,9 +2224,6 @@ namespace CakeMail.RestClient.UnitTests.Resources
 			var mailingId = 123L;
 			var start = new DateTime(2015, 1, 1);
 
-			var jsonLink1 = string.Format("{{\"id\":\"111111\",\"link_to\":\"http://fictitiouscompany.com/hello_world.aspx\",\"mailing_id\":\"{0}\",\"unique\":\"3\",\"total\":\"10\",\"unique_rate\":\"2\",\"total_rate\":\"1\"}}", mailingId);
-			var jsonLink2 = string.Format("{{\"id\":\"222222\",\"link_to\":\"http://www.fictitiouscompany.com.com/\",\"mailing_id\":\"{0}\",\"unique\":\"1\",\"total\":\"2\",\"unique_rate\":\"1\",\"total_rate\":\"2\"}}", mailingId);
-
 			var jsonResponse = "{\"status\":\"success\",\"data\":{\"links\":[],\"count\":\"3\"}}";
 			var mockHttp = new MockHttpMessageHandler();
 			mockHttp.Expect(HttpMethod.Post, Utils.GetCakeMailApiUri("Mailing/GetLinksLog")).Respond("application/json", jsonResponse);

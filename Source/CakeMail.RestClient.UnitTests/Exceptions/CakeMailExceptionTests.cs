@@ -1,4 +1,4 @@
-﻿using CakeMail.RestClient.Exceptions;
+using CakeMail.RestClient.Exceptions;
 using Shouldly;
 using System;
 using Xunit;
@@ -12,12 +12,14 @@ namespace CakeMail.RestClient.UnitTests.Exceptions
 		{
 			// Arrange
 			var message = "This is a dummy message";
+			var diagnosticLog = "This is the diagnostic log";
 
 			// Act
-			var exception = new CakeMailException(message);
+			var exception = new CakeMailException(message, diagnosticLog);
 
 			// Assert
 			exception.Message.ShouldBe(message);
+			exception.DiagnosticLog.ShouldBe(diagnosticLog);
 			exception.InnerException.ShouldBeNull();
 		}
 
@@ -26,13 +28,15 @@ namespace CakeMail.RestClient.UnitTests.Exceptions
 		{
 			// Arrange
 			var message = "This is a dummy message";
+			var diagnosticLog = "This is the diagnostic log";
 			var innerException = new Exception("Testing");
 
 			// Act
-			var exception = new CakeMailException(message, innerException);
+			var exception = new CakeMailException(message, diagnosticLog, innerException);
 
 			// Assert
 			exception.Message.ShouldBe(message);
+			exception.DiagnosticLog.ShouldBe(diagnosticLog);
 			exception.InnerException.ShouldNotBeNull();
 			exception.InnerException.Message.ShouldBe(innerException.Message);
 		}

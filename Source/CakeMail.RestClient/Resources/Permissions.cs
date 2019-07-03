@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace CakeMail.RestClient.Resources
 {
 	/// <summary>
-	/// Allows you to manage permissions
+	/// Allows you to manage permissions.
 	/// </summary>
 	/// <seealso cref="CakeMail.RestClient.Resources.IPermissions" />
 	public class Permissions : IPermissions
@@ -31,14 +31,14 @@ namespace CakeMail.RestClient.Resources
 		#region Public Methods
 
 		/// <summary>
-		/// Retrieve the list of permissions for a given user
+		/// Retrieve the list of permissions for a given user.
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="userId">ID of the user.</param>
 		/// <param name="clientId">ID of the client.</param>
-		/// <param name="cancellationToken">The cancellation token</param>
-		/// <returns>An enumeration of permissions</returns>
-		public Task<string[]> GetUserPermissionsAsync(string userKey, long userId, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		/// <param name="cancellationToken">The cancellation token.</param>
+		/// <returns>An enumeration of permissions.</returns>
+		public Task<string[]> GetUserPermissionsAsync(string userKey, long userId, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{
@@ -55,15 +55,15 @@ namespace CakeMail.RestClient.Resources
 		}
 
 		/// <summary>
-		/// Set the permissions granted to a given user
+		/// Set the permissions granted to a given user.
 		/// </summary>
 		/// <param name="userKey">User Key of the user who initiates the call.</param>
 		/// <param name="userId">ID of the user.</param>
-		/// <param name="permissions">Enumeration of permissions</param>
+		/// <param name="permissions">Enumeration of permissions.</param>
 		/// <param name="clientId">ID of the client.</param>
-		/// <param name="cancellationToken">The cancellation token</param>
-		/// <returns>True if the operation succeeded</returns>
-		public Task<bool> SetUserPermissionsAsync(string userKey, long userId, IEnumerable<string> permissions, long? clientId = null, CancellationToken cancellationToken = default(CancellationToken))
+		/// <param name="cancellationToken">The cancellation token.</param>
+		/// <returns>True if the operation succeeded.</returns>
+		public Task<bool> SetUserPermissionsAsync(string userKey, long userId, IEnumerable<string> permissions, long? clientId = null, CancellationToken cancellationToken = default)
 		{
 			var parameters = new List<KeyValuePair<string, object>>
 			{

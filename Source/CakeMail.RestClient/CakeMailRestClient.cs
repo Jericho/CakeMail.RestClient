@@ -1,4 +1,5 @@
-﻿using CakeMail.RestClient.Resources;
+using CakeMail.RestClient.Logging;
+using CakeMail.RestClient.Resources;
 using CakeMail.RestClient.Utilities;
 using Pathoschild.Http.Client;
 using Pathoschild.Http.Client.Extensibility;
@@ -10,15 +11,16 @@ using System.Reflection;
 namespace CakeMail.RestClient
 {
 	/// <summary>
-	/// Core class for using the CakeMail Api
+	/// Core class for using the CakeMail Api.
 	/// </summary>
 	public class CakeMailRestClient : ICakeMailRestClient
 	{
 		#region FIELDS
 
-		private const string DEFAULT_HOST = "api.wbsrvc.com";
+		private const string CAKEMAIL_BASE_URI = "https://api.wbsrvc.com/";
 
 		private readonly bool _mustDisposeHttpClient;
+		private readonly CakeMailClientOptions _options;
 
 		private HttpClient _httpClient;
 		private Pathoschild.Http.Client.IClient _fluentClient;
@@ -28,141 +30,171 @@ namespace CakeMail.RestClient
 		#region PROPERTIES
 
 		/// <summary>
-		/// Gets the API key provided by CakeMail
+		/// Gets the Version.
+		/// </summary>
+		/// <value>
+		/// The version.
+		/// </value>
+		public static string Version { get; private set; }
+
+		/// <summary>
+		/// Gets the user agent.
+		/// </summary>
+		public static string UserAgent { get; private set; }
+
+		/// <summary>
+		/// Gets the API key provided by CakeMail.
 		/// </summary>
 		public string ApiKey { get; private set; }
 
 		/// <summary>
-		/// Gets the user agent
-		/// </summary>
-		public string UserAgent { get; private set; }
-
-		/// <summary>
-		/// Gets the URL where all API requests are sent
+		/// Gets the URL where all API requests are sent.
 		/// </summary>
 		public Uri BaseUrl { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Campaigns">Campaigns</see> resource
+		/// Gets the <see cref="Campaigns">Campaigns</see> resource.
 		/// </summary>
 		public ICampaigns Campaigns { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Clients">Clients</see> resource
+		/// Gets the <see cref="Clients">Clients</see> resource.
 		/// </summary>
 		public IClients Clients { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Countries">Countries</see> resource
+		/// Gets the <see cref="Countries">Countries</see> resource.
 		/// </summary>
 		public ICountries Countries { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Permissions">Permissions</see> resource
+		/// Gets the <see cref="Permissions">Permissions</see> resource.
 		/// </summary>
 		public IPermissions Permissions { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Lists">Lists</see> resource
+		/// Gets the <see cref="Lists">Lists</see> resource.
 		/// </summary>
 		public ILists Lists { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Timezones">Timezones</see> resource
+		/// Gets the <see cref="Timezones">Timezones</see> resource.
 		/// </summary>
 		public ITimezones Timezones { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Mailings">Mailings</see> resource
+		/// Gets the <see cref="Mailings">Mailings</see> resource.
 		/// </summary>
 		public IMailings Mailings { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Relays">Relays</see> resource
+		/// Gets the <see cref="Relays">Relays</see> resource.
 		/// </summary>
 		public IRelays Relays { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Segments">Segments</see> resource
+		/// Gets the <see cref="Segments">Segments</see> resource.
 		/// </summary>
 		public ISegments Segments { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Users">Users</see> resource
+		/// Gets the <see cref="Users">Users</see> resource.
 		/// </summary>
 		public IUsers Users { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="SuppressionLists">SuppressionLists</see> resource
+		/// Gets the <see cref="SuppressionLists">SuppressionLists</see> resource.
 		/// </summary>
 		public ISuppressionLists SuppressionLists { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Templates">Templates</see> resource
+		/// Gets the <see cref="Templates">Templates</see> resource.
 		/// </summary>
 		public ITemplates Templates { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="Triggers">Triggers</see> resource
+		/// Gets the <see cref="Triggers">Triggers</see> resource.
 		/// </summary>
 		public ITriggers Triggers { get; private set; }
-
-		/// <summary>
-		/// Gets the Version.
-		/// </summary>
-		/// <value>
-		/// Gets the version.
-		/// </value>
-		public string Version { get; private set; }
 
 		#endregion
 
 		#region CONSTRUCTORS AND DESTRUCTORS
 
 		/// <summary>
+		/// Initializes static members of the <see cref="CakeMailRestClient"/> class.
+		/// </summary>
+		static CakeMailRestClient()
+		{
+			Version = typeof(CakeMailRestClient).GetTypeInfo().Assembly.GetName().Version.ToString(3);
+#if DEBUG
+			Version = "DEBUG";
+#endif
+			UserAgent = $"CakeMail .NET REST Client/{Version} (+https://github.com/Jericho/CakeMail.RestClient)";
+		}
+
+		/// <summary>
 		/// Initializes a new instance of the <see cref="CakeMailRestClient"/> class.
 		/// </summary>
-		/// <param name="apiKey">The API Key received from CakeMail</param>
-		public CakeMailRestClient(string apiKey)
-			: this(apiKey, httpClient: (HttpClient)null)
+		/// <param name="apiKey">The API Key received from CakeMail.</param>
+		/// <param name="options">Options for the CakeMail client.</param>
+		public CakeMailRestClient(string apiKey, CakeMailClientOptions options = null)
+			: this(apiKey, httpClient: (HttpClient)null, options: options)
 		{
 		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CakeMailRestClient"/> class.
 		/// </summary>
-		/// <param name="apiKey">The API Key received from CakeMail</param>
-		/// <param name="proxy">Allows you to specify a proxy</param>
-		public CakeMailRestClient(string apiKey, IWebProxy proxy)
-			: this(apiKey, httpClient: new HttpClient(new HttpClientHandler { Proxy = proxy, UseProxy = proxy != null }))
+		/// <param name="apiKey">The API Key received from CakeMail.</param>
+		/// <param name="proxy">Allows you to specify a proxy.</param>
+		/// <param name="options">Options for the CakeMail client.</param>
+		public CakeMailRestClient(string apiKey, IWebProxy proxy, CakeMailClientOptions options = null)
+			: this(apiKey, httpClient: new HttpClient(new HttpClientHandler { Proxy = proxy, UseProxy = proxy != null }), options: options)
 		{
-			_mustDisposeHttpClient = true;
 		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CakeMailRestClient"/> class.
 		/// </summary>
-		/// <param name="apiKey">The API Key received from CakeMail</param>
-		/// <param name="host">The host where the API is hosted. The default is api.wbsrvc.com</param>
-		/// <param name="httpClient">Allows you to inject your own HttpClient. This is useful, for example, to setup the HtppClient with a proxy</param>
-		public CakeMailRestClient(string apiKey, string host = DEFAULT_HOST, HttpClient httpClient = null)
+		/// <param name="apiKey">The API Key received from CakeMail.</param>
+		/// <param name="handler">The HTTP handler stack to use for sending requests.</param>
+		/// <param name="options">Options for the CakeMail client.</param>
+		public CakeMailRestClient(string apiKey, HttpMessageHandler handler, CakeMailClientOptions options = null)
+			: this(apiKey, new HttpClient(handler), true, options)
 		{
-			_mustDisposeHttpClient = httpClient == null;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CakeMailRestClient"/> class.
+		/// </summary>
+		/// <param name="apiKey">The API Key received from CakeMail.</param>
+		/// <param name="httpClient">Allows you to inject your own HttpClient. This is useful, for example, to setup the HtppClient with a proxy.</param>
+		/// <param name="options">Options for the CakeMail client.</param>
+		public CakeMailRestClient(string apiKey, HttpClient httpClient, CakeMailClientOptions options = null)
+			: this(apiKey, httpClient, false, options)
+		{
+		}
+
+		private CakeMailRestClient(string apiKey, HttpClient httpClient, bool disposeClient, CakeMailClientOptions options)
+		{
+			_mustDisposeHttpClient = disposeClient;
 			_httpClient = httpClient;
+			_options = options ?? GetDefaultOptions();
 
 			ApiKey = apiKey;
-			BaseUrl = new Uri($"https://{host.TrimEnd('/')}/");
-			Version = typeof(CakeMailRestClient).GetTypeInfo().Assembly.GetName().Version.ToString();
-			UserAgent = $"CakeMail .NET REST Client/{Version} (+https://github.com/Jericho/CakeMail.RestClient)";
+			BaseUrl = new Uri(CAKEMAIL_BASE_URI);
 
 			_fluentClient = new FluentClient(this.BaseUrl, httpClient)
-				.SetUserAgent(this.UserAgent);
-
-			_fluentClient.BaseClient.DefaultRequestHeaders.Add("apikey", this.ApiKey);
+				.SetUserAgent(CakeMailRestClient.UserAgent);
 
 			_fluentClient.Filters.Remove<DefaultErrorFilter>();
-			_fluentClient.Filters.Add(new DiagnosticHandler());
+
+			// Order is important: DiagnosticHandler must be first.
+			_fluentClient.Filters.Add(new DiagnosticHandler(_options.LogLevelSuccessfulCalls, _options.LogLevelFailedCalls));
 			_fluentClient.Filters.Add(new CakeMailErrorHandler());
+
+			_fluentClient.BaseClient.DefaultRequestHeaders.Add("apikey", this.ApiKey);
 
 			Campaigns = new Campaigns(_fluentClient);
 			Clients = new Clients(_fluentClient);
@@ -247,6 +279,18 @@ namespace CakeMail.RestClient
 		private void ReleaseUnmanagedResources()
 		{
 			// We do not hold references to unmanaged resources
+		}
+
+		private CakeMailClientOptions GetDefaultOptions()
+		{
+			return new CakeMailClientOptions()
+			{
+				// Setting to 'Debug' to mimic previous behavior. I think this is a sensible default setting.
+				LogLevelSuccessfulCalls = LogLevel.Debug,
+
+				// Setting to 'Debug' to mimic previous behavior. I think 'Error' would make more sense.
+				LogLevelFailedCalls = LogLevel.Debug
+			};
 		}
 
 		#endregion

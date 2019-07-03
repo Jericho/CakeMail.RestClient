@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Runtime.Serialization;
 
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	///  Enumeration to indicate the type of log
+	///  Enumeration to indicate the type of log.
 	/// </summary>
 	[JsonConverter(typeof(StringEnumConverter))]
 	public enum LogType
@@ -134,6 +134,18 @@ namespace CakeMail.RestClient.Models
 		/// Received
 		/// </summary>
 		[EnumMember(Value = "received")]
-		Received
+		Received,
+
+		/// <summary>
+		/// Schedule
+		/// </summary>
+		[EnumMember(Value = "schedule")]
+		Schedule,
+
+		/// <summary>
+		/// Generating
+		/// </summary>
+		[EnumMember(Value = "generating")]
+		Generating
 	}
 }

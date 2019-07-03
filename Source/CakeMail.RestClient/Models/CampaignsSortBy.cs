@@ -3,7 +3,7 @@
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	/// Enumeration to indicate how to sort campaigns
+	/// Enumeration to indicate how to sort campaigns.
 	/// </summary>
 	public enum CampaignsSortBy
 	{

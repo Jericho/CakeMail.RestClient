@@ -3,7 +3,7 @@
 namespace CakeMail.RestClient.Models
 {
 	/// <summary>
-	/// A timezone
+	/// A timezone.
 	/// </summary>
 	public class Timezone
 	{

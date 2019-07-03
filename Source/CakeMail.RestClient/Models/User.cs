@@ -7,7 +7,7 @@ namespace CakeMail.RestClient.Models
 	/// <summary>
 	/// A User is an individual associated to a Client. A User has access to a single Account.
 	/// </summary>
-	/// <remarks>The Id and UserId properties are interchangable. They alway contain the same value</remarks>
+	/// <remarks>The Id and UserId properties are interchangable. They alway contain the same value.</remarks>
 	public class User
 	{
 		#region Properties

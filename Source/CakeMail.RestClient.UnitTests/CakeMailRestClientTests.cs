@@ -1,4 +1,4 @@
-﻿using CakeMail.RestClient.Exceptions;
+using CakeMail.RestClient.Exceptions;
 using Moq;
 using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
@@ -23,13 +23,25 @@ namespace CakeMail.RestClient.UnitTests
 		public void Version_is_not_empty()
 		{
 			// Arrange
-			var client = new CakeMailRestClient(API_KEY);
 
 			// Act
-			var result = client.Version;
+			var version = CakeMailRestClient.Version;
 
 			// Assert
-			result.ShouldNotBeNullOrEmpty();
+			version.ShouldNotBeNullOrEmpty();
+		}
+
+		[Fact]
+		public void UserAgent()
+		{
+			// Arrange
+
+			// Act
+			var userAgent = CakeMailRestClient.UserAgent;
+
+			// Assert
+			userAgent.Split(new[] { '/' })[0].ShouldBe("CakeMail .NET REST Client");
+			userAgent.Split(new[] { '+' })[1].Trim(new[] { '(', ')' }).ShouldBe("https://github.com/Jericho/CakeMail.RestClient");
 		}
 
 		[Fact]
@@ -39,12 +51,9 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var client = new CakeMailRestClient(API_KEY);
-			var userAgent = client.UserAgent;
 			var baseUrl = client.BaseUrl;
 
 			// Assert
-			userAgent.Split(new[] { '/' })[0].ShouldBe("CakeMail .NET REST Client");
-			userAgent.Split(new[] { '+' })[1].Trim(new[] { '(', ')' }).ShouldBe("https://github.com/Jericho/CakeMail.RestClient");
 			baseUrl.ShouldBe(new Uri("https://api.wbsrvc.com"));
 		}
 
@@ -56,29 +65,23 @@ namespace CakeMail.RestClient.UnitTests
 
 			// Act
 			var client = new CakeMailRestClient(API_KEY, mockProxy.Object);
-			var baseUrl = client.BaseUrl;
 
 			// Assert
-			baseUrl.ShouldBe(new Uri("https://api.wbsrvc.com"));
+			client.BaseUrl.ShouldBe(new Uri("https://api.wbsrvc.com/"));
 		}
 
 		[Fact]
 		public void RestClient_constructor_with_HttpClient()
 		{
 			// Arrange
-			var mockHost = "my.apiserver.com";
-
 			var mockHttp = new MockHttpMessageHandler();
 			var httpClient = new HttpClient(mockHttp);
 
 			// Act
-			var client = new CakeMailRestClient(API_KEY, mockHost, httpClient);
-			var baseUrl = client.BaseUrl;
+			var client = new CakeMailRestClient(API_KEY, httpClient);
 
 			// Assert
-			mockHttp.VerifyNoOutstandingExpectation();
-			mockHttp.VerifyNoOutstandingRequest();
-			baseUrl.ShouldBe(new Uri($"https://{mockHost}"));
+			client.BaseUrl.ShouldBe(new Uri("https://api.wbsrvc.com/"));
 		}
 
 		[Fact]
