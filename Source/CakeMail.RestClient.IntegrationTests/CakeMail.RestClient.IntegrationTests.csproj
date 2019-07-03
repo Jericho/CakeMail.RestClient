@@ -12,6 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Logzio.DotNet.NLog" Version="1.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CakeMail.RestClient\CakeMail.RestClient.csproj" />
   </ItemGroup>
 

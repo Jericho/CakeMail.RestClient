@@ -1,6 +1,9 @@
 using CakeMail.RestClient.IntegrationTests.Tests;
-using CakeMail.RestClient.Logging;
 using CakeMail.RestClient.Utilities;
+using Logzio.DotNet.NLog;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 using System;
 using System.IO;
 using System.Net;
@@ -17,39 +20,50 @@ namespace CakeMail.RestClient.IntegrationTests
 			// Do you want to proxy requests through Fiddler? Can be useful for debugging.
 			var useFiddler = false;
 
-			// Do you want debug information displayed in the console?
-			var logToConsole = true;
-
 			// Logging options.
 			var options = new CakeMailClientOptions()
 			{
-				LogLevelFailedCalls = LogLevel.Error,
-				LogLevelSuccessfulCalls = LogLevel.Debug
+				LogLevelFailedCalls = CakeMail.RestClient.Logging.LogLevel.Error,
+				LogLevelSuccessfulCalls = CakeMail.RestClient.Logging.LogLevel.Debug
 			};
-
-			// To see only errors, set this value to 'LogLevel.Error'.
-			// To see every single call made to SendGrid's API, set this value to 'LogLevel.Debug'.
-			var minLogLevel = LogLevel.Error;
 			// -----------------------------------------------------------------------------
 
-			var proxy = useFiddler ? new WebProxy("http://localhost:8888") : null;
+			// Configure logging
+			var nLogConfig = new LoggingConfiguration();
+
+			// Send logs to logz.io
+			var logzioToken = Environment.GetEnvironmentVariable("LOGZIO_TOKEN");
+			if (!string.IsNullOrEmpty(logzioToken))
+			{
+				var logzioTarget = new LogzioTarget { Token = logzioToken };
+				logzioTarget.ContextProperties.Add(new TargetPropertyWithContext("source", "StrongGrid_integration_tests"));
+				logzioTarget.ContextProperties.Add(new TargetPropertyWithContext("StrongGrid-Version", CakeMailRestClient.Version));
+
+				nLogConfig.AddTarget("Logzio", logzioTarget);
+				nLogConfig.AddRule(NLog.LogLevel.Debug, NLog.LogLevel.Fatal, "Logzio", "*");
+			}
+
+			// Send logs to console
+			var consoleTarget = new ColoredConsoleTarget();
+			nLogConfig.AddTarget("ColoredConsole", consoleTarget);
+			nLogConfig.AddRule(NLog.LogLevel.Warn, NLog.LogLevel.Fatal, "ColoredConsole", "*");
+
+			LogManager.Configuration = nLogConfig;
+
+			// Configure CakeMail client
 			var apiKey = Environment.GetEnvironmentVariable("CAKEMAIL_APIKEY");
 			var userName = Environment.GetEnvironmentVariable("CAKEMAIL_USERNAME");
 			var password = Environment.GetEnvironmentVariable("CAKEMAIL_PASSWORD");
 			var overrideClientId = Environment.GetEnvironmentVariable("CAKEMAIL_OVERRIDECLIENTID");
 
-			if (logToConsole)
-			{
-				LogProvider.SetCurrentLogProvider(new ColoredConsoleLogProvider(minLogLevel));
-			}
-
+			// Configure Console
 			var source = new CancellationTokenSource();
 			Console.CancelKeyPress += (s, e) =>
 			{
 				e.Cancel = true;
 				source.Cancel();
 			};
-			
+
 			// Ensure the Console is tall enough and centered on the screen
 			Console.WindowHeight = Math.Min(60, Console.LargestWindowHeight);
 			ConsoleUtils.CenterConsole();
