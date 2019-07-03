@@ -49,6 +49,11 @@ namespace CakeMail.RestClient.IntegrationTests
 				e.Cancel = true;
 				source.Cancel();
 			};
+			
+			// Ensure the Console is tall enough and centered on the screen
+			Console.WindowHeight = Math.Min(60, Console.LargestWindowHeight);
+			ConsoleUtils.CenterConsole();
+
 
 			try
 			{
