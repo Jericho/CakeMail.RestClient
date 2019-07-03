@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.IntegrationTests.Tests
 {
-	public static class UsersTests
+	public class UsersTests : IIntegrationTest
 	{
-		public static async Task ExecuteAllMethods(ICakeMailRestClient client, string userKey, long clientId, TextWriter log, CancellationToken cancellationToken)
+		public async Task Execute(ICakeMailRestClient client, string userKey, long clientId, TextWriter log, CancellationToken cancellationToken)
 		{
 			await log.WriteLineAsync("\n***** USERS *****").ConfigureAwait(false);
 

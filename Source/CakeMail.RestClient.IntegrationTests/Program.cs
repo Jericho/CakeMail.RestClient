@@ -6,6 +6,7 @@ using NLog.Config;
 using NLog.Targets;
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +15,15 @@ namespace CakeMail.RestClient.IntegrationTests
 {
 	public class Program
 	{
+		private const int MAX_CAKEMAIL_API_CONCURRENCY = 5;
+
+		private enum ResultCodes
+		{
+			Success = 0,
+			Exception = 1,
+			Cancelled = 1223
+		}
+
 		static async Task<int> Main()
 		{
 			// -----------------------------------------------------------------------------
@@ -55,6 +65,11 @@ namespace CakeMail.RestClient.IntegrationTests
 			var userName = Environment.GetEnvironmentVariable("CAKEMAIL_USERNAME");
 			var password = Environment.GetEnvironmentVariable("CAKEMAIL_PASSWORD");
 			var overrideClientId = Environment.GetEnvironmentVariable("CAKEMAIL_OVERRIDECLIENTID");
+			var proxy = useFiddler ? new WebProxy("http://localhost:8888") : null;
+			var client = new CakeMailRestClient(apiKey, proxy);
+			var loginInfo = client.Users.LoginAsync(userName, password).Result;
+			var clientId = string.IsNullOrEmpty(overrideClientId) ? loginInfo.ClientId : long.Parse(overrideClientId);
+			var userKey = loginInfo.UserKey;
 
 			// Configure Console
 			var source = new CancellationTokenSource();
@@ -68,56 +83,96 @@ namespace CakeMail.RestClient.IntegrationTests
 			Console.WindowHeight = Math.Min(60, Console.LargestWindowHeight);
 			ConsoleUtils.CenterConsole();
 
-
-			try
+			// These are the integration tests that we will execute
+			var integrationTests = new Type[]
 			{
-				var client = new CakeMailRestClient(apiKey, proxy);
-				var loginInfo = client.Users.LoginAsync(userName, password).Result;
-				var clientId = string.IsNullOrEmpty(overrideClientId) ? loginInfo.ClientId : long.Parse(overrideClientId);
-				var userKey = loginInfo.UserKey;
+				typeof(CampaignsTests),
+				typeof(ClientsTests),
+				typeof(CountriesTests),
+				typeof(ListsTests),
+				typeof(MailingsTests),
+				typeof(PermissionsTests),
+				typeof(RelaysTests),
+				typeof(SuppressionListsTests),
+				typeof(TemplatesTests),
+				typeof(TimezonesTests),
+				typeof(TriggersTests),
+				typeof(UsersTests),
+			};
 
-				var tasks = new Task[]
+			// Execute the async tests in parallel (with max degree of parallelism)
+			var results = await integrationTests.ForEachAsync(
+				async integrationTestType =>
 				{
-					ExecuteAsync(client, userKey, clientId, source, TimezonesTests.ExecuteAllMethods),
-					ExecuteAsync(client, userKey, clientId, source, CountriesTests.ExecuteAllMethods),
-					ExecuteAsync(client, userKey, clientId, source, ClientsTests.ExecuteAllMethods),
-					ExecuteAsync(client, userKey, clientId, source, UsersTests.ExecuteAllMethods),
-					ExecuteAsync(client, userKey, clientId, source, PermissionsTests.ExecuteAllMethods),
-					ExecuteAsync(client, userKey, clientId, source, CampaignsTests.ExecuteAllMethods),
-					ExecuteAsync(client, userKey, clientId, source, ListsTests.ExecuteAllMethods),
-					ExecuteAsync(client, userKey, clientId, source, TemplatesTests.ExecuteAllMethods),
-					ExecuteAsync(client, userKey, clientId, source, SuppressionListsTests.ExecuteAllMethods),
-					ExecuteAsync(client, userKey, clientId, source, RelaysTests.ExecuteAllMethods),
-					ExecuteAsync(client, userKey, clientId, source, TriggersTests.ExecuteAllMethods),
-					ExecuteAsync(client, userKey, clientId, source, MailingsTests.ExecuteAllMethods)
-				};
-				await Task.WhenAll(tasks).ConfigureAwait(false);
-				return await Task.FromResult(0); // Success.
-			}
-			catch (OperationCanceledException)
+					var log = new StringWriter();
+
+					try
+					{
+						var integrationTest = (IIntegrationTest)Activator.CreateInstance(integrationTestType);
+						await integrationTest.Execute(client, userKey, clientId, log, source.Token).ConfigureAwait(false);
+						return (TestName: integrationTestType.Name, ResultCode: ResultCodes.Success, Message: string.Empty);
+					}
+					catch (OperationCanceledException)
+					{
+						await log.WriteLineAsync($"-----> TASK CANCELLED").ConfigureAwait(false);
+						return (TestName: integrationTestType.Name, ResultCode: ResultCodes.Cancelled, Message: "Task cancelled");
+					}
+					catch (Exception e)
+					{
+						var exceptionMessage = e.GetBaseException().Message;
+						await log.WriteLineAsync($"-----> AN EXCEPTION OCCURRED: {exceptionMessage}").ConfigureAwait(false);
+						return (TestName: integrationTestType.Name, ResultCode: ResultCodes.Exception, Message: exceptionMessage);
+					}
+					finally
+					{
+						await Console.Out.WriteLineAsync(log.ToString()).ConfigureAwait(false);
+					}
+				}, MAX_CAKEMAIL_API_CONCURRENCY)
+			.ConfigureAwait(false);
+
+			// Display summary
+			var summary = new StringWriter();
+			await summary.WriteLineAsync("\n\n**************************************************").ConfigureAwait(false);
+			await summary.WriteLineAsync("******************** SUMMARY *********************").ConfigureAwait(false);
+			await summary.WriteLineAsync("**************************************************").ConfigureAwait(false);
+
+			var resultsWithMessage = results
+				.Where(r => !string.IsNullOrEmpty(r.Message))
+				.ToArray();
+
+			if (resultsWithMessage.Any())
 			{
-				return 1223; // Cancelled.
+				foreach (var (TestName, ResultCode, Message) in resultsWithMessage)
+				{
+					const int TEST_NAME_MAX_LENGTH = 25;
+					var name = TestName.Length <= TEST_NAME_MAX_LENGTH ? TestName : TestName.Substring(0, TEST_NAME_MAX_LENGTH - 3) + "...";
+					await summary.WriteLineAsync($"{name.PadRight(TEST_NAME_MAX_LENGTH, ' ')} : {Message}").ConfigureAwait(false);
+				}
 			}
-			catch (Exception e)
+			else
 			{
-				source.Cancel();
-				var log = new StringWriter();
-				await log.WriteLineAsync("\n\n**************************************************").ConfigureAwait(false);
-				await log.WriteLineAsync("**************************************************").ConfigureAwait(false);
-				await log.WriteLineAsync($"AN EXCEPTION OCCURED: {e.GetBaseException().Message}").ConfigureAwait(false);
-				await log.WriteLineAsync("**************************************************").ConfigureAwait(false);
-				await log.WriteLineAsync("**************************************************").ConfigureAwait(false);
-				await Console.Out.WriteLineAsync(log.ToString()).ConfigureAwait(false);
-				return 1; // Exception
+				await summary.WriteLineAsync("All tests completed succesfully").ConfigureAwait(false);
 			}
-			finally
+
+			await summary.WriteLineAsync("**************************************************").ConfigureAwait(false);
+			await Console.Out.WriteLineAsync(summary.ToString()).ConfigureAwait(false);
+
+			// Prompt user to press a key in order to allow reading the log in the console
+			var promptLog = new StringWriter();
+			await promptLog.WriteLineAsync("\n\n**************************************************").ConfigureAwait(false);
+			await promptLog.WriteLineAsync("Press any key to exit").ConfigureAwait(false);
+			Prompt(promptLog.ToString());
+
+			// Return code indicating success/failure
+			var resultCode = (int)ResultCodes.Success;
+			if (results.Any(result => result.ResultCode != ResultCodes.Success))
 			{
-				var log = new StringWriter();
-				await log.WriteLineAsync("\n\n**************************************************").ConfigureAwait(false);
-				await log.WriteLineAsync("All tests completed").ConfigureAwait(false);
-				await log.WriteLineAsync("Press any key to exit").ConfigureAwait(false);
-				Prompt(log.ToString());
+				if (results.Any(result => result.ResultCode == ResultCodes.Exception)) resultCode = (int)ResultCodes.Exception;
+				else if (results.Any(result => result.ResultCode == ResultCodes.Cancelled)) resultCode = (int)ResultCodes.Cancelled;
+				else resultCode = (int)results.First(result => result.ResultCode != ResultCodes.Success).ResultCode;
 			}
+
+			return await Task.FromResult(resultCode);
 		}
 
 		private static char Prompt(string prompt)
@@ -129,32 +184,6 @@ namespace CakeMail.RestClient.IntegrationTests
 			Console.Out.WriteLine(prompt);
 			var result = Console.ReadKey();
 			return result.KeyChar;
-		}
-
-		private static async Task<int> ExecuteAsync(ICakeMailRestClient client, string userKey, long clientId, CancellationTokenSource cts, Func<ICakeMailRestClient, string, long, TextWriter, CancellationToken, Task> asyncTask)
-		{
-			var log = new StringWriter();
-
-			try
-			{
-				await asyncTask(client, userKey, clientId, log, cts.Token).ConfigureAwait(false);
-			}
-			catch (OperationCanceledException)
-			{
-				await log.WriteLineAsync($"-----> TASK CANCELLED").ConfigureAwait(false);
-				return 1223; // Cancelled.
-			}
-			catch (Exception e)
-			{
-				await log.WriteLineAsync($"-----> AN EXCEPTION OCCURED: {e.GetBaseException().Message}").ConfigureAwait(false);
-				throw;
-			}
-			finally
-			{
-				await Console.Out.WriteLineAsync(log.ToString()).ConfigureAwait(false);
-			}
-
-			return 0;   // Success
 		}
 	}
 }
