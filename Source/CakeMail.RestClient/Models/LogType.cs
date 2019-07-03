@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Runtime.Serialization;
 
@@ -134,6 +134,12 @@ namespace CakeMail.RestClient.Models
 		/// Received
 		/// </summary>
 		[EnumMember(Value = "received")]
-		Received
+		Received,
+
+		/// <summary>
+		/// Schedule
+		/// </summary>
+		[EnumMember(Value = "schedule")]
+		Schedule
 	}
 }
