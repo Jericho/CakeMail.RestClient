@@ -1,4 +1,4 @@
-﻿using CakeMail.RestClient.Resources;
+using CakeMail.RestClient.Resources;
 using System;
 
 namespace CakeMail.RestClient
@@ -12,11 +12,6 @@ namespace CakeMail.RestClient
 		/// Gets the API key provided by CakeMail.
 		/// </summary>
 		string ApiKey { get; }
-
-		/// <summary>
-		/// Gets the user agent.
-		/// </summary>
-		string UserAgent { get; }
 
 		/// <summary>
 		/// Gets the URL where all API requests are sent.
@@ -87,13 +82,5 @@ namespace CakeMail.RestClient
 		/// Gets the <see cref="Triggers">Triggers</see> resource.
 		/// </summary>
 		ITriggers Triggers { get; }
-
-		/// <summary>
-		/// Gets the Version.
-		/// </summary>
-		/// <value>
-		/// Gets the version.
-		/// </value>
-		string Version { get; }
 	}
 }

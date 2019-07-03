@@ -1,4 +1,4 @@
-﻿using CakeMail.RestClient.Models;
+using CakeMail.RestClient.Models;
 using System;
 using System.IO;
 using System.Linq;
@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CakeMail.RestClient.IntegrationTests.Tests
 {
-	public static class MailingsTests
+	public class MailingsTests : IIntegrationTest
 	{
-		public static async Task ExecuteAllMethods(ICakeMailRestClient client, string userKey, long clientId, TextWriter log, CancellationToken cancellationToken)
+		public async Task Execute(ICakeMailRestClient client, string userKey, long clientId, TextWriter log, CancellationToken cancellationToken)
 		{
 			await log.WriteLineAsync("\n***** MAILINGS *****").ConfigureAwait(false);
 
