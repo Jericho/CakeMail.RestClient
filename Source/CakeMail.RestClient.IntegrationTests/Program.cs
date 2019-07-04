@@ -102,26 +102,26 @@ namespace CakeMail.RestClient.IntegrationTests
 
 			// Execute the async tests in parallel (with max degree of parallelism)
 			var results = await integrationTests.ForEachAsync(
-				async integrationTestType =>
+				async testType =>
 				{
 					var log = new StringWriter();
 
 					try
 					{
-						var integrationTest = (IIntegrationTest)Activator.CreateInstance(integrationTestType);
+						var integrationTest = (IIntegrationTest)Activator.CreateInstance(testType);
 						await integrationTest.Execute(client, userKey, clientId, log, source.Token).ConfigureAwait(false);
-						return (TestName: integrationTestType.Name, ResultCode: ResultCodes.Success, Message: string.Empty);
+						return (TestName: testType.Name, ResultCode: ResultCodes.Success, Message: string.Empty);
 					}
 					catch (OperationCanceledException)
 					{
 						await log.WriteLineAsync($"-----> TASK CANCELLED").ConfigureAwait(false);
-						return (TestName: integrationTestType.Name, ResultCode: ResultCodes.Cancelled, Message: "Task cancelled");
+						return (TestName: testType.Name, ResultCode: ResultCodes.Cancelled, Message: "Task cancelled");
 					}
 					catch (Exception e)
 					{
 						var exceptionMessage = e.GetBaseException().Message;
 						await log.WriteLineAsync($"-----> AN EXCEPTION OCCURRED: {exceptionMessage}").ConfigureAwait(false);
-						return (TestName: integrationTestType.Name, ResultCode: ResultCodes.Exception, Message: exceptionMessage);
+						return (TestName: testType.Name, ResultCode: ResultCodes.Exception, Message: exceptionMessage);
 					}
 					finally
 					{
