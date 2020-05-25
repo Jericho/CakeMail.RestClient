@@ -14,7 +14,6 @@ namespace CakeMail.RestClient.IntegrationTests
 	{
 		private const int MAX_CAKEMAIL_API_CONCURRENCY = 5;
 		private const int TEST_NAME_MAX_LENGTH = 25;
-		private const string SUCCESSFUL_TEST_MESSAGE = "Completed successfully";
 
 		private enum ResultCodes
 		{
