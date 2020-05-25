@@ -1,4 +1,5 @@
 using CakeMail.RestClient.Exceptions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Pathoschild.Http.Client;
 using System;
@@ -321,9 +322,13 @@ namespace CakeMail.RestClient.Utilities
 		/// <param name="propertyName">The name of the JSON property (or null if not applicable) where the desired data is stored.</param>
 		/// <returns>Returns the response body, or <c>null</c> if the response has no body.</returns>
 		/// <exception cref="ApiException">An error occurred processing the response.</exception>
-		private static async Task<T> AsCakeMailObjectAsync<T>(this HttpContent httpContent, string propertyName = null)
+		private static async Task<T> AsCakeMailObjectAsync<T>(this HttpContent httpContent, string propertyName = null, JsonConverter jsonConverter = null)
 		{
 			var responseContent = await httpContent.ReadAsStringAsync().ConfigureAwait(false);
+
+			var serializer = new JsonSerializer();
+			if (jsonConverter != null) serializer.Converters.Add(jsonConverter);
+
 			var cakeResponse = JObject.Parse(responseContent);
 			var data = cakeResponse["data"];
 
@@ -334,9 +339,9 @@ namespace CakeMail.RestClient.Utilities
 				data = properties.First().Value;
 			}
 
-			if (data is JArray) return (data as JArray).ToObject<T>();
-			else if (data is JValue) return (data as JValue).ToObject<T>();
-			return (data as JObject).ToObject<T>();
+			if (data is JArray) return (data as JArray).ToObject<T>(serializer);
+			else if (data is JValue) return (data as JValue).ToObject<T>(serializer);
+			return (data as JObject).ToObject<T>(serializer);
 		}
 	}
 }
