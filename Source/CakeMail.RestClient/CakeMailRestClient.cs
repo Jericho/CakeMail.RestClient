@@ -1,6 +1,7 @@
-using CakeMail.RestClient.Logging;
 using CakeMail.RestClient.Resources;
 using CakeMail.RestClient.Utilities;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Pathoschild.Http.Client;
 using Pathoschild.Http.Client.Extensibility;
 using System;
@@ -19,8 +20,11 @@ namespace CakeMail.RestClient
 
 		private const string CAKEMAIL_BASE_URI = "https://api.wbsrvc.com/";
 
+		private static string _version;
+
 		private readonly bool _mustDisposeHttpClient;
 		private readonly CakeMailClientOptions _options;
+		private readonly ILogger _logger;
 
 		private HttpClient _httpClient;
 		private Pathoschild.Http.Client.IClient _fluentClient;
@@ -35,12 +39,21 @@ namespace CakeMail.RestClient
 		/// <value>
 		/// The version.
 		/// </value>
-		public static string Version { get; private set; }
+		public static string Version
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(_version))
+				{
+					_version = typeof(CakeMailRestClient).GetTypeInfo().Assembly.GetName().Version.ToString(3);
+#if DEBUG
+					_version = "DEBUG";
+#endif
+				}
 
-		/// <summary>
-		/// Gets the user agent.
-		/// </summary>
-		public static string UserAgent { get; private set; }
+				return _version;
+			}
+		}
 
 		/// <summary>
 		/// Gets the API key provided by CakeMail.
@@ -122,24 +135,13 @@ namespace CakeMail.RestClient
 		#region CONSTRUCTORS AND DESTRUCTORS
 
 		/// <summary>
-		/// Initializes static members of the <see cref="CakeMailRestClient"/> class.
-		/// </summary>
-		static CakeMailRestClient()
-		{
-			Version = typeof(CakeMailRestClient).GetTypeInfo().Assembly.GetName().Version.ToString(3);
-#if DEBUG
-			Version = "DEBUG";
-#endif
-			UserAgent = $"CakeMail .NET REST Client/{Version} (+https://github.com/Jericho/CakeMail.RestClient)";
-		}
-
-		/// <summary>
 		/// Initializes a new instance of the <see cref="CakeMailRestClient"/> class.
 		/// </summary>
 		/// <param name="apiKey">The API Key received from CakeMail.</param>
 		/// <param name="options">Options for the CakeMail client.</param>
-		public CakeMailRestClient(string apiKey, CakeMailClientOptions options = null)
-			: this(apiKey, httpClient: (HttpClient)null, options: options)
+		/// <param name="logger">Logger.</param>
+		public CakeMailRestClient(string apiKey, CakeMailClientOptions options = null, ILogger logger = null)
+			: this(apiKey, (HttpClient)null, options, logger)
 		{
 		}
 
@@ -149,8 +151,9 @@ namespace CakeMail.RestClient
 		/// <param name="apiKey">The API Key received from CakeMail.</param>
 		/// <param name="proxy">Allows you to specify a proxy.</param>
 		/// <param name="options">Options for the CakeMail client.</param>
-		public CakeMailRestClient(string apiKey, IWebProxy proxy, CakeMailClientOptions options = null)
-			: this(apiKey, httpClient: new HttpClient(new HttpClientHandler { Proxy = proxy, UseProxy = proxy != null }), options: options)
+		/// <param name="logger">Logger.</param>
+		public CakeMailRestClient(string apiKey, IWebProxy proxy, CakeMailClientOptions options = null, ILogger logger = null)
+			: this(apiKey, new HttpClient(new HttpClientHandler { Proxy = proxy, UseProxy = proxy != null }), options, logger)
 		{
 		}
 
@@ -160,8 +163,9 @@ namespace CakeMail.RestClient
 		/// <param name="apiKey">The API Key received from CakeMail.</param>
 		/// <param name="handler">The HTTP handler stack to use for sending requests.</param>
 		/// <param name="options">Options for the CakeMail client.</param>
-		public CakeMailRestClient(string apiKey, HttpMessageHandler handler, CakeMailClientOptions options = null)
-			: this(apiKey, new HttpClient(handler), true, options)
+		/// <param name="logger">Logger.</param>
+		public CakeMailRestClient(string apiKey, HttpMessageHandler handler, CakeMailClientOptions options = null, ILogger logger = null)
+			: this(apiKey, new HttpClient(handler), true, options, logger)
 		{
 		}
 
@@ -171,22 +175,24 @@ namespace CakeMail.RestClient
 		/// <param name="apiKey">The API Key received from CakeMail.</param>
 		/// <param name="httpClient">Allows you to inject your own HttpClient. This is useful, for example, to setup the HtppClient with a proxy.</param>
 		/// <param name="options">Options for the CakeMail client.</param>
-		public CakeMailRestClient(string apiKey, HttpClient httpClient, CakeMailClientOptions options = null)
-			: this(apiKey, httpClient, false, options)
+		/// <param name="logger">Logger.</param>
+		public CakeMailRestClient(string apiKey, HttpClient httpClient, CakeMailClientOptions options = null, ILogger logger = null)
+			: this(apiKey, httpClient, false, options, logger)
 		{
 		}
 
-		private CakeMailRestClient(string apiKey, HttpClient httpClient, bool disposeClient, CakeMailClientOptions options)
+		private CakeMailRestClient(string apiKey, HttpClient httpClient, bool disposeClient, CakeMailClientOptions options, ILogger logger = null)
 		{
 			_mustDisposeHttpClient = disposeClient;
 			_httpClient = httpClient;
 			_options = options ?? GetDefaultOptions();
+			_logger = logger ?? NullLogger.Instance;
 
 			ApiKey = apiKey;
 			BaseUrl = new Uri(CAKEMAIL_BASE_URI);
 
 			_fluentClient = new FluentClient(this.BaseUrl, httpClient)
-				.SetUserAgent(CakeMailRestClient.UserAgent);
+				.SetUserAgent($"CakeMail .NET REST Client/{Version} (+https://github.com/Jericho/CakeMail.RestClient)");
 
 			_fluentClient.Filters.Remove<DefaultErrorFilter>();
 
@@ -285,11 +291,8 @@ namespace CakeMail.RestClient
 		{
 			return new CakeMailClientOptions()
 			{
-				// Setting to 'Debug' to mimic previous behavior. I think this is a sensible default setting.
 				LogLevelSuccessfulCalls = LogLevel.Debug,
-
-				// Setting to 'Debug' to mimic previous behavior. I think 'Error' would make more sense.
-				LogLevelFailedCalls = LogLevel.Debug
+				LogLevelFailedCalls = LogLevel.Error
 			};
 		}
 

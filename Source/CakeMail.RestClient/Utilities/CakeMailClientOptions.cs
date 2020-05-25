@@ -1,4 +1,4 @@
-using CakeMail.RestClient.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace CakeMail.RestClient.Utilities
 {

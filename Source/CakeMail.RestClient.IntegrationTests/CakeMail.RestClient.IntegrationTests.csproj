@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>CakeMail.RestClient.IntegrationTests</AssemblyName>
     <RootNamespace>CakeMail.RestClient.IntegrationTests</RootNamespace>
   </PropertyGroup>
@@ -12,7 +12,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Logzio.DotNet.NLog" Version="1.0.6" />
+    <PackageReference Include="Logzio.DotNet.NLog" Version="1.0.10" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.4" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.6.4" />
   </ItemGroup>
 
   <ItemGroup>

@@ -32,19 +32,6 @@ namespace CakeMail.RestClient.UnitTests
 		}
 
 		[Fact]
-		public void UserAgent()
-		{
-			// Arrange
-
-			// Act
-			var userAgent = CakeMailRestClient.UserAgent;
-
-			// Assert
-			userAgent.Split(new[] { '/' })[0].ShouldBe("CakeMail .NET REST Client");
-			userAgent.Split(new[] { '+' })[1].Trim(new[] { '(', ')' }).ShouldBe("https://github.com/Jericho/CakeMail.RestClient");
-		}
-
-		[Fact]
 		public void RestClient_constructor_with_ApiKey()
 		{
 			// Arrange

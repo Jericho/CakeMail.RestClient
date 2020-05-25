@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net461;net472;netstandard2.0</TargetFrameworks>
@@ -28,13 +28,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LibLog" Version="5.0.6">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.4" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
-    <PackageReference Include="Pathoschild.Http.FluentClient" Version="3.3.0" />
+    <PackageReference Include="Pathoschild.Http.FluentClient" Version="4.0.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
@@ -46,7 +43,7 @@
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
-    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>
 
   <PropertyGroup Condition=" !$(TargetFramework.StartsWith('netstandard')) ">
