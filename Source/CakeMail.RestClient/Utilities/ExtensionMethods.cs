@@ -320,11 +320,12 @@ namespace CakeMail.RestClient.Utilities
 		/// <typeparam name="T">The response model to deserialize into.</typeparam>
 		/// <param name="httpContent">The content.</param>
 		/// <param name="propertyName">The name of the JSON property (or null if not applicable) where the desired data is stored.</param>
+		/// <param name="jsonConverter">Converter that will be used during deserialization.</param>
 		/// <returns>Returns the response body, or <c>null</c> if the response has no body.</returns>
 		/// <exception cref="ApiException">An error occurred processing the response.</exception>
 		private static async Task<T> AsCakeMailObjectAsync<T>(this HttpContent httpContent, string propertyName = null, JsonConverter jsonConverter = null)
 		{
-			var responseContent = await httpContent.ReadAsStringAsync().ConfigureAwait(false);
+			var responseContent = await httpContent.ReadAsStringAsync(null).ConfigureAwait(false);
 
 			var serializer = new JsonSerializer();
 			if (jsonConverter != null) serializer.Converters.Add(jsonConverter);
@@ -334,13 +335,14 @@ namespace CakeMail.RestClient.Utilities
 
 			if (!string.IsNullOrEmpty(propertyName))
 			{
-				var properties = ((JObject)data).Properties().Where(p => p.Name.Equals(propertyName));
-				if (!properties.Any()) throw new CakeMailException(string.Format("Json does not contain property {0}", propertyName), responseContent);
-				data = properties.First().Value;
+				var jObject = (JObject)data;
+				var jProperty = jObject.Property(propertyName);
+				if (jProperty == null) throw new CakeMailException($"The response does not contain a field called {propertyName}", responseContent);
+				data = jProperty.Value;
 			}
 
 			if (data is JArray) return (data as JArray).ToObject<T>(serializer);
-			else if (data is JValue) return (data as JValue).ToObject<T>(serializer);
+			if (data is JValue) return (data as JValue).ToObject<T>(serializer);
 			return (data as JObject).ToObject<T>(serializer);
 		}
 	}
